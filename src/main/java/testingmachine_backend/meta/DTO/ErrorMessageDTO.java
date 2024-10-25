@@ -9,7 +9,6 @@ public class ErrorMessageDTO {
     public ErrorMessageDTO(String fileName, String metaId, String metaCode, String messageText) {
         this.fileName = fileName;
         this.metaId = metaId;
-        this.metaCode = metaCode;
         this.messageText = messageText;
     }
 

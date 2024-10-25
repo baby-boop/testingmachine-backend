@@ -15,7 +15,7 @@ public class ListConfig {
     /*
      * DEV USER CONNECTION
 
-     */
+
     public static final String BaseUrl = "https://dev.veritech.mn";
     public static final String LoginUrl = BaseUrl + "/login";
     public static final String USERNAME = "shinetsetseg.sh";
@@ -25,17 +25,17 @@ public class ListConfig {
 //    public static final String MainUrl = BaseUrl + "/mdobject/dataview/16413658595761?";
 //    public static final String tailUrl = "&mmid=164560279791910";
 //    public static final String MetaverseURL= "/mdform/indicatorRender/";
-
+ */
 
     /*
      * Хишиг арвин UAT USER CONNECTION
-
+     */
     public static final String BaseUrl = "http://202.131.244.213";
     public static final String LoginUrl = BaseUrl + "/login";
     public static final String MainUrl = BaseUrl + "/mdobject/dataview/";
     public static final String USERNAME = "admin1";
     public static final String PASSWORD = "Khishigarvin*89";
-*/
+
     /*
     * Summit USER CONNECTION
 
