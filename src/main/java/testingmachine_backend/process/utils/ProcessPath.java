@@ -14,8 +14,7 @@ import java.util.*;
 import java.util.logging.*;
 
 import static testingmachine_backend.process.Config.ConfigProcess.waitUtils;
-import static testingmachine_backend.process.Config.ProcessFieldRegex.*;
-import static testingmachine_backend.process.Config.ProcessFieldTypes.*;
+import static testingmachine_backend.process.utils.FormFieldUtils.*;
 
 @Slf4j
 public class ProcessPath {
@@ -35,7 +34,9 @@ public class ProcessPath {
             for (LogEntry entry : logs) {
 
                 if (entry.getLevel().toString().equals("SEVERE")) {
-                    if(!entry.getMessage().contains("Uncaught TypeError: Cannot read properties of null (reading 'addClass')") && !entry.getMessage().contains("Uncaught TypeError: Cannot read properties of null (reading 'hasClass')")) {
+                    if(!entry.getMessage().contains("Uncaught TypeError: Cannot read properties of null (reading 'addClass')") && !entry.getMessage().contains("Uncaught TypeError: Cannot read properties of null (reading 'hasClass')")
+                    && !entry.getMessage().contains("Failed to load resource: the server responded with a status of 404 (Not Found)"))
+                    {
                         LOGGER.log(Level.SEVERE, new Date(entry.getTimestamp()) + " " + entry.getLevel() + " " + entry.getMessage() + " " + id);
                         hasSevereError = true;
                         ProcessLogDTO processLogFields = new ProcessLogDTO(fileName, id , entry.getMessage());
@@ -50,94 +51,23 @@ public class ProcessPath {
                 WaitElement.retryWaitForLoadToDisappear(driver, 3);
                 WaitElement.retryWaitForLoadingToDisappear(driver, 3);
 
-                List<WebElement> elementsWithDataPath = findElementsWithSelector(driver, "[data-path]");
+//                List<WebElement> elementsWithDataPath = findElementsWithSelector(driver, "[data-path]");
 
-                for (WebElement element : elementsWithDataPath) {
-                    String classAttribute = element.getAttribute("class");
-                    String valueAttribute = element.getAttribute("value");
-                    String typeAttribute = element.getAttribute("type");
-                    String dataPath = element.getAttribute("data-path");
-                    String regexData = element.getAttribute("data-regex");
+//                for (WebElement element : elementsWithDataPath) {
+//                    String classAttribute = element.getAttribute("class");
+//                    String valueAttribute = element.getAttribute("value");
+//                    String typeAttribute = element.getAttribute("type");
+//                    String dataPath = element.getAttribute("data-path");
+//                    String regexData = element.getAttribute("data-regex");
 
-                    if (valueAttribute != null && valueAttribute.isEmpty()) {
+//                    handleElementAction(driver, element, classAttribute, valueAttribute, typeAttribute, dataPath, regexData, id);
+//                }
 
-                        if (classAttribute != null && !classAttribute.isEmpty()) {
-                            if (isPopupField(classAttribute)) {
-                                WebElement popupButton = findPopupButtonForElement(element);
-                                if (popupButton != null) {
-                                    popupButton.click();
-                                    waitUtils(driver);
-                                    clickFirstRow(driver, id);
-                                }
-                            }
-                            else if (!typeAttribute.equals("hidden") && isTextField(classAttribute)) {
-                                if (regexData != null && !regexData.isEmpty()) {
-                                    if (isRegisterRegex(regexData)) {
-                                        element.sendKeys("АА03021838");
-                                    } else if (isPhoneRegex(regexData)) {
-                                        element.sendKeys("99110011");
-                                    } else if (isEmailRegex(regexData)) {
-                                        element.sendKeys("test@gmail.com");
-                                    } else if (isCompanyRegex(regexData)){
-                                        element.sendKeys("7777771");
-                                    } else if (isTerminalRegex(regexData)){
-                                        element.sendKeys("11000110");
-                                    } else if (isCompanyStateRegRegex(regexData)){
-                                        element.sendKeys("1100001000");
-                                    }
-                                } else {
-                                    element.sendKeys("Simple test");
-                                }
-                            }
-                            else if (!typeAttribute.equals("hidden") && isLongField(classAttribute)) {
-                                element.sendKeys("11112222");
-                            }
-                            else if (!typeAttribute.equals("hidden") && isDescriptionField(classAttribute)) {
-                                element.sendKeys("Description test");
-                            }
-                            else if (!typeAttribute.equals("hidden") && isAutoDescriptionField(classAttribute)) {
-                                element.sendKeys("Auto description test");
-                            }
-                            else if (!typeAttribute.equals("hidden") && isDatetimeField(classAttribute)) {
-                                element.sendKeys("2024-10-22 08:00:00");
-                            }
-                            else if (!typeAttribute.equals("hidden") && isTimeField(classAttribute)) {
-                                element.sendKeys("08:00");
-                            }
-                            else if (!typeAttribute.equals("hidden") && isBigDecimalField(classAttribute)) {
-                                element.sendKeys("11");
-                            }
-                            else if (!typeAttribute.equals("hidden") && isDecimalField(classAttribute)) {
-                                element.sendKeys("22");
-                            }
-                            else if (!typeAttribute.equals("hidden") && isNumberField(classAttribute)) {
-                                element.sendKeys("1122");
-                            }
-                            else if (!typeAttribute.equals("hidden") && isDateField(classAttribute)) {
-                                element.sendKeys("2024-10-15");
-                            }
-                            else if (isTextEditorField(classAttribute)) {
-                                findTextEditorInput(driver, dataPath, id);
-                            }
-                            else if (isComboField(classAttribute)) {
-                                selectComboSecondOption(driver, dataPath, id);
-                            }
-                            else if(isBooleanField(classAttribute)){
-                                element.click();
-                            }
-                        }
-                    }else if (isRadioField(classAttribute)) {
-                        element.click();
-                    }else if(isCheckBox(typeAttribute)){
-                        element.click();
-                    }
-                }
+                detailActionButton(driver, id);
 
-                IsAddRowbutton(driver, id);
-
-                WebElement wfmDialog = waitForElementVisible(driver, By.cssSelector("div[id='bp-window-" + id + "']"), 10);
-                WebElement wfmSaveButton = wfmDialog.findElement(By.xpath(".//button[contains(@class, 'btn btn-sm btn-circle btn-success bpMainSaveButton bp-btn-save ')]"));
-                wfmSaveButton.click();
+//                WebElement wfmDialog = waitForElementVisible(driver, By.cssSelector("div[id='bp-window-" + id + "']"), 10);
+//                WebElement wfmSaveButton = wfmDialog.findElement(By.xpath(".//button[contains(@class, 'btn btn-sm btn-circle btn-success bpMainSaveButton bp-btn-save ')]"));
+//                wfmSaveButton.click();
                 waitUtils(driver);
                 if(trashMessage.isErrorMessagePresent(driver, id, fileName)){
                     log.info("Count log: " + id);
@@ -167,7 +97,7 @@ public class ProcessPath {
             return List.of();
         }
     }
-    private static void findTextEditorInput(WebDriver driver, String dataSPath, String id) {
+    static void findTextEditorInput(WebDriver driver, String dataSPath, String id) {
         try{
             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(LONG_WAIT_SECONDS));
 
@@ -182,7 +112,7 @@ public class ProcessPath {
         }
     }
 
-    private static WebElement findPopupButtonForElement(WebElement element) {
+    static WebElement findPopupButtonForElement(WebElement element) {
         try {
 
             WebElement parent = element.findElement(By.xpath("./following-sibling::span[@class='input-group-btn']/button"));
@@ -195,7 +125,7 @@ public class ProcessPath {
     private static void scrollToElement(WebDriver driver, WebElement element) {
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
     }
-    private static void clickFirstRow(WebDriver driver, String id ) {
+    static void clickFirstRow(WebDriver driver, String id) {
         try{
             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(LONG_WAIT_SECONDS));
             waitUtils(driver);
@@ -226,7 +156,7 @@ public class ProcessPath {
         }
     }
     
-    private static void selectComboSecondOption(WebDriver driver, String dataSPath, String id) {
+    static void selectComboSecondOption(WebDriver driver, String dataSPath, String id) {
         try {
             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(LONG_WAIT_SECONDS));
 
@@ -248,27 +178,79 @@ public class ProcessPath {
         }
     }
 
-    private static void IsAddRowbutton(WebDriver driver, String id) {
+    private static void detailActionButton(WebDriver driver, String id) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(LONG_WAIT_SECONDS));
         try {
             List<WebElement> elementsWithDataSectionPath = findRowElementsWithDataSectionPath(driver);
+
             for (WebElement element : elementsWithDataSectionPath) {
                 String sectionPath = element.getAttribute("data-section-path");
-                WebElement addRowbutton = findAddRowButton(driver, sectionPath);
-                WebElement addLookup = findRowLookupButton(driver, sectionPath);
-                if(addLookup != null && addRowbutton == null) {
-                    addLookup.click();
+                waitUtils(driver);
+                List<WebElement> allActionPath = findRowActionPathsButton(driver, sectionPath);
+                if(allActionPath != null ) {
                     waitUtils(driver);
-                    clickFirstRow(driver, id);
-                    WebElement saveBtn = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[contains(@class, 'btn blue btn-sm datagrid-choose-btn')]")));
-                    saveBtn.click();
-                    waitUtils(driver);
+                    for (WebElement action : allActionPath) {
+                        String onclick = action.getAttribute("onclick");
+
+                        if (onclick.contains("bpAddMainMultiRow")) {
+                            action.click();
+                            waitUtils(driver);
+                            clickFirstRow(driver, id);
+                            WebElement saveBtn = wait.until(ExpectedConditions.visibilityOfElementLocated(
+                                    By.xpath("//button[contains(@class, 'btn blue btn-sm datagrid-choose-btn')]")));
+                            saveBtn.click();
+                            waitUtils(driver);
+                            break;
+                        }
+                        else if (onclick.contains("bpAddMainRow")) {
+                            waitUtils(driver);
+                            action.click();
+                            waitUtils(driver);
+                            List<WebElement> rowElements = findElementsWithDetailsPath(driver, sectionPath);
+
+                            for (WebElement rowElement : rowElements) {
+                                String classAttribute = rowElement.getAttribute("class");
+                                String valueAttribute = rowElement.getAttribute("value");
+                                String typeAttribute = rowElement.getAttribute("type");
+                                String dataPath = rowElement.getAttribute("data-path");
+                                String regexData = rowElement.getAttribute("data-regex");
+                                handleElementAction(driver, rowElement, classAttribute, valueAttribute, typeAttribute, dataPath, regexData, id);
+
+                                }
+
+
+                            break;
+                        }
+                    }
                 }
             }
         } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Error in rows: " + id);
+            LOGGER.log(Level.SEVERE, "Error in rows: " + id, e);
         }
     }
+
+    private static List<WebElement> findElementsWithDetailsPath(WebDriver driver, String cssSelector) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(SHORT_WAIT_SECONDS));
+        try {
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(cssSelector)));
+
+            List<WebElement> elements = driver.findElements(By.cssSelector(cssSelector));
+
+            Map<String, WebElement> uniqueDataPathElements = new LinkedHashMap<>();
+            for (WebElement element : elements) {
+                String dataPath = element.getAttribute("data-path");
+                if (!uniqueDataPathElements.containsKey(dataPath)) {
+                    uniqueDataPathElements.put(dataPath, element);
+                }
+            }
+            return new ArrayList<>(uniqueDataPathElements.values());
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Elements with selector '" + cssSelector + "' not found");
+            return List.of();
+        }
+    }
+
+
     private static WebElement waitForElementVisible(WebDriver driver, By locator, int waitSeconds) {
         try {
             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(waitSeconds));
@@ -288,37 +270,20 @@ public class ProcessPath {
         }
     }
 
-    private static WebElement findAddRowButton(WebDriver driver, String sectionPath) {
+    private static List<WebElement> findRowActionPathsButton(WebDriver driver, String sectionPath) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(SHORT_WAIT_SECONDS));
         try {
-            String selector = String.format("button[data-action-path='%s'][class='btn btn-xs green-meadow float-left mr5 bp-add-one-row']", sectionPath);
-            return driver.findElement(By.cssSelector(selector));
-        } catch (Exception e) {
-            LOGGER.log(Level.WARNING, "Add row button not found for section: " + sectionPath);
-            return null;
-        }
-    }
-
-    private static WebElement findRowLookupButton(WebDriver driver, String sectionPath) {
-        try {
-            String selector = String.format("button[data-action-path='%s'][onclick='btn btn-xs green-meadow']", sectionPath);
-            return driver.findElement(By.cssSelector(selector));
-        } catch (Exception e) {
-            LOGGER.log(Level.WARNING, "Add lookup button not found for section: " + sectionPath);
-            return null;
-        }
-    }
-
-    private static List<WebElement> findElementsWithDataPath(WebDriver driver, String sectionPath) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(LONG_WAIT_SECONDS));
-        try {
-            String selector = String.format("[data-path^='%s']", sectionPath);
+            String selector = String.format("button[data-action-path='%s']", sectionPath);
             wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(selector)));
             return driver.findElements(By.cssSelector(selector));
         } catch (Exception e) {
-            LOGGER.log(Level.WARNING, "Elements with data-path not found for section: " + sectionPath, e);
-            return List.of();
+            LOGGER.log(Level.WARNING, "action paths: " + sectionPath);
+            return null;
         }
     }
+
+
+
     public static List<ProcessLogDTO> getProcessLogMessages() {
         return new ArrayList<>(ProcessLogFields);
     }

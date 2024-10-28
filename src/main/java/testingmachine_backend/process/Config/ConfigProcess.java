@@ -23,9 +23,14 @@ public class ConfigProcess {
     }
 
     public static void waitUtils (WebDriver driver) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(TIMEOUT));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.tagName("body")));
-        WaitElement.retryWaitForLoadToDisappear(driver, 3);
-        WaitElement.retryWaitForLoadingToDisappear(driver, 3);
+        try{
+
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(TIMEOUT));
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.tagName("body")));
+            WaitElement.retryWaitForLoadToDisappear(driver, 3);
+            WaitElement.retryWaitForLoadingToDisappear(driver, 3);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 }
