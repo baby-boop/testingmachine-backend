@@ -1,7 +1,6 @@
 package testingmachine_backend.process.utils;
 
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 
 import static testingmachine_backend.process.Config.ConfigProcess.waitUtils;
 import static testingmachine_backend.process.utils.ProcessPath.*;
@@ -45,6 +44,13 @@ public class FormFieldUtils {
                 else if (!typeAttribute.equals("hidden") && isLongField(classAttribute)) {
                     element.sendKeys("11112222");
                 }
+                else if (!typeAttribute.equals("hidden") && isFileField(classAttribute)) {
+                    String filePng = "C:\\Users\\batde\\Downloads\\pngForTest.png";
+                    element.sendKeys(filePng);
+                }
+                else if (!typeAttribute.equals("hidden") && isIntegerField(classAttribute)) {
+                    element.sendKeys("123");
+                }
                 else if (!typeAttribute.equals("hidden") && isDescriptionField(classAttribute)) {
                     element.sendKeys("Description test");
                 }
@@ -52,7 +58,8 @@ public class FormFieldUtils {
                     element.sendKeys("Auto description test");
                 }
                 else if (!typeAttribute.equals("hidden") && isDatetimeField(classAttribute)) {
-                    element.sendKeys("2024-10-22 08:00:00");
+                    element.sendKeys("2024-10-16 09:45:51");
+                    element.sendKeys(Keys.ENTER);
                 }
                 else if (!typeAttribute.equals("hidden") && isTimeField(classAttribute)) {
                     element.sendKeys("08:00");
@@ -68,6 +75,15 @@ public class FormFieldUtils {
                 }
                 else if (!typeAttribute.equals("hidden") && isDateField(classAttribute)) {
                     element.sendKeys("2024-10-15");
+                }
+                else if (!typeAttribute.equals("hidden") && isPayrollExpressionField(classAttribute)) {
+                    element.sendKeys("expressionPayrollCheck");
+                }
+                else if ( isExpressionEditorField(classAttribute)) {
+                    element.sendKeys("expressionEditorCheck");
+                }
+                else if ( isPasswordField(classAttribute)) {
+                    element.sendKeys("123");
                 }
                 else if (isTextEditorField(classAttribute)) {
                     findTextEditorInput(driver, dataPath, id);
@@ -112,6 +128,10 @@ public class FormFieldUtils {
     public static boolean isTextField(String classAttribute ) {
         return classAttribute.contains("stringInit");
     }
+    public static boolean isIntegerField(String classAttribute ) {
+        return classAttribute.contains("integerInit");
+    }
+    public static boolean isFileField(String classAttribute ) {return classAttribute.contains("fileInit");}
     public static boolean isDescriptionField(String classAttribute ) {
         return classAttribute.contains("descriptionInit");
     }
@@ -136,6 +156,16 @@ public class FormFieldUtils {
     public static boolean isDatetimeField(String classAttribute ) {
         return classAttribute.contains("datetimeInit");
     }
+    public static boolean isPayrollExpressionField(String classAttribute ) {
+        return classAttribute.contains("payroll_expressionInit");
+    }
+    public static boolean isExpressionEditorField(String classAttribute ) {
+        return classAttribute.contains("expression_editorInit");
+    }
+    public static boolean isPasswordField(String classAttribute ) {
+        return classAttribute.contains("passwordInit");
+    }
+
     //lookups
     public static boolean isComboField(String classAttribute){
         return classAttribute.contains("dropdownInput");

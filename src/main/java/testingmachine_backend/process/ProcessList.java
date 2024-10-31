@@ -43,8 +43,8 @@ public class ProcessList {
             Thread.sleep(2000);
 
 
-            String url = "https://dev.veritech.mn/mdmetadata/system#objectType=folder&objectId=1728368545166706";
-
+//            String url = "https://dev.veritech.mn/mdmetadata/system#objectType=folder&objectId=1728368545166706"; //test
+            String url = "https://dev.veritech.mn/mdmetadata/system#objectType=folder&objectId=1730246978523441"; //Controller
 
             String directoryPath = "C:\\Users\\batde\\Downloads\\Process";
 
@@ -63,6 +63,8 @@ public class ProcessList {
                 int totalIds = allIds.size();
                 totalProcessCount = totalIds;
                 System.out.println("Total IDs to meta: " + totalIds);
+
+
 
                 for (File file : listOfFiles) {
                     System.out.println("Processing file: " + file.getName());

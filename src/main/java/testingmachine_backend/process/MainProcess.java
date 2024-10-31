@@ -5,6 +5,8 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import testingmachine_backend.meta.Utils.CheckWorkflow;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.logging.Logger;
 
 public class MainProcess {
@@ -15,6 +17,8 @@ public class MainProcess {
 
         ChromeOptions options = new ChromeOptions();
         WebDriver driver = new ChromeDriver(options);
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
 
         try{
 
@@ -27,7 +31,9 @@ public class MainProcess {
             driver.quit();
             LOGGER.info(e.getMessage());
         }finally {
-//            driver.quit();
+            String endtime = dtf.format(now);
+            System.out.println(endtime);
+            driver.quit();
         }
     }
 }
