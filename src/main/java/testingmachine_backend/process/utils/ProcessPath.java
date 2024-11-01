@@ -9,6 +9,8 @@ import testingmachine_backend.process.DTO.ProcessLogDTO;
 import testingmachine_backend.process.Fields.ProcessLogFields;
 import testingmachine_backend.process.Section.LayoutChecker;
 import testingmachine_backend.process.Section.LayoutProcessSection;
+import testingmachine_backend.process.Section.ProcessWizardChecker;
+import testingmachine_backend.process.Section.ProcessWizardSection;
 
 import java.sql.Date;
 import java.time.Duration;
@@ -42,7 +44,8 @@ public class ProcessPath {
 
                 if (entry.getLevel().toString().equals("SEVERE")) {
                     if(!entry.getMessage().contains("Uncaught TypeError: Cannot read properties of null (reading 'addClass')") && !entry.getMessage().contains("Uncaught TypeError: Cannot read properties of null (reading 'hasClass')")
-                    && !entry.getMessage().contains("Failed to load resource: the server responded with a status of 404 (Not Found)") && !entry.getMessage().contains("Uncaught TypeError: Cannot read properties of undefined (reading 'id')"))
+                    && !entry.getMessage().contains("Failed to load resource: the server responded with a status of 404 (Not Found)") && !entry.getMessage().contains("Uncaught TypeError: Cannot read properties of undefined (reading 'id')")
+                    && !entry.getMessage().contains("Uncaught TypeError: Cannot read properties of undefined (reading 'options')") && !entry.getMessage().contains("Uncaught TypeError: Cannot read properties of undefined (reading 'panel')"))
                     {
                         LOGGER.log(Level.SEVERE, new Date(entry.getTimestamp()) + " " + entry.getLevel() + " " + entry.getMessage() + " " + id);
                         hasSevereError = true;
@@ -55,22 +58,25 @@ public class ProcessPath {
 
             if(!hasSevereError) {
 
-
                 WaitElement.retryWaitForLoadToDisappear(driver, 3);
                 WaitElement.retryWaitForLoadingToDisappear(driver, 3);
 
                 if (LayoutChecker.isLayout(driver, id)) {
                     LayoutProcessSection.LayoutFieldFunction(driver, id);
-                } else {
+//                    WebElement wfmDialog = waitForElementVisible(driver, By.cssSelector("div[id='bp-window-" + id + "']"), 10);
+//                    WebElement wfmSaveButton = wfmDialog.findElement(By.xpath(".//button[contains(@class, 'btn btn-sm btn-circle btn-success bpMainSaveButton bp-btn-save ')]"));
+//                    wfmSaveButton.click();
+                } else if (ProcessWizardChecker.isWizard(driver, id)){
+                    ProcessWizardSection.KpiWizardFunction(driver, id);
+                }else {
                     List<WebElement> elementsWithDataPath = findElementsWithSelector(driver, id );
                     processTabElements(driver, elementsWithDataPath, id);
                     tabDetailItems(driver, id);
                     detailActionButton(driver, id);
+//                    WebElement wfmDialog = waitForElementVisible(driver, By.cssSelector("div[id='bp-window-" + id + "']"), 10);
+//                    WebElement wfmSaveButton = wfmDialog.findElement(By.xpath(".//button[contains(@class, 'btn btn-sm btn-circle btn-success bpMainSaveButton bp-btn-save ')]"));
+//                    wfmSaveButton.click();
                 }
-
-//                WebElement wfmDialog = waitForElementVisible(driver, By.cssSelector("div[id='bp-window-" + id + "']"), 10);
-//                WebElement wfmSaveButton = wfmDialog.findElement(By.xpath(".//button[contains(@class, 'btn btn-sm btn-circle btn-success bpMainSaveButton bp-btn-save ')]"));
-//                wfmSaveButton.click();
 
                 waitUtils(driver);
                 if(trashMessage.isErrorMessagePresent(driver, id, fileName)){

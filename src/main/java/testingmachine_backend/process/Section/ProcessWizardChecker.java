@@ -4,12 +4,12 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-public class LayoutChecker {
+public class ProcessWizardChecker {
 
-    public static boolean isLayout(WebDriver driver, String id) {
+    public static boolean isWizard(WebDriver driver, String id) {
         try {
-            WebElement isLayout = driver.findElement(By.cssSelector("div[class*='bp-layout-']"));
-            return isLayout != null;
+            WebElement isWizard = driver.findElement(By.cssSelector("div[id*='wizard-']"));
+            return isWizard != null;
         } catch (Exception e) {
             return false;
         }

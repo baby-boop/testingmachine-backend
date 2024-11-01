@@ -28,8 +28,7 @@ public class trashMessage {
             String messageTitleText = messageTitle.getText().toLowerCase();
             String alertClassName = alertElement.getAttribute("class");
 
-            if (messageTitleText.contains("error") || alertClassName.contains("alert alert-danger"))
-            {
+            if (messageTitleText.contains("error") || alertClassName.contains("alert alert-danger")) {
                 return extractErrorMessage(driver,  id, fileName);
             }else if (messageTitleText.contains("success") || alertClassName.contains("alert alert-success")){
                 log.warn("Success: " + id);

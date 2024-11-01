@@ -25,28 +25,28 @@ public class LayoutProcessSection {
             for (WebElement sectionPath : layoutSectionPaths) {
                 String dataSectionCode = sectionPath.getAttribute("data-section-code");
                 waitUtils(driver);
-                if (LayoutDataChecker.isHasData(driver, dataSectionCode)) {
-                    List<WebElement> layoutPath = findLayoutFieldPath(driver, dataSectionCode);
-                    processTabElements(driver, layoutPath, id);
-                }else{
-                    List<WebElement> allActionTabPath = findLayoutActionButton(driver, dataSectionCode);
-                    if(allActionTabPath != null ) {
-                        waitUtils(driver);
-                        for (WebElement action : allActionTabPath) {
-                            String onclick = action.getAttribute("onclick");
-                            if (onclick.contains("bpAddMainMultiRow")) {
-                                action.click();
-                                waitUtils(driver);
-                                clickFirstRow(driver, id);
-                                waitUtils(driver);
-                                break;
-                            }else if (onclick.contains("bpAddMainRow")) {
-                                waitUtils(driver);
-                                action.click();
-                                waitUtils(driver);
-                                List<WebElement> layoutDtlPath = findLayoutDtlFieldPath(driver, dataSectionCode);
-                                processTabElements(driver, layoutDtlPath, id);
-                            }
+
+                List<WebElement> layoutPath = findLayoutFieldPath(driver, dataSectionCode);
+                processTabElements(driver, layoutPath, id);
+
+                List<WebElement> allActionTabPath = findLayoutActionButton(driver, dataSectionCode);
+                if(allActionTabPath != null ) {
+                    waitUtils(driver);
+                    for (WebElement action : allActionTabPath) {
+                        String onclick = action.getAttribute("onclick");
+                        if (onclick.contains("bpAddMainMultiRow")) {
+                            action.click();
+                            waitUtils(driver);
+                            clickFirstRow(driver, id);
+                            waitUtils(driver);
+                            break;
+                        }else if (onclick.contains("bpAddMainRow")) {
+                            waitUtils(driver);
+                            action.click();
+                            waitUtils(driver);
+                            List<WebElement> layoutDtlPath = findLayoutDtlFieldPath(driver, dataSectionCode);
+                            processTabElements(driver, layoutDtlPath, id);
+                            break;
                         }
                     }
                 }

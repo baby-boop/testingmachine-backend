@@ -17,22 +17,16 @@ public class MainProcess {
 
         ChromeOptions options = new ChromeOptions();
         WebDriver driver = new ChromeDriver(options);
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-        LocalDateTime now = LocalDateTime.now();
 
         try{
-
             ProcessList tool = new ProcessList(driver);
 
             tool.mainTool();
-
         }catch (Exception e){
-
             driver.quit();
             LOGGER.info(e.getMessage());
         }finally {
-            String endtime = dtf.format(now);
-            System.out.println(endtime);
+
             driver.quit();
         }
     }

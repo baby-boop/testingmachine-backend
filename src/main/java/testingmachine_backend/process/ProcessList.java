@@ -12,6 +12,8 @@ import testingmachine_backend.process.Config.ConfigProcess;
 import testingmachine_backend.process.utils.ProcessPath;
 
 import java.io.File;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,6 +52,7 @@ public class ProcessList {
 
             File folder = new File(directoryPath);
             File[] listOfFiles = folder.listFiles((dir, name) -> name.endsWith(".txt"));
+            ;
 
             if (listOfFiles != null) {
 
@@ -64,7 +67,10 @@ public class ProcessList {
                 totalProcessCount = totalIds;
                 System.out.println("Total IDs to meta: " + totalIds);
 
-
+                DateTimeFormatter dtfStart = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+                LocalDateTime startDate = LocalDateTime.now();
+                String startdate = dtfStart.format(startDate);
+                System.out.println("start date: " + startdate);
 
                 for (File file : listOfFiles) {
                     System.out.println("Processing file: " + file.getName());
@@ -91,6 +97,10 @@ public class ProcessList {
                         System.out.println("Count: " + processCount + ", ID: " + id);
                     }
                 }
+                DateTimeFormatter dtfEnd = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+                LocalDateTime startEnd = LocalDateTime.now();
+                String endtime = dtfEnd.format(startEnd);
+                System.out.println("End date: " + endtime);
             }
         } catch (Exception e) {
             //
