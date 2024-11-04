@@ -12,7 +12,6 @@ public class FormFieldUtils {
                                            String regexData, String id) {
 
         if (valueAttribute != null && valueAttribute.isEmpty()) {
-
             if (classAttribute != null && !classAttribute.isEmpty()) {
                 if (isPopupField(classAttribute)) {
                     WebElement popupButton = findPopupButtonForElement(element);
@@ -89,7 +88,7 @@ public class FormFieldUtils {
                     findTextEditorInput(driver, dataPath, id);
                 }
                 else if (isComboField(classAttribute)) {
-                    selectComboSecondOption(driver, dataPath, id);
+                    comboboxFunction(driver, dataPath, id);
                 }
                 else if (isBooleanField(classAttribute)) {
                     element.click();
@@ -99,6 +98,95 @@ public class FormFieldUtils {
             element.click();
         } else if (isCheckBox(typeAttribute)) {
             element.click();
+        }
+    }
+
+
+
+    public static void handleElementActionFinal(WebDriver driver, WebElement element, String classAttribute,
+                                           String valueAttribute, String typeAttribute, String dataPath,
+                                           String regexData, String id) {
+
+        if (valueAttribute != null && valueAttribute.isEmpty()) {
+            if (classAttribute != null && !classAttribute.isEmpty()) {
+                if (isPopupField(classAttribute)) {
+                    WebElement popupButton = findPopupButtonForElement(element);
+                    if (popupButton != null) {
+                        popupButton.click();
+                        waitUtils(driver);
+                        clickFirstRow(driver, id);
+                    }
+                }
+                else if (!typeAttribute.equals("hidden") && isTextField(classAttribute)) {
+                    if (regexData != null && !regexData.isEmpty()) {
+                        if (isRegisterRegex(regexData)) {
+                            element.sendKeys("АА03021838");
+                        } else if (isPhoneRegex(regexData)) {
+                            element.sendKeys("99110011");
+                        } else if (isEmailRegex(regexData)) {
+                            element.sendKeys("test@gmail.com");
+                        } else if (isCompanyRegex(regexData)){
+                            element.sendKeys("7777771");
+                        } else if (isTerminalRegex(regexData)){
+                            element.sendKeys("11000110");
+                        } else if (isCompanyStateRegRegex(regexData)){
+                            element.sendKeys("1100001000");
+                        }
+                    } else {
+                        element.sendKeys("Simple test");
+                    }
+                }
+                else if (!typeAttribute.equals("hidden") && isLongField(classAttribute)) {
+                    element.sendKeys("11112222");
+                }
+                else if (!typeAttribute.equals("hidden") && isFileField(classAttribute)) {
+                    String filePng = "C:\\Users\\batde\\Downloads\\pngForTest.png";
+                    element.sendKeys(filePng);
+                }
+                else if (!typeAttribute.equals("hidden") && isIntegerField(classAttribute)) {
+                    element.sendKeys("123");
+                }
+                else if (!typeAttribute.equals("hidden") && isDescriptionField(classAttribute)) {
+                    element.sendKeys("Description test");
+                }
+                else if (!typeAttribute.equals("hidden") && isAutoDescriptionField(classAttribute)) {
+                    element.sendKeys("Auto description test");
+                }
+                else if (!typeAttribute.equals("hidden") && isDatetimeField(classAttribute)) {
+                    element.sendKeys("2024-10-16 09:45:51");
+                    element.sendKeys(Keys.ENTER);
+                }
+                else if (!typeAttribute.equals("hidden") && isTimeField(classAttribute)) {
+                    element.sendKeys("08:00");
+                }
+                else if (!typeAttribute.equals("hidden") && isBigDecimalField(classAttribute)) {
+                    element.sendKeys("11");
+                }
+                else if (!typeAttribute.equals("hidden") && isDecimalField(classAttribute)) {
+                    element.sendKeys("22");
+                }
+                else if (!typeAttribute.equals("hidden") && isNumberField(classAttribute)) {
+                    element.sendKeys("1122");
+                }
+                else if (!typeAttribute.equals("hidden") && isDateField(classAttribute)) {
+                    element.sendKeys("2024-10-15");
+                }
+                else if (!typeAttribute.equals("hidden") && isPayrollExpressionField(classAttribute)) {
+                    element.sendKeys("expressionPayrollCheck");
+                }
+                else if ( isExpressionEditorField(classAttribute)) {
+                    element.sendKeys("expressionEditorCheck");
+                }
+                else if ( isPasswordField(classAttribute)) {
+                    element.sendKeys("123");
+                }
+                else if (isTextEditorField(classAttribute)) {
+                    findTextEditorInput(driver, dataPath, id);
+                }
+                else if (isComboField(classAttribute)) {
+                    comboboxFunction(driver, dataPath, id);
+                }
+            }
         }
     }
 
@@ -121,7 +209,6 @@ public class FormFieldUtils {
     public static boolean isCompanyStateRegRegex(String regexData){
         return regexData.contains("^[0-9]{10}$");
     }
-
     public static boolean isLongField(String classAttribute ) {
         return classAttribute.contains("longInit");
     }

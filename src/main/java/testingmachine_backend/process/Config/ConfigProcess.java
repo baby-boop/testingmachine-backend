@@ -12,8 +12,8 @@ public class ConfigProcess {
 
     public static final String BaseUrl = "https://dev.veritech.mn";
     public static final String LoginUrl = BaseUrl + "/login";
-    public static final String USERNAME = "shinetsetseg.sh";
-    public static final String PASSWORD = "shinee@2023";
+    public static final String USERNAME = "batdelger";
+    public static final String PASSWORD = "123";
     public static final String MainUrl = BaseUrl + "/mdobject/dataview/";
 
     public static final int TIMEOUT = 10;

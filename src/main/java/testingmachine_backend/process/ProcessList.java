@@ -1,9 +1,6 @@
 package testingmachine_backend.process;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -40,13 +37,18 @@ public class ProcessList {
 
             WebElement passwordField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("pass_word")));
             passwordField.sendKeys(ConfigProcess.PASSWORD);
+
+
+            WebElement checkBox = wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("isLdap")));
+            checkBox.click();
+
+            removeCaptcha();
+
             passwordField.sendKeys(Keys.ENTER);
 
             Thread.sleep(2000);
 
-
-//            String url = "https://dev.veritech.mn/mdmetadata/system#objectType=folder&objectId=1728368545166706"; //test
-            String url = "https://dev.veritech.mn/mdmetadata/system#objectType=folder&objectId=1730246978523441"; //Controller
+            String url = "https://dev.veritech.mn/mdmetadata/system#objectType=folder&objectId=1730246978523441";
 
             String directoryPath = "C:\\Users\\batde\\Downloads\\Process";
 
@@ -112,5 +114,11 @@ public class ProcessList {
 
     public static int getTotalCount() {
         return totalProcessCount;
+    }
+
+    public void removeCaptcha() {
+        WebElement captchaContainer = driver.findElement(By.cssSelector("div.form-group.row.fom-row"));
+        JavascriptExecutor jsExecutor = (JavascriptExecutor) driver;
+        jsExecutor.executeScript("arguments[0].remove();", captchaContainer);
     }
 }

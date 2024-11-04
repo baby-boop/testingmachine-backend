@@ -67,12 +67,11 @@ public class TabDetailsFieldUtils {
                                             }
                                         }
                                         break;
-                                    }else {
-                                        List<WebElement> tabElementPaths = findElementsWithTabDetailsPath(driver, sectionPath, tabIdentifier, id);
-                                        processTabElements(driver, tabElementPaths, id);
                                     }
                                 }
                             }
+                            List<WebElement> testingList1 = findTest(driver, tabIdentifier, id, sectionPath);
+                            processTabElementsFinal(driver, testingList1, id);
                         }
                     }
                 }
@@ -118,18 +117,14 @@ public class TabDetailsFieldUtils {
                     ("div[id='bp-window-" + id + "'] div[id='"+ tabId +"'] .row[data-section-path='"+ sectionPath +"'] ")
             ));
 
-            List<WebElement> tabElements = MainProcess.findElements(
+            List<WebElement> elements = MainProcess.findElements(
                     By.cssSelector("[data-path]")
             );
 
-            Map<String, WebElement> uniqueTabElements = new LinkedHashMap<>();
-            for (WebElement tabElement : tabElements) {
-                String tabDataPath = tabElement.getAttribute("data-path");
-                if (tabDataPath != null &&  !tabDataPath.contains("sampleDv6") && !uniqueTabElements.containsKey(tabDataPath)) {
-                    uniqueTabElements.put(tabDataPath, tabElement);
-                }
-            }
-            return new ArrayList<>(uniqueTabElements.values());
+            Map<String, WebElement> uniqueDataPathElements = getUniqueTabElements(elements);
+
+            return new ArrayList<>(uniqueDataPathElements.values());
+
         }
         catch (Exception e) {
 
@@ -150,18 +145,14 @@ public class TabDetailsFieldUtils {
                     ("div[id='bp-window-" + id + "'] div[id='"+ tabId +"'] .row[data-section-path='"+ sectionPath +"']")
             ));
 
-            List<WebElement> tabElements = MainProcess.findElements(
+            List<WebElement> elements = MainProcess.findElements(
                     By.cssSelector("[data-path]")
             );
 
-            Map<String, WebElement> uniqueTabElements = new LinkedHashMap<>();
-            for (WebElement tabElement : tabElements) {
-                String tabDataPath = tabElement.getAttribute("data-path");
-                if (tabDataPath != null &&  !uniqueTabElements.containsKey(tabDataPath)) {
-                    uniqueTabElements.put(tabDataPath, tabElement);
-                }
-            }
-            return new ArrayList<>(uniqueTabElements.values());
+            Map<String, WebElement> uniqueDataPathElements = getUniqueTabElements(elements);
+
+            return new ArrayList<>(uniqueDataPathElements.values());
+
         }
         catch (Exception e) {
 
@@ -222,18 +213,13 @@ public class TabDetailsFieldUtils {
             ));
             WebElement SubProcess = MainProcess.findElement(By.cssSelector("div[data-section-path='"+ subSection +"']"));
 
-            List<WebElement> tabElements = SubProcess.findElements(
+            List<WebElement> elements = SubProcess.findElements(
                     By.cssSelector("[data-path]")
             );
 
-            Map<String, WebElement> uniqueTabElements = new LinkedHashMap<>();
-            for (WebElement tabElement : tabElements) {
-                String tabDataPath = tabElement.getAttribute("data-path");
-                if (tabDataPath != null && !uniqueTabElements.containsKey(tabDataPath)) {
-                    uniqueTabElements.put(tabDataPath, tabElement);
-                }
-            }
-            return new ArrayList<>(uniqueTabElements.values());
+            Map<String, WebElement> uniqueDataPathElements = getUniqueTabElements(elements);
+
+            return new ArrayList<>(uniqueDataPathElements.values());
 
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "RowsToRow path '" + id + "' not found");

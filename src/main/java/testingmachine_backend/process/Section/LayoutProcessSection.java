@@ -25,12 +25,11 @@ public class LayoutProcessSection {
             for (WebElement sectionPath : layoutSectionPaths) {
                 String dataSectionCode = sectionPath.getAttribute("data-section-code");
                 waitUtils(driver);
-
                 List<WebElement> layoutPath = findLayoutFieldPath(driver, dataSectionCode);
                 processTabElements(driver, layoutPath, id);
 
                 List<WebElement> allActionTabPath = findLayoutActionButton(driver, dataSectionCode);
-                if(allActionTabPath != null ) {
+                if (allActionTabPath != null) {
                     waitUtils(driver);
                     for (WebElement action : allActionTabPath) {
                         String onclick = action.getAttribute("onclick");
@@ -40,7 +39,7 @@ public class LayoutProcessSection {
                             clickFirstRow(driver, id);
                             waitUtils(driver);
                             break;
-                        }else if (onclick.contains("bpAddMainRow")) {
+                        } else if (onclick.contains("bpAddMainRow")) {
                             waitUtils(driver);
                             action.click();
                             waitUtils(driver);
@@ -50,6 +49,8 @@ public class LayoutProcessSection {
                         }
                     }
                 }
+                List<WebElement> layoutPath1 = findLayoutFieldPath(driver, dataSectionCode);
+                processTabElementsFinal(driver, layoutPath1, id);
             }
         }
     }
@@ -85,18 +86,13 @@ public class LayoutProcessSection {
             WebElement MainProcess = wait.until(ExpectedConditions.visibilityOfElementLocated(
                     By.cssSelector("div[data-section-code='"+ sectionCode +"']")));
 
-            List<WebElement> tabElements = MainProcess.findElements(
+            List<WebElement> elements = MainProcess.findElements(
                     By.cssSelector("[data-path]")
             );
 
-            Map<String, WebElement> uniqueTabElements = new LinkedHashMap<>();
-            for (WebElement tabElement : tabElements) {
-                String tabDataPath = tabElement.getAttribute("data-path");
-                if (tabDataPath != null &&  !uniqueTabElements.containsKey(tabDataPath)) {
-                    uniqueTabElements.put(tabDataPath, tabElement);
-                }
-            }
-            return new ArrayList<>(uniqueTabElements.values());
+            Map<String, WebElement> uniqueDataPathElements = getUniqueTabElements(elements);
+
+            return new ArrayList<>(uniqueDataPathElements.values());
         }
         catch (Exception e) {
 
@@ -115,18 +111,13 @@ public class LayoutProcessSection {
             WebElement MainProcess = wait.until(ExpectedConditions.visibilityOfElementLocated(
                     By.cssSelector("div[data-section-code='"+ sectionCode +"']")));
 
-            List<WebElement> tabElements = MainProcess.findElements(
+            List<WebElement> elements = MainProcess.findElements(
                     By.cssSelector("[data-path]")
             );
 
-            Map<String, WebElement> uniqueTabElements = new LinkedHashMap<>();
-            for (WebElement tabElement : tabElements) {
-                String tabDataPath = tabElement.getAttribute("data-path");
-                if (tabDataPath != null &&  !uniqueTabElements.containsKey(tabDataPath)) {
-                    uniqueTabElements.put(tabDataPath, tabElement);
-                }
-            }
-            return new ArrayList<>(uniqueTabElements.values());
+            Map<String, WebElement> uniqueDataPathElements = getUniqueTabElements(elements);
+
+            return new ArrayList<>(uniqueDataPathElements.values());
         }
         catch (Exception e) {
 

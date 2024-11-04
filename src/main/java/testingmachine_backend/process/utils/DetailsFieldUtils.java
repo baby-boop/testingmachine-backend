@@ -49,6 +49,8 @@ public class DetailsFieldUtils {
                         List<WebElement> rowElements = findElementsWithDetailsPath(driver, sectionPath);
                         processTabElements(driver, rowElements, id);
                     }
+                    List<WebElement> rowElements1 = findElementsWithDetailsPath(driver, sectionPath);
+                    processTabElementsFinal(driver, rowElements1, id);
                 }
             }
         } catch (Exception e) {
@@ -89,15 +91,9 @@ public class DetailsFieldUtils {
 
             List<WebElement> elements = sectionElement.findElements(By.cssSelector("[data-path]"));
 
-            Map<String, WebElement> uniqueElements = new LinkedHashMap<>();
-            for (WebElement element : elements) {
-                String dataPath = element.getAttribute("data-path");
-                if (dataPath != null && !uniqueElements.containsKey(dataPath)) {
-                    uniqueElements.put(dataPath, element);
-                }
-            }
+            Map<String, WebElement> uniqueDataPathElements = getUniqueTabElements(elements);
 
-            return new ArrayList<>(uniqueElements.values());
+            return new ArrayList<>(uniqueDataPathElements.values());
 
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Elements with sectionPath '" + sectionPath + "' selector not found", e);

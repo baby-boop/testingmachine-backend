@@ -20,9 +20,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static testingmachine_backend.process.Config.ConfigProcess.waitUtils;
-import static testingmachine_backend.process.utils.DetailsFieldUtils.*;
+import static testingmachine_backend.process.utils.DetailsFieldUtils.detailActionButton;
 import static testingmachine_backend.process.utils.FormFieldUtils.*;
-import static testingmachine_backend.process.utils.TabDetailsFieldUtils.*;
+import static testingmachine_backend.process.utils.TabDetailsFieldUtils.tabDetailItems;
 
 @Slf4j
 public class ProcessPath {
@@ -63,24 +63,23 @@ public class ProcessPath {
 
                 if (LayoutChecker.isLayout(driver, id)) {
                     LayoutProcessSection.LayoutFieldFunction(driver, id);
-//                    WebElement wfmDialog = waitForElementVisible(driver, By.cssSelector("div[id='bp-window-" + id + "']"), 10);
-//                    WebElement wfmSaveButton = wfmDialog.findElement(By.xpath(".//button[contains(@class, 'btn btn-sm btn-circle btn-success bpMainSaveButton bp-btn-save ')]"));
-//                    wfmSaveButton.click();
+//                    saveButtonFunction(driver, id);
                 } else if (ProcessWizardChecker.isWizard(driver, id)){
                     ProcessWizardSection.KpiWizardFunction(driver, id);
                 }else {
                     List<WebElement> elementsWithDataPath = findElementsWithSelector(driver, id );
                     processTabElements(driver, elementsWithDataPath, id);
+                    List<WebElement> elementsWithDataPathCheck1 = findElementsWithSelector(driver, id );
+                    processTabElementsFinal(driver, elementsWithDataPathCheck1, id);
                     tabDetailItems(driver, id);
                     detailActionButton(driver, id);
-//                    WebElement wfmDialog = waitForElementVisible(driver, By.cssSelector("div[id='bp-window-" + id + "']"), 10);
-//                    WebElement wfmSaveButton = wfmDialog.findElement(By.xpath(".//button[contains(@class, 'btn btn-sm btn-circle btn-success bpMainSaveButton bp-btn-save ')]"));
-//                    wfmSaveButton.click();
+
+//                    saveButtonFunction(driver, id);
                 }
 
                 waitUtils(driver);
                 if(trashMessage.isErrorMessagePresent(driver, id, fileName)){
-                    log.info("Count log: " + id);
+                    LOGGER.log(Level.WARNING, "Count log: " + id);
                 }
             }
         } catch (Exception e) {
@@ -95,15 +94,8 @@ public class ProcessPath {
             WebElement MainProcess = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div[id='bp-window-" + id + "'] .table-scrollable-borderless .bp-header-param")));
             List<WebElement> elements = MainProcess.findElements(By.cssSelector("[data-path]"));
 
-            Map<String, WebElement> uniqueDataPathElements = new LinkedHashMap<>();
-            for (WebElement element : elements) {
-                String dataPath = element.getAttribute("data-path");
+            Map<String, WebElement> uniqueDataPathElements = getUniqueTabElements(elements);
 
-                if (!uniqueDataPathElements.containsKey(dataPath)) {
-                    uniqueDataPathElements.put(dataPath, element);
-
-                }
-            }
             return new ArrayList<>(uniqueDataPathElements.values());
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Elements with selector  not found");
@@ -128,12 +120,20 @@ public class ProcessPath {
 
     static WebElement findPopupButtonForElement(WebElement element) {
         try {
-
-            WebElement parentField = element.findElement(By.xpath("./following-sibling::span[@class='input-group-btn']/button"));
-            return parentField;
+            return element.findElement(By.xpath("./following-sibling::span[@class='input-group-btn']/button"));
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Popup button not found ");
             return null;
+        }
+    }
+    private static void saveButtonFunction(WebDriver driver, String id) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(LONG_WAIT_SECONDS));
+        try {
+            WebElement wfmDialog = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div[id='bp-window-" + id + "']")));
+            WebElement wfmSaveButton = wfmDialog.findElement(By.xpath(".//button[contains(@class, 'btn btn-sm btn-circle btn-success bpMainSaveButton bp-btn-save ')]"));
+            wfmSaveButton.click();
+        }catch (Exception e){
+            LOGGER.log(Level.SEVERE, "Save button not found");
         }
     }
     private static void scrollToElement(WebDriver driver, WebElement element) {
@@ -186,7 +186,7 @@ public class ProcessPath {
         return !driver.findElements(locator).isEmpty();
     }
 
-    static void selectComboSecondOption(WebDriver driver, String dataSPath, String id) {
+    public static void comboboxFunction(WebDriver driver, String dataSPath, String id) {
         try {
             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(1));
 
@@ -197,32 +197,28 @@ public class ProcessPath {
                 WebElement comboBoxes = wait.until(ExpectedConditions.elementToBeClickable(comboBoxDivLocator));
                 comboBoxes.click();
                 Thread.sleep(500);
-                WebElement selector = wait.until(ExpectedConditions.visibilityOfElementLocated(comboBoxSelectLocator));
-                List<WebElement> options = selector.findElements(By.tagName("option"));
-                if (options.size() > 1) {
-                    options.get(1).click();
-                } else {
-                    comboBoxes.sendKeys(Keys.ENTER);
-                }
-                options.clear();
-                wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div[id='bp-window-" + id + "']")));
+                selectSecondOption(driver, comboBoxSelectLocator, id);
             } else if (isElementPresent(driver, comboBoxSelectLocator)) {
                 WebElement comboBoxes2 = wait.until(ExpectedConditions.elementToBeClickable(comboBoxSelectLocator));
                 comboBoxes2.click();
                 Thread.sleep(500);
-                WebElement selector2 = wait.until(ExpectedConditions.visibilityOfElementLocated(comboBoxSelectLocator));
-                List<WebElement> options2 = selector2.findElements(By.tagName("option"));
-                if (options2.size() > 1) {
-                    options2.get(1).click();
-                } else {
-                    comboBoxes2.sendKeys(Keys.ENTER);
-                }
-                comboBoxes2.clear();
-                wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div[id='bp-window-" + id + "']")));
+                selectSecondOption(driver, comboBoxSelectLocator, id);
             }
         } catch (Exception e) {
-            LOGGER.log(Level.WARNING, "Error selecting the second visible combo box option: " + dataSPath );
+            LOGGER.log(Level.WARNING, "Error selecting the second visible combo box option: " + dataSPath);
         }
+    }
+    public static void selectSecondOption(WebDriver driver, By selectorLocator, String id) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(1));
+        WebElement selector = wait.until(ExpectedConditions.visibilityOfElementLocated(selectorLocator));
+        List<WebElement> options = selector.findElements(By.tagName("option"));
+        if (options.size() > 1) {
+            options.get(1).click();
+        } else {
+            selector.sendKeys(Keys.ENTER);
+        }
+        selector.clear();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div[id='bp-window-" + id + "']")));
     }
 
     public static Optional<String> extractTabIdentifier(String href) {
@@ -234,7 +230,29 @@ public class ProcessPath {
         return new ArrayList<>(ProcessLogFields);
     }
 
+    public static Map<String, WebElement> getUniqueTabElements(List<WebElement> elements) {
+        Map<String, WebElement> uniqueTabElements = new LinkedHashMap<>();
+        for (WebElement element : elements) {
+            String elementClass = element.getAttribute("class");
+            String elementType = element.getAttribute("type");
 
+            if (elementClass.contains("dropdownInput") || elementClass.contains("radioInit")
+                    || elementClass.contains("popupInit") || elementType.contains("checkbox")
+                    || elementClass.contains("booleanInit") || elementClass.contains("text_editorInit") || elementClass.contains("fileInit")) {
+
+                String dataPath = element.getAttribute("data-path");
+                if (!uniqueTabElements.containsKey(dataPath)) {
+                    uniqueTabElements.put(dataPath, element);
+                }
+            } else if (element.isDisplayed()) {
+                String dataPath = element.getAttribute("data-path");
+                if (!uniqueTabElements.containsKey(dataPath)) {
+                    uniqueTabElements.put(dataPath, element);
+                }
+            }
+        }
+        return uniqueTabElements;
+    }
 
     public static Map<String, String> getElementAttributes(WebElement element) {
         Map<String, String> attributes = new HashMap<>();
@@ -251,6 +269,24 @@ public class ProcessPath {
             for (WebElement element : elements) {
                 Map<String, String> attributes = getElementAttributes(element);
                 handleElementAction(
+                        driver,
+                        element,
+                        attributes.get("class"),
+                        attributes.get("value"),
+                        attributes.get("type"),
+                        attributes.get("data-path"),
+                        attributes.get("data-regex"),
+                        id
+                );
+            }
+        }
+    }
+
+    public static void processTabElementsFinal(WebDriver driver, List<WebElement> elements, String id) {
+        if (elements != null) {
+            for (WebElement element : elements) {
+                Map<String, String> attributes = getElementAttributes(element);
+                handleElementActionFinal(
                         driver,
                         element,
                         attributes.get("class"),

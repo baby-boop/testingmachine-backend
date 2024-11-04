@@ -5,8 +5,6 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import testingmachine_backend.meta.Utils.CheckWorkflow;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.logging.Logger;
 
 public class MainProcess {
@@ -27,7 +25,7 @@ public class MainProcess {
             LOGGER.info(e.getMessage());
         }finally {
 
-            driver.quit();
+//            driver.quit();
         }
     }
 }
