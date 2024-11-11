@@ -21,7 +21,7 @@ public class MainProcess {
 
             tool.mainTool();
         }catch (Exception e){
-            driver.quit();
+//            driver.quit();
             LOGGER.info(e.getMessage());
         }finally {
 

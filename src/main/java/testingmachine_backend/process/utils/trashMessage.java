@@ -18,6 +18,8 @@ public class trashMessage {
 
     @ProcessErrorMessageField
     private static final List<ProcessErrorMessageDTO> ProcessErrorMessageField = new ArrayList<>();
+    private static int successCount = 0;
+    private static int warningCount = 0;
 
     public static boolean isErrorMessagePresent(WebDriver driver, String id, String fileName) {
         try {
@@ -31,9 +33,10 @@ public class trashMessage {
             if (messageTitleText.contains("error") || alertClassName.contains("alert alert-danger")) {
                 return extractErrorMessage(driver,  id, fileName);
             }else if (messageTitleText.contains("success") || alertClassName.contains("alert alert-success")){
-                log.warn("Success: " + id);
+                successCount++;
+                log.warn("Success: " + successCount + " - " + id);
             }else if (messageTitleText.contains("warning") || alertClassName.contains("alert alert-warning")){
-                log.warn("Warning: " + id);
+                log.warn("Warning: " + warningCount + " - " + id);
             }
 
             return false;

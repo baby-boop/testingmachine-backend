@@ -126,6 +126,7 @@ public class ProcessPath {
             return null;
         }
     }
+
     private static void saveButtonFunction(WebDriver driver, String id) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(LONG_WAIT_SECONDS));
         try {
@@ -136,9 +137,11 @@ public class ProcessPath {
             LOGGER.log(Level.SEVERE, "Save button not found");
         }
     }
+
     private static void scrollToElement(WebDriver driver, WebElement element) {
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
     }
+
     public static void clickFirstRow(WebDriver driver, String id) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(LONG_WAIT_SECONDS));
         try{
@@ -205,9 +208,10 @@ public class ProcessPath {
                 selectSecondOption(driver, comboBoxSelectLocator, id);
             }
         } catch (Exception e) {
-            LOGGER.log(Level.WARNING, "Error selecting the second visible combo box option: " + dataSPath);
+//            LOGGER.log(Level.WARNING, "Error selecting the second visible combo box option: " + dataSPath);
         }
     }
+
     public static void selectSecondOption(WebDriver driver, By selectorLocator, String id) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(1));
         WebElement selector = wait.until(ExpectedConditions.visibilityOfElementLocated(selectorLocator));

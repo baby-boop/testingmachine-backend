@@ -37,41 +37,46 @@ public class TabDetailsFieldUtils {
                             processTabElements(driver, testingList, id);
                             List<WebElement> allActionTabPath = findRowActionTabPathsButton(driver, sectionPath);
                             if(allActionTabPath != null ) {
-                                waitUtils(driver);
-                                for (WebElement action : allActionTabPath) {
-                                    String onclick = action.getAttribute("onclick");
-                                    if (onclick.contains("bpAddMainMultiRow")) {
-                                        action.click();
-                                        waitUtils(driver);
-                                        clickFirstRow(driver, id);
-                                        waitUtils(driver);
-                                        break;
-                                    }
-                                    else if (onclick.contains("bpAddMainRow")) {
-                                        waitUtils(driver);
-                                        action.click();
-                                        waitUtils(driver);
-                                        List<WebElement> tabElementPaths = findElementsWithTabDetailsPath(driver, sectionPath, tabIdentifier, id);
-                                        processTabElements(driver, tabElementPaths, id);
-
-                                        List<WebElement> rowsToRowShowForms = findRowsToRowShowForm(driver, sectionPath, tabIdentifier, id);
-                                        if(rowsToRowShowForms != null) {
-                                            for (WebElement rowsToRowShowForm : rowsToRowShowForms) {
-                                                rowsToRowShowForm.click();
-                                                String rowsDataBPath = rowsToRowShowForm.getAttribute("data-b-path");
-                                                List<WebElement> rowsToRowElements = findRowsToRowPaths(driver,id, tabIdentifier, sectionPath, rowsDataBPath);
-
-                                                processTabElements(driver, rowsToRowElements, id);
-                                                WebElement selectButton = driver.findElement(By.xpath("//button[contains(@class, 'btn green-meadow btn-sm')]"));
-                                                selectButton.click();
-                                            }
+                                List<WebElement> findTabDefaultRows = findRowActionTabDefaultRow(driver, sectionPath);
+                                assert findTabDefaultRows != null;
+                                if(findTabDefaultRows.isEmpty()){
+                                    waitUtils(driver);
+                                    for (WebElement action : allActionTabPath) {
+                                        String onclick = action.getAttribute("onclick");
+                                        if (onclick.contains("bpAddMainMultiRow")) {
+                                            action.click();
+                                            waitUtils(driver);
+                                            clickFirstRow(driver, id);
+                                            waitUtils(driver);
+                                            break;
                                         }
-                                        break;
+                                        else if (onclick.contains("bpAddMainRow")) {
+                                            waitUtils(driver);
+                                            action.click();
+                                            waitUtils(driver);
+                                            List<WebElement> tabElementPaths = findElementsWithTabDetailsPath(driver, sectionPath, tabIdentifier, id);
+                                            processTabElements(driver, tabElementPaths, id);
+
+                                            List<WebElement> rowsToRowShowForms = findRowsToRowShowForm(driver, sectionPath, tabIdentifier, id);
+                                            if(rowsToRowShowForms != null) {
+                                                for (WebElement rowsToRowShowForm : rowsToRowShowForms) {
+                                                    rowsToRowShowForm.click();
+                                                    String rowsDataBPath = rowsToRowShowForm.getAttribute("data-b-path");
+                                                    List<WebElement> rowsToRowElements = findRowsToRowPaths(driver,id, tabIdentifier, sectionPath, rowsDataBPath);
+
+                                                    processTabElements(driver, rowsToRowElements, id);
+                                                    WebElement selectButton = driver.findElement(By.xpath("//button[contains(@class, 'btn green-meadow btn-sm')]"));
+                                                    selectButton.click();
+                                                }
+                                            }
+                                            break;
+                                        }
                                     }
                                 }
+                                List<WebElement> testingList1 = findTest(driver, tabIdentifier, id, sectionPath);
+                                processTabElementsFinal(driver, testingList1, id);
                             }
-                            List<WebElement> testingList1 = findTest(driver, tabIdentifier, id, sectionPath);
-                            processTabElementsFinal(driver, testingList1, id);
+
                         }
                     }
                 }
@@ -89,7 +94,7 @@ public class TabDetailsFieldUtils {
             wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div[id='" + tabId + "'] .row[data-section-path]")));
             return driver.findElements(By.cssSelector("div[id='" + tabId + "'] .row[data-section-path]"));
         } catch (Exception e) {
-            LOGGER.log(Level.WARNING, "Elements 'data-section-path' not found: " + tabId, e);
+            LOGGER.log(Level.WARNING, "Elements 'data-section-path' not found: " + tabId);
             return null;
         }
     }
@@ -99,6 +104,17 @@ public class TabDetailsFieldUtils {
         try {
             wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div[data-section-path='"+ sectionPath +"']")));
             return driver.findElements(By.cssSelector("div[data-section-path='"+ sectionPath +"'] button[data-action-path]"));
+        } catch (Exception e) {
+            LOGGER.log(Level.WARNING, "action paths error: " + sectionPath);
+            return null;
+        }
+    }
+
+    public static List<WebElement> findRowActionTabDefaultRow(WebDriver driver, String sectionPath) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(SHORT_WAIT_SECONDS));
+        try {
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div[data-section-path='"+ sectionPath +"']")));
+            return driver.findElements(By.cssSelector("div[data-section-path='"+ sectionPath +"'] .tbody .bp-detail-row"));
         } catch (Exception e) {
             LOGGER.log(Level.WARNING, "action paths error: " + sectionPath);
             return null;
@@ -155,8 +171,7 @@ public class TabDetailsFieldUtils {
 
         }
         catch (Exception e) {
-
-            LOGGER.log(Level.SEVERE, "Elements with sectionPath '' and data-path not found");
+            LOGGER.log(Level.SEVERE, "Elements with sectionPath '"+ sectionPath +"' in data-path not found");
             return Collections.emptyList();
         }
     }

@@ -28,7 +28,6 @@ public class DetailsFieldUtils {
                         waitUtils(driver);
                         for (WebElement action : allActionPath) {
                             String onclick = action.getAttribute("onclick");
-
                             if (onclick.contains("bpAddMainMultiRow")) {
                                 action.click();
                                 waitUtils(driver);
@@ -54,7 +53,7 @@ public class DetailsFieldUtils {
                 }
             }
         } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Error in rows: " + id, e);
+            LOGGER.log(Level.SEVERE, "Error in rows: " + id);
         }
     }
 
@@ -96,7 +95,7 @@ public class DetailsFieldUtils {
             return new ArrayList<>(uniqueDataPathElements.values());
 
         } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Elements with sectionPath '" + sectionPath + "' selector not found", e);
+            LOGGER.log(Level.SEVERE, "Elements with sectionPath '" + sectionPath + "' selector not found");
             return Collections.emptyList();
         }
     }
