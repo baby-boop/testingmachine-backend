@@ -2,10 +2,30 @@ package testingmachine_backend.process.utils;
 
 import org.openqa.selenium.*;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 import static testingmachine_backend.process.Config.ConfigProcess.waitUtils;
 import static testingmachine_backend.process.utils.ProcessPath.*;
 
 public class FormFieldUtils {
+
+    public static class DateUtils {
+
+        public static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+        public static final DateTimeFormatter DATETIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+
+        public static String getCurrentDate() {
+            LocalDateTime sysDate = LocalDateTime.now();
+            return DATE_FORMATTER.format(sysDate);
+        }
+
+        public static String getCurrentDateTime() {
+            LocalDateTime sysDate = LocalDateTime.now();
+            return DATETIME_FORMATTER.format(sysDate);
+        }
+    }
+
 
     public static void handleElementAction(WebDriver driver, WebElement element, String classAttribute,
                                            String valueAttribute, String typeAttribute, String dataPath,
@@ -22,23 +42,7 @@ public class FormFieldUtils {
                     }
                 }
                 else if (!typeAttribute.equals("hidden") && isTextField(classAttribute)) {
-                    if (regexData != null && !regexData.isEmpty()) {
-                        if (isRegisterRegex(regexData)) {
-                            element.sendKeys("АА03021838");
-                        } else if (isPhoneRegex(regexData)) {
-                            element.sendKeys("99110011");
-                        } else if (isEmailRegex(regexData)) {
-                            element.sendKeys("test@gmail.com");
-                        } else if (isCompanyRegex(regexData)){
-                            element.sendKeys("7777771");
-                        } else if (isTerminalRegex(regexData)){
-                            element.sendKeys("11000110");
-                        } else if (isCompanyStateRegRegex(regexData)){
-                            element.sendKeys("1100001000");
-                        }
-                    } else {
-                        element.sendKeys("Simple test");
-                    }
+                    sendKeysBasedOnRegex(element, regexData);
                 }
                 else if (!typeAttribute.equals("hidden") && isLongField(classAttribute)) {
                     element.sendKeys("11112222");
@@ -57,7 +61,7 @@ public class FormFieldUtils {
                     element.sendKeys("Auto description test");
                 }
                 else if (!typeAttribute.equals("hidden") && isDatetimeField(classAttribute)) {
-                    element.sendKeys("2024-10-16 09:45:51");
+                    element.sendKeys(DateUtils.getCurrentDateTime());
                     element.sendKeys(Keys.ENTER);
                 }
                 else if (!typeAttribute.equals("hidden") && isTimeField(classAttribute)) {
@@ -73,7 +77,7 @@ public class FormFieldUtils {
                     element.sendKeys("1122");
                 }
                 else if (!typeAttribute.equals("hidden") && isDateField(classAttribute)) {
-                    element.sendKeys("2024-10-15");
+                    element.sendKeys(DateUtils.getCurrentDate());
                 }
                 else if (!typeAttribute.equals("hidden") && isPayrollExpressionField(classAttribute)) {
                     element.sendKeys("expressionPayrollCheck");
@@ -118,23 +122,7 @@ public class FormFieldUtils {
                     }
                 }
                 else if (!typeAttribute.equals("hidden") && isTextField(classAttribute)) {
-                    if (regexData != null && !regexData.isEmpty()) {
-                        if (isRegisterRegex(regexData)) {
-                            element.sendKeys("АА03021838");
-                        } else if (isPhoneRegex(regexData)) {
-                            element.sendKeys("99110011");
-                        } else if (isEmailRegex(regexData)) {
-                            element.sendKeys("test@gmail.com");
-                        } else if (isCompanyRegex(regexData)){
-                            element.sendKeys("7777771");
-                        } else if (isTerminalRegex(regexData)){
-                            element.sendKeys("11000110");
-                        } else if (isCompanyStateRegRegex(regexData)){
-                            element.sendKeys("1100001000");
-                        }
-                    } else {
-                        element.sendKeys("Simple test");
-                    }
+                    sendKeysBasedOnRegex(element, regexData);
                 }
                 else if (!typeAttribute.equals("hidden") && isLongField(classAttribute)) {
                     element.sendKeys("11112222");
@@ -153,7 +141,7 @@ public class FormFieldUtils {
                     element.sendKeys("Auto description test");
                 }
                 else if (!typeAttribute.equals("hidden") && isDatetimeField(classAttribute)) {
-                    element.sendKeys("2024-10-16 09:45:51");
+                    element.sendKeys(DateUtils.getCurrentDateTime());
                     element.sendKeys(Keys.ENTER);
                 }
                 else if (!typeAttribute.equals("hidden") && isTimeField(classAttribute)) {
@@ -169,7 +157,7 @@ public class FormFieldUtils {
                     element.sendKeys("1122");
                 }
                 else if (!typeAttribute.equals("hidden") && isDateField(classAttribute)) {
-                    element.sendKeys("2024-10-15");
+                    element.sendKeys(DateUtils.getCurrentDate());
                 }
                 else if (!typeAttribute.equals("hidden") && isPayrollExpressionField(classAttribute)) {
                     element.sendKeys("expressionPayrollCheck");
@@ -271,5 +259,26 @@ public class FormFieldUtils {
     }
     public static boolean isTextEditorField(String classAttribute){
         return classAttribute.contains("text_editorInit");
+    }
+
+    //Regex
+    public static void sendKeysBasedOnRegex(WebElement element, String regexData){
+        if (regexData != null && !regexData.isEmpty()) {
+            if (isRegisterRegex(regexData)) {
+                element.sendKeys("АА03021838");
+            } else if (isPhoneRegex(regexData)) {
+                element.sendKeys("99110011");
+            } else if (isEmailRegex(regexData)) {
+                element.sendKeys("test@gmail.com");
+            } else if (isCompanyRegex(regexData)){
+                element.sendKeys("7777771");
+            } else if (isTerminalRegex(regexData)){
+                element.sendKeys("11000110");
+            } else if (isCompanyStateRegRegex(regexData)){
+                element.sendKeys("1100001000");
+            }
+        } else {
+            element.sendKeys("Simple test");
+        }
     }
 }

@@ -19,7 +19,6 @@ import static testingmachine_backend.meta.Utils.FileUtils.readIdsFromFile;
 public class ProcessList {
 
     private final WebDriver driver;
-    private static int processCount = 0;
     private static int totalProcessCount = 0;
 
     public ProcessList(WebDriver driver) {
@@ -54,7 +53,6 @@ public class ProcessList {
 
             File folder = new File(directoryPath);
             File[] listOfFiles = folder.listFiles((dir, name) -> name.endsWith(".txt"));
-            ;
 
             if (listOfFiles != null) {
 
@@ -95,8 +93,6 @@ public class ProcessList {
                         WaitUtils.retryWaitForLoadingToDisappear(driver, file.getName(), id, 3);
 
                         ProcessPath.isProcessPersent(driver, id, file.getName());
-                        processCount++;
-                        System.out.println("Count: " + processCount + ", ID: " + id);
                     }
                 }
                 DateTimeFormatter dtfEnd = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
@@ -105,11 +101,8 @@ public class ProcessList {
                 System.out.println("End date: " + endtime);
             }
         } catch (Exception e) {
-            //
+//
         }
-    }
-    public static int getCheckCount() {
-        return processCount;
     }
 
     public static int getTotalCount() {

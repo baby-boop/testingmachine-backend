@@ -2,11 +2,9 @@ package testingmachine_backend.process.Controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import testingmachine_backend.process.DTO.ProcessDTO;
-import testingmachine_backend.process.DTO.ProcessErrorMessageDTO;
-import testingmachine_backend.process.DTO.ProcessLogDTO;
+import testingmachine_backend.process.DTO.*;
 import testingmachine_backend.process.ProcessList;
-import testingmachine_backend.process.utils.trashMessage;
+import testingmachine_backend.process.utils.IsProcessMessage;
 import testingmachine_backend.process.utils.ProcessPath;
 
 import java.util.List;
@@ -19,12 +17,34 @@ public class ProcessController {
     }
     @GetMapping("/process-count")
     public ProcessDTO getProcessCounts() {
-        int processCount = ProcessList.getCheckCount();
         int totalProcessCount = ProcessList.getTotalCount();
-        return new ProcessDTO(processCount, totalProcessCount);
+        return new ProcessDTO(totalProcessCount);
     }
-    @GetMapping("/process-error")
-    public List<ProcessErrorMessageDTO> getProcessErrorMessage () {
-        return trashMessage.getProcessErrorMessages();
+
+    @GetMapping("process-progress")
+    public MessageProgressDTO getProcessProgress() {
+        int warningCount = IsProcessMessage.getWarningCount();
+        int errorCount = IsProcessMessage.getErrorCount();
+        int infoCount = IsProcessMessage.getInfoCount();
+        int successCount = IsProcessMessage.getSuccessCount();
+        int failedCount = ProcessPath.getFailedCount();
+        return new MessageProgressDTO(warningCount, errorCount, infoCount, successCount, failedCount);
+    }
+
+    @GetMapping("/warning-process")
+    public List<WarningMessageDTO> getWarningProcess() {
+        return IsProcessMessage.getProcessWarningMessages();
+    }
+    @GetMapping("/error-process")
+    public List<ErrorMessageDTO> getErrorProcess() {
+        return IsProcessMessage.getProcessErrorMessages();
+    }
+    @GetMapping("/info-process")
+    public List<InfoMessageDTO> getInfoProcess() {
+        return IsProcessMessage.getProcessInfoMessages();
+    }
+    @GetMapping("/failed-process")
+    public List<FailedProcessDTO> getFailedProcess() {
+        return ProcessPath.getProcessFailed();
     }
 }

@@ -1,11 +1,13 @@
 package testingmachine_backend.process.utils;
 
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.logging.*;
 import org.openqa.selenium.support.ui.*;
 import testingmachine_backend.process.DTO.ProcessLogDTO;
+import testingmachine_backend.process.DTO.FailedProcessDTO;
 import testingmachine_backend.process.Fields.ProcessLogFields;
 import testingmachine_backend.process.Section.LayoutChecker;
 import testingmachine_backend.process.Section.LayoutProcessSection;
@@ -30,7 +32,10 @@ public class ProcessPath {
     private static final int SHORT_WAIT_SECONDS = 2;
     private static final int LONG_WAIT_SECONDS = 90;
     private static final Pattern TAB_ID_PATTERN = Pattern.compile("tab_\\d+_\\d+");
+    @Getter
+    private static int failedCount = 0;
 
+    private static final List<FailedProcessDTO> FailedMessageField = new ArrayList<>();
     @ProcessLogFields
     private static final List<ProcessLogDTO> ProcessLogFields = new ArrayList<>();
 
@@ -41,51 +46,81 @@ public class ProcessPath {
             boolean hasSevereError = false;
 
             for (LogEntry entry : logs) {
+                if (entry.getLevel() == Level.SEVERE) {
+                    String message = entry.getMessage();
 
-                if (entry.getLevel().toString().equals("SEVERE")) {
-                    if(!entry.getMessage().contains("Uncaught TypeError: Cannot read properties of null (reading 'addClass')") && !entry.getMessage().contains("Uncaught TypeError: Cannot read properties of null (reading 'hasClass')")
-                    && !entry.getMessage().contains("Failed to load resource: the server responded with a status of 404 (Not Found)") && !entry.getMessage().contains("Uncaught TypeError: Cannot read properties of undefined (reading 'id')")
-                    && !entry.getMessage().contains("Uncaught TypeError: Cannot read properties of undefined (reading 'options')") && !entry.getMessage().contains("Uncaught TypeError: Cannot read properties of undefined (reading 'panel')"))
-                    {
-                        LOGGER.log(Level.SEVERE, new Date(entry.getTimestamp()) + " " + entry.getLevel() + " " + entry.getMessage() + " " + id);
+                    if (message != null && !isIgnorableError(message)) {
+                        String formattedTimestamp = new Date(entry.getTimestamp()).toString();
+                        LOGGER.log(Level.SEVERE, formattedTimestamp + " " + entry.getLevel() + " " + message + " " + id);
                         hasSevereError = true;
-                        ProcessLogDTO processLogFields = new ProcessLogDTO(fileName, id , entry.getMessage());
+
+                        ProcessLogDTO processLogFields = new ProcessLogDTO(fileName, id, message);
                         ProcessLogFields.add(processLogFields);
-                        break;
                     }
                 }
             }
 
-            if(!hasSevereError) {
+            if (!hasSevereError) {
+                waitUtils(driver);
 
-                WaitElement.retryWaitForLoadToDisappear(driver, 3);
-                WaitElement.retryWaitForLoadingToDisappear(driver, 3);
+                int maxAttempts = 2;
+                boolean isProcessFinished = false;
+                for (int attempt = 0; attempt < maxAttempts; attempt++) {
 
-                if (LayoutChecker.isLayout(driver, id)) {
-                    LayoutProcessSection.LayoutFieldFunction(driver, id);
-//                    saveButtonFunction(driver, id);
-                } else if (ProcessWizardChecker.isWizard(driver, id)){
-                    ProcessWizardSection.KpiWizardFunction(driver, id);
-                }else {
-                    List<WebElement> elementsWithDataPath = findElementsWithSelector(driver, id );
-                    processTabElements(driver, elementsWithDataPath, id);
-                    List<WebElement> elementsWithDataPathCheck1 = findElementsWithSelector(driver, id );
-                    processTabElementsFinal(driver, elementsWithDataPathCheck1, id);
-                    tabDetailItems(driver, id);
-                    detailActionButton(driver, id);
+                    if (LayoutChecker.isLayout(driver, id)) {
+                        LayoutProcessSection.LayoutFieldFunction(driver, id);
+                        saveButtonFunction(driver, id);
+                    } else if (ProcessWizardChecker.isWizard(driver, id)){
+                        ProcessWizardSection.KpiWizardFunction(driver, id);
+                    }else {
+                        List<WebElement> elementsWithDataPath = findElementsWithSelector(driver, id );
+                        processTabElements(driver, elementsWithDataPath, id);
+                        List<WebElement> elementsWithDataPathCheck1 = findElementsWithSelector(driver, id );
+                        processTabElementsFinal(driver, elementsWithDataPathCheck1, id);
+                        tabDetailItems(driver, id);
+                        waitUtils(driver);
+                        detailActionButton(driver, id);
+                        waitUtils(driver);
+                    }
+                    waitUtils(driver);
 
-//                    saveButtonFunction(driver, id);
+                    if(IsProcessMessage.isErrorMessagePresent(driver, id, fileName)){
+                        isProcessFinished = true;
+                        break;
+                    }else{
+                        LOGGER.log(Level.SEVERE, "This process not finished: " + attempt + " - " + id);
+                    }
                 }
 
-                waitUtils(driver);
-                if(trashMessage.isErrorMessagePresent(driver, id, fileName)){
-                    LOGGER.log(Level.WARNING, "Count log: " + id);
+                if (!isProcessFinished) {
+                    failedCount++;
+                    FailedProcessDTO failedMessage = new FailedProcessDTO(fileName, id);
+                    FailedMessageField.add(failedMessage);
+                    LOGGER.log(Level.SEVERE, "Process failed to complete after " + maxAttempts + " attempts: " + id);
                 }
             }
+
+
+
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error process: " + id);
         }
     }
+
+    public static List<FailedProcessDTO> getProcessFailed() {
+        return new ArrayList<>(FailedMessageField);
+    }
+
+
+    private static boolean isIgnorableError(String message) {
+        return message.contains("Uncaught TypeError: Cannot read properties of null (reading 'addClass')")
+                || message.contains("Uncaught TypeError: Cannot read properties of null (reading 'hasClass')")
+                || message.contains("Failed to load resource: the server responded with a status of 404 (Not Found)")
+                || message.contains("Uncaught TypeError: Cannot read properties of undefined (reading 'id')")
+                || message.contains("Uncaught TypeError: Cannot read properties of undefined (reading 'options')")
+                || message.contains("Uncaught TypeError: Cannot read properties of undefined (reading 'panel')");
+    }
+
     public static List<WebElement> findElementsWithSelector(WebDriver driver,String id) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(SHORT_WAIT_SECONDS));
         try {
@@ -98,7 +133,7 @@ public class ProcessPath {
 
             return new ArrayList<>(uniqueDataPathElements.values());
         } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Elements with selector  not found");
+            LOGGER.log(Level.SEVERE, "Elements with selector not found");
             return List.of();
         }
     }

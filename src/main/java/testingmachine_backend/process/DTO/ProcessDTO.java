@@ -1,19 +1,13 @@
 package testingmachine_backend.process.DTO;
 
+import lombok.Getter;
+
+@Getter
 public class ProcessDTO {
 
-    private int processCount;
-    private int totalProcessCount;
-    public ProcessDTO(int processCount, int totalProcessCount) {
-        this.processCount = processCount;
+    private final int totalProcessCount;
+    public ProcessDTO(int totalProcessCount) {
         this.totalProcessCount = totalProcessCount;
-    }
-
-    public int getProcessCount() {
-        return processCount;
-    }
-    public int getTotalProcessCount() {
-        return totalProcessCount;
     }
 
 }

@@ -3,7 +3,7 @@ package testingmachine_backend.process.DTO;
 import lombok.Getter;
 import lombok.Setter;
 
-public class ProcessErrorMessageDTO {
+public class ErrorMessageDTO {
 
     @Getter
     @Setter
@@ -13,7 +13,7 @@ public class ProcessErrorMessageDTO {
     private String processId;
     private String messageText;
 
-    public ProcessErrorMessageDTO(String fileName, String processId, String messageText) {
+    public ErrorMessageDTO(String fileName, String processId, String messageText) {
         this.fileName = fileName;
         this.processId = processId;
         this.messageText = messageText;

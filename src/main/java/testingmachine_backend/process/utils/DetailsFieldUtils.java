@@ -18,6 +18,7 @@ public class DetailsFieldUtils {
 
     public static void detailActionButton(WebDriver driver, String id) {
         try {
+
             List<WebElement> elementsWithDataSectionPath = findRowElementsWithDataSectionPath(driver);
             if(elementsWithDataSectionPath != null) {
                 for (WebElement element : elementsWithDataSectionPath) {
