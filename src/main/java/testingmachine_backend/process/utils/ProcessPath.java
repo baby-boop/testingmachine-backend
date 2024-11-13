@@ -3,15 +3,14 @@ package testingmachine_backend.process.utils;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.*;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.logging.*;
 import org.openqa.selenium.support.ui.*;
 import testingmachine_backend.process.DTO.ProcessLogDTO;
 import testingmachine_backend.process.DTO.FailedProcessDTO;
 import testingmachine_backend.process.Fields.ProcessLogFields;
-import testingmachine_backend.process.Section.LayoutChecker;
+import testingmachine_backend.process.Checkers.LayoutChecker;
 import testingmachine_backend.process.Section.LayoutProcessSection;
-import testingmachine_backend.process.Section.ProcessWizardChecker;
+import testingmachine_backend.process.Checkers.ProcessWizardChecker;
 import testingmachine_backend.process.Section.ProcessWizardSection;
 
 import java.sql.Date;
@@ -42,23 +41,7 @@ public class ProcessPath {
     public static void isProcessPersent(WebDriver driver, String id, String fileName) {
         try {
 
-            LogEntries logs = driver.manage().logs().get(LogType.BROWSER);
-            boolean hasSevereError = false;
-
-            for (LogEntry entry : logs) {
-                if (entry.getLevel() == Level.SEVERE) {
-                    String message = entry.getMessage();
-
-                    if (message != null && !isIgnorableError(message)) {
-                        String formattedTimestamp = new Date(entry.getTimestamp()).toString();
-                        LOGGER.log(Level.SEVERE, formattedTimestamp + " " + entry.getLevel() + " " + message + " " + id);
-                        hasSevereError = true;
-
-                        ProcessLogDTO processLogFields = new ProcessLogDTO(fileName, id, message);
-                        ProcessLogFields.add(processLogFields);
-                    }
-                }
-            }
+            boolean hasSevereError = checkLogsAfterAction(driver, id, fileName);
 
             if (!hasSevereError) {
                 waitUtils(driver);
@@ -68,18 +51,16 @@ public class ProcessPath {
                 for (int attempt = 0; attempt < maxAttempts; attempt++) {
 
                     if (LayoutChecker.isLayout(driver, id)) {
-                        LayoutProcessSection.LayoutFieldFunction(driver, id);
-                        saveButtonFunction(driver, id);
+                        LayoutProcessSection.LayoutFieldFunction(driver, id, fileName);
                     } else if (ProcessWizardChecker.isWizard(driver, id)){
                         ProcessWizardSection.KpiWizardFunction(driver, id);
                     }else {
                         List<WebElement> elementsWithDataPath = findElementsWithSelector(driver, id );
                         processTabElements(driver, elementsWithDataPath, id);
-                        List<WebElement> elementsWithDataPathCheck1 = findElementsWithSelector(driver, id );
-                        processTabElementsFinal(driver, elementsWithDataPathCheck1, id);
-                        tabDetailItems(driver, id);
+                        tabDetailItems(driver, id, fileName);
                         waitUtils(driver);
-                        detailActionButton(driver, id);
+
+                        detailActionButton(driver, id, fileName);
                         waitUtils(driver);
                     }
                     waitUtils(driver);
@@ -88,7 +69,7 @@ public class ProcessPath {
                         isProcessFinished = true;
                         break;
                     }else{
-                        LOGGER.log(Level.SEVERE, "This process not finished: " + attempt + " - " + id);
+                        LOGGER.log(Level.WARNING, "Loop count: " + attempt + " - " + id);
                     }
                 }
 
@@ -96,14 +77,15 @@ public class ProcessPath {
                     failedCount++;
                     FailedProcessDTO failedMessage = new FailedProcessDTO(fileName, id);
                     FailedMessageField.add(failedMessage);
-                    LOGGER.log(Level.SEVERE, "Process failed to complete after " + maxAttempts + " attempts: " + id);
+                    LOGGER.log(Level.FINEST, "Process complete after  " + maxAttempts + " attempts: " + id);
+                }
+                if(isProcessFinished){
+                    saveButtonFunction(driver, id);
                 }
             }
 
-
-
         } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Error process: " + id);
+            LOGGER.log(Level.SEVERE, "Error process: " + id + e);
         }
     }
 
@@ -111,14 +93,26 @@ public class ProcessPath {
         return new ArrayList<>(FailedMessageField);
     }
 
+    public static boolean checkLogsAfterAction(WebDriver driver, String id, String fileName) {
+        LogEntries logs = driver.manage().logs().get(LogType.BROWSER);
+        boolean hasSevereError = false;
 
-    private static boolean isIgnorableError(String message) {
-        return message.contains("Uncaught TypeError: Cannot read properties of null (reading 'addClass')")
-                || message.contains("Uncaught TypeError: Cannot read properties of null (reading 'hasClass')")
+        for (LogEntry entry : logs) {
+            if (entry.getLevel() == Level.SEVERE && entry.getMessage() != null && !isIgnorableError(entry.getMessage())) {
+                String formattedTimestamp = new Date(entry.getTimestamp()).toString();
+                LOGGER.log(Level.SEVERE, formattedTimestamp + " " + entry.getLevel() + " " + entry.getMessage() + " " + id);
+                hasSevereError = true;
+                ProcessLogDTO processLogFields = new ProcessLogDTO(fileName, id, entry.getMessage());
+                ProcessLogFields.add(processLogFields);
+            }
+        }
+        return hasSevereError;
+    }
+
+    public static boolean isIgnorableError(String message) {
+        return message.contains("Uncaught TypeError: ")
                 || message.contains("Failed to load resource: the server responded with a status of 404 (Not Found)")
-                || message.contains("Uncaught TypeError: Cannot read properties of undefined (reading 'id')")
-                || message.contains("Uncaught TypeError: Cannot read properties of undefined (reading 'options')")
-                || message.contains("Uncaught TypeError: Cannot read properties of undefined (reading 'panel')");
+      ;
     }
 
     public static List<WebElement> findElementsWithSelector(WebDriver driver,String id) {
@@ -138,7 +132,7 @@ public class ProcessPath {
         }
     }
 
-    static void findTextEditorInput(WebDriver driver, String dataSPath, String id) {
+    public static void findTextEditorInput(WebDriver driver, String dataSPath, String id) {
         try{
             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(LONG_WAIT_SECONDS));
 
@@ -153,8 +147,10 @@ public class ProcessPath {
         }
     }
 
-    static WebElement findPopupButtonForElement(WebElement element) {
+    public static WebElement findPopupButtonForElement(WebElement element, WebDriver driver) {
         try {
+            waitUtils(driver);
+            Thread.sleep(500);
             return element.findElement(By.xpath("./following-sibling::span[@class='input-group-btn']/button"));
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Popup button not found ");
@@ -175,13 +171,14 @@ public class ProcessPath {
 
     private static void scrollToElement(WebDriver driver, WebElement element) {
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
+        element.click();
     }
 
     public static void clickFirstRow(WebDriver driver, String id) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(LONG_WAIT_SECONDS));
         try{
             waitUtils(driver);
-            wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//tr[contains(@id,'datagrid-row-r')]")));
+
             List<WebElement> rows = driver.findElements(By.xpath("//tr[contains(@id,'datagrid-row-r')]"));
 
             if (!rows.isEmpty()) {
@@ -192,8 +189,6 @@ public class ProcessPath {
                 if (firstCell != null) {
                     scrollToElement(driver, firstCell);
                     rows.clear();
-                    Actions actions = new Actions(driver);
-                    actions.moveToElement(firstCell).click().perform();
                     waitUtils(driver);
                     WebElement addToCartButton  = driver.findElement(By.xpath("//button[contains(@class, 'btn green-meadow btn-sm float-left')]"));
                     if(addToCartButton != null) {
@@ -228,6 +223,7 @@ public class ProcessPath {
         try {
             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(1));
 
+            Thread.sleep(500);
             By comboBoxDivLocator = By.cssSelector("div[data-s-path='" + dataSPath + "']");
             By comboBoxSelectLocator = By.cssSelector("select[data-path='" + dataSPath + "']");
 
@@ -274,17 +270,16 @@ public class ProcessPath {
         for (WebElement element : elements) {
             String elementClass = element.getAttribute("class");
             String elementType = element.getAttribute("type");
-
+            String dataPath = element.getAttribute("data-path");
             if (elementClass.contains("dropdownInput") || elementClass.contains("radioInit")
-                    || elementClass.contains("popupInit") || elementType.contains("checkbox")
-                    || elementClass.contains("booleanInit") || elementClass.contains("text_editorInit") || elementClass.contains("fileInit")) {
-
-                String dataPath = element.getAttribute("data-path");
-                if (!uniqueTabElements.containsKey(dataPath)) {
-                    uniqueTabElements.put(dataPath, element);
+                    || elementType.contains("checkbox") || elementClass.contains("booleanInit")
+                    || elementClass.contains("text_editorInit") || elementClass.contains("fileInit")) {
+                if(!element.getAttribute("style").contains("display: none;")){
+                    if (!uniqueTabElements.containsKey(dataPath)) {
+                        uniqueTabElements.put(dataPath, element);
+                    }
                 }
             } else if (element.isDisplayed()) {
-                String dataPath = element.getAttribute("data-path");
                 if (!uniqueTabElements.containsKey(dataPath)) {
                     uniqueTabElements.put(dataPath, element);
                 }
@@ -308,24 +303,6 @@ public class ProcessPath {
             for (WebElement element : elements) {
                 Map<String, String> attributes = getElementAttributes(element);
                 handleElementAction(
-                        driver,
-                        element,
-                        attributes.get("class"),
-                        attributes.get("value"),
-                        attributes.get("type"),
-                        attributes.get("data-path"),
-                        attributes.get("data-regex"),
-                        id
-                );
-            }
-        }
-    }
-
-    public static void processTabElementsFinal(WebDriver driver, List<WebElement> elements, String id) {
-        if (elements != null) {
-            for (WebElement element : elements) {
-                Map<String, String> attributes = getElementAttributes(element);
-                handleElementActionFinal(
                         driver,
                         element,
                         attributes.get("class"),

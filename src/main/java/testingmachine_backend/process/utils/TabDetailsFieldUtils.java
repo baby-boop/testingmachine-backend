@@ -15,7 +15,7 @@ public class TabDetailsFieldUtils {
 
     public static final int SHORT_WAIT_SECONDS = 2;
 
-    public static void tabDetailItems(WebDriver driver, String id) {
+    public static void tabDetailItems(WebDriver driver, String id, String fileName) {
         try {
             List<WebElement> tabElementItems = findTabElements(driver);
             if(tabElementItems != null ) {
@@ -26,20 +26,18 @@ public class TabDetailsFieldUtils {
                     Optional<String> tabIdentifierOpt = extractTabIdentifier(TabHref);
                     String tabIdentifier = tabIdentifierOpt.get();
                     waitUtils(driver);
-
                     List<WebElement> elementsWithDataSectionPath = findRowElementsWithSectionPath(driver, tabIdentifier);
-                    if(elementsWithDataSectionPath != null){
+                    if (elementsWithDataSectionPath != null) {
                         for (WebElement elementTab : elementsWithDataSectionPath) {
                             String sectionPath = elementTab.getAttribute("data-section-path");
                             waitUtils(driver);
-
-                            List<WebElement> testingList = findTest(driver, tabIdentifier, id, sectionPath);
-                            processTabElements(driver, testingList, id);
+                            List<WebElement> findTestElement = findTest(driver, tabIdentifier, id, sectionPath);
+                            processTabElements(driver, findTestElement, id);
                             List<WebElement> allActionTabPath = findRowActionTabPathsButton(driver, sectionPath);
-                            if(allActionTabPath != null ) {
+                            if (allActionTabPath != null) {
                                 List<WebElement> findTabDefaultRows = findRowActionTabDefaultRow(driver, sectionPath);
                                 assert findTabDefaultRows != null;
-                                if(findTabDefaultRows.isEmpty()){
+                                if (findTabDefaultRows.isEmpty()) {
                                     waitUtils(driver);
                                     for (WebElement action : allActionTabPath) {
                                         String onclick = action.getAttribute("onclick");
@@ -48,9 +46,10 @@ public class TabDetailsFieldUtils {
                                             waitUtils(driver);
                                             clickFirstRow(driver, id);
                                             waitUtils(driver);
+                                            List<WebElement> tabElementPaths1 = findElementsWithTabDetailsPath(driver, sectionPath, tabIdentifier, id);
+                                            processTabElements(driver, tabElementPaths1, id);
                                             break;
-                                        }
-                                        else if (onclick.contains("bpAddMainRow")) {
+                                        } else if (onclick.contains("bpAddMainRow")) {
                                             waitUtils(driver);
                                             action.click();
                                             waitUtils(driver);
@@ -58,11 +57,11 @@ public class TabDetailsFieldUtils {
                                             processTabElements(driver, tabElementPaths, id);
 
                                             List<WebElement> rowsToRowShowForms = findRowsToRowShowForm(driver, sectionPath, tabIdentifier, id);
-                                            if(rowsToRowShowForms != null) {
+                                            if (rowsToRowShowForms != null) {
                                                 for (WebElement rowsToRowShowForm : rowsToRowShowForms) {
                                                     rowsToRowShowForm.click();
                                                     String rowsDataBPath = rowsToRowShowForm.getAttribute("data-b-path");
-                                                    List<WebElement> rowsToRowElements = findRowsToRowPaths(driver,id, tabIdentifier, sectionPath, rowsDataBPath);
+                                                    List<WebElement> rowsToRowElements = findRowsToRowPaths(driver, id, tabIdentifier, sectionPath, rowsDataBPath);
 
                                                     processTabElements(driver, rowsToRowElements, id);
                                                     WebElement selectButton = driver.findElement(By.xpath("//button[contains(@class, 'btn green-meadow btn-sm')]"));
@@ -72,11 +71,11 @@ public class TabDetailsFieldUtils {
                                             break;
                                         }
                                     }
+                                }else{
+                                    List<WebElement> findTestElement1 = findTest(driver, tabIdentifier, id, sectionPath);
+                                    processTabElements(driver, findTestElement1, id);
                                 }
-                                List<WebElement> testingList1 = findTest(driver, tabIdentifier, id, sectionPath);
-                                processTabElementsFinal(driver, testingList1, id);
                             }
-
                         }
                     }
                 }

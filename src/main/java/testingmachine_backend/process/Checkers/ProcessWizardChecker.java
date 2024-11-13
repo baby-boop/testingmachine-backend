@@ -1,4 +1,4 @@
-package testingmachine_backend.process.Section;
+package testingmachine_backend.process.Checkers;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;

@@ -16,41 +16,46 @@ import static testingmachine_backend.process.utils.ProcessPath.*;
 public class DetailsFieldUtils {
     public static final int SHORT_WAIT_SECONDS = 2;
 
-    public static void detailActionButton(WebDriver driver, String id) {
+    public static void detailActionButton(WebDriver driver, String id, String fileName) {
         try {
-
             List<WebElement> elementsWithDataSectionPath = findRowElementsWithDataSectionPath(driver);
             if(elementsWithDataSectionPath != null) {
                 for (WebElement element : elementsWithDataSectionPath) {
                     String sectionPath = element.getAttribute("data-section-path");
                     waitUtils(driver);
+                    List<WebElement> rowElements = findElementsWithDetailsPath(driver, sectionPath);
+                    processTabElements(driver, rowElements, id);
                     List<WebElement> allActionPath = findRowActionPathsButton(driver, sectionPath);
                     if (allActionPath != null) {
-                        waitUtils(driver);
-                        for (WebElement action : allActionPath) {
-                            String onclick = action.getAttribute("onclick");
-                            if (onclick.contains("bpAddMainMultiRow")) {
-                                action.click();
-                                waitUtils(driver);
-                                clickFirstRow(driver, id);
-                                waitUtils(driver);
-                                break;
-                            } else if (onclick.contains("bpAddMainRow")) {
-                                waitUtils(driver);
-                                action.click();
-                                waitUtils(driver);
-                                Thread.sleep(1000);
-                                List<WebElement> rowElements = findElementsWithDetailsPath(driver, sectionPath);
-                                processTabElements(driver, rowElements, id);
-                                break;
+                        List<WebElement> findLayoutDefaultRows = findDefaultRow(driver, sectionPath);
+                        assert findLayoutDefaultRows != null;
+                        if (findLayoutDefaultRows.isEmpty()) {
+                            waitUtils(driver);
+                            for (WebElement action : allActionPath) {
+                                String onclick = action.getAttribute("onclick");
+                                if (onclick.contains("bpAddMainMultiRow")) {
+                                    action.click();
+                                    waitUtils(driver);
+                                    clickFirstRow(driver, id);
+                                    waitUtils(driver);
+                                    List<WebElement> rowElements3 = findElementsWithDetailsPath(driver, sectionPath);
+                                    processTabElements(driver, rowElements3, id);
+                                    break;
+                                } else if (onclick.contains("bpAddMainRow")) {
+                                    waitUtils(driver);
+                                    action.click();
+                                    waitUtils(driver);
+                                    Thread.sleep(1000);
+                                    List<WebElement> rowElements1 = findElementsWithDetailsPath(driver, sectionPath);
+                                    processTabElements(driver, rowElements1, id);
+                                    break;
+                                }
                             }
                         }
                     }else{
-                        List<WebElement> rowElements = findElementsWithDetailsPath(driver, sectionPath);
-                        processTabElements(driver, rowElements, id);
+                        List<WebElement> rowElements2 = findElementsWithDetailsPath(driver, sectionPath);
+                        processTabElements(driver, rowElements2, id);
                     }
-                    List<WebElement> rowElements1 = findElementsWithDetailsPath(driver, sectionPath);
-                    processTabElementsFinal(driver, rowElements1, id);
                 }
             }
         } catch (Exception e) {
@@ -62,7 +67,7 @@ public class DetailsFieldUtils {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(SHORT_WAIT_SECONDS));
         try {
             wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".bp-detail-body .row[data-section-path]")));
-            return driver.findElements(By.cssSelector(".bp-detail-body .row[data-section-path]"));
+            return driver.findElements(By.cssSelector(".bp-detail-body .row[data-section-path]:not([style*='display: none'])"));
         } catch (Exception e) {
             LOGGER.log(Level.WARNING, "Elements 'data-section-path' not found");
             return List.of();
@@ -77,6 +82,17 @@ public class DetailsFieldUtils {
             return driver.findElements(By.cssSelector(selector));
         } catch (Exception e) {
             LOGGER.log(Level.WARNING, "action paths: " + sectionPath);
+            return null;
+        }
+    }
+
+    public static List<WebElement> findDefaultRow(WebDriver driver, String sectionPath) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(SHORT_WAIT_SECONDS));
+        try {
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div[data-section-path='"+ sectionPath +"']")));
+            return driver.findElements(By.cssSelector("div[data-section-path='"+ sectionPath +"'] .tbody .bp-detail-row"));
+        } catch (Exception e) {
+            LOGGER.log(Level.WARNING, "action paths not found: " + sectionPath);
             return null;
         }
     }
@@ -96,7 +112,7 @@ public class DetailsFieldUtils {
             return new ArrayList<>(uniqueDataPathElements.values());
 
         } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Elements with sectionPath '" + sectionPath + "' selector not found");
+            LOGGER.log(Level.SEVERE, "Elements with sectionPath '" + sectionPath + "' not found");
             return Collections.emptyList();
         }
     }

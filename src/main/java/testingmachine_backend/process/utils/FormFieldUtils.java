@@ -26,158 +26,77 @@ public class FormFieldUtils {
         }
     }
 
-
     public static void handleElementAction(WebDriver driver, WebElement element, String classAttribute,
                                            String valueAttribute, String typeAttribute, String dataPath,
                                            String regexData, String id) {
 
-        if (valueAttribute != null && valueAttribute.isEmpty()) {
-            if (classAttribute != null && !classAttribute.isEmpty()) {
-                if (isPopupField(classAttribute)) {
-                    WebElement popupButton = findPopupButtonForElement(element);
-                    if (popupButton != null) {
-                        popupButton.click();
-                        waitUtils(driver);
-                        clickFirstRow(driver, id);
-                    }
-                }
-                else if (!typeAttribute.equals("hidden") && isTextField(classAttribute)) {
-                    sendKeysBasedOnRegex(element, regexData);
-                }
-                else if (!typeAttribute.equals("hidden") && isLongField(classAttribute)) {
-                    element.sendKeys("11112222");
-                }
-                else if (!typeAttribute.equals("hidden") && isFileField(classAttribute)) {
-                    String filePng = "C:\\Users\\batde\\Downloads\\pngForTest.png";
-                    element.sendKeys(filePng);
-                }
-                else if (!typeAttribute.equals("hidden") && isIntegerField(classAttribute)) {
-                    element.sendKeys("123");
-                }
-                else if (!typeAttribute.equals("hidden") && isDescriptionField(classAttribute)) {
-                    element.sendKeys("Description test");
-                }
-                else if (!typeAttribute.equals("hidden") && isAutoDescriptionField(classAttribute)) {
-                    element.sendKeys("Auto description test");
-                }
-                else if (!typeAttribute.equals("hidden") && isDatetimeField(classAttribute)) {
-                    element.sendKeys(DateUtils.getCurrentDateTime());
-                    element.sendKeys(Keys.ENTER);
-                }
-                else if (!typeAttribute.equals("hidden") && isTimeField(classAttribute)) {
-                    element.sendKeys("08:00");
-                }
-                else if (!typeAttribute.equals("hidden") && isBigDecimalField(classAttribute)) {
-                    element.sendKeys("11");
-                }
-                else if (!typeAttribute.equals("hidden") && isDecimalField(classAttribute)) {
-                    element.sendKeys("22");
-                }
-                else if (!typeAttribute.equals("hidden") && isNumberField(classAttribute)) {
-                    element.sendKeys("1122");
-                }
-                else if (!typeAttribute.equals("hidden") && isDateField(classAttribute)) {
-                    element.sendKeys(DateUtils.getCurrentDate());
-                }
-                else if (!typeAttribute.equals("hidden") && isPayrollExpressionField(classAttribute)) {
-                    element.sendKeys("expressionPayrollCheck");
-                }
-                else if ( isExpressionEditorField(classAttribute)) {
-                    element.sendKeys("expressionEditorCheck");
-                }
-                else if ( isPasswordField(classAttribute)) {
-                    element.sendKeys("123");
-                }
-                else if (isTextEditorField(classAttribute)) {
-                    findTextEditorInput(driver, dataPath, id);
-                }
-                else if (isComboField(classAttribute)) {
-                    comboboxFunction(driver, dataPath, id);
-                }
-                else if (isBooleanField(classAttribute)) {
-                    element.click();
-                }
+        if (valueAttribute != null && valueAttribute.isEmpty()  ) {
+            handleElementSubAction(driver, element, classAttribute, dataPath, regexData, id);
+        }  else if (isRadioField(classAttribute)) {
+            if (!element.findElement(By.xpath("..")).getAttribute("class").contains("checked")) {
+                element.click();
             }
-        } else if (isRadioField(classAttribute)) {
-            element.click();
-        } else if (isCheckBox(typeAttribute)) {
-            element.click();
-        }
-    }
-
-
-
-    public static void handleElementActionFinal(WebDriver driver, WebElement element, String classAttribute,
-                                           String valueAttribute, String typeAttribute, String dataPath,
-                                           String regexData, String id) {
-
-        if (valueAttribute != null && valueAttribute.isEmpty()) {
-            if (classAttribute != null && !classAttribute.isEmpty()) {
-                if (isPopupField(classAttribute)) {
-                    WebElement popupButton = findPopupButtonForElement(element);
-                    if (popupButton != null) {
-                        popupButton.click();
-                        waitUtils(driver);
-                        clickFirstRow(driver, id);
-                    }
-                }
-                else if (!typeAttribute.equals("hidden") && isTextField(classAttribute)) {
-                    sendKeysBasedOnRegex(element, regexData);
-                }
-                else if (!typeAttribute.equals("hidden") && isLongField(classAttribute)) {
-                    element.sendKeys("11112222");
-                }
-                else if (!typeAttribute.equals("hidden") && isFileField(classAttribute)) {
-                    String filePng = "C:\\Users\\batde\\Downloads\\pngForTest.png";
-                    element.sendKeys(filePng);
-                }
-                else if (!typeAttribute.equals("hidden") && isIntegerField(classAttribute)) {
-                    element.sendKeys("123");
-                }
-                else if (!typeAttribute.equals("hidden") && isDescriptionField(classAttribute)) {
-                    element.sendKeys("Description test");
-                }
-                else if (!typeAttribute.equals("hidden") && isAutoDescriptionField(classAttribute)) {
-                    element.sendKeys("Auto description test");
-                }
-                else if (!typeAttribute.equals("hidden") && isDatetimeField(classAttribute)) {
-                    element.sendKeys(DateUtils.getCurrentDateTime());
-                    element.sendKeys(Keys.ENTER);
-                }
-                else if (!typeAttribute.equals("hidden") && isTimeField(classAttribute)) {
-                    element.sendKeys("08:00");
-                }
-                else if (!typeAttribute.equals("hidden") && isBigDecimalField(classAttribute)) {
-                    element.sendKeys("11");
-                }
-                else if (!typeAttribute.equals("hidden") && isDecimalField(classAttribute)) {
-                    element.sendKeys("22");
-                }
-                else if (!typeAttribute.equals("hidden") && isNumberField(classAttribute)) {
-                    element.sendKeys("1122");
-                }
-                else if (!typeAttribute.equals("hidden") && isDateField(classAttribute)) {
-                    element.sendKeys(DateUtils.getCurrentDate());
-                }
-                else if (!typeAttribute.equals("hidden") && isPayrollExpressionField(classAttribute)) {
-                    element.sendKeys("expressionPayrollCheck");
-                }
-                else if ( isExpressionEditorField(classAttribute)) {
-                    element.sendKeys("expressionEditorCheck");
-                }
-                else if ( isPasswordField(classAttribute)) {
-                    element.sendKeys("123");
-                }
-                else if (isTextEditorField(classAttribute)) {
-                    findTextEditorInput(driver, dataPath, id);
-                }
-                else if (isComboField(classAttribute)) {
-                    comboboxFunction(driver, dataPath, id);
-                }
+        } else if (isCheckBox(typeAttribute) ) {
+            if (!element.findElement(By.xpath("..")).getAttribute("class").contains("checked")) {
+                element.click();
             }
         }
     }
 
+    private static void handleElementSubAction(WebDriver driver, WebElement element, String classAttribute, String dataPath, String regexData, String id) {
+        if (classAttribute != null && !classAttribute.isEmpty()) {
+            if (isPopupField(classAttribute)) {
+                WebElement popupButton = findPopupButtonForElement(element, driver);
+                if (popupButton != null) {
+                    popupButton.click();
+                    waitUtils(driver);
+                    clickFirstRow(driver, id);
+                }
+            } else {
+                handleFieldByType(element, classAttribute, regexData, driver, dataPath, id);
+            }
+        }
+    }
+
+    private static void handleFieldByType(WebElement element, String classAttribute, String regexData,
+                                          WebDriver driver, String dataPath, String id) {
+        if (isTextField(classAttribute)) {
+            sendKeysBasedOnRegex(element, regexData);
+        } else if (isLongField(classAttribute)) {
+            element.sendKeys("11112222");
+        } else if (isFileField(classAttribute)) {
+            element.sendKeys("C:\\Users\\batde\\Downloads\\pngForTest.png");
+        } else if (isIntegerField(classAttribute)) {
+            element.sendKeys("123");
+        } else if (isDescriptionField(classAttribute)) {
+            element.sendKeys("Description test");
+        } else if (isAutoDescriptionField(classAttribute)) {
+            element.sendKeys("Auto description test");
+        } else if (isDatetimeField(classAttribute)) {
+            element.sendKeys(DateUtils.getCurrentDateTime());
+            element.sendKeys(Keys.ENTER);
+        } else if (isTimeField(classAttribute)) {
+            element.sendKeys("08:00");
+        } else if (isBigDecimalField(classAttribute)) {
+            element.sendKeys("11");
+        } else if (isDecimalField(classAttribute)) {
+            element.sendKeys("22");
+        } else if (isNumberField(classAttribute)) {
+            element.sendKeys("1122");
+        } else if (isDateField(classAttribute)) {
+            element.sendKeys(DateUtils.getCurrentDate());
+        } else if (isPayrollExpressionField(classAttribute)) {
+            element.sendKeys("expressionPayrollCheck");
+        } else if (isExpressionEditorField(classAttribute)) {
+            element.sendKeys("expressionEditorCheck");
+        } else if (isPasswordField(classAttribute)) {
+            element.sendKeys("123");
+        } else if (isTextEditorField(classAttribute)) {
+            findTextEditorInput(driver, dataPath, id);
+        } else if (isComboField(classAttribute)) {
+            comboboxFunction(driver, dataPath, id);
+        }
+    }
 
     public static boolean isRegisterRegex(String regexData){
         return regexData.contains("^[ФЦУЖЭНГШҮЗКЪЙЫБӨАХРОЛДПЯЧЁСМИТЬВЮЕЩфцужэнгшүзкъйыбөахролдпячёсмитьвюещ]{2}[0-9]{8}$");
@@ -212,9 +131,6 @@ public class FormFieldUtils {
     }
     public static boolean isDateField(String classAttribute ) {
         return classAttribute.contains("dateInit");
-    }
-    public static boolean isBooleanField(String classAttribute ) {
-        return classAttribute.contains("booleanInit");
     }
     public static boolean isAutoDescriptionField(String classAttribute ) {
         return classAttribute.contains("description_autoInit");

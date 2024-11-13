@@ -19,20 +19,19 @@ public class LayoutProcessSection {
     private static final Logger LOGGER = Logger.getLogger(LayoutProcessSection.class.getName());
     private static final int SHORT_WAIT_SECONDS = 2;
 
-    public static void LayoutFieldFunction(WebDriver driver, String id) {
+    public static void LayoutFieldFunction(WebDriver driver, String id, String fileName) {
         List<WebElement> layoutSectionPaths = findLayoutSectionPath(driver, id);
-        if(layoutSectionPaths != null){
+        if (layoutSectionPaths != null) {
             for (WebElement sectionPath : layoutSectionPaths) {
                 String dataSectionCode = sectionPath.getAttribute("data-section-code");
                 waitUtils(driver);
                 List<WebElement> layoutPath = findLayoutFieldPath(driver, dataSectionCode);
                 processTabElements(driver, layoutPath, id);
-
                 List<WebElement> allActionTabPath = findLayoutActionButton(driver, dataSectionCode);
                 if (allActionTabPath != null) {
                     List<WebElement> findLayoutDefaultRows = findLayoutDefaultRow(driver, dataSectionCode);
                     assert findLayoutDefaultRows != null;
-                    if(findLayoutDefaultRows.isEmpty()){
+                    if (findLayoutDefaultRows.isEmpty()) {
                         waitUtils(driver);
                         for (WebElement action : allActionTabPath) {
                             String onclick = action.getAttribute("onclick");
@@ -41,6 +40,8 @@ public class LayoutProcessSection {
                                 waitUtils(driver);
                                 clickFirstRow(driver, id);
                                 waitUtils(driver);
+                                List<WebElement> layoutDtlPath2 = findLayoutDtlFieldPath(driver, dataSectionCode);
+                                processTabElements(driver, layoutDtlPath2, id);
                                 break;
                             } else if (onclick.contains("bpAddMainRow")) {
                                 waitUtils(driver);
@@ -51,11 +52,11 @@ public class LayoutProcessSection {
                                 break;
                             }
                         }
+                    }else{
+                        List<WebElement> layoutPath1 = findLayoutFieldPath(driver, dataSectionCode);
+                        processTabElements(driver, layoutPath1, id);
                     }
-                    List<WebElement> layoutPath1 = findLayoutFieldPath(driver, dataSectionCode);
-                    processTabElementsFinal(driver, layoutPath1, id);
                 }
-
             }
         }
     }

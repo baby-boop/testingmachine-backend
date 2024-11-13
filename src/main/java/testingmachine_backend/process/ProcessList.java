@@ -37,7 +37,6 @@ public class ProcessList {
             WebElement passwordField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("pass_word")));
             passwordField.sendKeys(ConfigProcess.PASSWORD);
 
-
             WebElement checkBox = wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("isLdap")));
             checkBox.click();
 
@@ -53,6 +52,8 @@ public class ProcessList {
 
             File folder = new File(directoryPath);
             File[] listOfFiles = folder.listFiles((dir, name) -> name.endsWith(".txt"));
+
+            int exCount = 0;
 
             if (listOfFiles != null) {
 
@@ -73,7 +74,7 @@ public class ProcessList {
                 System.out.println("start date: " + startdate);
 
                 for (File file : listOfFiles) {
-                    System.out.println("Processing file: " + file.getName());
+                    System.err.println("Processing file: " + file.getName());
 
                     List<String> ids = readIdsFromFile(file.getAbsolutePath());
 
@@ -93,6 +94,8 @@ public class ProcessList {
                         WaitUtils.retryWaitForLoadingToDisappear(driver, file.getName(), id, 3);
 
                         ProcessPath.isProcessPersent(driver, id, file.getName());
+                        exCount++;
+                        System.out.println("Process count: " + exCount + ", id: " + id);
                     }
                 }
                 DateTimeFormatter dtfEnd = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
