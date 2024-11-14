@@ -12,7 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static testingmachine_backend.process.Config.ConfigProcess.waitUtils;
-import static testingmachine_backend.process.utils.ProcessPath.processTabElements;
+import static testingmachine_backend.process.utils.ElementsFunctionUtils.*;
 
 public class ProcessWizardSection {
 

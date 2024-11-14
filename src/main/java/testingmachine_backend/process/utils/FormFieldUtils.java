@@ -4,14 +4,15 @@ import org.openqa.selenium.*;
 import testingmachine_backend.process.Config.ConfigProcess;
 
 import static testingmachine_backend.process.Config.ConfigProcess.waitUtils;
-import static testingmachine_backend.process.utils.ProcessPath.*;
+import static testingmachine_backend.process.utils.ElementsFunctionUtils.*;
+
 
 public class FormFieldUtils {
 
     public static void handleElementAction(WebDriver driver, WebElement element, String classAttribute,
                                            String valueAttribute, String typeAttribute, String dataPath,
                                            String regexData, String id, String fileName) {
-
+        checkLogsAfterAction(driver, id, fileName);
         if (valueAttribute != null && valueAttribute.isEmpty()) {
             handleElementSubAction(driver, element, classAttribute, dataPath, regexData, id, fileName);}
         else if (isRadioField(classAttribute)) {
@@ -28,7 +29,8 @@ public class FormFieldUtils {
     private static void handleElementSubAction(WebDriver driver, WebElement element, String classAttribute, String dataPath, String regexData, String id, String fileName) {
         if (classAttribute != null && !classAttribute.isEmpty()) {
             if (isPopupField(classAttribute)) {
-                WebElement popupButton = findPopupButtonForElement(element);
+                waitUtils(driver);
+                WebElement popupButton = findElementWithPopup(driver, element, id, fileName);
                 if (popupButton != null) {
                     popupButton.click();
                     waitUtils(driver);
@@ -36,13 +38,13 @@ public class FormFieldUtils {
                     waitUtils(driver);
                 }
             } else {
-                handleFieldByType(element, classAttribute, regexData, driver, dataPath, id);
+                handleFieldByType(element, classAttribute, regexData, driver, dataPath, id, fileName);
             }
         }
     }
 
     private static void handleFieldByType(WebElement element, String classAttribute, String regexData,
-                                          WebDriver driver, String dataPath, String id) {
+                                          WebDriver driver, String dataPath, String id, String fileName) {
         if (isTextField(classAttribute)) {
             sendKeysBasedOnRegex(element, regexData);
         } else if (isLongField(classAttribute)) {
@@ -77,7 +79,7 @@ public class FormFieldUtils {
         } else if (isTextEditorField(classAttribute)) {
             findTextEditorInput(driver, dataPath, id);
         } else if (isComboField(classAttribute)) {
-            comboboxFunction(driver, dataPath, id);
+            comboboxFunction(driver, dataPath, id, fileName);
         }
     }
 

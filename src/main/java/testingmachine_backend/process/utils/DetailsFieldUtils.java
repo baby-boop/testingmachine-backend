@@ -10,7 +10,7 @@ import java.util.logging.Level;
 
 import static testingmachine_backend.process.Config.ConfigProcess.waitUtils;
 import static testingmachine_backend.process.utils.ProcessPath.LOGGER;
-import static testingmachine_backend.process.utils.ProcessPath.*;
+import static testingmachine_backend.process.utils.ElementsFunctionUtils.*;
 
 
 public class DetailsFieldUtils {

@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import testingmachine_backend.process.DTO.*;
 import testingmachine_backend.process.ProcessList;
+import testingmachine_backend.process.utils.ElementsFunctionUtils;
 import testingmachine_backend.process.utils.IsProcessMessage;
 import testingmachine_backend.process.utils.ProcessPath;
 
@@ -13,7 +14,7 @@ public class ProcessController {
 
     @GetMapping("/process-log")
     public List<ProcessLogDTO> getProcessLog() {
-        return ProcessPath.getProcessLogMessages();
+        return ElementsFunctionUtils.getProcessLogMessages();
     }
     @GetMapping("/process-count")
     public ProcessDTO getProcessCounts() {
@@ -43,8 +44,8 @@ public class ProcessController {
     public List<InfoMessageDTO> getInfoProcess() {
         return IsProcessMessage.getProcessInfoMessages();
     }
-    @GetMapping("/failed-process")
-    public List<FailedProcessDTO> getFailedProcess() {
-        return ProcessPath.getProcessFailed();
+    @GetMapping("/empty-data")
+    public List<EmptyDataDTO> getFailedProcess() {
+        return ElementsFunctionUtils.getUniqueEmptyDataPath();
     }
 }

@@ -7,12 +7,13 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 import java.util.*;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static testingmachine_backend.process.Config.ConfigProcess.waitUtils;
-import static testingmachine_backend.process.utils.ProcessPath.*;
+import static testingmachine_backend.process.utils.ElementsFunctionUtils.*;
 
 public class TabDetailsFieldUtils {
-
+    static final Logger LOGGER = Logger.getLogger(TabDetailsFieldUtils.class.getName());
     public static final int SHORT_WAIT_SECONDS = 2;
 
     public static void tabDetailItems(WebDriver driver, String id, String fileName) {
