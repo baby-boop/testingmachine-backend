@@ -32,7 +32,7 @@ public class TabDetailsFieldUtils {
                             String sectionPath = elementTab.getAttribute("data-section-path");
                             waitUtils(driver);
                             List<WebElement> findTestElement = findTest(driver, tabIdentifier, id, sectionPath);
-                            processTabElements(driver, findTestElement, id);
+                            processTabElements(driver, findTestElement, id, fileName);
                             List<WebElement> allActionTabPath = findRowActionTabPathsButton(driver, sectionPath);
                             if (allActionTabPath != null) {
                                 List<WebElement> findTabDefaultRows = findRowActionTabDefaultRow(driver, sectionPath);
@@ -41,20 +41,21 @@ public class TabDetailsFieldUtils {
                                     waitUtils(driver);
                                     for (WebElement action : allActionTabPath) {
                                         String onclick = action.getAttribute("onclick");
+                                        String sectionCode = action.getAttribute("data-section-code");
                                         if (onclick.contains("bpAddMainMultiRow")) {
                                             action.click();
                                             waitUtils(driver);
-                                            clickFirstRow(driver, id);
+                                            clickFirstRow(driver, id, fileName, sectionCode);
                                             waitUtils(driver);
                                             List<WebElement> tabElementPaths1 = findElementsWithTabDetailsPath(driver, sectionPath, tabIdentifier, id);
-                                            processTabElements(driver, tabElementPaths1, id);
+                                            processTabElements(driver, tabElementPaths1, id, fileName);
                                             break;
                                         } else if (onclick.contains("bpAddMainRow")) {
                                             waitUtils(driver);
                                             action.click();
                                             waitUtils(driver);
                                             List<WebElement> tabElementPaths = findElementsWithTabDetailsPath(driver, sectionPath, tabIdentifier, id);
-                                            processTabElements(driver, tabElementPaths, id);
+                                            processTabElements(driver, tabElementPaths, id, fileName);
 
                                             List<WebElement> rowsToRowShowForms = findRowsToRowShowForm(driver, sectionPath, tabIdentifier, id);
                                             if (rowsToRowShowForms != null) {
@@ -63,7 +64,7 @@ public class TabDetailsFieldUtils {
                                                     String rowsDataBPath = rowsToRowShowForm.getAttribute("data-b-path");
                                                     List<WebElement> rowsToRowElements = findRowsToRowPaths(driver, id, tabIdentifier, sectionPath, rowsDataBPath);
 
-                                                    processTabElements(driver, rowsToRowElements, id);
+                                                    processTabElements(driver, rowsToRowElements, id, fileName);
                                                     WebElement selectButton = driver.findElement(By.xpath("//button[contains(@class, 'btn green-meadow btn-sm')]"));
                                                     selectButton.click();
                                                 }
@@ -73,7 +74,7 @@ public class TabDetailsFieldUtils {
                                     }
                                 }else{
                                     List<WebElement> findTestElement1 = findTest(driver, tabIdentifier, id, sectionPath);
-                                    processTabElements(driver, findTestElement1, id);
+                                    processTabElements(driver, findTestElement1, id, fileName);
                                 }
                             }
                         }

@@ -24,7 +24,7 @@ public class DetailsFieldUtils {
                     String sectionPath = element.getAttribute("data-section-path");
                     waitUtils(driver);
                     List<WebElement> rowElements = findElementsWithDetailsPath(driver, sectionPath);
-                    processTabElements(driver, rowElements, id);
+                    processTabElements(driver, rowElements, id, fileName);
                     List<WebElement> allActionPath = findRowActionPathsButton(driver, sectionPath);
                     if (allActionPath != null) {
                         List<WebElement> findLayoutDefaultRows = findDefaultRow(driver, sectionPath);
@@ -33,13 +33,15 @@ public class DetailsFieldUtils {
                             waitUtils(driver);
                             for (WebElement action : allActionPath) {
                                 String onclick = action.getAttribute("onclick");
+                                String sectionCode = action.getAttribute("data-section-code");
                                 if (onclick.contains("bpAddMainMultiRow")) {
+
                                     action.click();
                                     waitUtils(driver);
-                                    clickFirstRow(driver, id);
+                                    clickFirstRow(driver, id, fileName, sectionCode);
                                     waitUtils(driver);
                                     List<WebElement> rowElements3 = findElementsWithDetailsPath(driver, sectionPath);
-                                    processTabElements(driver, rowElements3, id);
+                                    processTabElements(driver, rowElements3, id, fileName);
                                     break;
                                 } else if (onclick.contains("bpAddMainRow")) {
                                     waitUtils(driver);
@@ -47,14 +49,14 @@ public class DetailsFieldUtils {
                                     waitUtils(driver);
                                     Thread.sleep(1000);
                                     List<WebElement> rowElements1 = findElementsWithDetailsPath(driver, sectionPath);
-                                    processTabElements(driver, rowElements1, id);
+                                    processTabElements(driver, rowElements1, id, fileName);
                                     break;
                                 }
                             }
                         }
                     }else{
                         List<WebElement> rowElements2 = findElementsWithDetailsPath(driver, sectionPath);
-                        processTabElements(driver, rowElements2, id);
+                        processTabElements(driver, rowElements2, id, fileName);
                     }
                 }
             }

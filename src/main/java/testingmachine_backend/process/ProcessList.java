@@ -9,8 +9,6 @@ import testingmachine_backend.process.Config.ConfigProcess;
 import testingmachine_backend.process.utils.ProcessPath;
 
 import java.io.File;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,13 +66,11 @@ public class ProcessList {
                 totalProcessCount = totalIds;
                 System.out.println("Total IDs to meta: " + totalIds);
 
-                DateTimeFormatter dtfStart = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-                LocalDateTime startDate = LocalDateTime.now();
-                String startdate = dtfStart.format(startDate);
-                System.out.println("start date: " + startdate);
+
+                System.out.println("Start date: " + ConfigProcess.DateUtils.getCurrentDateTime());
 
                 for (File file : listOfFiles) {
-                    System.err.println("Processing file: " + file.getName());
+                    System.out.println("Processing file: " + file.getName());
 
                     List<String> ids = readIdsFromFile(file.getAbsolutePath());
 
@@ -88,6 +84,8 @@ public class ProcessList {
 
                         WebElement AddProcessButton = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("li[data-id='" + id + "']")));
                         action.doubleClick(AddProcessButton).perform();
+                        System.out.println("Process start date: " + ConfigProcess.DateUtils.getCurrentDateTime());
+
 
                         wait.until(ExpectedConditions.visibilityOfElementLocated(By.tagName("body")));
                         WaitUtils.retryWaitForLoadToDisappear(driver, file.getName(), id, 3);
@@ -98,10 +96,9 @@ public class ProcessList {
                         System.out.println("Process count: " + exCount + ", id: " + id);
                     }
                 }
-                DateTimeFormatter dtfEnd = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-                LocalDateTime startEnd = LocalDateTime.now();
-                String endtime = dtfEnd.format(startEnd);
-                System.out.println("End date: " + endtime);
+
+                System.out.println("End date: " + ConfigProcess.DateUtils.getCurrentDateTime());
+
             }
         } catch (Exception e) {
 //

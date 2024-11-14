@@ -18,6 +18,9 @@ public class WaitElement {
     public static void retryWaitForLoadToDisappear(WebDriver driver, int maxAttempts) {
         retryAction(() -> waitForLoadToDisappear(driver), maxAttempts);
     }
+    public static void retryWaitForSpinner(WebDriver driver, int maxAttempts) {
+        retryAction(() -> waitForSpinner(driver), maxAttempts);
+    }
 
     private static void waitForLoadingToDisappear(WebDriver driver) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(waitTime));
@@ -29,7 +32,7 @@ public class WaitElement {
         } catch (NoSuchElementException e) {
             // Loading message not found, proceed
         } catch (TimeoutException e) {
-
+            //
         }
     }
 
@@ -43,9 +46,25 @@ public class WaitElement {
         } catch (NoSuchElementException e) {
             // Loading message not found, proceed
         } catch (TimeoutException e) {
-
+            //
         }
     }
+
+    private static void waitForSpinner(WebDriver driver) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(waitTime));
+        try {
+
+            WebElement saveButtonSpinner = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[contains(@class, 'btn btn-sm btn-circle btn-success bpMainSaveButton bp-btn-save ')]//i[contains(@class, 'fa fa-spinner fa-pulse fa-fw')]")));
+            if (saveButtonSpinner.isDisplayed()) {
+                wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[contains(@class, 'btn btn-sm btn-circle btn-success bpMainSaveButton bp-btn-save ')]//i[contains(@class, 'fa fa-spinner fa-pulse fa-fw')]")));
+            }
+        } catch (NoSuchElementException e) {
+            // Loading message not found, proceed
+        }catch (TimeoutException e) {
+            //
+        }
+    }
+
     private static void retryAction(Runnable action, int maxAttempts) {
         int attempt = 0;
         while (attempt < maxAttempts) {

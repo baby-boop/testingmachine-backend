@@ -26,7 +26,7 @@ public class LayoutProcessSection {
                 String dataSectionCode = sectionPath.getAttribute("data-section-code");
                 waitUtils(driver);
                 List<WebElement> layoutPath = findLayoutFieldPath(driver, dataSectionCode);
-                processTabElements(driver, layoutPath, id);
+                processTabElements(driver, layoutPath, id, fileName);
                 List<WebElement> allActionTabPath = findLayoutActionButton(driver, dataSectionCode);
                 if (allActionTabPath != null) {
                     List<WebElement> findLayoutDefaultRows = findLayoutDefaultRow(driver, dataSectionCode);
@@ -35,26 +35,27 @@ public class LayoutProcessSection {
                         waitUtils(driver);
                         for (WebElement action : allActionTabPath) {
                             String onclick = action.getAttribute("onclick");
+                            String sectionCode = action.getAttribute("data-section-code");
                             if (onclick.contains("bpAddMainMultiRow")) {
                                 action.click();
                                 waitUtils(driver);
-                                clickFirstRow(driver, id);
+                                clickFirstRow(driver, id, fileName, sectionCode);
                                 waitUtils(driver);
                                 List<WebElement> layoutDtlPath2 = findLayoutDtlFieldPath(driver, dataSectionCode);
-                                processTabElements(driver, layoutDtlPath2, id);
+                                processTabElements(driver, layoutDtlPath2, id, fileName);
                                 break;
                             } else if (onclick.contains("bpAddMainRow")) {
                                 waitUtils(driver);
                                 action.click();
                                 waitUtils(driver);
                                 List<WebElement> layoutDtlPath = findLayoutDtlFieldPath(driver, dataSectionCode);
-                                processTabElements(driver, layoutDtlPath, id);
+                                processTabElements(driver, layoutDtlPath, id, fileName);
                                 break;
                             }
                         }
                     }else{
                         List<WebElement> layoutPath1 = findLayoutFieldPath(driver, dataSectionCode);
-                        processTabElements(driver, layoutPath1, id);
+                        processTabElements(driver, layoutPath1, id, fileName);
                     }
                 }
             }

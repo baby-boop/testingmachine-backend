@@ -1,56 +1,39 @@
 package testingmachine_backend.process.utils;
 
 import org.openqa.selenium.*;
-
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import testingmachine_backend.process.Config.ConfigProcess;
 
 import static testingmachine_backend.process.Config.ConfigProcess.waitUtils;
 import static testingmachine_backend.process.utils.ProcessPath.*;
 
 public class FormFieldUtils {
 
-    public static class DateUtils {
-
-        public static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-        public static final DateTimeFormatter DATETIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-
-        public static String getCurrentDate() {
-            LocalDateTime sysDate = LocalDateTime.now();
-            return DATE_FORMATTER.format(sysDate);
-        }
-
-        public static String getCurrentDateTime() {
-            LocalDateTime sysDate = LocalDateTime.now();
-            return DATETIME_FORMATTER.format(sysDate);
-        }
-    }
-
     public static void handleElementAction(WebDriver driver, WebElement element, String classAttribute,
                                            String valueAttribute, String typeAttribute, String dataPath,
-                                           String regexData, String id) {
+                                           String regexData, String id, String fileName) {
 
-        if (valueAttribute != null && valueAttribute.isEmpty()  ) {
-            handleElementSubAction(driver, element, classAttribute, dataPath, regexData, id);
-        }  else if (isRadioField(classAttribute)) {
+        if (valueAttribute != null && valueAttribute.isEmpty()) {
+            handleElementSubAction(driver, element, classAttribute, dataPath, regexData, id, fileName);}
+        else if (isRadioField(classAttribute)) {
             if (!element.findElement(By.xpath("..")).getAttribute("class").contains("checked")) {
                 element.click();
-            }
-        } else if (isCheckBox(typeAttribute) ) {
+            }}
+        else if (isCheckBox(typeAttribute) ) {
             if (!element.findElement(By.xpath("..")).getAttribute("class").contains("checked")) {
                 element.click();
             }
         }
     }
 
-    private static void handleElementSubAction(WebDriver driver, WebElement element, String classAttribute, String dataPath, String regexData, String id) {
+    private static void handleElementSubAction(WebDriver driver, WebElement element, String classAttribute, String dataPath, String regexData, String id, String fileName) {
         if (classAttribute != null && !classAttribute.isEmpty()) {
             if (isPopupField(classAttribute)) {
-                WebElement popupButton = findPopupButtonForElement(element, driver);
+                WebElement popupButton = findPopupButtonForElement(element);
                 if (popupButton != null) {
                     popupButton.click();
                     waitUtils(driver);
-                    clickFirstRow(driver, id);
+                    clickFirstRow(driver, id, fileName, dataPath);
+                    waitUtils(driver);
                 }
             } else {
                 handleFieldByType(element, classAttribute, regexData, driver, dataPath, id);
@@ -73,7 +56,7 @@ public class FormFieldUtils {
         } else if (isAutoDescriptionField(classAttribute)) {
             element.sendKeys("Auto description test");
         } else if (isDatetimeField(classAttribute)) {
-            element.sendKeys(DateUtils.getCurrentDateTime());
+            element.sendKeys(ConfigProcess.DateUtils.getCurrentDateTime());
             element.sendKeys(Keys.ENTER);
         } else if (isTimeField(classAttribute)) {
             element.sendKeys("08:00");
@@ -84,7 +67,7 @@ public class FormFieldUtils {
         } else if (isNumberField(classAttribute)) {
             element.sendKeys("1122");
         } else if (isDateField(classAttribute)) {
-            element.sendKeys(DateUtils.getCurrentDate());
+            element.sendKeys(ConfigProcess.DateUtils.getCurrentDate());
         } else if (isPayrollExpressionField(classAttribute)) {
             element.sendKeys("expressionPayrollCheck");
         } else if (isExpressionEditorField(classAttribute)) {

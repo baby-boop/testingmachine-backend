@@ -7,6 +7,7 @@ import org.openqa.selenium.logging.*;
 import org.openqa.selenium.support.ui.*;
 import testingmachine_backend.process.DTO.ProcessLogDTO;
 import testingmachine_backend.process.DTO.FailedProcessDTO;
+import testingmachine_backend.process.Fields.FailedMessageField;
 import testingmachine_backend.process.Fields.ProcessLogFields;
 import testingmachine_backend.process.Checkers.LayoutChecker;
 import testingmachine_backend.process.Section.LayoutProcessSection;
@@ -16,6 +17,7 @@ import testingmachine_backend.process.Section.ProcessWizardSection;
 import java.sql.Date;
 import java.time.Duration;
 import java.util.*;
+import java.util.NoSuchElementException;
 import java.util.logging.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -32,9 +34,11 @@ public class ProcessPath {
     private static final int LONG_WAIT_SECONDS = 90;
     private static final Pattern TAB_ID_PATTERN = Pattern.compile("tab_\\d+_\\d+");
     @Getter
-    private static int failedCount = 0;
+    private static final int failedCount = 0;
 
+    @FailedMessageField
     private static final List<FailedProcessDTO> FailedMessageField = new ArrayList<>();
+
     @ProcessLogFields
     private static final List<ProcessLogDTO> ProcessLogFields = new ArrayList<>();
 
@@ -47,50 +51,39 @@ public class ProcessPath {
                 waitUtils(driver);
 
                 int maxAttempts = 2;
-                boolean isProcessFinished = false;
                 for (int attempt = 0; attempt < maxAttempts; attempt++) {
 
                     if (LayoutChecker.isLayout(driver, id)) {
                         LayoutProcessSection.LayoutFieldFunction(driver, id, fileName);
-                    } else if (ProcessWizardChecker.isWizard(driver, id)){
-                        ProcessWizardSection.KpiWizardFunction(driver, id);
-                    }else {
-                        List<WebElement> elementsWithDataPath = findElementsWithSelector(driver, id );
-                        processTabElements(driver, elementsWithDataPath, id);
+                    } else if (ProcessWizardChecker.isWizard(driver, id)) {
+                        ProcessWizardSection.KpiWizardFunction(driver, id, fileName);
+                    } else {
+                        List<WebElement> elementsWithDataPath = findElementsWithSelector(driver, id);
+                        processTabElements(driver, elementsWithDataPath, id, fileName);
                         tabDetailItems(driver, id, fileName);
                         waitUtils(driver);
 
                         detailActionButton(driver, id, fileName);
                         waitUtils(driver);
                     }
+
                     waitUtils(driver);
-
-                    if(IsProcessMessage.isErrorMessagePresent(driver, id, fileName)){
-                        isProcessFinished = true;
-                        break;
-                    }else{
-                        LOGGER.log(Level.WARNING, "Loop count: " + attempt + " - " + id);
-                    }
                 }
 
-                if (!isProcessFinished) {
-                    failedCount++;
-                    FailedProcessDTO failedMessage = new FailedProcessDTO(fileName, id);
-                    FailedMessageField.add(failedMessage);
-                    LOGGER.log(Level.FINEST, "Process complete after  " + maxAttempts + " attempts: " + id);
-                }
-                if(isProcessFinished){
-                    saveButtonFunction(driver, id);
+                LOGGER.log(Level.INFO, "Process complete after " + maxAttempts + " attempts: " + id);
+
+                saveButtonFunction(driver, id);
+                waitUtils(driver);
+                if (IsProcessMessage.isErrorMessagePresent(driver, id, fileName)) {
+                    LOGGER.log(Level.INFO, "Process success: " + id);
+                } else {
+                    LOGGER.log(Level.SEVERE, "Process failed: " + id);
                 }
             }
 
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error process: " + id + e);
         }
-    }
-
-    public static List<FailedProcessDTO> getProcessFailed() {
-        return new ArrayList<>(FailedMessageField);
     }
 
     public static boolean checkLogsAfterAction(WebDriver driver, String id, String fileName) {
@@ -110,9 +103,8 @@ public class ProcessPath {
     }
 
     public static boolean isIgnorableError(String message) {
-        return message.contains("Uncaught TypeError: ")
-                || message.contains("Failed to load resource: the server responded with a status of 404 (Not Found)")
-      ;
+        return message.contains("Uncaught TypeError: Cannot read properties of null")
+                || message.contains("Failed to load resource: the server responded with a status of 404 (Not Found)");
     }
 
     public static List<WebElement> findElementsWithSelector(WebDriver driver,String id) {
@@ -147,13 +139,12 @@ public class ProcessPath {
         }
     }
 
-    public static WebElement findPopupButtonForElement(WebElement element, WebDriver driver) {
+    public static WebElement findPopupButtonForElement(WebElement element) {
         try {
-            waitUtils(driver);
-            Thread.sleep(500);
+            Thread.sleep(1000);
             return element.findElement(By.xpath("./following-sibling::span[@class='input-group-btn']/button"));
         } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Popup button not found ");
+            LOGGER.log(Level.SEVERE, "Error finding popup button: " + e.getMessage());
             return null;
         }
     }
@@ -174,18 +165,18 @@ public class ProcessPath {
         element.click();
     }
 
-    public static void clickFirstRow(WebDriver driver, String id) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(LONG_WAIT_SECONDS));
+    public static void clickFirstRow(WebDriver driver, String id, String fileName, String datapath) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(SHORT_WAIT_SECONDS));
         try{
             waitUtils(driver);
 
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//tr[contains(@id,'datagrid-row-r')]")));
             List<WebElement> rows = driver.findElements(By.xpath("//tr[contains(@id,'datagrid-row-r')]"));
 
             if (!rows.isEmpty()) {
                 Thread.sleep(500);
                 WebElement firstRow = rows.get(0);
                 WebElement firstCell = firstRow.findElement(By.xpath(".//td[1]"));
-
                 if (firstCell != null) {
                     scrollToElement(driver, firstCell);
                     rows.clear();
@@ -200,18 +191,19 @@ public class ProcessPath {
                         }
                     }
 
-                } else {
-                    LOGGER.log(Level.INFO, "First cell in the first row not found: " + id);
-                    WebElement closeBtn = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[contains(@class, 'btn blue-hoki btn-sm')]")));
-                    closeBtn.click();
                 }
             }
             rows.clear();
             wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div[id='bp-window-" + id + "']")));
-        }catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Error first row");
+        } catch (TimeoutException t){
             WebElement closeBtn = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[contains(@class, 'btn blue-hoki btn-sm')]")));
             closeBtn.click();
+            FailedProcessDTO failedMessageField = new FailedProcessDTO(fileName, id, datapath);
+            FailedMessageField.add(failedMessageField);
+            System.out.println("fileName: " + fileName + " id: "+ id + " dataPath: "+ datapath);
+        }
+        catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Error first row");
         }
     }
 
@@ -232,14 +224,15 @@ public class ProcessPath {
                 comboBoxes.click();
                 Thread.sleep(500);
                 selectSecondOption(driver, comboBoxSelectLocator, id);
-            } else if (isElementPresent(driver, comboBoxSelectLocator)) {
-                WebElement comboBoxes2 = wait.until(ExpectedConditions.elementToBeClickable(comboBoxSelectLocator));
-                comboBoxes2.click();
-                Thread.sleep(500);
-                selectSecondOption(driver, comboBoxSelectLocator, id);
             }
-        } catch (Exception e) {
-//            LOGGER.log(Level.WARNING, "Error selecting the second visible combo box option: " + dataSPath);
+        }catch (TimeoutException t){
+            LOGGER.log(Level.SEVERE, "Error finding combo box: " + id);
+        }
+        catch (NoSuchElementException n){
+            LOGGER.log(Level.SEVERE, "Error finding noelement box: " + id);
+        }
+        catch (Exception e) {
+            LOGGER.log(Level.WARNING, "Error selecting the first visible combo box option: " + dataSPath);
         }
     }
 
@@ -261,10 +254,6 @@ public class ProcessPath {
         return matcher.find() ? Optional.of(matcher.group()) : Optional.empty();
     }
 
-    public static List<ProcessLogDTO> getProcessLogMessages() {
-        return new ArrayList<>(ProcessLogFields);
-    }
-
     public static Map<String, WebElement> getUniqueTabElements(List<WebElement> elements) {
         Map<String, WebElement> uniqueTabElements = new LinkedHashMap<>();
         for (WebElement element : elements) {
@@ -272,7 +261,7 @@ public class ProcessPath {
             String elementType = element.getAttribute("type");
             String dataPath = element.getAttribute("data-path");
             if (elementClass.contains("dropdownInput") || elementClass.contains("radioInit")
-                    || elementType.contains("checkbox") || elementClass.contains("booleanInit")
+                    || elementType.contains("checkbox") || elementClass.contains("booleanInit") || elementClass.contains("popupInit")
                     || elementClass.contains("text_editorInit") || elementClass.contains("fileInit")) {
                 if(!element.getAttribute("style").contains("display: none;")){
                     if (!uniqueTabElements.containsKey(dataPath)) {
@@ -298,7 +287,7 @@ public class ProcessPath {
         return attributes;
     }
 
-    public static void processTabElements(WebDriver driver, List<WebElement> elements, String id) {
+    public static void processTabElements(WebDriver driver, List<WebElement> elements, String id, String fileName) {
         if (elements != null) {
             for (WebElement element : elements) {
                 Map<String, String> attributes = getElementAttributes(element);
@@ -310,10 +299,19 @@ public class ProcessPath {
                         attributes.get("type"),
                         attributes.get("data-path"),
                         attributes.get("data-regex"),
-                        id
+                        id,
+                        fileName
                 );
             }
         }
+    }
+
+    public static List<ProcessLogDTO> getProcessLogMessages() {
+        return new ArrayList<>(ProcessLogFields);
+    }
+
+    public static List<FailedProcessDTO> getProcessFailed() {
+        return new ArrayList<>(FailedMessageField);
     }
 }
 
