@@ -38,7 +38,7 @@ public class DetailsFieldUtils {
 
                                     action.click();
                                     waitUtils(driver);
-                                    clickFirstRow(driver, id, fileName, sectionCode);
+                                    clickFirstRow(driver, id, fileName, sectionCode, "");
                                     waitUtils(driver);
                                     List<WebElement> rowElements3 = findElementsWithDetailsPath(driver, sectionPath);
                                     processTabElements(driver, rowElements3, id, fileName);

@@ -50,11 +50,12 @@ public class ElementsFunctionUtils {
         }
     }
     public static WebElement findElementWithPopup(WebDriver driver,WebElement element, String id, String fileName ) {
-//        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(LONG_WAIT_SECONDS));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(LONG_WAIT_SECONDS));
+
         try{
-//            wait.until(ExpectedConditions.invisibilityOfAllElements(element));
             Thread.sleep(2000);
-            return element.findElement(By.xpath("./following-sibling::span[@class='input-group-btn']/button"));
+            return wait.until(ExpectedConditions.elementToBeClickable(
+                    element.findElement(By.xpath("..//span[@class='input-group-btn']/button"))));
         }catch(TimeoutException t){
             System.out.println("Timeout not found: " +id + " fileName: " + fileName +t);
             return null;
@@ -75,7 +76,7 @@ public class ElementsFunctionUtils {
         element.click();
     }
 
-    public static void clickFirstRow(WebDriver driver, String id, String fileName, String datapath) {
+    public static void clickFirstRow(WebDriver driver, String id, String fileName, String datapath, String required) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(SHORT_WAIT_SECONDS));
         try{
             waitUtils(driver);
@@ -100,17 +101,21 @@ public class ElementsFunctionUtils {
                             selectButton.click();
                         }
                     }
-
                 }
             }
             rows.clear();
             wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div[id='bp-window-" + id + "']")));
         } catch (TimeoutException t){
-            WebElement closeBtn = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[contains(@class, 'btn blue-hoki btn-sm')]")));
-            closeBtn.click();
-            EmptyDataDTO emptyPath = new EmptyDataDTO(fileName, id, datapath, "Popup");
-            emptyPathField.add(emptyPath);
-            System.out.println("fileName: " + fileName + " id: "+ id + " dataPath: "+ datapath);
+            if(required != null) {
+
+                EmptyDataDTO emptyPath = new EmptyDataDTO(fileName, id, datapath, "Popup");
+                emptyPathField.add(emptyPath);
+                System.out.println("fileName: " + fileName + " id: "+ id + " dataPath: "+ datapath);
+            }else{
+                WebElement closeBtn = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[contains(@class, 'btn blue-hoki btn-sm')]")));
+                closeBtn.click();
+            }
+
         }
         catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error first row");
@@ -118,7 +123,7 @@ public class ElementsFunctionUtils {
     }
 
 
-    public static void comboboxFunction(WebDriver driver, String dataSPath, String id, String fileName) {
+    public static void comboboxFunction(WebDriver driver, String dataSPath, String required, String id, String fileName) {
         try {
             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(2));
             Thread.sleep(500);
@@ -129,22 +134,24 @@ public class ElementsFunctionUtils {
                 comboBoxes.click();
                 By comboBoxSelectLocator = By.cssSelector("select[data-path='" + dataSPath + "']");
                 Thread.sleep(500);
-                selectSecondOption(driver, comboBoxSelectLocator, id, dataSPath, fileName);
+                selectSecondOption(driver, comboBoxSelectLocator, id, dataSPath, required, fileName);
             }
         }
         catch (Exception e) {
 //            LOGGER.log(Level.SEVERE, "Error selecting the first visible comboBox option: " + dataSPath);
         }
     }
-    public static void selectSecondOption(WebDriver driver, By selectorLocator, String id, String dataPath, String fileName) {
+    public static void selectSecondOption(WebDriver driver, By selectorLocator, String id, String dataPath, String required, String fileName) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(1));
         WebElement selector = wait.until(ExpectedConditions.visibilityOfElementLocated(selectorLocator));
         List<WebElement> options = selector.findElements(By.tagName("option"));
         if (options.size() > 1) {
             options.get(1).click();
         } else {
-            EmptyDataDTO emptyPath = new EmptyDataDTO(fileName, id, dataPath, "Combo");
-            emptyPathField.add(emptyPath);
+            if (required != null){
+                EmptyDataDTO emptyPath = new EmptyDataDTO(fileName, id, dataPath, "Combo");
+                emptyPathField.add(emptyPath);
+            }
             selector.sendKeys(Keys.ENTER);
         }
         selector.clear();
@@ -163,6 +170,7 @@ public class ElementsFunctionUtils {
             String elementClass = element.getAttribute("class");
             String elementType = element.getAttribute("type");
             String dataPath = element.getAttribute("data-path");
+
             if (elementClass.contains("dropdownInput") || elementClass.contains("radioInit")
                     || elementType.contains("checkbox") || elementClass.contains("booleanInit") || elementClass.contains("popupInit")
                     || elementClass.contains("text_editorInit") || elementClass.contains("fileInit")) {
@@ -187,6 +195,7 @@ public class ElementsFunctionUtils {
         attributes.put("type", element.getAttribute("type"));
         attributes.put("data-path", element.getAttribute("data-path"));
         attributes.put("data-regex", element.getAttribute("data-regex"));
+        attributes.put("required", element.getAttribute("required"));
         return attributes;
     }
 
@@ -202,6 +211,7 @@ public class ElementsFunctionUtils {
                         attributes.get("type"),
                         attributes.get("data-path"),
                         attributes.get("data-regex"),
+                        attributes.get("required"),
                         id,
                         fileName
                 );
@@ -220,7 +230,6 @@ public class ElementsFunctionUtils {
                 ProcessLogFields.add(processLogFields);
             }
         }
-
     }
 
     public static boolean isIgnorableError(String message) {

@@ -46,7 +46,7 @@ public class TabDetailsFieldUtils {
                                         if (onclick.contains("bpAddMainMultiRow")) {
                                             action.click();
                                             waitUtils(driver);
-                                            clickFirstRow(driver, id, fileName, sectionCode);
+                                            clickFirstRow(driver, id, fileName, sectionCode, "");
                                             waitUtils(driver);
                                             List<WebElement> tabElementPaths1 = findElementsWithTabDetailsPath(driver, sectionPath, tabIdentifier, id);
                                             processTabElements(driver, tabElementPaths1, id, fileName);

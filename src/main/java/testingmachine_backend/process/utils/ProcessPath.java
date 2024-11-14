@@ -3,6 +3,7 @@ package testingmachine_backend.process.utils;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.*;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.support.ui.*;
 import testingmachine_backend.process.Checkers.LayoutChecker;
 import testingmachine_backend.process.Section.LayoutProcessSection;
@@ -51,7 +52,8 @@ public class ProcessPath {
 
             LOGGER.log(Level.INFO, "Process complete after " + maxAttempts + " attempts: " + id);
 
-            saveButtonFunction(driver, id);
+//            saveButtonFunction(driver, id);
+
             waitUtils(driver);
             if (IsProcessMessage.isErrorMessagePresent(driver, id, fileName)) {
                 LOGGER.log(Level.INFO, "Process success: " + id);
@@ -59,6 +61,10 @@ public class ProcessPath {
                 LOGGER.log(Level.SEVERE, "Process failed: " + id);
             }
 
+        }catch (NoSuchElementException n) {
+            LOGGER.log(Level.SEVERE, "NoSuchElementException: " + id + n);
+        } catch (TimeoutException t) {
+            LOGGER.log(Level.SEVERE, "TimeoutException: " + id + t);
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error process: " + id + e);
         }
@@ -75,7 +81,7 @@ public class ProcessPath {
     }
 
     public static List<WebElement> findElementsWithSelector(WebDriver driver,String id) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(SHORT_WAIT_SECONDS));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(LONG_WAIT_SECONDS));
         try {
             wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div[id='bp-window-" + id + "']")));
 

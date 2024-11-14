@@ -1,7 +1,11 @@
 package testingmachine_backend.process.utils;
 
 import org.openqa.selenium.*;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import testingmachine_backend.process.Config.ConfigProcess;
+
+import java.time.Duration;
 
 import static testingmachine_backend.process.Config.ConfigProcess.waitUtils;
 import static testingmachine_backend.process.utils.ElementsFunctionUtils.*;
@@ -11,10 +15,11 @@ public class FormFieldUtils {
 
     public static void handleElementAction(WebDriver driver, WebElement element, String classAttribute,
                                            String valueAttribute, String typeAttribute, String dataPath,
-                                           String regexData, String id, String fileName) {
+                                           String regexData, String required, String id, String fileName) {
+        waitUtils(driver);
         checkLogsAfterAction(driver, id, fileName);
         if (valueAttribute != null && valueAttribute.isEmpty()) {
-            handleElementSubAction(driver, element, classAttribute, dataPath, regexData, id, fileName);}
+            handleElementSubAction(driver, element, classAttribute, dataPath, regexData, required, id, fileName);}
         else if (isRadioField(classAttribute)) {
             if (!element.findElement(By.xpath("..")).getAttribute("class").contains("checked")) {
                 element.click();
@@ -26,7 +31,7 @@ public class FormFieldUtils {
         }
     }
 
-    private static void handleElementSubAction(WebDriver driver, WebElement element, String classAttribute, String dataPath, String regexData, String id, String fileName) {
+    private static void handleElementSubAction(WebDriver driver, WebElement element, String classAttribute, String dataPath, String regexData, String required, String id, String fileName) {
         if (classAttribute != null && !classAttribute.isEmpty()) {
             if (isPopupField(classAttribute)) {
                 waitUtils(driver);
@@ -34,17 +39,20 @@ public class FormFieldUtils {
                 if (popupButton != null) {
                     popupButton.click();
                     waitUtils(driver);
-                    clickFirstRow(driver, id, fileName, dataPath);
+                    clickFirstRow(driver, id,  fileName, dataPath, required);
                     waitUtils(driver);
+                    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
+                    wait.until(ExpectedConditions.elementToBeClickable(
+                            element.findElement(By.xpath("..//span[@class='input-group-btn']/button"))));
                 }
             } else {
-                handleFieldByType(element, classAttribute, regexData, driver, dataPath, id, fileName);
+                handleFieldByType(element, classAttribute, regexData, driver, dataPath, required, id, fileName);
             }
         }
     }
 
     private static void handleFieldByType(WebElement element, String classAttribute, String regexData,
-                                          WebDriver driver, String dataPath, String id, String fileName) {
+                                          WebDriver driver, String dataPath, String required, String id, String fileName) {
         if (isTextField(classAttribute)) {
             sendKeysBasedOnRegex(element, regexData);
         } else if (isLongField(classAttribute)) {
@@ -79,7 +87,7 @@ public class FormFieldUtils {
         } else if (isTextEditorField(classAttribute)) {
             findTextEditorInput(driver, dataPath, id);
         } else if (isComboField(classAttribute)) {
-            comboboxFunction(driver, dataPath, id, fileName);
+            comboboxFunction(driver, dataPath, required, id, fileName);
         }
     }
 
