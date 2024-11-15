@@ -44,6 +44,10 @@ public class ProcessController {
     public List<InfoMessageDTO> getInfoProcess() {
         return IsProcessMessage.getProcessInfoMessages();
     }
+    @GetMapping("/success-process")
+    public List<SuccessMessageDTO> getSuccessProcess() {
+        return IsProcessMessage.getProcessSuccessMessages();
+    }
     @GetMapping("/empty-data")
     public List<EmptyDataDTO> getFailedProcess() {
         return ElementsFunctionUtils.getUniqueEmptyDataPath();

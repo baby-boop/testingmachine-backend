@@ -53,9 +53,9 @@ public class ElementsFunctionUtils {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(LONG_WAIT_SECONDS));
 
         try{
-            Thread.sleep(2000);
-            return wait.until(ExpectedConditions.elementToBeClickable(
-                    element.findElement(By.xpath("..//span[@class='input-group-btn']/button"))));
+            wait.until(ExpectedConditions.elementToBeClickable(element.findElement(By.xpath("..//span[@class='input-group-btn']/button"))));
+
+            return wait.until(ExpectedConditions.elementToBeClickable(element.findElement(By.xpath("..//span[@class='input-group-btn']/button"))));
         }catch(TimeoutException t){
             System.out.println("Timeout not found: " +id + " fileName: " + fileName +t);
             return null;
@@ -171,9 +171,18 @@ public class ElementsFunctionUtils {
             String elementType = element.getAttribute("type");
             String dataPath = element.getAttribute("data-path");
 
-            if (elementClass.contains("dropdownInput") || elementClass.contains("radioInit")
-                    || elementType.contains("checkbox") || elementClass.contains("booleanInit") || elementClass.contains("popupInit")
-                    || elementClass.contains("text_editorInit") || elementClass.contains("fileInit")) {
+            if(elementClass.contains("text_editorInit") ){
+                if (!uniqueTabElements.containsKey(dataPath)) {
+                    uniqueTabElements.put(dataPath, element);
+                }
+            }else if(elementClass.contains("popupInit") ){
+                if (!uniqueTabElements.containsKey(dataPath)) {
+                    uniqueTabElements.put(dataPath, element);
+                }
+            }
+            else if (elementClass.contains("dropdownInput") || elementClass.contains("radioInit")
+                    || elementType.contains("checkbox") || elementClass.contains("booleanInit")
+                    || elementClass.contains("fileInit") ) {
                 if(!element.getAttribute("style").contains("display: none;")){
                     if (!uniqueTabElements.containsKey(dataPath)) {
                         uniqueTabElements.put(dataPath, element);

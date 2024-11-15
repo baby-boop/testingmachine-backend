@@ -6,6 +6,9 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import testingmachine_backend.process.Config.ConfigProcess;
 
 import java.time.Duration;
+import java.util.NoSuchElementException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static testingmachine_backend.process.Config.ConfigProcess.waitUtils;
 import static testingmachine_backend.process.utils.ElementsFunctionUtils.*;
@@ -41,9 +44,6 @@ public class FormFieldUtils {
                     waitUtils(driver);
                     clickFirstRow(driver, id,  fileName, dataPath, required);
                     waitUtils(driver);
-                    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
-                    wait.until(ExpectedConditions.elementToBeClickable(
-                            element.findElement(By.xpath("..//span[@class='input-group-btn']/button"))));
                 }
             } else {
                 handleFieldByType(element, classAttribute, regexData, driver, dataPath, required, id, fileName);

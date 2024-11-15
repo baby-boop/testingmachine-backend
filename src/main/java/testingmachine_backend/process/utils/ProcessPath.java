@@ -69,6 +69,7 @@ public class ProcessPath {
             LOGGER.log(Level.SEVERE, "Error process: " + id + e);
         }
     }
+
     private static void saveButtonFunction(WebDriver driver, String id) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(LONG_WAIT_SECONDS));
         try {
@@ -81,7 +82,7 @@ public class ProcessPath {
     }
 
     public static List<WebElement> findElementsWithSelector(WebDriver driver,String id) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(LONG_WAIT_SECONDS));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(SHORT_WAIT_SECONDS));
         try {
             wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div[id='bp-window-" + id + "']")));
 

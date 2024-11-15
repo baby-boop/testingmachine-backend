@@ -8,6 +8,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import testingmachine_backend.process.DTO.ErrorMessageDTO;
 import testingmachine_backend.process.DTO.InfoMessageDTO;
+import testingmachine_backend.process.DTO.SuccessMessageDTO;
 import testingmachine_backend.process.DTO.WarningMessageDTO;
 
 import java.time.Duration;
@@ -19,6 +20,7 @@ public class IsProcessMessage {
     private static final List<ErrorMessageDTO> ErrorMessageField = new ArrayList<>();
     private static final List<WarningMessageDTO> WarningMessageField = new ArrayList<>();
     private static final List<InfoMessageDTO> InfoMessageField = new ArrayList<>();
+    private static final List<SuccessMessageDTO> SuccessMessageField = new ArrayList<>();
     @Getter
     private static int warningCount = 0;
     @Getter
@@ -28,8 +30,7 @@ public class IsProcessMessage {
     @Getter
     private static int successCount = 0;
 
-    private static final int SHORT_WAIT_SECONDS = 1;
-
+    private static final int SHORT_WAIT_SECONDS = 10;
 
     public static boolean isErrorMessagePresent(WebDriver driver, String id, String fileName) {
         try {
@@ -63,6 +64,7 @@ public class IsProcessMessage {
             WarningMessageDTO warningMessages = new WarningMessageDTO(fileName, id, messageText);
             ErrorMessageDTO errorMessages = new ErrorMessageDTO(fileName, id, messageText);
             InfoMessageDTO infoMessages = new InfoMessageDTO(fileName, id, messageText);
+            SuccessMessageDTO successMessages = new SuccessMessageDTO(fileName, id);
 
             if (isWarning) {
                 warningCount++;
@@ -75,6 +77,7 @@ public class IsProcessMessage {
                 InfoMessageField.add(infoMessages);
             } else if(isSuccess) {
                 successCount++;
+                SuccessMessageField.add(successMessages);
             }
 
             return messageContent.isDisplayed();
@@ -95,5 +98,8 @@ public class IsProcessMessage {
 
     public static List<InfoMessageDTO> getProcessInfoMessages() {
         return new ArrayList<>(InfoMessageField);
+    }
+    public static List<SuccessMessageDTO> getProcessSuccessMessages() {
+        return new ArrayList<>(SuccessMessageField);
     }
 }

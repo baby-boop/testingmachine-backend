@@ -1,9 +1,16 @@
 package testingmachine_backend.process.DTO;
 
+import lombok.Getter;
+import lombok.Setter;
+
 public class ProcessLogDTO {
 
 
+    @Setter
+    @Getter
     private String fileName;
+    @Setter
+    @Getter
     private String processId;
     private String messageText;
 
@@ -11,22 +18,6 @@ public class ProcessLogDTO {
         this.fileName = fileName;
         this.processId = processId;
         this.messageText = messageText;
-    }
-
-    public String getFileName() {
-        return fileName;
-    }
-
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
-    }
-
-    public String getProcessId() {
-        return processId;
-    }
-
-    public void setProcessId(String processId) {
-        this.processId = processId;
     }
 
     public String getMessage() {

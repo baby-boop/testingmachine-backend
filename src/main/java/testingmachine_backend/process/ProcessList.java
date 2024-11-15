@@ -38,7 +38,7 @@ public class ProcessList {
             WebElement checkBox = wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("isLdap")));
             checkBox.click();
 
-            removeCaptcha();
+//            removeCaptcha();
 
             passwordField.sendKeys(Keys.ENTER);
 

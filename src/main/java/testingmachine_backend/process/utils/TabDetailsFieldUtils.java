@@ -58,18 +58,18 @@ public class TabDetailsFieldUtils {
                                             List<WebElement> tabElementPaths = findElementsWithTabDetailsPath(driver, sectionPath, tabIdentifier, id);
                                             processTabElements(driver, tabElementPaths, id, fileName);
 
-                                            List<WebElement> rowsToRowShowForms = findRowsToRowShowForm(driver, sectionPath, tabIdentifier, id);
-                                            if (rowsToRowShowForms != null) {
-                                                for (WebElement rowsToRowShowForm : rowsToRowShowForms) {
-                                                    rowsToRowShowForm.click();
-                                                    String rowsDataBPath = rowsToRowShowForm.getAttribute("data-b-path");
-                                                    List<WebElement> rowsToRowElements = findRowsToRowPaths(driver, id, tabIdentifier, sectionPath, rowsDataBPath);
-
-                                                    processTabElements(driver, rowsToRowElements, id, fileName);
-                                                    WebElement selectButton = driver.findElement(By.xpath("//button[contains(@class, 'btn green-meadow btn-sm')]"));
-                                                    selectButton.click();
-                                                }
-                                            }
+//                                            List<WebElement> rowsToRowShowForms = findRowsToRowShowForm(driver, sectionPath, tabIdentifier, id);
+//                                            if (rowsToRowShowForms != null) {
+//                                                for (WebElement rowsToRowShowForm : rowsToRowShowForms) {
+//                                                    rowsToRowShowForm.click();
+//                                                    String rowsDataBPath = rowsToRowShowForm.getAttribute("data-b-path");
+//                                                    List<WebElement> rowsToRowElements = findRowsToRowPaths(driver, id, tabIdentifier, sectionPath, rowsDataBPath);
+//
+//                                                    processTabElements(driver, rowsToRowElements, id, fileName);
+//                                                    WebElement selectButton = driver.findElement(By.xpath("//button[contains(@class, 'btn green-meadow btn-sm')]"));
+//                                                    selectButton.click();
+//                                                }
+//                                            }
                                             break;
                                         }
                                     }
