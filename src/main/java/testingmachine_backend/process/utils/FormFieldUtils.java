@@ -35,6 +35,7 @@ public class FormFieldUtils {
     }
 
     private static void handleElementSubAction(WebDriver driver, WebElement element, String classAttribute, String dataPath, String regexData, String required, String id, String fileName) {
+
         if (classAttribute != null && !classAttribute.isEmpty()) {
             if (isPopupField(classAttribute)) {
                 waitUtils(driver);
@@ -44,11 +45,13 @@ public class FormFieldUtils {
                     waitUtils(driver);
                     clickFirstRow(driver, id,  fileName, dataPath, required);
                     waitUtils(driver);
+
                 }
             } else {
                 handleFieldByType(element, classAttribute, regexData, driver, dataPath, required, id, fileName);
             }
         }
+
     }
 
     private static void handleFieldByType(WebElement element, String classAttribute, String regexData,

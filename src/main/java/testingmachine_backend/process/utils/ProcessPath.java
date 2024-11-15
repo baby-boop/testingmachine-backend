@@ -6,6 +6,7 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.support.ui.*;
 import testingmachine_backend.process.Checkers.LayoutChecker;
+import testingmachine_backend.process.Messages.IsProcessMessage;
 import testingmachine_backend.process.Section.LayoutProcessSection;
 import testingmachine_backend.process.Checkers.ProcessWizardChecker;
 import testingmachine_backend.process.Section.ProcessWizardSection;

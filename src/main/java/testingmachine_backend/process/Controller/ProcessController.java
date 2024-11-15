@@ -3,9 +3,10 @@ package testingmachine_backend.process.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import testingmachine_backend.process.DTO.*;
+import testingmachine_backend.process.Messages.PopupMessage;
 import testingmachine_backend.process.ProcessList;
 import testingmachine_backend.process.utils.ElementsFunctionUtils;
-import testingmachine_backend.process.utils.IsProcessMessage;
+import testingmachine_backend.process.Messages.IsProcessMessage;
 import testingmachine_backend.process.utils.ProcessPath;
 
 import java.util.List;
@@ -51,5 +52,9 @@ public class ProcessController {
     @GetMapping("/empty-data")
     public List<EmptyDataDTO> getFailedProcess() {
         return ElementsFunctionUtils.getUniqueEmptyDataPath();
+    }
+    @GetMapping("/popup-message")
+    public List<PopupMessageDTO> getPopupMessages() {
+        return PopupMessage.getPopupMessages();
     }
 }

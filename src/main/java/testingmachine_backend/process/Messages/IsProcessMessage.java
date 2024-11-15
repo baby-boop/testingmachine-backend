@@ -1,4 +1,4 @@
-package testingmachine_backend.process.utils;
+package testingmachine_backend.process.Messages;
 
 import lombok.Getter;
 import org.openqa.selenium.By;
