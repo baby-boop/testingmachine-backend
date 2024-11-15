@@ -17,6 +17,7 @@ public class ProcessController {
     public List<ProcessLogDTO> getProcessLog() {
         return ElementsFunctionUtils.getProcessLogMessages();
     }
+
     @GetMapping("/process-count")
     public ProcessDTO getProcessCounts() {
         int totalProcessCount = ProcessList.getTotalCount();
@@ -37,24 +38,30 @@ public class ProcessController {
     public List<WarningMessageDTO> getWarningProcess() {
         return IsProcessMessage.getProcessWarningMessages();
     }
+
     @GetMapping("/error-process")
     public List<ErrorMessageDTO> getErrorProcess() {
         return IsProcessMessage.getProcessErrorMessages();
     }
+
     @GetMapping("/info-process")
     public List<InfoMessageDTO> getInfoProcess() {
         return IsProcessMessage.getProcessInfoMessages();
     }
+
     @GetMapping("/success-process")
     public List<SuccessMessageDTO> getSuccessProcess() {
         return IsProcessMessage.getProcessSuccessMessages();
     }
+
     @GetMapping("/empty-data")
     public List<EmptyDataDTO> getFailedProcess() {
         return ElementsFunctionUtils.getUniqueEmptyDataPath();
     }
+
     @GetMapping("/popup-message")
     public List<PopupMessageDTO> getPopupMessages() {
-        return PopupMessage.getPopupMessages();
+        return PopupMessage.getUniquePopupMessages();
     }
+
 }

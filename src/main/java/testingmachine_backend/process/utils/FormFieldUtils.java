@@ -1,14 +1,7 @@
 package testingmachine_backend.process.utils;
 
 import org.openqa.selenium.*;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import testingmachine_backend.process.Config.ConfigProcess;
-
-import java.time.Duration;
-import java.util.NoSuchElementException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import static testingmachine_backend.process.Config.ConfigProcess.waitUtils;
 import static testingmachine_backend.process.utils.ElementsFunctionUtils.*;
@@ -35,18 +28,10 @@ public class FormFieldUtils {
     }
 
     private static void handleElementSubAction(WebDriver driver, WebElement element, String classAttribute, String dataPath, String regexData, String required, String id, String fileName) {
-
         if (classAttribute != null && !classAttribute.isEmpty()) {
             if (isPopupField(classAttribute)) {
                 waitUtils(driver);
-                WebElement popupButton = findElementWithPopup(driver, element, id, fileName);
-                if (popupButton != null) {
-                    popupButton.click();
-                    waitUtils(driver);
-                    clickFirstRow(driver, id,  fileName, dataPath, required);
-                    waitUtils(driver);
-
-                }
+                findElementWithPopup(driver, element, dataPath, required, id, fileName);
             } else {
                 handleFieldByType(element, classAttribute, regexData, driver, dataPath, required, id, fileName);
             }

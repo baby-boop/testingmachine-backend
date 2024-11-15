@@ -11,6 +11,8 @@ import testingmachine_backend.process.DTO.EmptyDataDTO;
 import testingmachine_backend.process.DTO.ProcessLogDTO;
 import testingmachine_backend.process.Fields.EmptyDataField;
 import testingmachine_backend.process.Fields.ProcessLogFields;
+import testingmachine_backend.process.Messages.IsProcessMessage;
+import testingmachine_backend.process.Messages.PopupMessage;
 
 import java.sql.Date;
 import java.time.Duration;
@@ -49,23 +51,23 @@ public class ElementsFunctionUtils {
             LOGGER.log(Level.WARNING, "Error finding text editor: " + id);
         }
     }
-    public static WebElement findElementWithPopup(WebDriver driver,WebElement element, String id, String fileName ) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(LONG_WAIT_SECONDS));
+    public static void findElementWithPopup(WebDriver driver,WebElement element, String dataPath, String required, String id, String fileName ) {
 
         try{
-            wait.until(ExpectedConditions.elementToBeClickable(element.findElement(By.xpath("..//span[@class='input-group-btn']/button"))));
-
-            return wait.until(ExpectedConditions.elementToBeClickable(element.findElement(By.xpath("..//span[@class='input-group-btn']/button"))));
+            WebElement popupButton = element.findElement(By.xpath("..//span[@class='input-group-btn']/button"));
+            if (popupButton != null) {
+                popupButton.click();
+                waitUtils(driver);
+                clickFirstRow(driver, id,  fileName, dataPath, required);
+                waitUtils(driver);
+            }
         }catch(TimeoutException t){
             System.out.println("Timeout not found: " +id + " fileName: " + fileName +t);
-            return null;
         }catch (NoSuchElementException n){
             System.out.println("Element not found: " + id + " fileName: " + fileName + n);
-            return null;
         }
         catch (Exception e) {
             System.out.println("Element error: " + id + " fileName: " + fileName + e);
-            return null;
         }
     }
 
@@ -106,15 +108,21 @@ public class ElementsFunctionUtils {
             rows.clear();
             wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div[id='bp-window-" + id + "']")));
         } catch (TimeoutException t){
-            if(required != null) {
-
-                EmptyDataDTO emptyPath = new EmptyDataDTO(fileName, id, datapath, "Popup");
-                emptyPathField.add(emptyPath);
-                System.out.println("fileName: " + fileName + " id: "+ id + " dataPath: "+ datapath);
-            }else{
+            if (PopupMessage.isErrorMessagePresent(driver, datapath, id, fileName)) {
                 WebElement closeBtn = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[contains(@class, 'btn blue-hoki btn-sm')]")));
                 closeBtn.click();
+            }else{
+                if(required != null) {
+
+                    EmptyDataDTO emptyPath = new EmptyDataDTO(fileName, id, datapath, "Popup");
+                    emptyPathField.add(emptyPath);
+                    System.out.println("fileName: " + fileName + " id: "+ id + " dataPath: "+ datapath);
+                }else{
+                    WebElement closeBtn = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[contains(@class, 'btn blue-hoki btn-sm')]")));
+                    closeBtn.click();
+                }
             }
+
 
         }
         catch (Exception e) {
