@@ -11,7 +11,6 @@ import testingmachine_backend.process.DTO.EmptyDataDTO;
 import testingmachine_backend.process.DTO.ProcessLogDTO;
 import testingmachine_backend.process.Fields.EmptyDataField;
 import testingmachine_backend.process.Fields.ProcessLogFields;
-import testingmachine_backend.process.Messages.IsProcessMessage;
 import testingmachine_backend.process.Messages.PopupMessage;
 
 import java.sql.Date;
@@ -32,10 +31,10 @@ public class ElementsFunctionUtils {
     private static final Pattern TAB_ID_PATTERN = Pattern.compile("tab_\\d+_\\d+");
 
     @EmptyDataField
-    private static final List<EmptyDataDTO> emptyPathField = new ArrayList<>();
+    public static final List<EmptyDataDTO> emptyPathField = new ArrayList<>();
 
     @ProcessLogFields
-    private static final List<ProcessLogDTO> ProcessLogFields = new ArrayList<>();
+    public static final List<ProcessLogDTO> ProcessLogFields = new ArrayList<>();
 
     public static void findTextEditorInput(WebDriver driver, String dataSPath, String id) {
         try{
@@ -256,7 +255,6 @@ public class ElementsFunctionUtils {
     public static List<ProcessLogDTO> getProcessLogMessages() {
         return new ArrayList<>(ProcessLogFields);
     }
-
     public static List<EmptyDataDTO> getUniqueEmptyDataPath() {
         Set<EmptyDataDTO> uniqueData = new LinkedHashSet<>(emptyPathField);
         return new ArrayList<>(uniqueData);

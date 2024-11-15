@@ -10,6 +10,7 @@ import testingmachine_backend.process.Messages.IsProcessMessage;
 import testingmachine_backend.process.utils.ProcessPath;
 
 import java.util.List;
+
 @RestController
 public class ProcessController {
 
@@ -24,13 +25,14 @@ public class ProcessController {
         return new ProcessDTO(totalProcessCount);
     }
 
-    @GetMapping("process-progress")
+    @GetMapping("/process-progress")
     public MessageProgressDTO getProcessProgress() {
         int warningCount = IsProcessMessage.getWarningCount();
         int errorCount = IsProcessMessage.getErrorCount();
         int infoCount = IsProcessMessage.getInfoCount();
         int successCount = IsProcessMessage.getSuccessCount();
         int failedCount = ProcessPath.getFailedCount();
+
         return new MessageProgressDTO(warningCount, errorCount, infoCount, successCount, failedCount);
     }
 

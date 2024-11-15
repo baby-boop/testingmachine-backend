@@ -6,6 +6,8 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.support.ui.*;
 import testingmachine_backend.process.Checkers.LayoutChecker;
+import testingmachine_backend.process.DTO.FailedMessageDTO;
+import testingmachine_backend.process.Fields.FailedMessageField;
 import testingmachine_backend.process.Messages.IsProcessMessage;
 import testingmachine_backend.process.Section.LayoutProcessSection;
 import testingmachine_backend.process.Checkers.ProcessWizardChecker;
@@ -25,8 +27,12 @@ public class ProcessPath {
     static final Logger LOGGER = Logger.getLogger(ProcessPath.class.getName());
     private static final int SHORT_WAIT_SECONDS = 2;
     private static final int LONG_WAIT_SECONDS = 90;
+
     @Getter
     private static final int failedCount = 0;
+
+    @FailedMessageField
+    public static final List<FailedMessageDTO> failedMessages = new ArrayList<>();
 
     public static void isProcessPersent(WebDriver driver, String id, String fileName) {
         try {
@@ -60,6 +66,8 @@ public class ProcessPath {
                 LOGGER.log(Level.INFO, "Process success: " + id);
             } else {
                 LOGGER.log(Level.SEVERE, "Process failed: " + id);
+                FailedMessageDTO emptyPath = new FailedMessageDTO(fileName, id);
+                failedMessages.add(emptyPath);
             }
 
         }catch (NoSuchElementException n) {
@@ -69,6 +77,10 @@ public class ProcessPath {
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error process: " + id + e);
         }
+    }
+
+    public static List<FailedMessageDTO> getProcessFailedMessages() {
+        return new ArrayList<>(failedMessages);
     }
 
     private static void saveButtonFunction(WebDriver driver, String id) {

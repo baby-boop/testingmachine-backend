@@ -15,7 +15,7 @@ import java.util.Set;
 
 public class PopupMessage {
 
-    private static final List<PopupMessageDTO> PopupMessageField = new ArrayList<>();
+    public static final List<PopupMessageDTO> PopupMessageField = new ArrayList<>();
 
     private static final int SHORT_WAIT_SECONDS = 1;
 
