@@ -106,23 +106,27 @@ public class ElementsFunctionUtils {
             }
             rows.clear();
             wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div[id='bp-window-" + id + "']")));
-        } catch (TimeoutException t){
+        }
+        catch (TimeoutException t){
+            LOGGER.log(Level.SEVERE, "TimeoutException first row");
             if (PopupMessage.isErrorMessagePresent(driver, datapath, id, fileName)) {
                 WebElement closeBtn = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[contains(@class, 'btn blue-hoki btn-sm')]")));
                 closeBtn.click();
             }else{
                 if(required != null) {
-
                     EmptyDataDTO emptyPath = new EmptyDataDTO(fileName, id, datapath, "Popup");
                     emptyPathField.add(emptyPath);
                     System.out.println("fileName: " + fileName + " id: "+ id + " dataPath: "+ datapath);
+                    WebElement closeBtn = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[contains(@class, 'btn blue-hoki btn-sm')]")));
+                    closeBtn.click();
                 }else{
                     WebElement closeBtn = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[contains(@class, 'btn blue-hoki btn-sm')]")));
                     closeBtn.click();
                 }
             }
-
-
+        }
+        catch (NoSuchElementException n){
+            LOGGER.log(Level.SEVERE, "NoSuchElementException first row");
         }
         catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error first row");
@@ -249,7 +253,7 @@ public class ElementsFunctionUtils {
     }
 
     public static boolean isIgnorableError(String message) {
-        return message.contains("Uncaught TypeError: Cannot read properties of null")
+        return message.contains("Uncaught TypeError: Cannot read properties of null") || message.contains("Uncaught TypeError: Cannot read properties of undefined")
                 || message.contains("Failed to load resource: the server responded with a status of 404 (Not Found)");
     }
     public static List<ProcessLogDTO> getProcessLogMessages() {

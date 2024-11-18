@@ -36,6 +36,11 @@ public class ProcessController {
         return new MessageProgressDTO(warningCount, errorCount, infoCount, successCount, failedCount);
     }
 
+    @GetMapping("/failed-process")
+    public List<FailedMessageDTO> failedMessageDTO(){
+        return ProcessPath.getProcessFailedMessages();
+    }
+
     @GetMapping("/warning-process")
     public List<WarningMessageDTO> getWarningProcess() {
         return IsProcessMessage.getProcessWarningMessages();

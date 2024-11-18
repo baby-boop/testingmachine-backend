@@ -66,7 +66,6 @@ public class ProcessList {
                 totalProcessCount = totalIds;
                 System.out.println("Total IDs to meta: " + totalIds);
 
-
                 System.out.println("Start date: " + ConfigProcess.DateUtils.getCurrentDateTime());
 
                 for (File file : listOfFiles) {
@@ -114,4 +113,5 @@ public class ProcessList {
         JavascriptExecutor jsExecutor = (JavascriptExecutor) driver;
         jsExecutor.executeScript("arguments[0].remove();", captchaContainer);
     }
+
 }

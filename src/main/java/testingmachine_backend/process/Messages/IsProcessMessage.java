@@ -91,11 +91,9 @@ public class IsProcessMessage {
     public static List<WarningMessageDTO> getProcessWarningMessages() {
         return new ArrayList<>(WarningMessageField);
     }
-
     public static List<ErrorMessageDTO> getProcessErrorMessages() {
         return new ArrayList<>(ErrorMessageField);
     }
-
     public static List<InfoMessageDTO> getProcessInfoMessages() {
         return new ArrayList<>(InfoMessageField);
     }

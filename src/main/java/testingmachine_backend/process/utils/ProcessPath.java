@@ -29,7 +29,7 @@ public class ProcessPath {
     private static final int LONG_WAIT_SECONDS = 90;
 
     @Getter
-    private static final int failedCount = 0;
+    private static int failedCount = 0;
 
     @FailedMessageField
     public static final List<FailedMessageDTO> failedMessages = new ArrayList<>();
@@ -59,23 +59,25 @@ public class ProcessPath {
 
             LOGGER.log(Level.INFO, "Process complete after " + maxAttempts + " attempts: " + id);
 
-//            saveButtonFunction(driver, id);
+            saveButtonFunction(driver, id);
 
             waitUtils(driver);
             if (IsProcessMessage.isErrorMessagePresent(driver, id, fileName)) {
                 LOGGER.log(Level.INFO, "Process success: " + id);
             } else {
                 LOGGER.log(Level.SEVERE, "Process failed: " + id);
-                FailedMessageDTO emptyPath = new FailedMessageDTO(fileName, id);
-                failedMessages.add(emptyPath);
+                failedMessageFunction(id, fileName);
             }
 
         }catch (NoSuchElementException n) {
             LOGGER.log(Level.SEVERE, "NoSuchElementException: " + id + n);
+            failedMessageFunction(id, fileName);
         } catch (TimeoutException t) {
             LOGGER.log(Level.SEVERE, "TimeoutException: " + id + t);
+            failedMessageFunction(id, fileName);
         } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Error process: " + id + e);
+            LOGGER.log(Level.SEVERE, "Exception: " + id + e);
+            failedMessageFunction(id, fileName);
         }
     }
 
@@ -94,6 +96,12 @@ public class ProcessPath {
         }
     }
 
+    private static void failedMessageFunction( String id, String fileName) {
+        FailedMessageDTO emptyPath = new FailedMessageDTO(fileName, id);
+        failedMessages.add(emptyPath);
+        failedCount++;
+    }
+
     public static List<WebElement> findElementsWithSelector(WebDriver driver,String id) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(SHORT_WAIT_SECONDS));
         try {
@@ -110,10 +118,5 @@ public class ProcessPath {
             return List.of();
         }
     }
+
 }
-
-
-
-
-
-

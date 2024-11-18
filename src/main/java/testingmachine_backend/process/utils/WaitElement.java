@@ -3,14 +3,12 @@ package testingmachine_backend.process.utils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import testingmachine_backend.meta.Utils.ErrorLogger;
 
 import java.time.Duration;
 
 public class WaitElement {
 
-    public static int waitTime = 120;
-
+    public static int TIMEOUT = 120;
 
     public static void retryWaitForLoadingToDisappear(WebDriver driver, int maxAttempts) {
         retryAction(() -> waitForLoadingToDisappear(driver), maxAttempts);
@@ -23,7 +21,7 @@ public class WaitElement {
     }
 
     private static void waitForLoadingToDisappear(WebDriver driver) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(waitTime));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(TIMEOUT));
         try {
             WebElement loadingMessage = driver.findElement(By.xpath("//div[contains(@class, 'datagrid-mask-msg') and text()='Түр хүлээнэ үү']"));
             if (loadingMessage.isDisplayed()) {
@@ -37,7 +35,7 @@ public class WaitElement {
     }
 
     private static void waitForLoadToDisappear(WebDriver driver) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(waitTime));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(TIMEOUT));
         try {
             WebElement loadingMessages = driver.findElement(By.cssSelector("div.loading-message.loading-message-boxed"));
             if (loadingMessages.isDisplayed()) {
@@ -51,7 +49,7 @@ public class WaitElement {
     }
 
     private static void waitForSpinner(WebDriver driver) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(waitTime));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(TIMEOUT));
         try {
 
             WebElement saveButtonSpinner = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[contains(@class, 'btn btn-sm btn-circle btn-success bpMainSaveButton bp-btn-save ')]//i[contains(@class, 'fa fa-spinner fa-pulse fa-fw')]")));
