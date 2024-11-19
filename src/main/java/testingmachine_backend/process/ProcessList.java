@@ -4,15 +4,16 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import testingmachine_backend.meta.Utils.WaitUtils;
 import testingmachine_backend.process.Config.ConfigProcess;
 import testingmachine_backend.process.utils.ProcessPath;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import static testingmachine_backend.meta.Utils.FileUtils.readIdsFromFile;
+import static testingmachine_backend.process.Config.ConfigProcess.waitUtils;
 
 public class ProcessList {
 
@@ -51,20 +52,11 @@ public class ProcessList {
             File folder = new File(directoryPath);
             File[] listOfFiles = folder.listFiles((dir, name) -> name.endsWith(".txt"));
 
-            int exCount = 0;
+            int count = 0;
 
             if (listOfFiles != null) {
 
-                List<String> allIds = new ArrayList<>();
-
-                for (File file : listOfFiles) {
-                    List<String> idsFromFile = readIdsFromFile(file.getAbsolutePath());
-                    allIds.addAll(idsFromFile);
-                }
-
-                int totalIds = allIds.size();
-                totalProcessCount = totalIds;
-                System.out.println("Total IDs to meta: " + totalIds);
+                getAllIdsFromFiles(listOfFiles);
 
                 System.out.println("Start date: " + ConfigProcess.DateUtils.getCurrentDateTime());
 
@@ -83,16 +75,13 @@ public class ProcessList {
 
                         WebElement AddProcessButton = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("li[data-id='" + id + "']")));
                         action.doubleClick(AddProcessButton).perform();
-                        System.out.println("Process start date: " + ConfigProcess.DateUtils.getCurrentDateTime());
+                        System.out.println("Process start date: " + ConfigProcess.DateUtils.getCurrentDateTime() + " id: " + id);
 
-
-                        wait.until(ExpectedConditions.visibilityOfElementLocated(By.tagName("body")));
-                        WaitUtils.retryWaitForLoadToDisappear(driver, file.getName(), id, 3);
-                        WaitUtils.retryWaitForLoadingToDisappear(driver, file.getName(), id, 3);
+                        waitUtils(driver);
 
                         ProcessPath.isProcessPersent(driver, id, file.getName());
-                        exCount++;
-                        System.out.println("Process count: " + exCount + ", id: " + id);
+                        count++;
+                        System.out.println("Process count: " + count + ", id: " + id);
                     }
                 }
 
@@ -112,6 +101,23 @@ public class ProcessList {
         WebElement captchaContainer = driver.findElement(By.cssSelector("div.form-group.row.fom-row"));
         JavascriptExecutor jsExecutor = (JavascriptExecutor) driver;
         jsExecutor.executeScript("arguments[0].remove();", captchaContainer);
+    }
+
+    public static void getAllIdsFromFiles(File[] listOfFiles) {
+        List<String> allIds = new ArrayList<>();
+        for (File file : listOfFiles) {
+            try {
+                List<String> idsFromFile = readIdsFromFile(file.getAbsolutePath());
+                allIds.addAll(idsFromFile);
+
+            } catch (IOException e) {
+                System.err.println("Error reading file: " + file.getName());
+            }
+        }
+
+        int totalIds = allIds.size();
+        totalProcessCount = totalIds;
+        System.out.println("Total IDs to process: " + totalIds);
     }
 
 }

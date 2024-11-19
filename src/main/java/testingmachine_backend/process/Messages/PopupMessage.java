@@ -48,7 +48,7 @@ public class PopupMessage {
             return messageContent.isDisplayed();
 
         } catch (Exception e) {
-            System.out.println("Error message for extracting : " + id);
+
             return false;
         }
     }

@@ -26,7 +26,6 @@ public class ConfigProcess {
 
     public static void waitUtils (WebDriver driver) {
         try{
-
             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(TIMEOUT));
             wait.until(ExpectedConditions.visibilityOfElementLocated(By.tagName("body")));
             WaitElement.retryWaitForLoadToDisappear(driver, 3);

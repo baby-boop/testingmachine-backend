@@ -25,7 +25,9 @@ import static testingmachine_backend.process.Config.ConfigProcess.waitUtils;
 import static testingmachine_backend.process.utils.FormFieldUtils.handleElementAction;
 
 public class ElementsFunctionUtils {
+
     static final Logger LOGGER = Logger.getLogger(ElementsFunctionUtils.class.getName());
+
     private static final int SHORT_WAIT_SECONDS = 2;
     private static final int LONG_WAIT_SECONDS = 90;
     private static final Pattern TAB_ID_PATTERN = Pattern.compile("tab_\\d+_\\d+");
@@ -51,7 +53,6 @@ public class ElementsFunctionUtils {
         }
     }
     public static void findElementWithPopup(WebDriver driver,WebElement element, String dataPath, String required, String id, String fileName ) {
-
         try{
             WebElement popupButton = element.findElement(By.xpath("..//span[@class='input-group-btn']/button"));
             if (popupButton != null) {
@@ -61,16 +62,14 @@ public class ElementsFunctionUtils {
                 waitUtils(driver);
             }
         }catch(TimeoutException t){
-            System.out.println("Timeout not found: " +id + " fileName: " + fileName +t);
+            System.out.println("findElementWithPopup timeout: " +id + " fileName: " + fileName + t);
         }catch (NoSuchElementException n){
-            System.out.println("Element not found: " + id + " fileName: " + fileName + n);
+            System.out.println("findElementWithPopup not found: " + id + " fileName: " + fileName + n);
         }
         catch (Exception e) {
-            System.out.println("Element error: " + id + " fileName: " + fileName + e);
+            System.out.println("findElementWithPopup error: " + id + " fileName: " + fileName);
         }
     }
-
-
 
     private static void scrollToElement(WebDriver driver, WebElement element) {
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
@@ -174,7 +173,6 @@ public class ElementsFunctionUtils {
         return matcher.find() ? Optional.of(matcher.group()) : Optional.empty();
     }
 
-
     public static Map<String, WebElement> getUniqueTabElements(List<WebElement> elements) {
         Map<String, WebElement> uniqueTabElements = new LinkedHashMap<>();
         for (WebElement element : elements) {
@@ -241,7 +239,6 @@ public class ElementsFunctionUtils {
 
     public static void consoleLogChecker(WebDriver driver, String id, String fileName) {
         LogEntries logs = driver.manage().logs().get(LogType.BROWSER);
-
         for (LogEntry entry : logs) {
             if (entry.getLevel() == Level.SEVERE && entry.getMessage() != null && !isIgnorableError(entry.getMessage())) {
                 String formattedTimestamp = new Date(entry.getTimestamp()).toString();
@@ -252,14 +249,16 @@ public class ElementsFunctionUtils {
         }
     }
 
+    public static List<ProcessLogDTO> getProcessLogMessages() {
+        return new ArrayList<>(ProcessLogFields);
+    }
+
     public static boolean isIgnorableError(String message) {
         return message.contains("Uncaught TypeError: Cannot read properties of null")
                 || message.contains("Uncaught TypeError: Cannot read properties of undefined")
                 || message.contains("Failed to load resource: the server responded with a status of 404 (Not Found)");
     }
-    public static List<ProcessLogDTO> getProcessLogMessages() {
-        return new ArrayList<>(ProcessLogFields);
-    }
+
     public static List<EmptyDataDTO> getUniqueEmptyDataPath() {
         Set<EmptyDataDTO> uniqueData = new LinkedHashSet<>(emptyPathField);
         return new ArrayList<>(uniqueData);

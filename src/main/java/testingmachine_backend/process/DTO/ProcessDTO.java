@@ -1,7 +1,9 @@
 package testingmachine_backend.process.DTO;
 
 import lombok.Getter;
+import lombok.Setter;
 
+@Setter
 @Getter
 public class ProcessDTO {
 

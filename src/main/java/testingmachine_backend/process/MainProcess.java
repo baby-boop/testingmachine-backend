@@ -10,6 +10,7 @@ public class MainProcess {
     public static void mainProcess() {
 
         ChromeOptions options = new ChromeOptions();
+//        options.addArguments("--headless");
         WebDriver driver = new ChromeDriver(options);
 
         try{
@@ -17,10 +18,6 @@ public class MainProcess {
 
             tool.mainTool();
         }catch (Exception e){
-//            driver.quit();
-
-        }finally {
-
 //            driver.quit();
         }
     }

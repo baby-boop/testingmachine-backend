@@ -7,15 +7,15 @@ import org.openqa.selenium.support.ui.*;
 import java.time.Duration;
 import java.util.*;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static testingmachine_backend.process.Config.ConfigProcess.waitUtils;
-import static testingmachine_backend.process.utils.ProcessPath.LOGGER;
 import static testingmachine_backend.process.utils.ElementsFunctionUtils.*;
 
 
 public class DetailsFieldUtils {
     public static final int SHORT_WAIT_SECONDS = 2;
-
+    static final Logger LOGGER = Logger.getLogger(DetailsFieldUtils.class.getName());
     public static void detailActionButton(WebDriver driver, String id, String fileName) {
         try {
             List<WebElement> elementsWithDataSectionPath = findRowElementsWithDataSectionPath(driver);
