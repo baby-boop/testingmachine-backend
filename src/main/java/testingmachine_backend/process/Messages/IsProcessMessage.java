@@ -6,10 +6,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import testingmachine_backend.process.DTO.ErrorMessageDTO;
-import testingmachine_backend.process.DTO.InfoMessageDTO;
-import testingmachine_backend.process.DTO.SuccessMessageDTO;
-import testingmachine_backend.process.DTO.WarningMessageDTO;
+import testingmachine_backend.process.DTO.ProcessMessageStatusDTO;
+import testingmachine_backend.process.Fields.ProcessMessageStatusField;
+import testingmachine_backend.process.Service.ProcessMessageStatusService;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -17,10 +16,9 @@ import java.util.List;
 
 public class IsProcessMessage {
 
-    private static final List<ErrorMessageDTO> ErrorMessageField = new ArrayList<>();
-    private static final List<WarningMessageDTO> WarningMessageField = new ArrayList<>();
-    private static final List<InfoMessageDTO> InfoMessageField = new ArrayList<>();
-    private static final List<SuccessMessageDTO> SuccessMessageField = new ArrayList<>();
+    @ProcessMessageStatusField
+    private static final List<ProcessMessageStatusDTO> ProcessMessageStatusField = new ArrayList<>();
+
     @Getter
     private static int warningCount = 0;
     @Getter
@@ -61,23 +59,19 @@ public class IsProcessMessage {
             WebElement messageContent = shortWait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".ui-pnotify-text")));
             String messageText = messageContent.getText();
 
-            WarningMessageDTO warningMessages = new WarningMessageDTO(fileName, id, messageText);
-            ErrorMessageDTO errorMessages = new ErrorMessageDTO(fileName, id, messageText);
-            InfoMessageDTO infoMessages = new InfoMessageDTO(fileName, id, messageText);
-            SuccessMessageDTO successMessages = new SuccessMessageDTO(fileName, id);
 
             if (isWarning) {
                 warningCount++;
-                WarningMessageField.add(warningMessages);
+                ProcessMessageStatusService.addProcessStatus(fileName, id, "warning", messageText);
             } else if (isError) {
                 errorCount++;
-                ErrorMessageField.add(errorMessages);
+                ProcessMessageStatusService.addProcessStatus(fileName, id, "error", messageText);
             } else if (isInfo) {
                 infoCount++;
-                InfoMessageField.add(infoMessages);
+                ProcessMessageStatusService.addProcessStatus(fileName, id, "info", messageText);
             } else if(isSuccess) {
                 successCount++;
-                SuccessMessageField.add(successMessages);
+                ProcessMessageStatusService.addProcessStatus(fileName, id, "success", messageText);
             }
 
             return messageContent.isDisplayed();
@@ -88,16 +82,9 @@ public class IsProcessMessage {
         }
     }
 
-    public static List<WarningMessageDTO> getProcessWarningMessages() {
-        return new ArrayList<>(WarningMessageField);
+    public static List<ProcessMessageStatusDTO> getProcessStatusMessages() {
+        return new ArrayList<>(ProcessMessageStatusField);
     }
-    public static List<ErrorMessageDTO> getProcessErrorMessages() {
-        return new ArrayList<>(ErrorMessageField);
-    }
-    public static List<InfoMessageDTO> getProcessInfoMessages() {
-        return new ArrayList<>(InfoMessageField);
-    }
-    public static List<SuccessMessageDTO> getProcessSuccessMessages() {
-        return new ArrayList<>(SuccessMessageField);
-    }
+
+
 }

@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RestController;
 import testingmachine_backend.process.DTO.*;
 import testingmachine_backend.process.Messages.PopupMessage;
 import testingmachine_backend.process.ProcessList;
+import testingmachine_backend.process.Service.ProcessMessageStatusService;
 import testingmachine_backend.process.utils.ElementsFunctionUtils;
 import testingmachine_backend.process.Messages.IsProcessMessage;
 import testingmachine_backend.process.utils.ProcessPath;
@@ -36,29 +37,14 @@ public class ProcessController {
         return new MessageProgressDTO(warningCount, errorCount, infoCount, successCount, failedCount);
     }
 
-    @GetMapping("/failed-process")
-    public List<FailedMessageDTO> failedMessageDTO(){
-        return ProcessPath.getProcessFailedMessages();
+    @GetMapping("/status-process")
+    public List<ProcessMessageStatusDTO> processMessageStatus(){
+        return ProcessMessageStatusService.getProcessStatuses();
     }
 
-    @GetMapping("/warning-process")
-    public List<WarningMessageDTO> getWarningProcess() {
-        return IsProcessMessage.getProcessWarningMessages();
-    }
-
-    @GetMapping("/error-process")
-    public List<ErrorMessageDTO> getErrorProcess() {
-        return IsProcessMessage.getProcessErrorMessages();
-    }
-
-    @GetMapping("/info-process")
-    public List<InfoMessageDTO> getInfoProcess() {
-        return IsProcessMessage.getProcessInfoMessages();
-    }
-
-    @GetMapping("/success-process")
-    public List<SuccessMessageDTO> getSuccessProcess() {
-        return IsProcessMessage.getProcessSuccessMessages();
+    @GetMapping("/process-save")
+    public List<NotFoundSaveButtonDTO> processSaveButtonStatus(){
+        return ProcessPath.getProcessSaveMessages();
     }
 
     @GetMapping("/empty-data")

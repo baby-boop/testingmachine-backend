@@ -6,12 +6,17 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.support.ui.*;
 import testingmachine_backend.process.Checkers.LayoutChecker;
-import testingmachine_backend.process.DTO.FailedMessageDTO;
-import testingmachine_backend.process.Fields.FailedMessageField;
+import testingmachine_backend.process.DTO.EmptyDataDTO;
+import testingmachine_backend.process.DTO.NotFoundSaveButtonDTO;
+import testingmachine_backend.process.DTO.ProcessLogDTO;
+import testingmachine_backend.process.DTO.ProcessMessageStatusDTO;
+import testingmachine_backend.process.Fields.EmptyDataField;
+import testingmachine_backend.process.Fields.NotFoundSaveButtonField;
 import testingmachine_backend.process.Messages.IsProcessMessage;
 import testingmachine_backend.process.Section.LayoutProcessSection;
 import testingmachine_backend.process.Checkers.ProcessWizardChecker;
 import testingmachine_backend.process.Section.ProcessWizardSection;
+import testingmachine_backend.process.Service.ProcessMessageStatusService;
 
 import java.time.Duration;
 import java.util.*;
@@ -31,8 +36,10 @@ public class ProcessPath {
     @Getter
     private static int failedCount = 0;
 
-    @FailedMessageField
-    public static final List<FailedMessageDTO> failedMessages = new ArrayList<>();
+    @NotFoundSaveButtonField
+    public static final List<NotFoundSaveButtonDTO> notFoundField = new ArrayList<>();
+
+    public static final List<ProcessMessageStatusDTO> processMessages = new ArrayList<>();
 
     public static void isProcessPersent(WebDriver driver, String id, String fileName) {
         try {
@@ -59,33 +66,33 @@ public class ProcessPath {
 
             LOGGER.log(Level.INFO, "Process complete after " + maxAttempts + " attempts: " + id);
 
-            saveButtonFunction(driver, id);
+            saveButtonFunction(driver, id, fileName);
 
             waitUtils(driver);
             if (IsProcessMessage.isErrorMessagePresent(driver, id, fileName)) {
                 LOGGER.log(Level.INFO, "Process success: " + id);
             } else {
                 LOGGER.log(Level.SEVERE, "Process failed: " + id);
-                failedMessageFunction(id, fileName);
+                ProcessMessageStatusService.addProcessStatus(fileName, id, "failed", "");
             }
 
         }catch (NoSuchElementException n) {
             LOGGER.log(Level.SEVERE, "NoSuchElementException: " + id + n);
-            failedMessageFunction(id, fileName);
+            ProcessMessageStatusService.addProcessStatus(fileName, id, "fail", "");
         } catch (TimeoutException t) {
             LOGGER.log(Level.SEVERE, "TimeoutException: " + id + t);
-            failedMessageFunction(id, fileName);
+            ProcessMessageStatusService.addProcessStatus(fileName, id, "fail", "");
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Exception: " + id + e);
-            failedMessageFunction(id, fileName);
+            ProcessMessageStatusService.addProcessStatus(fileName, id, "fail", "");
         }
     }
 
-    public static List<FailedMessageDTO> getProcessFailedMessages() {
-        return new ArrayList<>(failedMessages);
+    public static List<ProcessMessageStatusDTO> getProcessFailedMessages() {
+        return new ArrayList<>(processMessages);
     }
 
-    private static void saveButtonFunction(WebDriver driver, String id) {
+    private static void saveButtonFunction(WebDriver driver, String id, String fileName) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(LONG_WAIT_SECONDS));
         try {
             WebElement wfmDialog = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div[id='bp-window-" + id + "']")));
@@ -93,15 +100,13 @@ public class ProcessPath {
             wfmSaveButton.click();
         }catch (Exception e){
             LOGGER.log(Level.SEVERE, "Save button not found");
+            NotFoundSaveButtonDTO notFoundFields = new NotFoundSaveButtonDTO(fileName, id);
+            notFoundField.add(notFoundFields);
         }
     }
-
-    private static void failedMessageFunction( String id, String fileName) {
-        FailedMessageDTO emptyPath = new FailedMessageDTO(fileName, id);
-        failedMessages.add(emptyPath);
-        failedCount++;
+    public static List<NotFoundSaveButtonDTO> getProcessSaveMessages() {
+        return new ArrayList<>(notFoundField);
     }
-
     public static List<WebElement> findElementsWithSelector(WebDriver driver,String id) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(SHORT_WAIT_SECONDS));
         try {
