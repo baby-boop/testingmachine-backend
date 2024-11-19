@@ -1,5 +1,6 @@
 package testingmachine_backend.process.Section;
 
+import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -14,9 +15,10 @@ import java.util.logging.Logger;
 import static testingmachine_backend.process.Config.ConfigProcess.waitUtils;
 import static testingmachine_backend.process.utils.ElementsFunctionUtils.*;
 
+@Slf4j
 public class ProcessWizardSection {
 
-    private static final Logger LOGGER = Logger.getLogger(LayoutProcessSection.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(ProcessWizardSection.class.getName());
     private static final int SHORT_WAIT_SECONDS = 2;
 
     public static void KpiWizardFunction(WebDriver driver, String id, String fileName) {

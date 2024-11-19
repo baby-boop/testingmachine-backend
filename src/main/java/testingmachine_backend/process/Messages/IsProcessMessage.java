@@ -6,18 +6,12 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import testingmachine_backend.process.DTO.ProcessMessageStatusDTO;
-import testingmachine_backend.process.Fields.ProcessMessageStatusField;
 import testingmachine_backend.process.Service.ProcessMessageStatusService;
 
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
 
 public class IsProcessMessage {
 
-    @ProcessMessageStatusField
-    private static final List<ProcessMessageStatusDTO> ProcessMessageStatusField = new ArrayList<>();
 
     @Getter
     private static int warningCount = 0;
@@ -81,10 +75,5 @@ public class IsProcessMessage {
             return false;
         }
     }
-
-    public static List<ProcessMessageStatusDTO> getProcessStatusMessages() {
-        return new ArrayList<>(ProcessMessageStatusField);
-    }
-
 
 }

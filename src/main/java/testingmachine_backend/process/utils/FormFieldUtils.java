@@ -13,7 +13,7 @@ public class FormFieldUtils {
                                            String valueAttribute, String typeAttribute, String dataPath,
                                            String regexData, String required, String id, String fileName) {
         waitUtils(driver);
-        checkLogsAfterAction(driver, id, fileName);
+        consoleLogChecker(driver, id, fileName);
         if (valueAttribute != null && valueAttribute.isEmpty()) {
             handleElementSubAction(driver, element, classAttribute, dataPath, regexData, required, id, fileName);}
         else if (isRadioField(classAttribute)) {

@@ -6,11 +6,7 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.support.ui.*;
 import testingmachine_backend.process.Checkers.LayoutChecker;
-import testingmachine_backend.process.DTO.EmptyDataDTO;
 import testingmachine_backend.process.DTO.NotFoundSaveButtonDTO;
-import testingmachine_backend.process.DTO.ProcessLogDTO;
-import testingmachine_backend.process.DTO.ProcessMessageStatusDTO;
-import testingmachine_backend.process.Fields.EmptyDataField;
 import testingmachine_backend.process.Fields.NotFoundSaveButtonField;
 import testingmachine_backend.process.Messages.IsProcessMessage;
 import testingmachine_backend.process.Section.LayoutProcessSection;
@@ -28,7 +24,9 @@ import static testingmachine_backend.process.utils.ElementsFunctionUtils.*;
 import static testingmachine_backend.process.utils.TabDetailsFieldUtils.tabDetailItems;
 
 @Slf4j
+
 public class ProcessPath {
+
     static final Logger LOGGER = Logger.getLogger(ProcessPath.class.getName());
     private static final int SHORT_WAIT_SECONDS = 2;
     private static final int LONG_WAIT_SECONDS = 90;
@@ -39,12 +37,10 @@ public class ProcessPath {
     @NotFoundSaveButtonField
     public static final List<NotFoundSaveButtonDTO> notFoundField = new ArrayList<>();
 
-    public static final List<ProcessMessageStatusDTO> processMessages = new ArrayList<>();
-
     public static void isProcessPersent(WebDriver driver, String id, String fileName) {
         try {
             waitUtils(driver);
-
+            consoleLogChecker(driver, id, fileName);
             int maxAttempts = 2;
             for (int attempt = 0; attempt < maxAttempts; attempt++) {
 
@@ -72,25 +68,26 @@ public class ProcessPath {
             if (IsProcessMessage.isErrorMessagePresent(driver, id, fileName)) {
                 LOGGER.log(Level.INFO, "Process success: " + id);
             } else {
+                failedCount++;
                 LOGGER.log(Level.SEVERE, "Process failed: " + id);
                 ProcessMessageStatusService.addProcessStatus(fileName, id, "failed", "");
             }
 
         }catch (NoSuchElementException n) {
+            failedCount++;
             LOGGER.log(Level.SEVERE, "NoSuchElementException: " + id + n);
-            ProcessMessageStatusService.addProcessStatus(fileName, id, "fail", "");
+            ProcessMessageStatusService.addProcessStatus(fileName, id, "failed", "");
         } catch (TimeoutException t) {
+            failedCount++;
             LOGGER.log(Level.SEVERE, "TimeoutException: " + id + t);
-            ProcessMessageStatusService.addProcessStatus(fileName, id, "fail", "");
+            ProcessMessageStatusService.addProcessStatus(fileName, id, "failed", "");
         } catch (Exception e) {
+            failedCount++;
             LOGGER.log(Level.SEVERE, "Exception: " + id + e);
-            ProcessMessageStatusService.addProcessStatus(fileName, id, "fail", "");
+            ProcessMessageStatusService.addProcessStatus(fileName, id, "failed", "");
         }
     }
 
-    public static List<ProcessMessageStatusDTO> getProcessFailedMessages() {
-        return new ArrayList<>(processMessages);
-    }
 
     private static void saveButtonFunction(WebDriver driver, String id, String fileName) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(LONG_WAIT_SECONDS));

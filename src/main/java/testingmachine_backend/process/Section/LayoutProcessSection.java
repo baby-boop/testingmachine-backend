@@ -68,10 +68,6 @@ public class LayoutProcessSection {
             Thread.sleep(2000);
             wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div[id='bp-window-" + processId + "']")));
 
-//            return driver.findElements(By.xpath(
-//                    "//div[@id='bp-window-" + processId + "']//div[@data-section-code and preceding-sibling::div[contains(@class, 'card-header')]]"
-//            ));
-
             return driver.findElements(By.xpath(
                     "//div[@id='bp-window-" + processId + "']//div[@data-section-code and *]"
             ));

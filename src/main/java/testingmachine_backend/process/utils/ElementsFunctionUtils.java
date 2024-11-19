@@ -239,7 +239,7 @@ public class ElementsFunctionUtils {
         }
     }
 
-    public static void checkLogsAfterAction(WebDriver driver, String id, String fileName) {
+    public static void consoleLogChecker(WebDriver driver, String id, String fileName) {
         LogEntries logs = driver.manage().logs().get(LogType.BROWSER);
 
         for (LogEntry entry : logs) {
@@ -253,7 +253,8 @@ public class ElementsFunctionUtils {
     }
 
     public static boolean isIgnorableError(String message) {
-        return message.contains("Uncaught TypeError: Cannot read properties of null") || message.contains("Uncaught TypeError: Cannot read properties of undefined")
+        return message.contains("Uncaught TypeError: Cannot read properties of null")
+                || message.contains("Uncaught TypeError: Cannot read properties of undefined")
                 || message.contains("Failed to load resource: the server responded with a status of 404 (Not Found)");
     }
     public static List<ProcessLogDTO> getProcessLogMessages() {

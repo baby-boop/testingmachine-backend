@@ -37,7 +37,7 @@ public class ProcessController {
         return new MessageProgressDTO(warningCount, errorCount, infoCount, successCount, failedCount);
     }
 
-    @GetMapping("/status-process")
+    @GetMapping("/process-status")
     public List<ProcessMessageStatusDTO> processMessageStatus(){
         return ProcessMessageStatusService.getProcessStatuses();
     }
