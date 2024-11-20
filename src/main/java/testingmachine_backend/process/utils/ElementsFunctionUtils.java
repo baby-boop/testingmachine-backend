@@ -132,7 +132,6 @@ public class ElementsFunctionUtils {
         }
     }
 
-
     public static void comboboxFunction(WebDriver driver, String dataSPath, String required, String id, String fileName) {
         try {
             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(2));
