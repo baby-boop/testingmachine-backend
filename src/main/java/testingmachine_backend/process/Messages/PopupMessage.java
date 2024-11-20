@@ -30,7 +30,6 @@ public class PopupMessage {
             }
             return false;
         } catch (Exception e) {
-            System.out.println("Not found alert: " + id);
             return false;
         }
     }

@@ -26,15 +26,15 @@ public class ModuleController {
         String successMessage = "";
 
         try {
-//            String moduleMessage = application.executeModule(module);
-//
-//            int metaCount = MetaLists.getCheckCount();
-//            int totalCount = MetaLists.getTotalCount();
-//
-//            if (metaCount == totalCount) {
-//                successMessage = moduleMessage;
-//                return successMessage;
-//            }
+            String moduleMessage = application.executeModule(module);
+
+            int metaCount = MetaLists.getCheckCount();
+            int totalCount = MetaLists.getTotalCount();
+
+            if (metaCount == totalCount) {
+                successMessage = moduleMessage;
+                return successMessage;
+            }
 
         } catch (Exception e) {
             errorMessage = "Модуль ажиллуулахад алдаа гарлаа! ";

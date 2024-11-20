@@ -6,7 +6,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 
 public class MetaMain {
 
-    public void mainSystem(){
+    public  static void mainSystem(){
         ChromeOptions options = new ChromeOptions();
 /*         options.addArguments("--headless");*/
         WebDriver driver = new ChromeDriver(options);

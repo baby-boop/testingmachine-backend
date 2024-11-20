@@ -105,9 +105,7 @@ public class ElementsFunctionUtils {
             }
             rows.clear();
             wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div[id='bp-window-" + id + "']")));
-        }
-        catch (TimeoutException t){
-            LOGGER.log(Level.SEVERE, "TimeoutException first row");
+        } catch (TimeoutException t){
             if (PopupMessage.isErrorMessagePresent(driver, datapath, id, fileName)) {
                 WebElement closeBtn = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[contains(@class, 'btn blue-hoki btn-sm')]")));
                 closeBtn.click();
@@ -115,7 +113,6 @@ public class ElementsFunctionUtils {
                 if(required != null) {
                     EmptyDataDTO emptyPath = new EmptyDataDTO(fileName, id, datapath, "Popup");
                     emptyPathField.add(emptyPath);
-                    System.out.println("fileName: " + fileName + " id: "+ id + " dataPath: "+ datapath);
                     WebElement closeBtn = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[contains(@class, 'btn blue-hoki btn-sm')]")));
                     closeBtn.click();
                 }else{
@@ -262,4 +259,5 @@ public class ElementsFunctionUtils {
         Set<EmptyDataDTO> uniqueData = new LinkedHashSet<>(emptyPathField);
         return new ArrayList<>(uniqueData);
     }
+
 }

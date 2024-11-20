@@ -63,8 +63,10 @@ public class ProcessPath {
             if (!isDuplicateLogEntry(fileName, id)) {
                 waitUtils(driver);
                 saveButtonFunction(driver, id, fileName);
+                consoleLogChecker(driver, id, fileName);
                 if (!IsProcessMessage.isErrorMessagePresent(driver, id, fileName)) {
                     waitUtils(driver);
+                    consoleLogChecker(driver, id, fileName);
                     failedCount++;
                     LOGGER.log(Level.SEVERE, "Process failed with alert: " + id);
                     ProcessMessageStatusService.addProcessStatus(fileName, id, "failed", "");
