@@ -28,6 +28,7 @@ public class ProcessPath {
 
     static final Logger LOGGER = Logger.getLogger(ProcessPath.class.getName());
     private static final int SHORT_WAIT_SECONDS = 2;
+    private static final int MEDIUM_WAIT_SECONDS = 5;
 
     @Getter
     private static int failedCount = 0;
@@ -35,24 +36,23 @@ public class ProcessPath {
     @NotFoundSaveButtonField
     public static final List<NotFoundSaveButtonDTO> notFoundField = new ArrayList<>();
 
-    public static void isProcessPersent(WebDriver driver, String id, String fileName) {
+    public static void isProcessPersent(WebDriver driver, String id, String systemName, String code, String name) {
         try {
             waitUtils(driver);
-            consoleLogChecker(driver, id, fileName);
+            consoleLogChecker(driver, id, systemName);
             int maxAttempts = 2;
             for (int attempt = 0; attempt < maxAttempts; attempt++) {
-
                 if (LayoutChecker.isLayout(driver, id)) {
-                    LayoutProcessSection.LayoutFieldFunction(driver, id, fileName);
+                    LayoutProcessSection.LayoutFieldFunction(driver, id, systemName);
                 } else if (ProcessWizardChecker.isWizard(driver, id)) {
-                    ProcessWizardSection.KpiWizardFunction(driver, id, fileName);
+                    ProcessWizardSection.KpiWizardFunction(driver, id, systemName);
                 } else {
                     List<WebElement> elementsWithDataPath = findElementsWithSelector(driver, id);
-                    processTabElements(driver, elementsWithDataPath, id, fileName);
-                    tabDetailItems(driver, id, fileName);
+                    processTabElements(driver, elementsWithDataPath, id, systemName);
+                    tabDetailItems(driver, id, systemName);
                     waitUtils(driver);
 
-                    detailActionButton(driver, id, fileName);
+                    detailActionButton(driver, id, systemName);
                     waitUtils(driver);
                 }
                 waitUtils(driver);
@@ -60,54 +60,57 @@ public class ProcessPath {
 
             LOGGER.log(Level.INFO, "Process complete after " + maxAttempts + " attempts: " + id);
 
-            if (!isDuplicateLogEntry(fileName, id)) {
+            if (!isDuplicateLogEntry(systemName, id)) {
                 waitUtils(driver);
-                saveButtonFunction(driver, id, fileName);
-                consoleLogChecker(driver, id, fileName);
-                if (!IsProcessMessage.isErrorMessagePresent(driver, id, fileName)) {
+                saveButtonFunction(driver, id, systemName);
+                waitUtils(driver);
+                consoleLogRequiredPath(driver, id, systemName);
+                if (!IsProcessMessage.isErrorMessagePresent(driver, id, code, name, systemName)) {
                     waitUtils(driver);
-                    consoleLogChecker(driver, id, fileName);
                     failedCount++;
                     LOGGER.log(Level.SEVERE, "Process failed with alert: " + id);
-                    ProcessMessageStatusService.addProcessStatus(fileName, id, "failed", "");
+                    ProcessMessageStatusService.addProcessStatus(systemName, id, code, name, "failed", "");
                 }
             }else{
                 failedCount++;
                 LOGGER.log(Level.SEVERE, "Process failed with expression error: " + id);
-                ProcessMessageStatusService.addProcessStatus(fileName, id, "failed", "");
+                ProcessMessageStatusService.addProcessStatus(systemName, id, code, name, "failed", "");
             }
             waitUtils(driver);
 
         }catch (NoSuchElementException n) {
             failedCount++;
             LOGGER.log(Level.SEVERE, "NoSuchElementException: " + id + n);
-            ProcessMessageStatusService.addProcessStatus(fileName, id, "failed", "");
+            ProcessMessageStatusService.addProcessStatus(systemName, id, code, name, "failed", "");
         } catch (TimeoutException t) {
             failedCount++;
             LOGGER.log(Level.SEVERE, "TimeoutException: " + id + t);
-            ProcessMessageStatusService.addProcessStatus(fileName, id, "failed", "");
+            ProcessMessageStatusService.addProcessStatus(systemName, id, code, name, "failed", "");
         } catch (Exception e) {
             failedCount++;
             LOGGER.log(Level.SEVERE, "Exception: " + id + e);
-            ProcessMessageStatusService.addProcessStatus(fileName, id, "failed", "");
+            ProcessMessageStatusService.addProcessStatus(systemName, id, code, name, "failed", "");
         }
     }
 
-    private static void saveButtonFunction(WebDriver driver, String id, String fileName) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(SHORT_WAIT_SECONDS));
+    private static void saveButtonFunction(WebDriver driver, String id, String systemName) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(MEDIUM_WAIT_SECONDS));
         try {
-            WebElement wfmDialog = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div[id='bp-window-" + id + "']")));
-            WebElement wfmSaveButton = wfmDialog.findElement(By.xpath(".//button[contains(@class, 'btn btn-sm btn-circle btn-success bpMainSaveButton bp-btn-save ')]"));
-            wfmSaveButton.click();
+
+            Thread.sleep(2000);
+            WebElement wfmSaveButton = wait.until(ExpectedConditions.presenceOfElementLocated(
+                    By.cssSelector("button[onclick*='runSaveTestToolForm']")
+            ));
+            wfmSaveButton.sendKeys(" ");
         }catch (Exception e){
-            LOGGER.log(Level.SEVERE, "Save button not found");
-            NotFoundSaveButtonDTO notFoundFields = new NotFoundSaveButtonDTO(fileName, id);
+            NotFoundSaveButtonDTO notFoundFields = new NotFoundSaveButtonDTO(systemName, id);
             notFoundField.add(notFoundFields);
         }
     }
-    public static boolean isDuplicateLogEntry(String fileName, String id) {
+
+    public static boolean isDuplicateLogEntry(String systemName, String id) {
         return ElementsFunctionUtils.ProcessLogFields.stream()
-                .anyMatch(log -> log.getFileName().equals(fileName) && log.getProcessId().equals(id));
+                .anyMatch(log -> log.getFileName().equals(systemName) && log.getProcessId().equals(id));
     }
 
     public static List<NotFoundSaveButtonDTO> getProcessSaveMessages() {
@@ -130,5 +133,4 @@ public class ProcessPath {
             return List.of();
         }
     }
-
 }

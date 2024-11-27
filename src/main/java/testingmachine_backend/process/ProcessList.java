@@ -1,24 +1,22 @@
 package testingmachine_backend.process;
 
 import org.openqa.selenium.*;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import testingmachine_backend.meta.Controller.ProcessMetaData;
 import testingmachine_backend.process.Config.ConfigProcess;
+import testingmachine_backend.process.Controller.ProcessDatabaseUtils;
 import testingmachine_backend.process.utils.ProcessPath;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
-import static testingmachine_backend.meta.Utils.FileUtils.readIdsFromFile;
-import static testingmachine_backend.process.Config.ConfigProcess.waitUtils;
+import static testingmachine_backend.process.Config.ConfigProcess.*;
 
 public class ProcessList {
 
     private final WebDriver driver;
-    private static int totalProcessCount = 0;
+    private final static int totalProcessCount = 0;
 
     public ProcessList(WebDriver driver) {
         this.driver = driver;
@@ -26,7 +24,7 @@ public class ProcessList {
 
     public void mainTool(){
         try{
-            Actions action = new Actions(driver);
+
             WebDriverWait wait = ConfigProcess.getWebDriverWait(driver);
             driver.get(ConfigProcess.LoginUrl);
 
@@ -39,55 +37,27 @@ public class ProcessList {
             WebElement checkBox = wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("isLdap")));
             checkBox.click();
 
-//            removeCaptcha();
 
             passwordField.sendKeys(Keys.ENTER);
 
-            Thread.sleep(2000);
+            List<ProcessMetaData> processMetaDataList = ProcessDatabaseUtils.getProcessMetaDataList();
 
-            String url = "https://dev.veritech.mn/mdmetadata/system#objectType=folder&objectId=1730246978523441";
-
-            String directoryPath = "C:\\Users\\batde\\Downloads\\Process";
-
-            File folder = new File(directoryPath);
-            File[] listOfFiles = folder.listFiles((dir, name) -> name.endsWith(".txt"));
 
             int count = 0;
+            for (ProcessMetaData metaData : processMetaDataList) {
+                String url = ConfigProcess.MainUrl + metaData.getId();
+                driver.get(url);
 
-            if (listOfFiles != null) {
+                Thread.sleep(1000);
 
-                getAllIdsFromFiles(listOfFiles);
+                waitUtils(driver);
 
-                System.out.println("Start date: " + ConfigProcess.DateUtils.getCurrentDateTime());
-
-                for (File file : listOfFiles) {
-                    System.out.println("Processing file: " + file.getName());
-
-                    List<String> ids = readIdsFromFile(file.getAbsolutePath());
-
-                    for (String id : ids) {
-
-//                        String url = ListConfig.MainUrl + id;
-                        driver.get(url);
-                        driver.navigate().refresh();
-
-                        Thread.sleep(1000);
-
-                        WebElement AddProcessButton = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("li[data-id='" + id + "']")));
-                        action.doubleClick(AddProcessButton).perform();
-                        System.out.println("Process start date: " + ConfigProcess.DateUtils.getCurrentDateTime() + " id: " + id);
-
-                        waitUtils(driver);
-
-                        ProcessPath.isProcessPersent(driver, id, file.getName());
-                        count++;
-                        System.out.println("Process count: " + count + ", id: " + id);
-                    }
-                }
-
-                System.out.println("End date: " + ConfigProcess.DateUtils.getCurrentDateTime());
-
+                ProcessPath.isProcessPersent(driver, metaData.getId(), metaData.getSystemName(), metaData.getCode(), metaData.getName());
+                count++;
+                System.out.println("Process count: " + count + ", id: " + metaData.getId());
             }
+            System.out.println("End date: " + ConfigProcess.DateUtils.getCurrentDateTime());
+
         } catch (Exception e) {
 //
         }
@@ -97,27 +67,12 @@ public class ProcessList {
         return totalProcessCount;
     }
 
-    public void removeCaptcha() {
-        WebElement captchaContainer = driver.findElement(By.cssSelector("div.form-group.row.fom-row"));
-        JavascriptExecutor jsExecutor = (JavascriptExecutor) driver;
-        jsExecutor.executeScript("arguments[0].remove();", captchaContainer);
-    }
+//    public void removeCaptcha() {
+//        WebElement captchaContainer = driver.findElement(By.cssSelector("div.form-group.row.fom-row"));
+//        JavascriptExecutor jsExecutor = (JavascriptExecutor) driver;
+//        jsExecutor.executeScript("arguments[0].remove();", captchaContainer);
+//    }
 
-    public static void getAllIdsFromFiles(File[] listOfFiles) {
-        List<String> allIds = new ArrayList<>();
-        for (File file : listOfFiles) {
-            try {
-                List<String> idsFromFile = readIdsFromFile(file.getAbsolutePath());
-                allIds.addAll(idsFromFile);
 
-            } catch (IOException e) {
-                System.err.println("Error reading file: " + file.getName());
-            }
-        }
-
-        int totalIds = allIds.size();
-        totalProcessCount = totalIds;
-        System.out.println("Total IDs to process: " + totalIds);
-    }
 
 }

@@ -16,7 +16,7 @@ public class ConfigProcess {
     public static final String LoginUrl = BaseUrl + "/login";
     public static final String USERNAME = "batdelger";
     public static final String PASSWORD = "123";
-    public static final String MainUrl = BaseUrl + "/mdobject/dataview/";
+    public static final String MainUrl = BaseUrl + "/mdprocess/renderByTestTool/";
 
     public static final int TIMEOUT = 10;
 

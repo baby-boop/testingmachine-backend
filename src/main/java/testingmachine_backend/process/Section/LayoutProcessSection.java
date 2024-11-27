@@ -39,7 +39,7 @@ public class LayoutProcessSection {
                             if (onclick.contains("bpAddMainMultiRow")) {
                                 action.click();
                                 waitUtils(driver);
-                                clickFirstRow(driver, id, fileName, sectionCode, "");
+                                clickFirstRow(driver,  id, fileName, dataSectionCode, "");
                                 waitUtils(driver);
                                 List<WebElement> layoutDtlPath2 = findLayoutDtlFieldPath(driver, dataSectionCode);
                                 processTabElements(driver, layoutDtlPath2, id, fileName);

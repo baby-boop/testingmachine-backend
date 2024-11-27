@@ -10,6 +10,8 @@ import testingmachine_backend.process.Service.ProcessMessageStatusService;
 
 import java.time.Duration;
 
+import static testingmachine_backend.process.utils.ElementsFunctionUtils.consoleLogRequiredPath;
+
 public class IsProcessMessage {
 
 
@@ -24,7 +26,7 @@ public class IsProcessMessage {
 
     private static final int SHORT_WAIT_SECONDS = 10;
 
-    public static boolean isErrorMessagePresent(WebDriver driver, String id, String fileName) {
+    public static boolean isErrorMessagePresent(WebDriver driver, String id, String code, String name,  String systemName) {
         try {
             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(SHORT_WAIT_SECONDS));
             WebElement messageContainer = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".brighttheme.ui-pnotify-container")));
@@ -32,13 +34,13 @@ public class IsProcessMessage {
             String messageTitleText = messageTitle.getText().toLowerCase();
 
             if (messageTitleText.contains("warning") ) {
-                return extractErrorMessage(driver, true, false, false, false, id , fileName);
+                return extractErrorMessage(driver, true, false, false, false, id , code, name, systemName);
             } else if (messageTitleText.contains("error") ) {
-                return extractErrorMessage(driver, false, true, false, false, id, fileName);
+                return extractErrorMessage(driver, false, true, false, false, id, code, name, systemName);
             } else if (messageTitleText.contains("success")) {
-                return extractErrorMessage(driver,  false, false, true, false,  id, fileName);
+                return extractErrorMessage(driver,  false, false, true, false,  id, code, name, systemName);
             } else if (messageTitleText.contains("info")) {
-                return extractErrorMessage(driver,  false, false, false, true, id, fileName);
+                return extractErrorMessage(driver,  false, false, false, true, id, code, name, systemName);
             }
             return false;
         } catch (Exception e) {
@@ -47,25 +49,25 @@ public class IsProcessMessage {
         }
     }
 
-    private static boolean extractErrorMessage(WebDriver driver,  boolean isWarning, boolean isError, boolean isSuccess, boolean isInfo, String id, String fileName) {
+    private static boolean extractErrorMessage(WebDriver driver,  boolean isWarning, boolean isError, boolean isSuccess, boolean isInfo, String id, String code, String name, String systemName) {
         try {
             WebDriverWait shortWait = new WebDriverWait(driver, Duration.ofSeconds(2));
             WebElement messageContent = shortWait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".ui-pnotify-text")));
             String messageText = messageContent.getText();
 
-
             if (isWarning) {
                 warningCount++;
-                ProcessMessageStatusService.addProcessStatus(fileName, id, "warning", messageText);
+                ProcessMessageStatusService.addProcessStatus(systemName, id, code, name, "warning", messageText);
             } else if (isError) {
                 errorCount++;
-                ProcessMessageStatusService.addProcessStatus(fileName, id, "error", messageText);
+                ProcessMessageStatusService.addProcessStatus(systemName, id, code, name, "error", messageText);
             } else if (isInfo) {
+                consoleLogRequiredPath(driver, id, systemName);
                 infoCount++;
-                ProcessMessageStatusService.addProcessStatus(fileName, id, "info", messageText);
+                ProcessMessageStatusService.addProcessStatus(systemName, id, code, name, "info", messageText);
             } else if(isSuccess) {
                 successCount++;
-                ProcessMessageStatusService.addProcessStatus(fileName, id, "success", messageText);
+                ProcessMessageStatusService.addProcessStatus(systemName, id, code, name, "success", messageText);
             }
 
             return messageContent.isDisplayed();

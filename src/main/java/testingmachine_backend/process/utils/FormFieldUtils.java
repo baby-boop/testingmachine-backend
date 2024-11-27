@@ -25,6 +25,7 @@ public class FormFieldUtils {
                 element.click();
             }
         }
+
     }
 
     private static void handleElementSubAction(WebDriver driver, WebElement element, String classAttribute, String dataPath, String regexData, String required, String id, String fileName) {
@@ -32,7 +33,7 @@ public class FormFieldUtils {
             if (isPopupField(classAttribute)) {
                 waitUtils(driver);
                 findElementWithPopup(driver, element, dataPath, required, id, fileName);
-            } else {
+            }  else {
                 handleFieldByType(element, classAttribute, regexData, driver, dataPath, required, id, fileName);
             }
         }
@@ -41,7 +42,7 @@ public class FormFieldUtils {
 
     private static void handleFieldByType(WebElement element, String classAttribute, String regexData,
                                           WebDriver driver, String dataPath, String required, String id, String fileName) {
-        if (isTextField(classAttribute)) {
+        if (isStringField(classAttribute)) {
             sendKeysBasedOnRegex(element, regexData);
         } else if (isLongField(classAttribute)) {
             element.sendKeys("11112222");
@@ -76,6 +77,12 @@ public class FormFieldUtils {
             findTextEditorInput(driver, dataPath, id);
         } else if (isComboField(classAttribute)) {
             comboboxFunction(driver, dataPath, required, id, fileName);
+        }else if (isComboGridField(classAttribute)) {
+            comboGridFunction(driver, element, dataPath, id , fileName);
+        }else if (isIconField(classAttribute)) {
+            iconFirstField( element, dataPath, id, fileName);
+        }else if (isClobField(classAttribute)) {
+            element.sendKeys("test");
         }
     }
 
@@ -97,10 +104,11 @@ public class FormFieldUtils {
     public static boolean isCompanyStateRegRegex(String regexData){
         return regexData.contains("^[0-9]{10}$");
     }
+
     public static boolean isLongField(String classAttribute ) {
         return classAttribute.contains("longInit");
     }
-    public static boolean isTextField(String classAttribute ) {
+    public static boolean isStringField(String classAttribute ) {
         return classAttribute.contains("stringInit");
     }
     public static boolean isIntegerField(String classAttribute ) {
@@ -137,6 +145,10 @@ public class FormFieldUtils {
     public static boolean isPasswordField(String classAttribute ) {
         return classAttribute.contains("passwordInit");
     }
+    public static boolean isIconField(String classAttribute ) {
+        return classAttribute.contains("iconInit");
+    }
+    public static boolean isComboGridField(String classAttribute ) { return classAttribute.contains("combogridInit"); }
 
     //lookups
     public static boolean isComboField(String classAttribute){
@@ -153,6 +165,9 @@ public class FormFieldUtils {
     }
     public static boolean isNumberField(String classAttribute){
         return classAttribute.contains("numberInit");
+    }
+    public static boolean isClobField(String classAttribute){
+        return classAttribute.contains("clobInit");
     }
     public static boolean isTextEditorField(String classAttribute){
         return classAttribute.contains("text_editorInit");
@@ -175,7 +190,7 @@ public class FormFieldUtils {
                 element.sendKeys("1100001000");
             }
         } else {
-            element.sendKeys("Simple test");
+            element.sendKeys("111222333");
         }
     }
 }

@@ -35,10 +35,9 @@ public class DetailsFieldUtils {
                                 String onclick = action.getAttribute("onclick");
                                 String sectionCode = action.getAttribute("data-section-code");
                                 if (onclick.contains("bpAddMainMultiRow")) {
-
                                     action.click();
                                     waitUtils(driver);
-                                    clickFirstRow(driver, id, fileName, sectionCode, "");
+                                    clickFirstRow(driver, id, fileName, sectionPath, "");
                                     waitUtils(driver);
                                     List<WebElement> rowElements3 = findElementsWithDetailsPath(driver, sectionPath);
                                     processTabElements(driver, rowElements3, id, fileName);

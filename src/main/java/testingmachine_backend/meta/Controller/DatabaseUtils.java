@@ -17,7 +17,7 @@ public class DatabaseUtils {
     private static final String DB_PASSWORD = "Interactive123$";
      */
 
-    private static final String DB_URL = "jdbc:oracle:thin:@172.169.88.66:1521:dev";
+    private static final String DB_URL = "jdbc:oracle:thin:@172.169.88.80:1521:dev";
     private static final String DB_USERNAME = "IA_USER";
     private static final String DB_PASSWORD = "Interactive123$";
 

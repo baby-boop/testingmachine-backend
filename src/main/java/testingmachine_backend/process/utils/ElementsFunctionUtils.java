@@ -2,15 +2,20 @@ package testingmachine_backend.process.utils;
 
 import org.openqa.selenium.*;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.logging.LogEntries;
 import org.openqa.selenium.logging.LogEntry;
 import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import testingmachine_backend.process.DTO.EmptyDataDTO;
+import testingmachine_backend.process.DTO.PopupStandardFieldsDTO;
 import testingmachine_backend.process.DTO.ProcessLogDTO;
+import testingmachine_backend.process.DTO.RequiredTest;
 import testingmachine_backend.process.Fields.EmptyDataField;
+import testingmachine_backend.process.Fields.PopupStandartField;
 import testingmachine_backend.process.Fields.ProcessLogFields;
+import testingmachine_backend.process.Fields.RequiredPathField;
 import testingmachine_backend.process.Messages.PopupMessage;
 
 import java.sql.Date;
@@ -29,14 +34,21 @@ public class ElementsFunctionUtils {
     static final Logger LOGGER = Logger.getLogger(ElementsFunctionUtils.class.getName());
 
     private static final int SHORT_WAIT_SECONDS = 2;
+    private static final int MEDIUM_WAIT_SECONDS = 10;
     private static final int LONG_WAIT_SECONDS = 90;
     private static final Pattern TAB_ID_PATTERN = Pattern.compile("tab_\\d+_\\d+");
 
     @EmptyDataField
     public static final List<EmptyDataDTO> emptyPathField = new ArrayList<>();
 
+    @RequiredPathField
+    public static final List<RequiredTest> RequiredPathField = new ArrayList<>();
+
     @ProcessLogFields
     public static final List<ProcessLogDTO> ProcessLogFields = new ArrayList<>();
+
+    @PopupStandartField
+    public static final List<PopupStandardFieldsDTO> PopupStandartField = new ArrayList<>();
 
     public static void findTextEditorInput(WebDriver driver, String dataSPath, String id) {
         try{
@@ -52,13 +64,15 @@ public class ElementsFunctionUtils {
             LOGGER.log(Level.WARNING, "Error finding text editor: " + id);
         }
     }
+
+
     public static void findElementWithPopup(WebDriver driver,WebElement element, String dataPath, String required, String id, String fileName ) {
         try{
             WebElement popupButton = element.findElement(By.xpath("..//span[@class='input-group-btn']/button"));
             if (popupButton != null) {
                 popupButton.click();
                 waitUtils(driver);
-                clickFirstRow(driver, id,  fileName, dataPath, required);
+                clickFirstPopup(driver, id, fileName, dataPath, required);
                 waitUtils(driver);
             }
         }catch(TimeoutException t){
@@ -147,6 +161,42 @@ public class ElementsFunctionUtils {
 //            LOGGER.log(Level.SEVERE, "Error selecting the first visible comboBox option: " + dataSPath);
         }
     }
+    public static void comboGridFunction(WebDriver driver, WebElement element, String dataPath, String id, String fileName) {
+        try {
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(2));
+
+            Thread.sleep(500);
+            WebElement comboGridInput = element.findElement(By.xpath("..//input[contains(@onclick, 'dataViewSelectableComboGrid')]"));
+            comboGridInput.click();
+
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//tr[contains(@id,'datagrid-row-r')]")));
+
+            List<WebElement> rows = driver.findElements(By.xpath("//tr[contains(@id,'datagrid-row-r')]"));
+
+            if (!rows.isEmpty()) {
+                WebElement firstRow = rows.get(0);
+
+                Actions actions = new Actions(driver);
+                actions.doubleClick(firstRow).perform();
+            } else {
+                System.out.println("No rows found in the data grid.");
+            }
+
+        }
+        catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Error comboGrid: " + dataPath + id + fileName);
+        }
+    }
+    public static void iconFirstField( WebElement element, String dataPath, String id, String fileName) {
+        try {
+            Thread.sleep(500);
+            WebElement firstListItem = element.findElement(By.xpath("..//li[1]"));
+            firstListItem.click();
+        }
+        catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Error comboGrid: " + dataPath + id + fileName);
+        }
+    }
     public static void selectSecondOption(WebDriver driver, By selectorLocator, String id, String dataPath, String required, String fileName) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(1));
         WebElement selector = wait.until(ExpectedConditions.visibilityOfElementLocated(selectorLocator));
@@ -163,12 +213,10 @@ public class ElementsFunctionUtils {
         selector.clear();
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div[id='bp-window-" + id + "']")));
     }
-
     public static Optional<String> extractTabIdentifier(String href) {
         Matcher matcher = TAB_ID_PATTERN.matcher(href);
         return matcher.find() ? Optional.of(matcher.group()) : Optional.empty();
     }
-
     public static Map<String, WebElement> getUniqueTabElements(List<WebElement> elements) {
         Map<String, WebElement> uniqueTabElements = new LinkedHashMap<>();
         for (WebElement element : elements) {
@@ -180,14 +228,17 @@ public class ElementsFunctionUtils {
                 if (!uniqueTabElements.containsKey(dataPath)) {
                     uniqueTabElements.put(dataPath, element);
                 }
-            }else if(elementClass.contains("popupInit") ){
+            }else
+                if(elementClass.contains("popupInit") ){
                 if (!uniqueTabElements.containsKey(dataPath)) {
                     uniqueTabElements.put(dataPath, element);
                 }
             }
             else if (elementClass.contains("dropdownInput") || elementClass.contains("radioInit")
                     || elementType.contains("checkbox") || elementClass.contains("booleanInit")
-                    || elementClass.contains("fileInit") ) {
+                    || elementClass.contains("fileInit")
+//                        || elementClass.contains("combogridInit")
+                    || elementClass.contains("iconInit")) {
                 if(!element.getAttribute("style").contains("display: none;")){
                     if (!uniqueTabElements.containsKey(dataPath)) {
                         uniqueTabElements.put(dataPath, element);
@@ -237,12 +288,45 @@ public class ElementsFunctionUtils {
         LogEntries logs = driver.manage().logs().get(LogType.BROWSER);
         for (LogEntry entry : logs) {
             if (entry.getLevel() == Level.SEVERE && entry.getMessage() != null && !isIgnorableError(entry.getMessage())) {
+
+                String logMessage = entry.getMessage();
+                String uncaughtMessage ;
+                if (logMessage.contains("Uncaught")) {
+                    uncaughtMessage = logMessage.substring(logMessage.indexOf("Uncaught"));
+                } else {
+                    uncaughtMessage = logMessage;
+                }
+
                 String formattedTimestamp = new Date(entry.getTimestamp()).toString();
-                LOGGER.log(Level.SEVERE, formattedTimestamp + " " + entry.getLevel() + " " + entry.getMessage() + " " + id);
-                ProcessLogDTO processLogFields = new ProcessLogDTO(fileName, id, entry.getMessage());
+                LOGGER.log(Level.SEVERE, formattedTimestamp + " " + entry.getLevel() + " " + uncaughtMessage  + " " + id);
+                ProcessLogDTO processLogFields = new ProcessLogDTO(fileName, id, "error", uncaughtMessage );
                 ProcessLogFields.add(processLogFields);
             }
         }
+    }
+
+    public static void consoleLogRequiredPath(WebDriver driver, String id, String fileName) {
+        LogEntries logs = driver.manage().logs().get(LogType.BROWSER);
+        for (LogEntry entry : logs) {
+            if ( entry.getMessage() != null ) {
+                String logMessage = entry.getMessage();
+                if(logMessage.contains("Path:")){
+                    String pathMessage = logMessage.substring(logMessage.indexOf("Path:"));
+                    String formattedTimestamp = new Date(entry.getTimestamp()).toString();
+                    LOGGER.log(Level.INFO, formattedTimestamp + " Extracted Console Log: " + pathMessage + " " + id);
+
+                    RequiredTest requiredPaths = new RequiredTest(fileName, id, "required", pathMessage);
+                    RequiredPathField.add(requiredPaths);
+                }else if (logMessage.contains("bpResult:")){
+                    String pathMessage = logMessage.substring(logMessage.indexOf("bpResult:"));
+                    LOGGER.log(Level.INFO, pathMessage + " Extracted Console Log: " + id);
+                }
+            }
+        }
+    }
+
+    public static List<RequiredTest> getRequiredPathMessages() {
+        return new ArrayList<>(RequiredPathField);
     }
 
     public static List<ProcessLogDTO> getProcessLogMessages() {
@@ -252,12 +336,122 @@ public class ElementsFunctionUtils {
     public static boolean isIgnorableError(String message) {
         return message.contains("Uncaught TypeError: Cannot read properties of null")
                 || message.contains("Uncaught TypeError: Cannot read properties of undefined")
-                || message.contains("Failed to load resource: the server responded with a status of 404 (Not Found)");
+                || message.contains("Failed to load resource: the server responded with a status of 404 (Not Found)")
+                || message.contains("Failed to load resource: the server responded with a status of 405 (Not Allowed)")
+                || message.contains("Failed to load resource: the server responded with a status of 500")
+                || message.contains("Failed to load resource: the server responded with a status of");
     }
 
     public static List<EmptyDataDTO> getUniqueEmptyDataPath() {
         Set<EmptyDataDTO> uniqueData = new LinkedHashSet<>(emptyPathField);
         return new ArrayList<>(uniqueData);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public static void clickFirstPopup(WebDriver driver, String id, String fileName, String datapath, String required) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(SHORT_WAIT_SECONDS));
+        try{
+            waitUtils(driver);
+
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//tr[contains(@id,'datagrid-row-r')]")));
+            List<WebElement> rows = driver.findElements(By.xpath("//tr[contains(@id,'datagrid-row-r')]"));
+
+            if (!rows.isEmpty()) {
+                Thread.sleep(500);
+                WebElement firstRow = rows.get(0);
+                WebElement firstCell = firstRow.findElement(By.xpath(".//td[1]"));
+                if (firstCell != null) {
+                    scrollToElement(driver, firstCell);
+                    rows.clear();
+                    waitUtils(driver);
+                    WebElement addToCartButton  = driver.findElement(By.xpath("//button[contains(@class, 'btn green-meadow btn-sm float-left')]"));
+                    if(addToCartButton != null) {
+                        addToCartButton.click();
+                        waitUtils(driver);
+                        WebElement selectButton = driver.findElement(By.xpath("//button[contains(@class, 'btn blue btn-sm datagrid-choose-btn')]"));
+                        if (selectButton != null) {
+                            selectButton.click();
+                        }
+                    }
+                }
+
+                if(required != null) {
+                    Thread.sleep(2000);
+                    findNameAndCodeWithPopup(driver, datapath, id, fileName);
+                }
+            }
+            rows.clear();
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div[id='bp-window-" + id + "']")));
+        } catch (TimeoutException t){
+            if (PopupMessage.isErrorMessagePresent(driver, datapath, id, fileName)) {
+                WebElement closeBtn = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[contains(@class, 'btn blue-hoki btn-sm')]")));
+                closeBtn.click();
+            }else{
+                if(required != null) {
+                    EmptyDataDTO emptyPath = new EmptyDataDTO(fileName, id, datapath, "Popup");
+                    emptyPathField.add(emptyPath);
+                    WebElement closeBtn = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[contains(@class, 'btn blue-hoki btn-sm')]")));
+                    closeBtn.click();
+                }else{
+                    WebElement closeBtn = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[contains(@class, 'btn blue-hoki btn-sm')]")));
+                    closeBtn.click();
+                }
+            }
+        }
+        catch (NoSuchElementException n){
+            LOGGER.log(Level.SEVERE, "NoSuchElementException first row");
+        }
+        catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Error first row");
+        }
+    }
+
+
+    public static void findNameAndCodeWithPopup(WebDriver driver, String dataPath, String id, String fileName) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(SHORT_WAIT_SECONDS));
+        try{
+            waitUtils(driver);
+            WebElement dataPathField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div[data-section-path='" + dataPath + "']")));
+            WebElement nameField = dataPathField.findElement(By.xpath(".//input[contains(@class, 'lookup-code-autocomplete')]"));
+            if (nameField != null) {
+
+                String titleValue = nameField.getAttribute("title");
+                if (titleValue != null && !titleValue.isEmpty()) {
+                    System.out.println("Title has a value: " + titleValue);
+                } else {
+                    System.out.println("Title is empty or null");
+                    PopupStandardFieldsDTO popupStandardFields = new PopupStandardFieldsDTO(fileName, id, dataPath, "code" );
+                    PopupStandartField.add(popupStandardFields);
+                }
+
+
+            } else {
+                System.out.println("Element not found.");
+            }
+        }catch (TimeoutException t){
+            LOGGER.log(Level.WARNING, "findNameAndCodeWithPopup TimeoutException: " + id);
+        }
+        catch (NoSuchElementException n){
+            LOGGER.log(Level.WARNING, "findNameAndCodeWithPopup NoSuchElementException: " + id);
+        }
+        catch (Exception e){
+            LOGGER.log(Level.WARNING, "Error finding name and code with findNameAndCodeWithPopup: " + id);
+        }
+    }
+    public static List<PopupStandardFieldsDTO> getPopupStandartMessages() {
+        return new ArrayList<>(PopupStandartField);
     }
 
 }

@@ -10,11 +10,13 @@ import testingmachine_backend.process.MainProcess;
 
 @EnableScheduling
 @SpringBootApplication
-public class TestingmachineBackendApplication implements CommandLineRunner {
+public class TestingmachineBackendApplication
+		implements CommandLineRunner
+{
 
 	public static void main(String[] args) {
 		SpringApplication.run(TestingmachineBackendApplication.class, args);
-
+//		MainProcess.mainProcess();
 	}
 
 	@Override

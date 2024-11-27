@@ -27,6 +27,10 @@ public class TabDetailsFieldUtils {
                     Optional<String> tabIdentifierOpt = extractTabIdentifier(TabHref);
                     String tabIdentifier = tabIdentifierOpt.get();
                     waitUtils(driver);
+                    List<WebElement> elementsWithHeaderPaths = findElementsWithHeaderPath(driver, tabIdentifier, id);
+                    System.out.println(elementsWithHeaderPaths.size());
+                    processTabElements(driver, elementsWithHeaderPaths, id, fileName);
+
                     List<WebElement> elementsWithDataSectionPath = findRowElementsWithSectionPath(driver, tabIdentifier);
                     if (elementsWithDataSectionPath != null) {
                         for (WebElement elementTab : elementsWithDataSectionPath) {
@@ -46,7 +50,7 @@ public class TabDetailsFieldUtils {
                                         if (onclick.contains("bpAddMainMultiRow")) {
                                             action.click();
                                             waitUtils(driver);
-                                            clickFirstRow(driver, id, fileName, sectionCode, "");
+                                            clickFirstRow(driver, id, fileName, sectionPath, "");
                                             waitUtils(driver);
                                             List<WebElement> tabElementPaths1 = findElementsWithTabDetailsPath(driver, sectionPath, tabIdentifier, id);
                                             processTabElements(driver, tabElementPaths1, id, fileName);
@@ -87,7 +91,33 @@ public class TabDetailsFieldUtils {
         }
     }
 
+    public static  List<WebElement> findElementsWithHeaderPath(WebDriver driver, String tabId,String id) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(SHORT_WAIT_SECONDS));
+        try {
 
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector
+                    ("div[id='bp-window-" + id + "'] div[id='"+ tabId +"'] .bp-header-param")
+            ));
+
+            WebElement MainProcess = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector
+                    ("div[id='bp-window-" + id + "'] div[id='"+ tabId +"'] ")
+            ));
+
+            List<WebElement> elements = MainProcess.findElements(
+                    By.cssSelector("[data-path]")
+            );
+
+            Map<String, WebElement> uniqueDataPathElements = getUniqueTabElements(elements);
+
+            return new ArrayList<>(uniqueDataPathElements.values());
+
+        }
+        catch (Exception e) {
+
+            LOGGER.log(Level.SEVERE, "Elements with 'header param' and data-path not found");
+            return Collections.emptyList();
+        }
+    }
 
     public static List<WebElement> findRowElementsWithSectionPath(WebDriver driver, String tabId) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(SHORT_WAIT_SECONDS));
@@ -99,6 +129,8 @@ public class TabDetailsFieldUtils {
             return null;
         }
     }
+
+
 
     public static List<WebElement> findRowActionTabPathsButton(WebDriver driver, String sectionPath) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(SHORT_WAIT_SECONDS));
@@ -243,4 +275,3 @@ public class TabDetailsFieldUtils {
         }
     }
 }
-

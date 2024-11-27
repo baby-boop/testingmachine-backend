@@ -57,4 +57,13 @@ public class ProcessController {
         return PopupMessage.getUniquePopupMessages();
     }
 
+    @GetMapping("/popup-standart")
+    public List<PopupStandardFieldsDTO> getPopupStandartMessages() {
+        return ElementsFunctionUtils.getPopupStandartMessages();
+    }
+
+    @GetMapping("/process-required")
+    public List<RequiredTest> getRequiredMessages() {
+        return ElementsFunctionUtils.getRequiredPathMessages();
+    }
 }
