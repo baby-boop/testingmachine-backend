@@ -28,7 +28,7 @@ public class ProcessDatabaseUtils {
             INNER JOIN meta_data t2 ON t2.meta_data_id = t1.PROCESS_META_DATA_ID
             LEFT JOIN test_case_system_map t3 ON t3.test_case_id = t1.id
             LEFT JOIN meta_data t4 ON t4.meta_data_id = t3.system_id AND t4.meta_type_id = 200101010000025
-            WHERE t1.TEST_MODE = 3 AND t1.is_active = 1 AND t4.meta_data_name is not null
+            WHERE t1.TEST_MODE = 3 AND t1.is_active = 1 AND t2.meta_data_id in (17319935152441)
             """;
 
         try (Connection connection = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
@@ -49,5 +49,8 @@ public class ProcessDatabaseUtils {
 
         return processList;
     }
-
 }
+
+
+
+

@@ -6,7 +6,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import testingmachine_backend.meta.Controller.ProcessMetaData;
 import testingmachine_backend.process.Config.ConfigProcess;
-import testingmachine_backend.process.Controller.ProcessDatabaseUtils;
+import testingmachine_backend.process.Controller.ProcessCallDataview;
 import testingmachine_backend.process.utils.ProcessPath;
 
 import java.util.List;
@@ -40,7 +40,7 @@ public class ProcessList {
 
             passwordField.sendKeys(Keys.ENTER);
 
-            List<ProcessMetaData> processMetaDataList = ProcessDatabaseUtils.getProcessMetaDataList();
+            List<ProcessMetaData> processMetaDataList = ProcessCallDataview.getProcessMetaDataList();
 
 
             int count = 0;

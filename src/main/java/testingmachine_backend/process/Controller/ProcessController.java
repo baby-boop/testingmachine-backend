@@ -1,6 +1,8 @@
 package testingmachine_backend.process.Controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import testingmachine_backend.process.DTO.*;
 import testingmachine_backend.process.Messages.PopupMessage;
@@ -11,6 +13,7 @@ import testingmachine_backend.process.Messages.IsProcessMessage;
 import testingmachine_backend.process.utils.ProcessPath;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class ProcessController {
@@ -66,4 +69,6 @@ public class ProcessController {
     public List<RequiredTest> getRequiredMessages() {
         return ElementsFunctionUtils.getRequiredPathMessages();
     }
+
+
 }
