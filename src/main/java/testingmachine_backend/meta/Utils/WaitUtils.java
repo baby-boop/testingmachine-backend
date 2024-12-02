@@ -11,11 +11,11 @@ public class WaitUtils {
     public static int waitTime = 120;
 
 
-    public static void retryWaitForLoadingToDisappear(WebDriver driver, String fileName, String id, int maxAttempts) {
-        retryAction(() -> waitForLoadingToDisappear(driver, fileName, id), maxAttempts);
+    public static void retryWaitForLoadingToDisappear(WebDriver driver, String fileName, String id, String code, String name, int maxAttempts) {
+        retryAction(() -> waitForLoadingToDisappear(driver, fileName, id, code, name), maxAttempts);
     }
-    public static void retryWaitForLoadToDisappear(WebDriver driver, String fileName, String id, int maxAttempts) {
-        retryAction(() -> waitForLoadToDisappear(driver, fileName, id), maxAttempts);
+    public static void retryWaitForLoadToDisappear(WebDriver driver, String fileName, String id, String code, String name, int maxAttempts) {
+        retryAction(() -> waitForLoadToDisappear(driver, fileName, id, code, name), maxAttempts);
     }
     public static void retryWaitForLoadForWorkflow(WebDriver driver, int maxAttempts) {
         retryAction(() -> waitForLoadForWorkflow(driver), maxAttempts);
@@ -25,7 +25,7 @@ public class WaitUtils {
         retryAction(() -> waitForLoadingForWorkflow(driver), maxAttempts);
     }
 
-    private static void waitForLoadingToDisappear(WebDriver driver, String fileName, String id) {
+    private static void waitForLoadingToDisappear(WebDriver driver, String fileName, String id, String code, String name) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(waitTime));
         try {
             WebElement loadingMessage = driver.findElement(By.xpath("//div[contains(@class, 'datagrid-mask-msg') and text()='Түр хүлээнэ үү']"));
@@ -35,11 +35,11 @@ public class WaitUtils {
         } catch (NoSuchElementException e) {
             // Loading message not found, proceed
         } catch (TimeoutException e) {
-            ErrorLogger.logError(fileName, id);
+            ErrorLogger.logError(fileName, id, code, name);
         }
     }
 
-    private static void waitForLoadToDisappear(WebDriver driver, String fileName, String id) {
+    private static void waitForLoadToDisappear(WebDriver driver, String fileName, String id, String code, String name) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(waitTime));
         try {
             WebElement loadingMessages = driver.findElement(By.cssSelector("div.loading-message.loading-message-boxed"));
@@ -49,7 +49,7 @@ public class WaitUtils {
         } catch (NoSuchElementException e) {
             // Loading message not found, proceed
         } catch (TimeoutException e) {
-            ErrorLogger.logError(fileName, id);
+            ErrorLogger.logError(fileName, id, code, name);
         }
     }
 

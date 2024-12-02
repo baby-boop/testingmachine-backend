@@ -40,25 +40,10 @@ public class ProcessPath {
         try {
             waitUtils(driver);
             consoleLogChecker(driver, id, systemName);
-            int maxAttempts = 2;
-            for (int attempt = 0; attempt < maxAttempts; attempt++) {
-                if (LayoutChecker.isLayout(driver, id)) {
-                    LayoutProcessSection.LayoutFieldFunction(driver, id, systemName);
-                } else if (ProcessWizardChecker.isWizard(driver, id)) {
-                    ProcessWizardSection.KpiWizardFunction(driver, id, systemName);
-                } else {
-                    List<WebElement> elementsWithDataPath = findElementsWithSelector(driver, id);
-                    processTabElements(driver, elementsWithDataPath, id, systemName);
-                    tabDetailItems(driver, id, systemName);
-                    waitUtils(driver);
 
-                    detailActionButton(driver, id, systemName);
-                    waitUtils(driver);
-                }
-                waitUtils(driver);
-            }
+            FindMainProcessType(driver, id, systemName);
 
-            LOGGER.log(Level.INFO, "Process complete after " + maxAttempts + " attempts: " + id);
+            waitUtils(driver);
 
             if (!isDuplicateLogEntry(systemName, id)) {
                 waitUtils(driver);
@@ -90,6 +75,22 @@ public class ProcessPath {
             failedCount++;
             LOGGER.log(Level.SEVERE, "Exception: " + id + e);
             ProcessMessageStatusService.addProcessStatus(systemName, id, code, name, "failed", "");
+        }
+    }
+
+    public static void FindMainProcessType(WebDriver driver, String id, String systemName) {
+        if (LayoutChecker.isLayout(driver, id)) {
+            LayoutProcessSection.LayoutFieldFunction(driver, id, systemName);
+        } else if (ProcessWizardChecker.isWizard(driver, id)) {
+            ProcessWizardSection.KpiWizardFunction(driver, id, systemName);
+        } else {
+            List<WebElement> elementsWithDataPath = findElementsWithSelector(driver, id);
+            processTabElements(driver, elementsWithDataPath, id, systemName);
+            tabDetailItems(driver, id, systemName);
+            waitUtils(driver);
+
+            detailActionButton(driver, id, systemName);
+            waitUtils(driver);
         }
     }
 

@@ -26,56 +26,59 @@ public class IsProcessMessage {
 
     private static final int SHORT_WAIT_SECONDS = 10;
 
-    public static boolean isErrorMessagePresent(WebDriver driver, String id, String code, String name,  String systemName) {
+    public static boolean isErrorMessagePresent(WebDriver driver, String id, String code, String name, String systemName) {
         try {
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(SHORT_WAIT_SECONDS));
-            WebElement messageContainer = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".brighttheme.ui-pnotify-container")));
-            WebElement messageTitle = messageContainer.findElement(By.cssSelector(".ui-pnotify-title"));
-            String messageTitleText = messageTitle.getText().toLowerCase();
+            WebElement messageContainer = waitForElement(driver, By.cssSelector(".brighttheme.ui-pnotify-container"), SHORT_WAIT_SECONDS);
+            String messageTitle = messageContainer.findElement(By.cssSelector(".ui-pnotify-title")).getText().toLowerCase();
 
-            if (messageTitleText.contains("warning") ) {
-                return extractErrorMessage(driver, true, false, false, false, id , code, name, systemName);
-            } else if (messageTitleText.contains("error") ) {
-                return extractErrorMessage(driver, false, true, false, false, id, code, name, systemName);
-            } else if (messageTitleText.contains("success")) {
-                return extractErrorMessage(driver,  false, false, true, false,  id, code, name, systemName);
-            } else if (messageTitleText.contains("info")) {
-                return extractErrorMessage(driver,  false, false, false, true, id, code, name, systemName);
+            if (messageTitle.contains("warning")) {
+                return processMessage(driver, "warning", id, code, name, systemName);
+            } else if (messageTitle.contains("error")) {
+                return processMessage(driver, "error", id, code, name, systemName);
+            } else if (messageTitle.contains("success")) {
+                return processMessage(driver, "success", id, code, name, systemName);
+            }   else if (messageTitle.contains("info")) {
+                return processMessage(driver, "info", id, code, name, systemName);
             }
             return false;
         } catch (Exception e) {
-            System.out.println("Not found alert: " + id);
+            System.out.println("No alert found for process: " + id);
             return false;
         }
     }
 
-    private static boolean extractErrorMessage(WebDriver driver,  boolean isWarning, boolean isError, boolean isSuccess, boolean isInfo, String id, String code, String name, String systemName) {
+    private static boolean processMessage(WebDriver driver, String type, String id, String code, String name, String systemName) {
         try {
-            WebDriverWait shortWait = new WebDriverWait(driver, Duration.ofSeconds(2));
-            WebElement messageContent = shortWait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".ui-pnotify-text")));
+            WebElement messageContent = waitForElement(driver, By.cssSelector(".ui-pnotify-text"), 2);
             String messageText = messageContent.getText();
 
-            if (isWarning) {
-                warningCount++;
-                ProcessMessageStatusService.addProcessStatus(systemName, id, code, name, "warning", messageText);
-            } else if (isError) {
-                errorCount++;
-                ProcessMessageStatusService.addProcessStatus(systemName, id, code, name, "error", messageText);
-            } else if (isInfo) {
-                consoleLogRequiredPath(driver, id, systemName);
-                infoCount++;
-                ProcessMessageStatusService.addProcessStatus(systemName, id, code, name, "info", messageText);
-            } else if(isSuccess) {
-                successCount++;
-                ProcessMessageStatusService.addProcessStatus(systemName, id, code, name, "success", messageText);
+            switch (type) {
+                case "warning":
+                    warningCount++;
+                    break;
+                case "error":
+                    errorCount++;
+                    break;
+                case "success":
+                    successCount++;
+                    break;
+                case "info":
+                    infoCount++;
+                    break;
             }
 
-            return messageContent.isDisplayed();
-
+            ProcessMessageStatusService.addProcessStatus(systemName, id, code, name, type, messageText);
+            return true;
         } catch (Exception e) {
-            System.out.println("Error message for extracting : " + id);
+            System.out.println("Error extracting message for process: " + id);
             return false;
         }
     }
+
+    private static WebElement waitForElement(WebDriver driver, By locator, int timeoutSeconds) {
+        return new WebDriverWait(driver, Duration.ofSeconds(timeoutSeconds))
+                .until(ExpectedConditions.visibilityOfElementLocated(locator));
+    }
+
 
 }

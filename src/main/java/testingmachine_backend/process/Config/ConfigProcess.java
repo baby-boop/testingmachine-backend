@@ -1,21 +1,24 @@
 package testingmachine_backend.process.Config;
 
+import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import testingmachine_backend.process.Controller.ProcessController;
 import testingmachine_backend.process.utils.WaitElement;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+@Slf4j
 public class ConfigProcess {
 
-    public static final String BaseUrl = "https://dev.veritech.mn";
+
+    public static final String BaseUrl = "https://"+ ProcessController.getSystemUrl()+"";
     public static final String LoginUrl = BaseUrl + "/login";
-    public static final String USERNAME = "batdelger";
-    public static final String PASSWORD = "123";
     public static final String MainUrl = BaseUrl + "/mdprocess/renderByTestTool/";
 
     public static final int TIMEOUT = 10;
@@ -26,6 +29,7 @@ public class ConfigProcess {
 
     public static void waitUtils (WebDriver driver) {
         try{
+
             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(TIMEOUT));
             wait.until(ExpectedConditions.visibilityOfElementLocated(By.tagName("body")));
             WaitElement.retryWaitForLoadToDisappear(driver, 3);

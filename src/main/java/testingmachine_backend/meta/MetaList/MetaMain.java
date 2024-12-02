@@ -13,8 +13,8 @@ public class MetaMain {
         try{
 
             MetaLists main = new MetaLists(driver);
-            MetaWithWorkflow workflow = new MetaWithWorkflow(driver);
-            MetaWithExcel excel = new MetaWithExcel(driver);
+//            MetaWithWorkflow workflow = new MetaWithWorkflow(driver);
+//            MetaWithExcel excel = new MetaWithExcel(driver);
 
             main.mainList();
 //            workflow.mainList();

@@ -7,6 +7,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import testingmachine_backend.meta.Controller.ProcessMetaData;
 import testingmachine_backend.process.Config.ConfigProcess;
 import testingmachine_backend.process.Controller.ProcessCallDataview;
+import testingmachine_backend.process.Controller.ProcessController;
 import testingmachine_backend.process.utils.ProcessPath;
 
 import java.util.List;
@@ -27,20 +28,21 @@ public class ProcessList {
 
             WebDriverWait wait = ConfigProcess.getWebDriverWait(driver);
             driver.get(ConfigProcess.LoginUrl);
+            System.out.println(ConfigProcess.LoginUrl);
 
             WebElement userNameField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("user_name")));
-            userNameField.sendKeys(ConfigProcess.USERNAME);
+            userNameField.sendKeys(ProcessController.getUsername());
 
             WebElement passwordField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("pass_word")));
-            passwordField.sendKeys(ConfigProcess.PASSWORD);
+            passwordField.sendKeys(ProcessController.getPassword());
 
             WebElement checkBox = wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("isLdap")));
             checkBox.click();
 
-
             passwordField.sendKeys(Keys.ENTER);
 
             List<ProcessMetaData> processMetaDataList = ProcessCallDataview.getProcessMetaDataList();
+            System.out.println(processMetaDataList.size());
 
 
             int count = 0;
@@ -72,7 +74,5 @@ public class ProcessList {
 //        JavascriptExecutor jsExecutor = (JavascriptExecutor) driver;
 //        jsExecutor.executeScript("arguments[0].remove();", captchaContainer);
 //    }
-
-
 
 }

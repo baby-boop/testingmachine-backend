@@ -7,10 +7,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import testingmachine_backend.meta.DTO.NotFoundRowDTO;
-import testingmachine_backend.meta.DTO.WorkflowMessageDTO;
-import testingmachine_backend.meta.Fields.NotFoundRowField;
-import testingmachine_backend.meta.Fields.WorkflowField;
+import testingmachine_backend.meta.Service.MetaMessageStatusService;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -25,13 +22,7 @@ public class CheckWorkflow {
     private static final int LONG_WAIT_MILLISECONDS = 1000;
     private static int workflowCount = 0;
 
-    @NotFoundRowField
-    private static final List<NotFoundRowDTO> NotFoundRowField = new ArrayList<>();
-
-    @WorkflowField
-    private static final List<WorkflowMessageDTO> WorkflowField = new ArrayList<>();
-
-    public static boolean isErrorMessagePresent(WebDriver driver, String id, String fileName) {
+    public static boolean isErrorMessagePresent(WebDriver driver,  String fileName, String id, String code, String name) {
         try {
             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
@@ -42,7 +33,7 @@ public class CheckWorkflow {
 
             workflowCount++;
 
-            List<WebElement> rows = findRows(driver, fileName, id);
+            List<WebElement> rows = findRows(driver, fileName, id, code, name);
             boolean foundWorkflowId = false;
             LOGGER.info("Number of rows found: " + rows.size());
 
@@ -53,7 +44,7 @@ public class CheckWorkflow {
                 WebElement dropdownMenu = waitForElementVisible(driver, By.cssSelector(".dropdown-menu.workflow-dropdown-" + id + ".show"), 10);
 
                 if (dropdownMenu != null) {
-                    foundWorkflowId = clickValidMenuOption(driver, wait, dropdownMenu, id, fileName);
+                    foundWorkflowId = clickValidMenuOption(driver, wait, dropdownMenu, fileName,id, code, name);
                 }
 
                 if (foundWorkflowId) {
@@ -75,18 +66,16 @@ public class CheckWorkflow {
         return workflowCount;
     }
 
-    public static List<NotFoundRowDTO> getNotFoundRowCount() {
-        return NoDataLogger.getNotFoundRowField();
-    }
 
-    private static List<WebElement> findRows(WebDriver driver,String fileName, String id) {
+
+    private static List<WebElement> findRows(WebDriver driver,String fileName, String id, String code, String name) {
         try {
             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(SHORT_WAIT_SECONDS));
             wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//tr[contains(@id,'datagrid-row-r1-1')]")));
             return driver.findElements(By.xpath("//tr[contains(@id,'datagrid-row-r1-1')]"));
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Rows not found", e.getMessage());
-            NoDataLogger.logError(fileName, id);
+            NoDataLogger.logError(fileName, id, code, name);
             return new ArrayList<>();
         }
     }
@@ -105,7 +94,7 @@ public class CheckWorkflow {
 
     }
 
-    private static boolean clickValidMenuOption(WebDriver driver, WebDriverWait wait, WebElement dropdownMenu, String id, String fileName) {
+    private static boolean clickValidMenuOption(WebDriver driver, WebDriverWait wait, WebElement dropdownMenu, String fileName, String id, String code, String name) {
         List<WebElement> listItems = dropdownMenu.findElements(By.tagName("li"));
 
         for (WebElement listItem : listItems) {
@@ -122,7 +111,7 @@ public class CheckWorkflow {
                     WebElement wfmSaveButton = wfmDialog.findElement(By.xpath("//button[contains(text(),'Хадгалах')]"));
                     wfmSaveButton.click();
 
-                    if(checkForMessages(driver, wait, fileName ,id)){
+                    if(checkForMessages(driver, wait, fileName ,id, code, name)){
                         return true;
                     }
                 }
@@ -136,13 +125,13 @@ public class CheckWorkflow {
         return false;
     }
 
-    private static boolean checkForMessages(WebDriver driver, WebDriverWait wait,  String fileName, String id) {
+    private static boolean checkForMessages(WebDriver driver, WebDriverWait wait,  String moduleName, String id, String code, String name) {
         try {
             WebElement messageContainer = waitForElementVisible(driver, By.cssSelector(".brighttheme.ui-pnotify-container"), SHORT_WAIT_SECONDS);
             if (messageContainer != null) {
                 WebElement messageTitle = messageContainer.findElement(By.cssSelector(".ui-pnotify-title"));
                 String messageTitleText = messageTitle.getText().toLowerCase();
-                return processMessage(driver, messageTitleText, id, fileName);
+                return processMessage(driver, messageTitleText,moduleName, id, code, name);
             }
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error while checking messages: {0}", e.getMessage());
@@ -150,30 +139,28 @@ public class CheckWorkflow {
         return false;
     }
 
-    private static boolean processMessage(WebDriver driver, String messageTitleText, String id, String fileName) {
+    private static boolean processMessage(WebDriver driver, String messageTitleText, String id, String moduleName, String code, String name) {
         if (messageTitleText.contains("warning") || messageTitleText.contains("Warning") || messageTitleText.contains("error") || messageTitleText.contains("Error") ||
                 messageTitleText.contains("info") || messageTitleText.contains("Info")) {
 
             if (messageTitleText.contains("error fetching http headers")) {
-                LOGGER.log(Level.SEVERE, "Connection error! Last processed: {0} - {1}", new Object[]{fileName, id});
+                LOGGER.log(Level.SEVERE, "Connection error! Last processed: {0} - {1}", new Object[]{moduleName, id});
                 driver.quit();
                 return false;
             } else {
-                return extractErrorMessage(driver, id, fileName);
+                return extractErrorMessage(driver, moduleName, id,  code, name);
             }
         }
         return false;
     }
 
-    private static boolean extractErrorMessage(WebDriver driver, String id, String fileName) {
+    private static boolean extractErrorMessage(WebDriver driver, String moduleName, String id, String code, String name) {
         try {
             WebDriverWait shortWait = new WebDriverWait(driver, Duration.ofSeconds(SHORT_WAIT_SECONDS));
             WebElement messageContent = waitForElementVisible(driver, By.cssSelector(".ui-pnotify-text"), SHORT_WAIT_SECONDS);
             if (messageContent != null) {
                 String messageText = messageContent.getText();
-                WorkflowMessageDTO WorkflowMessageDTO = new WorkflowMessageDTO(fileName, getMetaAttribute(driver, "data-process-id"),
-                        getMetaAttribute(driver, "data-meta-code"), messageText);
-                WorkflowField.add(WorkflowMessageDTO);
+                MetaMessageStatusService.addMetaStatus(moduleName, id, code, name, "worflow", messageText);
                 return true;
             }
         } catch (Exception e) {
@@ -206,7 +193,4 @@ public class CheckWorkflow {
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
     }
 
-    public static List<WorkflowMessageDTO> getWorkflowMessages() {
-        return new ArrayList<>(WorkflowField);
-    }
 }

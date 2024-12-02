@@ -7,26 +7,19 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import testingmachine_backend.meta.Controller.ListConfig;
-import testingmachine_backend.meta.DTO.ErrorTimeoutDTO;
-import testingmachine_backend.meta.Fields.ErrorTimeoutField;
-import testingmachine_backend.meta.Utils.ErrorLogger;
+import testingmachine_backend.meta.Controller.MeteCallDataview;
+import testingmachine_backend.meta.DTO.MetadataDTO;
 import testingmachine_backend.meta.Utils.IsErrorList;
-import testingmachine_backend.meta.Utils.WaitUtils;
 
-import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
-import static testingmachine_backend.meta.Utils.FileUtils.readIdsFromFile;
+import testingmachine_backend.meta.Utils.WaitUtils;
 
 public class MetaLists {
 
     private final WebDriver driver;
     private static int metaCount = 0;
     private static int totalMetaCount = 0;
-
-    @ErrorTimeoutField
-    private final static List<ErrorTimeoutDTO> errorTimeoutMessages = new ArrayList<>();
 
 
     public MetaLists(WebDriver driver) {
@@ -37,7 +30,6 @@ public class MetaLists {
         try {
             WebDriverWait wait = ListConfig.getWebDriverWait(driver);
             driver.get(ListConfig.LoginUrl);
-//            driver.manage().window().setSize(new Dimension(800, 600));
 
             Thread.sleep(500);
 
@@ -55,61 +47,29 @@ public class MetaLists {
 
             Thread.sleep(2000);
 
-            String directoryPath = "C:\\Users\\batde\\Downloads\\Hishig arvin uat lookupIds";
+            List<MetadataDTO> metaDataList = MeteCallDataview.getProcessMetaDataList();
+            System.out.println(metaDataList.size());
 
-            File folder = new File(directoryPath);
-            File[] listOfFiles = folder.listFiles((dir, name) -> name.endsWith(".txt"));
+            int count = 0;
+            for (MetadataDTO metaData : metaDataList) {
+                String url = ListConfig.MainUrl + metaData.getId();
+                driver.get(url);
 
-            if (listOfFiles != null) {
+                Thread.sleep(1000);
 
-                List<String> allIds = new ArrayList<>();
+                WaitUtils.retryWaitForLoadToDisappear(driver, metaData.getModuleName(), metaData.getId(), metaData.getCode(), metaData.getName(), 3);
+                WaitUtils.retryWaitForLoadingToDisappear(driver, metaData.getModuleName(), metaData.getId(), metaData.getCode(), metaData.getName(),3);
 
-                for (File file : listOfFiles) {
-                    List<String> idsFromFile = readIdsFromFile(file.getAbsolutePath());
-                    allIds.addAll(idsFromFile);
+                if (IsErrorList.isErrorMessagePresent(driver, metaData.getId(), metaData.getModuleName(), metaData.getCode(), metaData.getName())) {
+                    System.out.println("Error found in ID: " + metaData.getId());
                 }
-
-                int totalIds = allIds.size();
-                totalMetaCount = totalIds;
-                System.out.println("Total IDs to meta: " + totalIds);
-
-                for (File file : listOfFiles) {
-                    System.out.println("Processing file: " + file.getName());
-
-                    List<String> ids = readIdsFromFile(file.getAbsolutePath());
-
-                    for (String id : ids) {
-                        String url = ListConfig.MainUrl + id;
-                        driver.get(url);
-                        driver.navigate().refresh();
-
-                        wait.until(ExpectedConditions.visibilityOfElementLocated(By.tagName("body")));
-                        WaitUtils.retryWaitForLoadToDisappear(driver, file.getName(), id, 3);
-                        WaitUtils.retryWaitForLoadingToDisappear(driver, file.getName(), id,3);
-                        if (IsErrorList.isErrorMessagePresent(driver, id, file.getName())) {
-                            System.out.println("Error found in ID: " + id);
-                        }
-//                        if(CheckWorkflow.isErrorMessagePresent(driver, id, file.getName())) {
-//                            System.out.println("Workflow in ID: " + id);
-//                        }
-//                        wait.until(ExpectedConditions.visibilityOfElementLocated(By.tagName("body")));
-//                        WaitUtils.retryWaitForLoadForWorkflow(driver, 3);
-//                        WaitUtils.retryWaitForLoadingForWorkflow(driver, 3);
-                        metaCount++;
-                        System.out.println("Count: " + metaCount + ", ID: " + id);
-                    }
-                }
-            } else {
-                System.err.println("No .txt files found in directory: " + directoryPath);
+                count++;
+                System.out.println("Process count: " + count + ", id: " + metaData.getId());
             }
 
         } catch (Exception e) {
             System.err.println("Error: " + e.getMessage());
         }
-    }
-
-    public static List<ErrorTimeoutDTO> errorTimeoutMessages() {
-        return ErrorLogger.getErrorTimeoutMessages();
     }
 
     public static int getCheckCount() {

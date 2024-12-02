@@ -1,21 +1,16 @@
 package testingmachine_backend.meta.Utils;
 
-import testingmachine_backend.meta.DTO.NotFoundRowDTO;
+import testingmachine_backend.meta.DTO.ErrorMessageDTO;
+import testingmachine_backend.meta.Service.MetaMessageStatusService;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class NoDataLogger {
 
-    private static final List<NotFoundRowDTO> NotFoundRowFields = new ArrayList<>();
-
-    public static void logError(String fileName, String id) {
-        System.err.println("metaId: " + id + ", fileName: " + fileName);
-        NotFoundRowDTO notFoundRowField = new NotFoundRowDTO(fileName, id);
-        NotFoundRowFields.add(notFoundRowField);
+    public static void logError(String moduleName, String id, String code, String name) {
+        System.err.println("metaId: " + id + ", fileName: " + moduleName);
+        MetaMessageStatusService.addMetaStatus(moduleName, id, code, name, "nodata", "");
     }
 
-    public static List<NotFoundRowDTO> getNotFoundRowField() {
-        return NotFoundRowFields;
-    }
 }

@@ -1,20 +1,13 @@
 package testingmachine_backend.meta.Utils;
 
-import testingmachine_backend.meta.DTO.ErrorTimeoutDTO;
-
-import java.util.ArrayList;
-import java.util.List;
+import testingmachine_backend.meta.Service.MetaMessageStatusService;
 
 public class ErrorLogger {
-    private static final List<ErrorTimeoutDTO> errorTimeoutMessages = new ArrayList<>();
 
-    public static void logError(String fileName, String id) {
+    public static void logError(String fileName, String id, String code, String name) {
         System.err.println("metaId: " + id + ", fileName: " + fileName);
-        ErrorTimeoutDTO errorTimeoutMessage = new ErrorTimeoutDTO(fileName, id);
-        errorTimeoutMessages.add(errorTimeoutMessage);
+
+        MetaMessageStatusService.addMetaStatus(fileName, id, code, name, "info", "");
     }
 
-    public static List<ErrorTimeoutDTO> getErrorTimeoutMessages() {
-        return errorTimeoutMessages;
-    }
 }

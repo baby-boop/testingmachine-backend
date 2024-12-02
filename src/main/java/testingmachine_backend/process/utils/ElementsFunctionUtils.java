@@ -303,6 +303,10 @@ public class ElementsFunctionUtils {
                 ProcessLogFields.add(processLogFields);
             }
         }
+        LogEntries performanceLogs = driver.manage().logs().get(LogType.PERFORMANCE);
+        for (LogEntry log : performanceLogs) {
+            System.out.println(log.getMessage());
+        }
     }
 
     public static void consoleLogRequiredPath(WebDriver driver, String id, String fileName) {

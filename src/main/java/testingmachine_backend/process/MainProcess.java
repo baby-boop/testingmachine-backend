@@ -12,9 +12,18 @@ public class MainProcess {
 
     public static void mainProcess() {
 
+        Map<String, String> loggingPrefs = Map.of(
+                LogType.BROWSER, "ALL",
+                LogType.DRIVER, "ALL",
+                LogType.PERFORMANCE, "ALL",
+                LogType.CLIENT, "ALL",
+                LogType.SERVER, "ALL"
+        );
+
         ChromeOptions options = new ChromeOptions();
 //        options.addArguments("--headless");
-        options.setCapability("goog:loggingPrefs", Map.of(LogType.BROWSER, "ALL"));
+        options.setCapability("goog:loggingPrefs", loggingPrefs);
+
         WebDriver driver = new ChromeDriver(options);
 
         try{

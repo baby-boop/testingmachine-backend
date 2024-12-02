@@ -18,13 +18,10 @@ public class ListConfig {
 
     public static final String BaseUrl = "https://dev.veritech.mn";
     public static final String LoginUrl = BaseUrl + "/login";
-    public static final String USERNAME = "shinetsetseg.sh";
-    public static final String PASSWORD = "shinee@2023";
+    public static final String USERNAME = "";
+    public static final String PASSWORD = "";
     public static final String MainUrl = BaseUrl + "/mdobject/dataview/";
 
-//    public static final String MainUrl = BaseUrl + "/mdobject/dataview/16413658595761?";
-//    public static final String tailUrl = "&mmid=164560279791910";
-//    public static final String MetaverseURL= "/mdform/indicatorRender/";
  */
 
     /*

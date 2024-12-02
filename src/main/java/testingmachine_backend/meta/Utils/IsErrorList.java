@@ -5,18 +5,13 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import testingmachine_backend.meta.DTO.ErrorMessageDTO;
+import testingmachine_backend.meta.Service.MetaMessageStatusService;
 
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
 
 public class IsErrorList {
 
-    @testingmachine_backend.meta.Fields.ListMessageField
-    private static List<ErrorMessageDTO> ListMessageField = new ArrayList<>();
-
-    public static boolean isErrorMessagePresent(WebDriver driver, String id, String fileName) {
+    public static boolean isErrorMessagePresent(WebDriver driver, String id, String moduleName, String code, String name) {
         try {
             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(2));
             WebElement messageContainer = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".brighttheme.ui-pnotify-container")));
@@ -32,11 +27,11 @@ public class IsErrorList {
                 String connectionError = connectionERROR.getText();
                 if(connectionError.contains("Error Fetching http headers")){
                     System.out.println("Холболтоо шалгана уу!" );
-                    System.out.println("Сүүлд ажилласан: " + fileName + " - " + id);
+                    System.out.println("Сүүлд ажилласан: " + moduleName + " - " + id);
                     driver.quit();
                 }
                 else{
-                   return extractErrorMessage(driver,  id, fileName);
+                   return extractErrorMessage(driver,  id, moduleName , code , name);
                 }
             }
 
@@ -47,25 +42,13 @@ public class IsErrorList {
         }
     }
 
-    private static boolean extractErrorMessage(WebDriver driver, String id, String fileName) {
+    private static boolean extractErrorMessage(WebDriver driver, String id, String moduleName, String code, String name) {
         try {
             WebDriverWait shortWait = new WebDriverWait(driver, Duration.ofSeconds(2));
             WebElement messageContent = shortWait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".ui-pnotify-text")));
             String messageText = messageContent.getText();
 
-            String metaId = "";
-            String metaCode  = "";
-            try {
-                WebElement targetDiv = driver.findElement(By.cssSelector("div.main-dataview-container"));
-                metaId = targetDiv.getAttribute("data-process-id");
-                metaCode = targetDiv.getAttribute("data-meta-code");
-            } catch (Exception e) {
-                System.out.println("Data process ID element not found: " + e.getMessage());
-            }
-
-            ErrorMessageDTO errorMessageDTO = new ErrorMessageDTO(fileName, metaId, metaCode, messageText);
-
-            ListMessageField.add(errorMessageDTO);
+            MetaMessageStatusService.addMetaStatus(moduleName, id, code, name, "error", messageText);
 
             return messageContent.isDisplayed();
         } catch (Exception e) {
@@ -74,7 +57,4 @@ public class IsErrorList {
         }
     }
 
-    public static List<ErrorMessageDTO> getListMessages() {
-        return new ArrayList<>(ListMessageField);
-    }
 }

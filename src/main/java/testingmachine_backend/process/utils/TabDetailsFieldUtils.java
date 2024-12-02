@@ -28,7 +28,6 @@ public class TabDetailsFieldUtils {
                     String tabIdentifier = tabIdentifierOpt.get();
                     waitUtils(driver);
                     List<WebElement> elementsWithHeaderPaths = findElementsWithHeaderPath(driver, tabIdentifier, id);
-                    System.out.println(elementsWithHeaderPaths.size());
                     processTabElements(driver, elementsWithHeaderPaths, id, fileName);
 
                     List<WebElement> elementsWithDataSectionPath = findRowElementsWithSectionPath(driver, tabIdentifier);
@@ -46,7 +45,6 @@ public class TabDetailsFieldUtils {
                                     waitUtils(driver);
                                     for (WebElement action : allActionTabPath) {
                                         String onclick = action.getAttribute("onclick");
-                                        String sectionCode = action.getAttribute("data-section-code");
                                         if (onclick.contains("bpAddMainMultiRow")) {
                                             action.click();
                                             waitUtils(driver);

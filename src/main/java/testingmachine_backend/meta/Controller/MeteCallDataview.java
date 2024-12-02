@@ -1,4 +1,4 @@
-package testingmachine_backend.process.Controller;
+package testingmachine_backend.meta.Controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -8,28 +8,30 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
-import testingmachine_backend.meta.Controller.ProcessMetaData;
+import testingmachine_backend.meta.DTO.MetadataDTO;
+import testingmachine_backend.process.Controller.ProcessController;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
-public class ProcessCallDataview {
+public class MeteCallDataview {
 
     private static final String http = "http://";
-    static String HOST = ProcessController.getSystemUrl();
+    private static final String HOST = "202.131.244.213";
     private static final String PORT = "8080";
     private static final String URL = "/erp-services/RestWS/runJson";
     private static final String SERVICE_URL = http + HOST + ":" + PORT + URL;
-    private static final String DATAVIEW = "testCaseDvList";
+    private static final String USERNAME = "admin1";
+    private static final String PASSWORD = "Khishigarvin*89";
+    private static final String DATAVIEW = "pfFindModuleMetaLookupIdsDv";
 
-    public static List<ProcessMetaData> getProcessMetaDataList() {
 
-        String systemId = ProcessController.getSystemId();
-        String USERNAME = ProcessController.getUsername();
-        String PASSWORD = ProcessController.getPassword();
+    public static List<MetadataDTO> getProcessMetaDataList() {
 
-        List<ProcessMetaData> processList = new ArrayList<>();
+        String filterModuleId = ProcessController.getSystemId();
+
+        List<MetadataDTO> metaList = new ArrayList<>();
 
         String payload = """
             {
@@ -38,11 +40,11 @@ public class ProcessCallDataview {
                 "command": "PL_MDVIEW_005",
                 "parameters": {
                     "systemmetagroupcode": "%s",
-                    "systemId": "%s"
+                    "filterModuleId": "%s"
                 }
             }
-            """.formatted(USERNAME, PASSWORD, DATAVIEW, systemId);
-        System.out.println(payload);
+            """.formatted(USERNAME, PASSWORD, DATAVIEW, filterModuleId);
+
         try {
             RestTemplate restTemplate = new RestTemplate();
 
@@ -62,12 +64,12 @@ public class ProcessCallDataview {
                 resultNode.fields().forEachRemaining(entry -> {
                     JsonNode item = entry.getValue();
 
-                    String id = item.path("metadataid").asText("N/A");
-                    String systemName = item.path("systemname").asText("N/A");
-                    String code = item.path("metadatacode").asText("N/A");
-                    String name = item.path("metadataname").asText("N/A");
+                    String id = item.path("metaDataId").asText("N/A");
+                    String moduleName = item.path("moduleName").asText("N/A");
+                    String code = item.path("metaDataCode").asText("N/A");
+                    String name = item.path("metaDataName").asText("N/A");
 
-                    processList.add(new ProcessMetaData(id, systemName, code, name));
+                    metaList.add(new MetadataDTO(id, moduleName, code, name));
                 });
             } else {
                 log.warn("The 'result' node is missing or not an object.");
@@ -77,6 +79,6 @@ public class ProcessCallDataview {
             log.error("Error while calling service: ", e);
         }
 
-        return processList;
+        return metaList;
     }
 }
