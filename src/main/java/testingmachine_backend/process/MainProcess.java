@@ -13,11 +13,7 @@ public class MainProcess {
     public static void mainProcess() {
 
         Map<String, String> loggingPrefs = Map.of(
-                LogType.BROWSER, "ALL",
-                LogType.DRIVER, "ALL",
-                LogType.PERFORMANCE, "ALL",
-                LogType.CLIENT, "ALL",
-                LogType.SERVER, "ALL"
+                LogType.BROWSER, "ALL"
         );
 
         ChromeOptions options = new ChromeOptions();

@@ -27,6 +27,7 @@ public class ProcessList {
         try{
 
             WebDriverWait wait = ConfigProcess.getWebDriverWait(driver);
+
             driver.get(ConfigProcess.LoginUrl);
             System.out.println(ConfigProcess.LoginUrl);
 
@@ -44,7 +45,6 @@ public class ProcessList {
             List<ProcessMetaData> processMetaDataList = ProcessCallDataview.getProcessMetaDataList();
             System.out.println(processMetaDataList.size());
 
-
             int count = 0;
             for (ProcessMetaData metaData : processMetaDataList) {
                 String url = ConfigProcess.MainUrl + metaData.getId();
@@ -56,6 +56,7 @@ public class ProcessList {
 
                 ProcessPath.isProcessPersent(driver, metaData.getId(), metaData.getSystemName(), metaData.getCode(), metaData.getName());
                 count++;
+
                 System.out.println("Process count: " + count + ", id: " + metaData.getId());
             }
             System.out.println("End date: " + ConfigProcess.DateUtils.getCurrentDateTime());
@@ -68,11 +69,5 @@ public class ProcessList {
     public static int getTotalCount() {
         return totalProcessCount;
     }
-
-//    public void removeCaptcha() {
-//        WebElement captchaContainer = driver.findElement(By.cssSelector("div.form-group.row.fom-row"));
-//        JavascriptExecutor jsExecutor = (JavascriptExecutor) driver;
-//        jsExecutor.executeScript("arguments[0].remove();", captchaContainer);
-//    }
 
 }

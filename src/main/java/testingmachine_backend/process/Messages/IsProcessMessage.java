@@ -10,8 +10,6 @@ import testingmachine_backend.process.Service.ProcessMessageStatusService;
 
 import java.time.Duration;
 
-import static testingmachine_backend.process.utils.ElementsFunctionUtils.consoleLogRequiredPath;
-
 public class IsProcessMessage {
 
 

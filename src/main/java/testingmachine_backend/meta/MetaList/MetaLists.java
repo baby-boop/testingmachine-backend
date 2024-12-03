@@ -48,7 +48,6 @@ public class MetaLists {
             Thread.sleep(2000);
 
             List<MetadataDTO> metaDataList = MeteCallDataview.getProcessMetaDataList();
-            System.out.println(metaDataList.size());
 
             int count = 0;
             for (MetadataDTO metaData : metaDataList) {
