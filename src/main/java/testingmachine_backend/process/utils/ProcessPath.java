@@ -6,8 +6,7 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.support.ui.*;
 import testingmachine_backend.process.Checkers.LayoutChecker;
-import testingmachine_backend.process.DTO.NotFoundSaveButtonDTO;
-import testingmachine_backend.process.Fields.NotFoundSaveButtonField;
+
 import testingmachine_backend.process.Messages.IsProcessMessage;
 import testingmachine_backend.process.Section.LayoutProcessSection;
 import testingmachine_backend.process.Checkers.ProcessWizardChecker;
@@ -33,10 +32,8 @@ public class ProcessPath {
     @Getter
     private static int failedCount = 0;
 
-    @NotFoundSaveButtonField
-    public static final List<NotFoundSaveButtonDTO> notFoundField = new ArrayList<>();
 
-    public static void isProcessPersent(WebDriver driver, String id, String systemName, String code, String name) {
+    public static void isProcessPersent(WebDriver driver, String id, String systemName, String code, String name, String TestProcessType) {
         try {
             waitUtils(driver);
             consoleLogChecker(driver, id, systemName);
@@ -50,31 +47,31 @@ public class ProcessPath {
                 saveButtonFunction(driver, id, systemName);
                 waitUtils(driver);
                 consoleLogRequiredPath(driver, id, systemName);
-                if (!IsProcessMessage.isErrorMessagePresent(driver, id, code, name, systemName)) {
+                if (!IsProcessMessage.isErrorMessagePresent(driver, id, code, name, systemName, TestProcessType)) {
                     waitUtils(driver);
                     failedCount++;
                     LOGGER.log(Level.SEVERE, "Process failed with alert: " + id);
-                    ProcessMessageStatusService.addProcessStatus(systemName, id, code, name, "failed", "");
+                    ProcessMessageStatusService.addProcessStatus(systemName, id, code, name, "failed", "", TestProcessType);
                 }
             }else{
                 failedCount++;
                 LOGGER.log(Level.SEVERE, "Process failed with expression error: " + id);
-                ProcessMessageStatusService.addProcessStatus(systemName, id, code, name, "failed", "");
+                ProcessMessageStatusService.addProcessStatus(systemName, id, code, name, "failed", "", TestProcessType);
             }
             waitUtils(driver);
 
         }catch (NoSuchElementException n) {
             failedCount++;
             LOGGER.log(Level.SEVERE, "NoSuchElementException: " + id + n);
-            ProcessMessageStatusService.addProcessStatus(systemName, id, code, name, "failed", "");
+            ProcessMessageStatusService.addProcessStatus(systemName, id, code, name, "failed", "", TestProcessType);
         } catch (TimeoutException t) {
             failedCount++;
             LOGGER.log(Level.SEVERE, "TimeoutException: " + id + t);
-            ProcessMessageStatusService.addProcessStatus(systemName, id, code, name, "failed", "");
+            ProcessMessageStatusService.addProcessStatus(systemName, id, code, name, "failed", "", TestProcessType);
         } catch (Exception e) {
             failedCount++;
             LOGGER.log(Level.SEVERE, "Exception: " + id + e);
-            ProcessMessageStatusService.addProcessStatus(systemName, id, code, name, "failed", "");
+            ProcessMessageStatusService.addProcessStatus(systemName, id, code, name, "failed", "", TestProcessType);
         }
     }
 
@@ -104,8 +101,7 @@ public class ProcessPath {
             ));
             wfmSaveButton.sendKeys(" ");
         }catch (Exception e){
-            NotFoundSaveButtonDTO notFoundFields = new NotFoundSaveButtonDTO(systemName, id);
-            notFoundField.add(notFoundFields);
+
         }
     }
 
@@ -114,9 +110,6 @@ public class ProcessPath {
                 .anyMatch(log -> log.getFileName().equals(systemName) && log.getProcessId().equals(id));
     }
 
-    public static List<NotFoundSaveButtonDTO> getProcessSaveMessages() {
-        return new ArrayList<>(notFoundField);
-    }
 
     public static List<WebElement> findElementsWithSelector(WebDriver driver,String id) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(SHORT_WAIT_SECONDS));

@@ -19,7 +19,8 @@ public class FormFieldUtils {
         else if (isRadioField(classAttribute)) {
             if (!element.findElement(By.xpath("..")).getAttribute("class").contains("checked")) {
                 element.click();
-            }}
+            }
+        }
         else if (isCheckBox(typeAttribute) ) {
             if (!element.findElement(By.xpath("..")).getAttribute("class").contains("checked")) {
                 element.click();

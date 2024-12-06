@@ -17,7 +17,7 @@ import java.util.List;
 public class ProcessCallDataview {
 
     private static final String http = "http://";
-    static String HOST = ProcessController.getSystemUrl();
+    static String HOST = ProcessController.getSystemURL();
     private static final String PORT = "8080";
     private static final String URL = "/erp-services/RestWS/runJson";
     private static final String SERVICE_URL = http + HOST + ":" + PORT + URL;
@@ -25,9 +25,10 @@ public class ProcessCallDataview {
 
     public static List<ProcessMetaData> getProcessMetaDataList() {
 
-        String systemId = ProcessController.getSystemId();
+        String systemId = ProcessController.getModuleId();
         String USERNAME = ProcessController.getUsername();
         String PASSWORD = ProcessController.getPassword();
+        String UNITNAME = ProcessController.getDatabaseUsername();
 
         List<ProcessMetaData> processList = new ArrayList<>();
 
@@ -36,13 +37,14 @@ public class ProcessCallDataview {
                 "username": "%s",
                 "password": "%s",
                 "command": "PL_MDVIEW_005",
+                "unitname": "%s",
                 "parameters": {
                     "systemmetagroupcode": "%s",
                     "systemId": "%s"
                 }
             }
-            """.formatted(USERNAME, PASSWORD, DATAVIEW, systemId);
-        System.out.println(payload);
+            """.formatted(USERNAME, PASSWORD, UNITNAME, DATAVIEW, systemId);
+//        System.out.println(payload);
         try {
             RestTemplate restTemplate = new RestTemplate();
 

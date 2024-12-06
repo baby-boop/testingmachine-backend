@@ -1,21 +1,22 @@
 package testingmachine_backend.process.Controller;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.Setter;
 
-
-@Entity
 @Getter
 @Setter
 public class SystemData {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String moduleId;
+    private String customerName;
+    private String createdDate;
+    private String systemURL;
+    private String username;
+    private String password;
+    private String databaseName;
+    private String databaseUsername;
+    private String generatedId;
+    private String selectedModule;
 
-    private String name;
 }

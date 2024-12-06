@@ -1,0 +1,14 @@
+[ {
+  "fileName" : "DEVELOPMENT",
+  "processId" : "17253555407861",
+  "processCode" : "GREEN_INT_ORDER_BOOK_DTL_GG_V2_0022",
+  "processName" : "Шийдвэр гаргалт гүйцэтгэх Засах||Гадаад",
+  "status" : "failed",
+  "messageText" : "",
+  "jsonId" : "cfdd7100-6ac5-4e44-9ba6-0393a3ec7285",
+  "processLogDTO" : [ ],
+  "emptyDataDTO" : [ ],
+  "popupMessageDTO" : [ ],
+  "popupStandardFieldsDTO" : [ ],
+  "requiredPathDTO" : [ ]
+} ]

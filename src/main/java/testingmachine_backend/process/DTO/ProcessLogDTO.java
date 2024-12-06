@@ -13,13 +13,14 @@ public class ProcessLogDTO {
     private String processId;
     private String logType;
     private String messageText;
+    private String jsonId;
 
-
-    public ProcessLogDTO(String fileName, String processId, String logType, String messageText) {
+    public ProcessLogDTO(String fileName, String processId, String logType, String messageText, String jsonId) {
         this.fileName = fileName;
         this.processId = processId;
         this.logType = logType;
         this.messageText = messageText;
+        this.jsonId = jsonId;
     }
 
     @Override
@@ -30,11 +31,15 @@ public class ProcessLogDTO {
         return Objects.equals(fileName, that.fileName) &&
                 Objects.equals(processId, that.processId) &&
                 Objects.equals(logType, that.logType) &&
-                Objects.equals(messageText, that.messageText);
+                Objects.equals(messageText, that.messageText) &&
+                Objects.equals(jsonId, that.jsonId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(fileName, processId, logType, messageText);
+        return Objects.hash(fileName, processId, logType, messageText, jsonId);
     }
 }
+
+
+

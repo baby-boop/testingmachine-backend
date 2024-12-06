@@ -1,26 +1,76 @@
 package testingmachine_backend.process.Controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class SystemService {
 
-    @Autowired
-    private SystemRepository repository;
+    private static final String DIRECTORY_PATH1 = "C:\\Users\\batde\\Documents\\testingmachine-backend\\src\\json\\process\\header";
+    private static final String DIRECTORY_PATH2 = "C:\\Users\\batde\\Documents\\testingmachine-backend\\src\\json\\metalist\\header";
+    private static final String DIRECTORY_PATH3 = "C:\\Users\\batde\\Documents\\testingmachine-backend\\src\\json\\metalistwithprocess\\header";
 
-    public List<SystemData> getAllSystemData() {
-        return repository.findAll();
+
+    private String determineDirectoryPath(String selectedModule) {
+        if ("process".equalsIgnoreCase(selectedModule)) {
+            return DIRECTORY_PATH1;
+        } else if ("meta".equalsIgnoreCase(selectedModule)) {
+            return DIRECTORY_PATH2;
+        } else {
+            return DIRECTORY_PATH3;
+        }
+    }
+
+    public List<SystemData> getAllSystemData(String selectedModule) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        List<SystemData> allSystemData = new ArrayList<>();
+
+        String directoryPath = determineDirectoryPath(selectedModule);
+        File directory = new File(directoryPath);
+        if (!directory.exists()) {
+            directory.mkdirs();
+        }
+
+        File[] files = directory.listFiles((dir, name) -> name.endsWith("_header.json"));
+
+        if (files != null) {
+            for (File file : files) {
+                try {
+                    SystemData data = objectMapper.readValue(file, SystemData.class);
+                    allSystemData.add(data);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return allSystemData;
     }
 
     public SystemData addSystemData(SystemData data) {
-        return repository.save(data);
-    }
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            String directoryPath = determineDirectoryPath(data.getSelectedModule());
+            File directory = new File(directoryPath);
+            if (!directory.exists()) {
+                directory.mkdirs();
+            }
 
-    public void deleteSystemData(Long id) {
-        repository.deleteById(id);
+            String generatedId = UUID.randomUUID().toString();
+            File file = new File(directoryPath + File.separator + generatedId + "_header.json");
+            data.setGeneratedId(generatedId);
+            objectMapper.writeValue(file, data);
+
+            return data;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

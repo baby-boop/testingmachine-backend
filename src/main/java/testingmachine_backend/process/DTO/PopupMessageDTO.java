@@ -13,12 +13,14 @@ public class PopupMessageDTO {
     private String processId;
     private String dataPath;
     private String messageText;
+    private String jsonId;
 
-    public PopupMessageDTO(String fileName, String processId, String dataPath, String messageText) {
+    public PopupMessageDTO(String fileName, String processId, String dataPath, String messageText, String jsonId) {
         this.fileName = fileName;
         this.processId = processId;
         this.dataPath = dataPath;
         this.messageText = messageText;
+        this.jsonId = jsonId;
     }
 
     @Override
@@ -29,11 +31,12 @@ public class PopupMessageDTO {
         return Objects.equals(fileName, that.fileName) &&
                 Objects.equals(processId, that.processId) &&
                 Objects.equals(dataPath, that.dataPath) &&
-                Objects.equals(messageText, that.messageText);
+                Objects.equals(messageText, that.messageText) &&
+                Objects.equals(jsonId, that.jsonId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(fileName, processId, dataPath, messageText);
+        return Objects.hash(fileName, processId, dataPath, messageText, jsonId);
     }
 }

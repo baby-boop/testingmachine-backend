@@ -5,6 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import testingmachine_backend.process.Controller.ProcessController;
 import testingmachine_backend.process.DTO.*;
 
 import java.time.Duration;
@@ -40,9 +41,10 @@ public class PopupMessage {
             WebElement messageContent = shortWait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".ui-pnotify-text")));
             String messageText = messageContent.getText();
 
-            PopupMessageDTO popupMessages = new PopupMessageDTO(fileName, id, datapath, messageText);
+            PopupMessageDTO popupMessages = new PopupMessageDTO(fileName, id, datapath, messageText, ProcessController.getJsonId());
 
             PopupMessageField.add(popupMessages);
+//            JsonFileReader.saveToSingleJsonFile(popupMessages);
 
             return messageContent.isDisplayed();
 

@@ -8,15 +8,17 @@ import org.openqa.selenium.logging.LogEntry;
 import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import testingmachine_backend.process.Controller.ProcessController;
 import testingmachine_backend.process.DTO.EmptyDataDTO;
 import testingmachine_backend.process.DTO.PopupStandardFieldsDTO;
 import testingmachine_backend.process.DTO.ProcessLogDTO;
-import testingmachine_backend.process.DTO.RequiredTest;
+import testingmachine_backend.process.DTO.RequiredPathDTO;
 import testingmachine_backend.process.Fields.EmptyDataField;
 import testingmachine_backend.process.Fields.PopupStandartField;
 import testingmachine_backend.process.Fields.ProcessLogFields;
 import testingmachine_backend.process.Fields.RequiredPathField;
 import testingmachine_backend.process.Messages.PopupMessage;
+import testingmachine_backend.process.Config.*;
 
 import java.sql.Date;
 import java.time.Duration;
@@ -42,7 +44,7 @@ public class ElementsFunctionUtils {
     public static final List<EmptyDataDTO> emptyPathField = new ArrayList<>();
 
     @RequiredPathField
-    public static final List<RequiredTest> RequiredPathField = new ArrayList<>();
+    public static final List<RequiredPathDTO> RequiredPathField = new ArrayList<>();
 
     @ProcessLogFields
     public static final List<ProcessLogDTO> ProcessLogFields = new ArrayList<>();
@@ -125,7 +127,7 @@ public class ElementsFunctionUtils {
                 closeBtn.click();
             }else{
                 if(required != null) {
-                    EmptyDataDTO emptyPath = new EmptyDataDTO(fileName, id, datapath, "Popup");
+                    EmptyDataDTO emptyPath = new EmptyDataDTO(fileName, id, datapath, "Popup", ProcessController.getJsonId());
                     emptyPathField.add(emptyPath);
                     WebElement closeBtn = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[contains(@class, 'btn blue-hoki btn-sm')]")));
                     closeBtn.click();
@@ -205,8 +207,9 @@ public class ElementsFunctionUtils {
             options.get(1).click();
         } else {
             if (required != null){
-                EmptyDataDTO emptyPath = new EmptyDataDTO(fileName, id, dataPath, "Combo");
+                EmptyDataDTO emptyPath = new EmptyDataDTO(fileName, id, dataPath, "Combo", ProcessController.getJsonId());
                 emptyPathField.add(emptyPath);
+//                JsonFileReader.saveToSingleJsonFile(emptyPath);
             }
             selector.sendKeys(Keys.ENTER);
         }
@@ -299,12 +302,15 @@ public class ElementsFunctionUtils {
 
                 String formattedTimestamp = new Date(entry.getTimestamp()).toString();
                 LOGGER.log(Level.SEVERE, formattedTimestamp + " " + entry.getLevel() + " " + uncaughtMessage  + " " + id);
-                ProcessLogDTO processLogFields = new ProcessLogDTO(fileName, id, "error", uncaughtMessage );
+                ProcessLogDTO processLogFields = new ProcessLogDTO(fileName, id, "error", uncaughtMessage, ProcessController.getJsonId());
                 ProcessLogFields.add(processLogFields);
+
             }
         }
     }
-
+    public static List<ProcessLogDTO> getProcessLogMessages() {
+        return new ArrayList<>(ProcessLogFields);
+    }
     public static void consoleLogRequiredPath(WebDriver driver, String id, String fileName) {
         LogEntries logs = driver.manage().logs().get(LogType.BROWSER);
         for (LogEntry entry : logs) {
@@ -315,8 +321,9 @@ public class ElementsFunctionUtils {
                     String formattedTimestamp = new Date(entry.getTimestamp()).toString();
                     LOGGER.log(Level.INFO, formattedTimestamp + " Extracted Console Log: " + pathMessage + " " + id);
 
-                    RequiredTest requiredPaths = new RequiredTest(fileName, id, "required", pathMessage);
+                    RequiredPathDTO requiredPaths = new RequiredPathDTO(fileName, id, "required", pathMessage, ProcessController.getJsonId());
                     RequiredPathField.add(requiredPaths);
+//                    JsonFileReader.saveToSingleJsonFile(RequiredPathField);
                 }else if (logMessage.contains("bpResult:")){
                     String pathMessage = logMessage.substring(logMessage.indexOf("bpResult:"));
                     LOGGER.log(Level.INFO, pathMessage + " Extracted Console Log: " + id);
@@ -325,13 +332,11 @@ public class ElementsFunctionUtils {
         }
     }
 
-    public static List<RequiredTest> getRequiredPathMessages() {
+    public static List<RequiredPathDTO> getRequiredPathMessages() {
         return new ArrayList<>(RequiredPathField);
     }
 
-    public static List<ProcessLogDTO> getProcessLogMessages() {
-        return new ArrayList<>(ProcessLogFields);
-    }
+
 
     public static boolean isIgnorableError(String message) {
         return message.contains("Uncaught TypeError: Cannot read properties of null")
@@ -346,18 +351,6 @@ public class ElementsFunctionUtils {
         Set<EmptyDataDTO> uniqueData = new LinkedHashSet<>(emptyPathField);
         return new ArrayList<>(uniqueData);
     }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     public static void clickFirstPopup(WebDriver driver, String id, String fileName, String datapath, String required) {
@@ -400,8 +393,9 @@ public class ElementsFunctionUtils {
                 closeBtn.click();
             }else{
                 if(required != null) {
-                    EmptyDataDTO emptyPath = new EmptyDataDTO(fileName, id, datapath, "Popup");
+                    EmptyDataDTO emptyPath = new EmptyDataDTO(fileName, id, datapath, "Popup", ProcessController.getJsonId());
                     emptyPathField.add(emptyPath);
+//                    JsonFileReader.saveToSingleJsonFile(emptyPath);
                     WebElement closeBtn = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[contains(@class, 'btn blue-hoki btn-sm')]")));
                     closeBtn.click();
                 }else{
@@ -432,8 +426,9 @@ public class ElementsFunctionUtils {
                     System.out.println("Title has a value: " + titleValue);
                 } else {
                     System.out.println("Title is empty or null");
-                    PopupStandardFieldsDTO popupStandardFields = new PopupStandardFieldsDTO(fileName, id, dataPath, "code" );
+                    PopupStandardFieldsDTO popupStandardFields = new PopupStandardFieldsDTO(fileName, id, dataPath, "code", ProcessController.getJsonId());
                     PopupStandartField.add(popupStandardFields);
+//                    JsonFileReader.saveToSingleJsonFile(popupStandardFields);
                 }
 
 

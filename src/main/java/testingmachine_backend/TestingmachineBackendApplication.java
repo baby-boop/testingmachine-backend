@@ -5,7 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import testingmachine_backend.meta.MetaList.MetaMain;
-import testingmachine_backend.metaverse.Main.MVMain;
+
 import testingmachine_backend.process.MainProcess;
 
 @EnableScheduling
@@ -40,11 +40,6 @@ public class TestingmachineBackendApplication
 			case "meta":
 				System.out.println("Starting module...");
 				MetaMain.mainSystem();
-				result = "Тест хийж дууссан";
-				break;
-			case "metaverse":
-				System.out.println("Starting module...");
-				MVMain.mainSystem();
 				result = "Тест хийж дууссан";
 				break;
 			case "process":

@@ -1,0 +1,20 @@
+[ {
+  "fileName" : "Үзлэг",
+  "processId" : "17253555407861",
+  "processCode" : "GREEN_INT_ORDER_BOOK_DTL_GG_V2_0022",
+  "processName" : "Шийдвэр гаргалт гүйцэтгэх Засах||Гадаад",
+  "status" : "failed",
+  "messageText" : "",
+  "jsonId" : "7f01d337-4b8f-418a-b206-850fc6507541",
+  "processLogDTO" : [ {
+    "fileName" : "Үзлэг",
+    "processId" : "17253555407861",
+    "logType" : "error",
+    "messageText" : "Uncaught TypeError: window[funcName] is not a function",
+    "jsonId" : "7f01d337-4b8f-418a-b206-850fc6507541"
+  } ],
+  "emptyDataDTO" : [ ],
+  "popupMessageDTO" : [ ],
+  "popupStandardFieldsDTO" : [ ],
+  "requiredPathDTO" : [ ]
+} ]
