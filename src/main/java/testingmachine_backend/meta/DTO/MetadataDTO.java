@@ -12,12 +12,10 @@ public class MetadataDTO {
     private String code;
     private String name;
 
-
     public MetadataDTO(String id, String moduleName, String code, String name) {
         this.id = id;
         this.moduleName = moduleName;
         this.code = code;
         this.name = name;
     }
-
 }

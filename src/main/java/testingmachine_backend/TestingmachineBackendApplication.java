@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import testingmachine_backend.meta.MetaList.MetaMain;
 
+import testingmachine_backend.metaWithProcess.MetaWithProcessMain;
 import testingmachine_backend.process.MainProcess;
 
 @EnableScheduling
@@ -17,6 +18,7 @@ public class TestingmachineBackendApplication
 	public static void main(String[] args) {
 		SpringApplication.run(TestingmachineBackendApplication.class, args);
 //		MainProcess.mainProcess();
+
 	}
 
 	@Override
@@ -43,8 +45,13 @@ public class TestingmachineBackendApplication
 				result = "Тест хийж дууссан";
 				break;
 			case "process":
-				System.out.println("Starting module...");
+				System.out.println("Starting module... 1");
 				MainProcess.mainProcess();
+				result = "Тест хийж дууссан";
+				break;
+			case "metaWithProcess":
+				System.out.println("Starting module...");
+				MetaWithProcessMain.mainProcess();
 				result = "Тест хийж дууссан";
 				break;
 			default:

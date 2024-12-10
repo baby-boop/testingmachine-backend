@@ -1,4 +1,4 @@
-package testingmachine_backend.meta.Controller;
+package testingmachine_backend.metaWithProcess.Controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
-public class MetaCallDataview {
+public class CallMetaWithProcess {
 
     private static final String http = "http://";
     static String HOST = ProcessController.getSystemURL();
@@ -41,8 +41,7 @@ public class MetaCallDataview {
                 "unitname": "%s",
                 "parameters": {
                     "systemmetagroupcode": "%s",
-                    "filtermoduleid": "%s",
-                    "": "%s"
+                    "metaDataId": "%s"
                 }
             }
             """.formatted(USERNAME, PASSWORD, UNITNAME, DATAVIEW, systemId);

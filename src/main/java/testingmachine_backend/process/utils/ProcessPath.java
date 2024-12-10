@@ -36,6 +36,7 @@ public class ProcessPath {
     public static void isProcessPersent(WebDriver driver, String id, String systemName, String code, String name, String TestProcessType) {
         try {
             waitUtils(driver);
+
             consoleLogChecker(driver, id, systemName);
 
             FindMainProcessType(driver, id, systemName);
@@ -44,15 +45,29 @@ public class ProcessPath {
 
             if (!isDuplicateLogEntry(systemName, id)) {
                 waitUtils(driver);
-                saveButtonFunction(driver, id, systemName);
-                waitUtils(driver);
-                consoleLogRequiredPath(driver, id, systemName);
-                if (!IsProcessMessage.isErrorMessagePresent(driver, id, code, name, systemName, TestProcessType)) {
+                if(TestProcessType.contains("meta")){
+                    WebElement cnclBtn = driver.findElement(By.xpath("//button[contains(@class, 'bp-btn-save') and text()='Хадгалах']"));
+                    cnclBtn.click();
                     waitUtils(driver);
-                    failedCount++;
-                    LOGGER.log(Level.SEVERE, "Process failed with alert: " + id);
-                    ProcessMessageStatusService.addProcessStatus(systemName, id, code, name, "failed", "", TestProcessType);
+                    consoleLogRequiredPath(driver, id, systemName);
+                    if (!IsProcessMessage.isErrorMessagePresent(driver, id, code, name, systemName, TestProcessType)) {
+                        waitUtils(driver);
+                        failedCount++;
+                        LOGGER.log(Level.SEVERE, "Process failed with alert: " + id);
+                        ProcessMessageStatusService.addProcessStatus(systemName, id, code, name, "failed", "", TestProcessType);
+                    }
+                }else{
+                    saveButtonFunction(driver, id, systemName);
+                    waitUtils(driver);
+                    consoleLogRequiredPath(driver, id, systemName);
+                    if (!IsProcessMessage.isErrorMessagePresent(driver, id, code, name, systemName, TestProcessType)) {
+                        waitUtils(driver);
+                        failedCount++;
+                        LOGGER.log(Level.SEVERE, "Process failed with alert: " + id);
+                        ProcessMessageStatusService.addProcessStatus(systemName, id, code, name, "failed", "", TestProcessType);
+                    }
                 }
+
             }else{
                 failedCount++;
                 LOGGER.log(Level.SEVERE, "Process failed with expression error: " + id);
@@ -85,7 +100,6 @@ public class ProcessPath {
             processTabElements(driver, elementsWithDataPath, id, systemName);
             tabDetailItems(driver, id, systemName);
             waitUtils(driver);
-
             detailActionButton(driver, id, systemName);
             waitUtils(driver);
         }
@@ -100,6 +114,18 @@ public class ProcessPath {
                     By.cssSelector("button[onclick*='runSaveTestToolForm']")
             ));
             wfmSaveButton.sendKeys(" ");
+        }catch (Exception e){
+
+        }
+    }
+
+    private static void saveMetaButtonFunction(WebDriver driver, String id, String systemName) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(MEDIUM_WAIT_SECONDS));
+        try {
+
+            Thread.sleep(2000);
+            WebElement cnclBtn = wait.until(ExpectedConditions.elementToBeClickable(By.linkText("Хадгалах")));
+            cnclBtn.click();
         }catch (Exception e){
 
         }

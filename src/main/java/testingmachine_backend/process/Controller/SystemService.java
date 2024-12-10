@@ -45,7 +45,9 @@ public class SystemService {
                     SystemData data = objectMapper.readValue(file, SystemData.class);
                     allSystemData.add(data);
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    e.printStackTrace(
+                            System.out
+                    );
                 }
             }
         }
@@ -69,7 +71,7 @@ public class SystemService {
 
             return data;
         } catch (IOException e) {
-            e.printStackTrace();
+            e.printStackTrace(System.out);
             return null;
         }
     }

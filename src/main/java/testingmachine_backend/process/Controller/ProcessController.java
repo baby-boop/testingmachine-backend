@@ -48,8 +48,22 @@ public class ProcessController {
         return service.getAllSystemData(selectedModule);
     }
 
+    private static void clearStaticData() {
+        moduleId = null;
+        customerName = null;
+        createdDate = null;
+        systemURL = null;
+        username = null;
+        password = null;
+        databaseName = null;
+        databaseUsername = null;
+        jsonId = null;
+        selectedModule = null;
+    }
+
     @PostMapping("/system-data")
     public ResponseEntity<SystemData> addSystemData(@RequestBody SystemData data) {
+        clearStaticData();
         SystemData savedData = service.addSystemData(data);
         moduleId = savedData.getModuleId();
         customerName = savedData.getCustomerName();
@@ -61,26 +75,19 @@ public class ProcessController {
         databaseUsername = savedData.getDatabaseUsername();
         jsonId = savedData.getGeneratedId();
         selectedModule =savedData.getSelectedModule();
-        if (savedData != null) {
-            log.info("Created system data: ID = {},databaseName = {}, databaseUserame = {}, ModuleId = {}, CustomerName = {}, SystemURL = {}, username = {}, password = {}, selectedModule = {}",
-                    savedData.getGeneratedId(), savedData.getDatabaseUsername(), savedData.getDatabaseUsername(), savedData.getModuleId(), savedData.getCustomerName(),
-                    savedData.getSystemURL(), savedData.getUsername(), savedData.getPassword(), savedData.getSelectedModule());
+        log.info("Created system data: ID = {},databaseName = {}, databaseUserame = {}, ModuleId = {}, CustomerName = {}, SystemURL = {}, username = {}, password = {}, selectedModule = {}",
+                savedData.getGeneratedId(), savedData.getDatabaseUsername(), savedData.getDatabaseUsername(), savedData.getModuleId(), savedData.getCustomerName(),
+                savedData.getSystemURL(), savedData.getUsername(), savedData.getPassword(), savedData.getSelectedModule());
 
-            return ResponseEntity.status(HttpStatus.CREATED).body(savedData);
-        } else {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedData);
     }
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    private final String headerPath = "C:\\Users\\batde\\Documents\\testingmachine-backend\\src\\json\\process\\header";
-
-    private final String resultPath = "C:\\Users\\batde\\Documents\\testingmachine-backend\\src\\json\\process\\result";
-
-    @GetMapping("/header")
+    @GetMapping("/process-header")
     public ResponseEntity<List<Object>> getHeaderData() {
-        return ResponseEntity.ok(readJsonFilesFromFolder(headerPath));
+        String processHeaderPath = "C:\\Users\\batde\\Documents\\testingmachine-backend\\src\\json\\process\\header";
+        return ResponseEntity.ok(readJsonFilesFromFolder(processHeaderPath));
     }
 
     private List<Object> readJsonFilesFromFolder(String folderPath) {
@@ -94,7 +101,7 @@ public class ProcessController {
                     Object data = objectMapper.readValue(jsonFile, Object.class);
                     jsonDataList.add(data);
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    e.printStackTrace(System.out);
                 }
             }
         }
@@ -102,9 +109,10 @@ public class ProcessController {
     }
 
 
-    @GetMapping("/result")
+    @GetMapping("/process-result")
     public ResponseEntity<List<FileData>> getResultData() {
-        return ResponseEntity.ok(readJsonFilesFromFolderResult(resultPath));
+        String processResultPath = "C:\\Users\\batde\\Documents\\testingmachine-backend\\src\\json\\process\\result";
+        return ResponseEntity.ok(readJsonFilesFromFolderResult(processResultPath));
     }
 
     private List<FileData> readJsonFilesFromFolderResult(String folderPath) {
@@ -123,11 +131,23 @@ public class ProcessController {
                     }
                     fileDataList.add(new FileData(fileName, data, customerName, testUrl));
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    e.printStackTrace(System.out);
                 }
             }
         }
         return fileDataList;
+    }
+
+
+    @GetMapping("/meta-header")
+    public ResponseEntity<List<Object>> getMetaHeaderData() {
+        String metaHeaderPath = "C:\\Users\\batde\\Documents\\testingmachine-backend\\src\\json\\metalist\\header";
+        return ResponseEntity.ok(readJsonFilesFromFolder(metaHeaderPath));
+    }
+    @GetMapping("/meta-result")
+    public ResponseEntity<List<FileData>> getMetaResultData() {
+        String metaResultPath = "C:\\Users\\batde\\Documents\\testingmachine-backend\\src\\json\\metalist\\result";
+        return ResponseEntity.ok(readJsonFilesFromFolderResult(metaResultPath));
     }
 
 }
