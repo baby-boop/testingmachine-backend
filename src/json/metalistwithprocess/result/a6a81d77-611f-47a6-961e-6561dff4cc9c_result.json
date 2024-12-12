@@ -1,0 +1,14 @@
+[ {
+  "fileName" : "testing 1",
+  "processId" : "1728368604260541",
+  "processCode" : "REQUEST_WORFLOW_LIST",
+  "processName" : "RequestWorkflowList",
+  "status" : "success",
+  "messageText" : "Амжилттай хадгалагдлаа.",
+  "jsonId" : "a6a81d77-611f-47a6-961e-6561dff4cc9c",
+  "processLogDTO" : [ ],
+  "emptyDataDTO" : [ ],
+  "popupMessageDTO" : [ ],
+  "popupStandardFieldsDTO" : [ ],
+  "requiredPathDTO" : [ ]
+} ]

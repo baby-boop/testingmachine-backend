@@ -8,6 +8,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
+import testingmachine_backend.controller.JsonController;
 import testingmachine_backend.meta.Controller.ProcessMetaData;
 
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ import java.util.List;
 public class ProcessCallDataview {
 
     private static final String http = "http://";
-    static String HOST = ProcessController.getSystemURL();
+    static String HOST = JsonController.getSystemURL();
     private static final String PORT = "8080";
     private static final String URL = "/erp-services/RestWS/runJson";
     private static final String SERVICE_URL = http + HOST + ":" + PORT + URL;
@@ -25,10 +26,10 @@ public class ProcessCallDataview {
 
     public static List<ProcessMetaData> getProcessMetaDataList() {
 
-        String systemId = ProcessController.getModuleId();
-        String USERNAME = ProcessController.getUsername();
-        String PASSWORD = ProcessController.getPassword();
-        String UNITNAME = ProcessController.getDatabaseUsername();
+        String systemId = JsonController.getModuleId();
+        String USERNAME = JsonController.getUsername();
+        String PASSWORD = JsonController.getPassword();
+        String UNITNAME = JsonController.getDatabaseUsername();
 
         List<ProcessMetaData> processList = new ArrayList<>();
 

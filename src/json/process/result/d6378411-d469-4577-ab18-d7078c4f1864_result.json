@@ -1,0 +1,39 @@
+[ {
+  "fileName" : "Үзлэг",
+  "processId" : "17253555407861",
+  "processCode" : "GREEN_INT_ORDER_BOOK_DTL_GG_V2_0022",
+  "processName" : "Шийдвэр гаргалт гүйцэтгэх Засах||Гадаад",
+  "status" : "failed",
+  "messageText" : "",
+  "jsonId" : "d6378411-d469-4577-ab18-d7078c4f1864",
+  "processLogDTO" : [ {
+    "fileName" : "Үзлэг",
+    "processId" : "17253555407861",
+    "logType" : "error",
+    "messageText" : "Uncaught TypeError: window[funcName] is not a function",
+    "jsonId" : "d6378411-d469-4577-ab18-d7078c4f1864"
+  } ],
+  "emptyDataDTO" : [ ],
+  "popupMessageDTO" : [ ],
+  "popupStandardFieldsDTO" : [ ],
+  "requiredPathDTO" : [ ]
+}, {
+  "fileName" : "Үзлэг",
+  "processId" : "17253555407861",
+  "processCode" : "GREEN_INT_ORDER_BOOK_DTL_GG_V2_0022",
+  "processName" : "Шийдвэр гаргалт гүйцэтгэх Засах||Гадаад",
+  "status" : "failed",
+  "messageText" : "",
+  "jsonId" : "bcf99570-e7b4-4901-ade8-a637eaf39f00",
+  "processLogDTO" : [ {
+    "fileName" : "Үзлэг",
+    "processId" : "17253555407861",
+    "logType" : "error",
+    "messageText" : "Uncaught TypeError: window[funcName] is not a function",
+    "jsonId" : "bcf99570-e7b4-4901-ade8-a637eaf39f00"
+  } ],
+  "emptyDataDTO" : [ ],
+  "popupMessageDTO" : [ ],
+  "popupStandardFieldsDTO" : [ ],
+  "requiredPathDTO" : [ ]
+} ]

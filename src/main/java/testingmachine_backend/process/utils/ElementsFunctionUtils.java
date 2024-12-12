@@ -8,7 +8,7 @@ import org.openqa.selenium.logging.LogEntry;
 import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import testingmachine_backend.process.Controller.ProcessController;
+import testingmachine_backend.controller.JsonController;
 import testingmachine_backend.process.DTO.EmptyDataDTO;
 import testingmachine_backend.process.DTO.PopupStandardFieldsDTO;
 import testingmachine_backend.process.DTO.ProcessLogDTO;
@@ -18,7 +18,6 @@ import testingmachine_backend.process.Fields.PopupStandartField;
 import testingmachine_backend.process.Fields.ProcessLogFields;
 import testingmachine_backend.process.Fields.RequiredPathField;
 import testingmachine_backend.process.Messages.PopupMessage;
-import testingmachine_backend.process.Config.*;
 
 import java.sql.Date;
 import java.time.Duration;
@@ -78,7 +77,7 @@ public class ElementsFunctionUtils {
                 waitUtils(driver);
             }
         }catch(TimeoutException t){
-            System.out.println("findElementWithPopup timeout: " +id + " fileName: " + fileName + t);
+//            System.out.println("findElementWithPopup timeout: " +id + " fileName: " + fileName + t);
         }catch (NoSuchElementException n){
             System.out.println("findElementWithPopup not found: " + id + " fileName: " + fileName + n);
         }
@@ -127,7 +126,7 @@ public class ElementsFunctionUtils {
                 closeBtn.click();
             }else{
                 if(required != null) {
-                    EmptyDataDTO emptyPath = new EmptyDataDTO(fileName, id, datapath, "Popup", ProcessController.getJsonId());
+                    EmptyDataDTO emptyPath = new EmptyDataDTO(fileName, id, datapath, "Popup", JsonController.getJsonId());
                     emptyPathField.add(emptyPath);
                     WebElement closeBtn = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[contains(@class, 'btn blue-hoki btn-sm')]")));
                     closeBtn.click();
@@ -207,7 +206,7 @@ public class ElementsFunctionUtils {
             options.get(1).click();
         } else {
             if (required != null){
-                EmptyDataDTO emptyPath = new EmptyDataDTO(fileName, id, dataPath, "Combo", ProcessController.getJsonId());
+                EmptyDataDTO emptyPath = new EmptyDataDTO(fileName, id, dataPath, "Combo", JsonController.getJsonId());
                 emptyPathField.add(emptyPath);
 //                JsonFileReader.saveToSingleJsonFile(emptyPath);
             }
@@ -302,7 +301,7 @@ public class ElementsFunctionUtils {
 
                 String formattedTimestamp = new Date(entry.getTimestamp()).toString();
                 LOGGER.log(Level.SEVERE, formattedTimestamp + " " + entry.getLevel() + " " + uncaughtMessage  + " " + id);
-                ProcessLogDTO processLogFields = new ProcessLogDTO(fileName, id, "error", uncaughtMessage, ProcessController.getJsonId());
+                ProcessLogDTO processLogFields = new ProcessLogDTO(fileName, id, "error", uncaughtMessage, JsonController.getJsonId());
                 ProcessLogFields.add(processLogFields);
 
             }
@@ -321,7 +320,7 @@ public class ElementsFunctionUtils {
                     String formattedTimestamp = new Date(entry.getTimestamp()).toString();
                     LOGGER.log(Level.INFO, formattedTimestamp + " Extracted Console Log: " + pathMessage + " " + id);
 
-                    RequiredPathDTO requiredPaths = new RequiredPathDTO(fileName, id, "required", pathMessage, ProcessController.getJsonId());
+                    RequiredPathDTO requiredPaths = new RequiredPathDTO(fileName, id, "required", pathMessage, JsonController.getJsonId());
                     RequiredPathField.add(requiredPaths);
 //                    JsonFileReader.saveToSingleJsonFile(RequiredPathField);
                 }else if (logMessage.contains("bpResult:")){
@@ -358,8 +357,9 @@ public class ElementsFunctionUtils {
         try{
             waitUtils(driver);
 
-            wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//tr[contains(@id,'datagrid-row-r')]")));
-            List<WebElement> rows = driver.findElements(By.xpath("//tr[contains(@id,'datagrid-row-r')]"));
+//            wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//tr[contains(@id,'datagrid-row-r')]")));
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[contains(@aria-describedby, 'dialog-dataview-selectable-')]//tr[contains(@id,'datagrid-row-r')]")));
+            List<WebElement> rows = driver.findElements(By.xpath("//div[contains(@aria-describedby, 'dialog-dataview-selectable-')]//tr[contains(@id,'datagrid-row-r')]"));
 
             if (!rows.isEmpty()) {
                 Thread.sleep(500);
@@ -369,11 +369,11 @@ public class ElementsFunctionUtils {
                     scrollToElement(driver, firstCell);
                     rows.clear();
                     waitUtils(driver);
-                    WebElement addToCartButton  = driver.findElement(By.xpath("//button[contains(@class, 'btn green-meadow btn-sm float-left')]"));
+                    WebElement addToCartButton  = driver.findElement(By.xpath("//div[contains(@aria-describedby, 'dialog-dataview-selectable-')]//button[contains(@class, 'btn green-meadow btn-sm float-left')]"));
                     if(addToCartButton != null) {
                         addToCartButton.click();
                         waitUtils(driver);
-                        WebElement selectButton = driver.findElement(By.xpath("//button[contains(@class, 'btn blue btn-sm datagrid-choose-btn')]"));
+                        WebElement selectButton = driver.findElement(By.xpath("//div[contains(@aria-describedby, 'dialog-dataview-selectable-')]//button[contains(@class, 'btn blue btn-sm datagrid-choose-btn')]"));
                         if (selectButton != null) {
                             selectButton.click();
                         }
@@ -389,17 +389,16 @@ public class ElementsFunctionUtils {
             wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div[id='bp-window-" + id + "']")));
         } catch (TimeoutException t){
             if (PopupMessage.isErrorMessagePresent(driver, datapath, id, fileName)) {
-                WebElement closeBtn = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[contains(@class, 'btn blue-hoki btn-sm')]")));
+                WebElement closeBtn = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[contains(@aria-describedby, 'dialog-dataview-selectable-')]//button[contains(@class, 'btn blue-hoki btn-sm')]")));
                 closeBtn.click();
             }else{
                 if(required != null) {
-                    EmptyDataDTO emptyPath = new EmptyDataDTO(fileName, id, datapath, "Popup", ProcessController.getJsonId());
+                    EmptyDataDTO emptyPath = new EmptyDataDTO(fileName, id, datapath, "Popup", JsonController.getJsonId());
                     emptyPathField.add(emptyPath);
-//                    JsonFileReader.saveToSingleJsonFile(emptyPath);
-                    WebElement closeBtn = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[contains(@class, 'btn blue-hoki btn-sm')]")));
+                    WebElement closeBtn = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[contains(@aria-describedby, 'dialog-dataview-selectable-')]//button[contains(@class, 'btn blue-hoki btn-sm')]")));
                     closeBtn.click();
                 }else{
-                    WebElement closeBtn = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[contains(@class, 'btn blue-hoki btn-sm')]")));
+                    WebElement closeBtn = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[contains(@aria-describedby, 'dialog-dataview-selectable-')]//button[contains(@class, 'btn blue-hoki btn-sm')]")));
                     closeBtn.click();
                 }
             }
@@ -426,7 +425,7 @@ public class ElementsFunctionUtils {
                     System.out.println("Title has a value: " + titleValue);
                 } else {
                     System.out.println("Title is empty or null");
-                    PopupStandardFieldsDTO popupStandardFields = new PopupStandardFieldsDTO(fileName, id, dataPath, "code", ProcessController.getJsonId());
+                    PopupStandardFieldsDTO popupStandardFields = new PopupStandardFieldsDTO(fileName, id, dataPath, "code", JsonController.getJsonId());
                     PopupStandartField.add(popupStandardFields);
 //                    JsonFileReader.saveToSingleJsonFile(popupStandardFields);
                 }

@@ -14,7 +14,6 @@ public class MetaMain {
 
             MetaLists main = new MetaLists(driver);
 
-
             main.mainList();
 
         }finally {

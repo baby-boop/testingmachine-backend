@@ -7,6 +7,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import testingmachine_backend.config.ConfigForAll;
 import testingmachine_backend.meta.Controller.ListConfig;
 import testingmachine_backend.meta.Controller.MetaCallDataview;
 import testingmachine_backend.meta.DTO.MetadataDTO;
@@ -15,7 +16,7 @@ import testingmachine_backend.meta.Utils.IsErrorList;
 import java.util.List;
 
 import testingmachine_backend.meta.Utils.WaitUtils;
-import testingmachine_backend.process.Controller.ProcessController;
+import testingmachine_backend.controller.JsonController;
 
 public class MetaLists {
 
@@ -36,7 +37,7 @@ public class MetaLists {
 
             Thread.sleep(500);
 
-            String databaseName = ProcessController.getDatabaseName();
+            String databaseName = JsonController.getDatabaseName();
             if (!databaseName.isEmpty()) {
 
                 System.out.println("Database not set: " + databaseName);
@@ -46,10 +47,10 @@ public class MetaLists {
                 dbSelect.selectByVisibleText(databaseName);
 
                 WebElement userNameField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("user_name")));
-                userNameField.sendKeys(ProcessController.getUsername());
+                userNameField.sendKeys(JsonController.getUsername());
 
                 WebElement passwordField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("pass_word")));
-                passwordField.sendKeys(ProcessController.getPassword());
+                passwordField.sendKeys(JsonController.getPassword());
                 passwordField.sendKeys(Keys.ENTER);
 
                 Thread.sleep(3000);
@@ -78,23 +79,14 @@ public class MetaLists {
             } else {
                 System.out.println("Database name is already set: " + databaseName);
 
-                WebElement userNameField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("user_name")));
-                userNameField.sendKeys(ProcessController.getUsername());
-
-                WebElement passwordField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("pass_word")));
-                passwordField.sendKeys(ProcessController.getPassword());
-
-
-                WebElement checkBox = wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("isLdap")));
-                checkBox.click();
-
-                passwordField.sendKeys(Keys.ENTER);
+                ConfigForAll.loginForm(wait);
 
                 Thread.sleep(2000);
 
                 List<MetadataDTO> metaDataList = MetaCallDataview.getProcessMetaDataList();
 
                 int count = 0;
+
                 for (MetadataDTO metaData : metaDataList) {
                     String url = ListConfig.MainUrl + metaData.getId();
                     driver.get(url);

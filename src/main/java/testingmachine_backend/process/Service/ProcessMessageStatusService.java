@@ -1,9 +1,9 @@
 package testingmachine_backend.process.Service;
 
 import org.springframework.stereotype.Service;
-import testingmachine_backend.process.Controller.ProcessController;
+import testingmachine_backend.config.JsonFileReader;
+import testingmachine_backend.controller.JsonController;
 import testingmachine_backend.process.DTO.ProcessMessageStatusDTO;
-import testingmachine_backend.process.Config.*;
 import testingmachine_backend.process.Messages.PopupMessage;
 import testingmachine_backend.process.utils.ElementsFunctionUtils;
 
@@ -17,7 +17,7 @@ public class ProcessMessageStatusService {
 
     public static void addProcessStatus(String fileName, String id, String code, String name, String status, String messageText, String TestProcessType) {
 
-        ProcessMessageStatusDTO statusDTO = new ProcessMessageStatusDTO(fileName, id, code, name, status, messageText, ProcessController.getJsonId(),
+        ProcessMessageStatusDTO statusDTO = new ProcessMessageStatusDTO(fileName, id, code, name, status, messageText, JsonController.getJsonId(),
                 ElementsFunctionUtils.getProcessLogMessages(),
                 ElementsFunctionUtils.getUniqueEmptyDataPath(),
                 PopupMessage.getUniquePopupMessages(),
@@ -25,13 +25,7 @@ public class ProcessMessageStatusService {
                 ElementsFunctionUtils.getRequiredPathMessages());
         processMessageStatusList.add(statusDTO);
 
-        if(TestProcessType == "process"){
-            JsonFileReader.saveToSingleJsonFile(statusDTO);
-        } else if (TestProcessType == "meta") {
-            JsonFileReaderFromList.saveToSingleJsonFile(statusDTO);
-        }
-
-
+        JsonFileReader.saveToSingleJsonFile(statusDTO, TestProcessType);
         clearAllDTOField();
     }
 

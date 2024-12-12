@@ -2,7 +2,7 @@ package testingmachine_backend.meta.Service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import testingmachine_backend.process.Controller.ProcessController;
+import testingmachine_backend.controller.JsonController;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,7 +15,7 @@ public class JsonFileReaderMeta {
 
     private static final Logger LOGGER = Logger.getLogger(JsonFileReaderMeta.class.getName());
     private static final String DIRECTORY_PATH = "C:\\Users\\batde\\Documents\\testingmachine-backend\\src\\json\\metalist\\result";
-    private static final String JSON_FILE_NAME = DIRECTORY_PATH + File.separator + ProcessController.getJsonId() + "_result.json";
+    private static final String JSON_FILE_NAME = DIRECTORY_PATH + File.separator + JsonController.getJsonId() + "_result.json";
 
     /**
      * Save a DTO to a single JSON file, appending it to a list of existing DTOs.

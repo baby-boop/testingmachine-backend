@@ -1,12 +1,11 @@
 package testingmachine_backend.process.Config;
 
-import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import testingmachine_backend.process.Controller.ProcessController;
+import testingmachine_backend.controller.JsonController;
 import testingmachine_backend.process.utils.WaitElement;
 
 import java.time.Duration;
@@ -17,7 +16,7 @@ import java.time.format.DateTimeFormatter;
 public class ConfigProcess {
 
 
-    public static final String BaseUrl = "https://"+ ProcessController.getSystemURL()+"";
+    public static final String BaseUrl = "https://"+ JsonController.getSystemURL()+"";
     public static final String LoginUrl = BaseUrl + "/login";
     public static final String MainUrl = BaseUrl + "/mdprocess/renderByTestTool/";
 
@@ -41,8 +40,8 @@ public class ConfigProcess {
 
     public static class DateUtils {
 
-        public static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-        public static final DateTimeFormatter DATETIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+        public static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        public static final DateTimeFormatter DATETIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
         public static String getCurrentDate() {
             LocalDateTime sysDate = LocalDateTime.now();

@@ -1,0 +1,17 @@
+[ {
+    "fileName" : "Үзлэг",
+    "processId" : "17253555407861",
+    "processCode" : "GREEN_INT_ORDER_BOOK_DTL_GG_V2_0022",
+    "processName" : "Шийдвэр гаргалт гүйцэтгэх Засах||Гадаад",
+    "status" : "failed",
+    "messageText" : "test2",
+    "jsonId" : "bcf99570-e7b4-4901-ade8-a637eaf39f0011"
+  }, {
+    "fileName" : "Үзлэг",
+    "processId" : "17253555407861",
+    "processCode" : "GREEN_INT_ORDER_BOOK_DTL_GG_V2_0022",
+    "processName" : "Шийдвэр гаргалт гүйцэтгэх Засах||Гадаад",
+    "status" : "failed",
+    "messageText" : "test1",
+    "jsonId" : "bcf99570-e7b4-4901-ade8-a637eaf39f0011"
+  } ]

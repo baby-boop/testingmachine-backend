@@ -9,7 +9,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 import testingmachine_backend.meta.DTO.MetadataDTO;
-import testingmachine_backend.process.Controller.ProcessController;
+import testingmachine_backend.controller.JsonController;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +18,7 @@ import java.util.List;
 public class MetaCallDataview {
 
     private static final String http = "http://";
-    static String HOST = ProcessController.getSystemURL();
+    static String HOST = JsonController.getSystemURL();
     private static final String PORT = "8080";
     private static final String URL = "/erp-services/RestWS/runJson";
     private static final String SERVICE_URL = http + HOST + ":" + PORT + URL;
@@ -26,10 +26,10 @@ public class MetaCallDataview {
 
     public static List<MetadataDTO> getProcessMetaDataList() {
 
-        String systemId = ProcessController.getModuleId();
-        String USERNAME = ProcessController.getUsername();
-        String PASSWORD = ProcessController.getPassword();
-        String UNITNAME = ProcessController.getDatabaseUsername();
+        String systemId = JsonController.getModuleId();
+        String USERNAME = JsonController.getUsername();
+        String PASSWORD = JsonController.getPassword();
+        String UNITNAME = JsonController.getDatabaseUsername();
 
         List<MetadataDTO> metaList = new ArrayList<>();
 
@@ -41,8 +41,7 @@ public class MetaCallDataview {
                 "unitname": "%s",
                 "parameters": {
                     "systemmetagroupcode": "%s",
-                    "filtermoduleid": "%s",
-                    "": "%s"
+                    "filtermoduleid": "%s"
                 }
             }
             """.formatted(USERNAME, PASSWORD, UNITNAME, DATAVIEW, systemId);
@@ -71,7 +70,8 @@ public class MetaCallDataview {
                     String code = item.path("metadatacode").asText("N/A");
                     String name = item.path("metadataname").asText("N/A");
 
-                    metaList.add(new MetadataDTO(id, moduleName, code, name));
+                    metaList.add(new MetadataDTO(id, moduleName, code, name, ""));
+
                 });
             } else {
                 log.warn("The 'result' node is missing or not an object.");

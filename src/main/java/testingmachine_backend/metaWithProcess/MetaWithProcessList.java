@@ -4,14 +4,13 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import testingmachine_backend.meta.Controller.ProcessMetaData;
+import testingmachine_backend.config.ConfigForAll;
 import testingmachine_backend.meta.DTO.MetadataDTO;
 import testingmachine_backend.meta.Utils.IsErrorList;
 import testingmachine_backend.metaWithProcess.Controller.CallMetaWithProcess;
 import testingmachine_backend.metaWithProcess.Controller.Config;
 import testingmachine_backend.process.Config.ConfigProcess;
-import testingmachine_backend.process.Controller.ProcessCallDataview;
-import testingmachine_backend.process.Controller.ProcessController;
+import testingmachine_backend.controller.JsonController;
 import testingmachine_backend.process.utils.ProcessPath;
 
 import java.time.Duration;
@@ -33,7 +32,7 @@ public class MetaWithProcessList {
 
             driver.get(ConfigProcess.LoginUrl);
 
-            String databaseName = ProcessController.getDatabaseName();
+            String databaseName = JsonController.getDatabaseName();
             if (!databaseName.isEmpty()) {
 
                 System.out.println("Database name is already set: " + databaseName);
@@ -44,16 +43,7 @@ public class MetaWithProcessList {
 
                 Thread.sleep(2000);
 
-                WebElement userNameField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("user_name")));
-                userNameField.sendKeys(ProcessController.getUsername());
-
-                WebElement passwordField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("pass_word")));
-                passwordField.sendKeys(ProcessController.getPassword());
-
-                WebElement checkBox = wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("isLdap")));
-                checkBox.click();
-
-                passwordField.sendKeys(Keys.ENTER);
+                ConfigForAll.loginForm(wait);;
 
                 List<MetadataDTO> metaWithProcessList = CallMetaWithProcess.getProcessMetaDataList();
                 System.out.println(metaWithProcessList.size());
@@ -71,8 +61,9 @@ public class MetaWithProcessList {
                         System.out.println("Error found in ID: " + metaData.getId());
                         waitUtils(driver);
                     }else{
-                        firstRowFromMeta(driver, metaData.getId());
+                        firstRowFromMeta(driver, metaData.getId(), metaData.getModuleName());
                         waitUtils(driver);
+                        Thread.sleep(5000);
                         ProcessPath.isProcessPersent(driver, metaData.getId(), metaData.getModuleName(), metaData.getCode(), metaData.getName(), "meta");
                     }
                     count++;
@@ -82,16 +73,7 @@ public class MetaWithProcessList {
                 System.out.println("End date: " + ConfigProcess.DateUtils.getCurrentDateTime());
             }
             else{
-                WebElement userNameField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("user_name")));
-                userNameField.sendKeys(ProcessController.getUsername());
-
-                WebElement passwordField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("pass_word")));
-                passwordField.sendKeys(ProcessController.getPassword());
-
-                WebElement checkBox = wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("isLdap")));
-                checkBox.click();
-
-                passwordField.sendKeys(Keys.ENTER);
+                ConfigForAll.loginForm(wait);
 
                 List<MetadataDTO> metaWithProcessList = CallMetaWithProcess.getProcessMetaDataList();
                 System.out.println(metaWithProcessList.size());
@@ -109,7 +91,7 @@ public class MetaWithProcessList {
                         System.out.println("Error found in ID: " + metaData.getId());
                         waitUtils(driver);
                     }else{
-                        firstRowFromMeta(driver, metaData.getId());
+                        firstRowFromMeta(driver, metaData.getId(), metaData.getProcessName());
                         waitUtils(driver);
                         ProcessPath.isProcessPersent(driver, metaData.getId(), metaData.getModuleName(), metaData.getCode(), metaData.getName(), "meta");
                     }
@@ -124,7 +106,7 @@ public class MetaWithProcessList {
             throw new RuntimeException(e);
         }
     }
-    private static void firstRowFromMeta(WebDriver driver, String id){
+    private static void firstRowFromMeta(WebDriver driver, String id, String processName) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(SHORT_WAIT_SECONDS));
         try{
             wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//tr[contains(@id,'datagrid-row-r')]")));
@@ -138,7 +120,7 @@ public class MetaWithProcessList {
                     scrollToElement(driver, firstCell);
                     rows.clear();
                     waitUtils(driver);
-                    WebElement editButton  = driver.findElement(By.cssSelector("div[data-process-id='"+ id +"'] a[data-dvbtn-processcode='REF_MEASURE_DV_002']"));
+                    WebElement editButton = driver.findElement(By.xpath("//div[@data-process-id='" + id + "']//a[contains(@title, '"+ processName +"')]"));
                     if(editButton != null) {
                         editButton.click();
                     }else {
@@ -147,7 +129,7 @@ public class MetaWithProcessList {
                 }
             }
         }catch (Exception e){
-//
+            e.printStackTrace(System.out);
         }
     }
 

@@ -2,13 +2,13 @@ package testingmachine_backend.metaWithProcess.Controller;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import testingmachine_backend.process.Controller.ProcessController;
+import testingmachine_backend.controller.JsonController;
 
 import java.time.Duration;
 
 public class Config {
 
-    public static final String BaseUrl = "https://"+ ProcessController.getSystemURL()+"";
+    public static final String BaseUrl = "https://"+ JsonController.getSystemURL()+"";
     public static final String LoginUrl = BaseUrl + "/login";
     public static final String MainUrl = BaseUrl + "/mdobject/dataview/";
 

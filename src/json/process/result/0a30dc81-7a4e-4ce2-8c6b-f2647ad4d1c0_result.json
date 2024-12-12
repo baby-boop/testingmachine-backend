@@ -1,0 +1,14 @@
+[ {
+  "fileName" : "Ажилтны төлөвлөгөө",
+  "processId" : "17301900519941",
+  "processCode" : "controllerSample_copy",
+  "processName" : "controllerSample copy",
+  "status" : "success",
+  "messageText" : "Амжилттай хадгалагдлаа.",
+  "jsonId" : "0a30dc81-7a4e-4ce2-8c6b-f2647ad4d1c0",
+  "processLogDTO" : [ ],
+  "emptyDataDTO" : [ ],
+  "popupMessageDTO" : [ ],
+  "popupStandardFieldsDTO" : [ ],
+  "requiredPathDTO" : [ ]
+} ]

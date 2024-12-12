@@ -1,4 +1,4 @@
-package testingmachine_backend.process.Controller;
+package testingmachine_backend.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
@@ -8,6 +8,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import testingmachine_backend.process.Config.ConfigProcess;
+import testingmachine_backend.process.Controller.FileData;
+import testingmachine_backend.process.Controller.SystemData;
+import testingmachine_backend.process.Controller.SystemService;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,31 +20,31 @@ import java.util.List;
 @RestController
 @Slf4j
 @CrossOrigin(origins = "*")
-public class ProcessController {
+public class JsonController {
 
     @Getter
-    private static String moduleId;
+    public static String moduleId;
     @Getter
-    private static String customerName;
+    public static String customerName;
     @Getter
-    private static String  createdDate;
+    public static String  createdDate;
     @Getter
-    private static String systemURL;
+    public static String systemURL;
     @Getter
-    private static String username;
+    public static String username;
     @Getter
-    private static String password;
+    public static String password;
     @Getter
-    private static String databaseName;
+    public static String databaseName;
     @Getter
-    private static String databaseUsername;
+    public static String databaseUsername;
     @Getter
-    private static String jsonId;
+    public static String jsonId;
     @Getter
-    private static String selectedModule;
+    public static String selectedModule;
 
     @Autowired
-    private SystemService service;
+    public SystemService service;
 
     @GetMapping("/system-data")
     public List<SystemData> getAllSystemData() {
@@ -76,9 +79,8 @@ public class ProcessController {
         jsonId = savedData.getGeneratedId();
         selectedModule =savedData.getSelectedModule();
         log.info("Created system data: ID = {},databaseName = {}, databaseUserame = {}, ModuleId = {}, CustomerName = {}, SystemURL = {}, username = {}, password = {}, selectedModule = {}",
-                savedData.getGeneratedId(), savedData.getDatabaseUsername(), savedData.getDatabaseUsername(), savedData.getModuleId(), savedData.getCustomerName(),
+                savedData.getGeneratedId(), savedData.getDatabaseName(), savedData.getDatabaseUsername(), savedData.getModuleId(), savedData.getCustomerName(),
                 savedData.getSystemURL(), savedData.getUsername(), savedData.getPassword(), savedData.getSelectedModule());
-
         return ResponseEntity.status(HttpStatus.CREATED).body(savedData);
     }
 
@@ -147,6 +149,17 @@ public class ProcessController {
     @GetMapping("/meta-result")
     public ResponseEntity<List<FileData>> getMetaResultData() {
         String metaResultPath = "C:\\Users\\batde\\Documents\\testingmachine-backend\\src\\json\\metalist\\result";
+        return ResponseEntity.ok(readJsonFilesFromFolderResult(metaResultPath));
+    }
+
+    @GetMapping("/metaprocess-header")
+    public ResponseEntity<List<Object>> getMetaProcessHeaderData() {
+        String metaHeaderPath = "C:\\Users\\batde\\Documents\\testingmachine-backend\\src\\json\\metalistwithprocess\\header";
+        return ResponseEntity.ok(readJsonFilesFromFolder(metaHeaderPath));
+    }
+    @GetMapping("/metaprocess-result")
+    public ResponseEntity<List<FileData>> getMetaProcessResultData() {
+        String metaResultPath = "C:\\Users\\batde\\Documents\\testingmachine-backend\\src\\json\\metalistwithprocess\\result";
         return ResponseEntity.ok(readJsonFilesFromFolderResult(metaResultPath));
     }
 

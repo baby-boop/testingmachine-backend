@@ -1,0 +1,14 @@
+[ {
+  "fileName" : "SETTINGS",
+  "processId" : "17290658797001",
+  "processCode" : "REQUEST_WORKFLOW_DV_001_001",
+  "processName" : "RequestWorflowDv Нэмэх test",
+  "status" : "success",
+  "messageText" : "Амжилттай хадгалагдлаа.",
+  "jsonId" : "9b15dd5e-295f-445b-8502-699177f2f8e9",
+  "processLogDTO" : [ ],
+  "emptyDataDTO" : [ ],
+  "popupMessageDTO" : [ ],
+  "popupStandardFieldsDTO" : [ ],
+  "requiredPathDTO" : [ ]
+} ]

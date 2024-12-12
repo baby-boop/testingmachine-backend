@@ -7,7 +7,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import testingmachine_backend.process.Controller.ProcessController;
+import testingmachine_backend.controller.JsonController;
 
 import java.time.Duration;
 
@@ -28,7 +28,7 @@ public class ListConfig {
     /*
      * Хишиг арвин UAT USER CONNECTION
      */
-    public static final String BaseUrl = "http://"+ ProcessController.getSystemURL()+"";
+    public static final String BaseUrl = "http://"+ JsonController.getSystemURL()+"";
     public static final String LoginUrl = BaseUrl + "/login";
     public static final String MainUrl = BaseUrl + "/mdobject/dataview/";
     public static final String USERNAME = "admin1";

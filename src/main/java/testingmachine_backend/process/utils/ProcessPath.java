@@ -32,14 +32,13 @@ public class ProcessPath {
     @Getter
     private static int failedCount = 0;
 
-
     public static void isProcessPersent(WebDriver driver, String id, String systemName, String code, String name, String TestProcessType) {
         try {
             waitUtils(driver);
 
             consoleLogChecker(driver, id, systemName);
 
-            FindMainProcessType(driver, id, systemName);
+            findMainProcessType(driver, id, systemName);
 
             waitUtils(driver);
 
@@ -47,25 +46,11 @@ public class ProcessPath {
                 waitUtils(driver);
                 if(TestProcessType.contains("meta")){
                     WebElement cnclBtn = driver.findElement(By.xpath("//button[contains(@class, 'bp-btn-save') and text()='Хадгалах']"));
-                    cnclBtn.click();
-                    waitUtils(driver);
-                    consoleLogRequiredPath(driver, id, systemName);
-                    if (!IsProcessMessage.isErrorMessagePresent(driver, id, code, name, systemName, TestProcessType)) {
-                        waitUtils(driver);
-                        failedCount++;
-                        LOGGER.log(Level.SEVERE, "Process failed with alert: " + id);
-                        ProcessMessageStatusService.addProcessStatus(systemName, id, code, name, "failed", "", TestProcessType);
-                    }
+                    cnclBtn.sendKeys(" ");
+                    checkMessageInfo(driver, id, systemName, code, name, TestProcessType);
                 }else{
-                    saveButtonFunction(driver, id, systemName);
-                    waitUtils(driver);
-                    consoleLogRequiredPath(driver, id, systemName);
-                    if (!IsProcessMessage.isErrorMessagePresent(driver, id, code, name, systemName, TestProcessType)) {
-                        waitUtils(driver);
-                        failedCount++;
-                        LOGGER.log(Level.SEVERE, "Process failed with alert: " + id);
-                        ProcessMessageStatusService.addProcessStatus(systemName, id, code, name, "failed", "", TestProcessType);
-                    }
+                    saveButtonFunction(driver);
+                    checkMessageInfo(driver, id, systemName, code, name, TestProcessType);
                 }
 
             }else{
@@ -90,7 +75,18 @@ public class ProcessPath {
         }
     }
 
-    public static void FindMainProcessType(WebDriver driver, String id, String systemName) {
+    private static void checkMessageInfo(WebDriver driver, String id, String systemName, String code, String name, String TestProcessType) {
+        waitUtils(driver);
+        consoleLogRequiredPath(driver, id, systemName);
+        if (!IsProcessMessage.isErrorMessagePresent(driver, id, code, name, systemName, TestProcessType)) {
+            waitUtils(driver);
+            failedCount++;
+            LOGGER.log(Level.SEVERE, "Process failed with alert: " + id);
+            ProcessMessageStatusService.addProcessStatus(systemName, id, code, name, "failed", "", TestProcessType);
+        }
+    }
+
+    public static void findMainProcessType(WebDriver driver, String id, String systemName) {
         if (LayoutChecker.isLayout(driver, id)) {
             LayoutProcessSection.LayoutFieldFunction(driver, id, systemName);
         } else if (ProcessWizardChecker.isWizard(driver, id)) {
@@ -105,7 +101,7 @@ public class ProcessPath {
         }
     }
 
-    private static void saveButtonFunction(WebDriver driver, String id, String systemName) {
+    private static void saveButtonFunction(WebDriver driver) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(MEDIUM_WAIT_SECONDS));
         try {
 
@@ -115,21 +111,10 @@ public class ProcessPath {
             ));
             wfmSaveButton.sendKeys(" ");
         }catch (Exception e){
-
+//
         }
     }
 
-    private static void saveMetaButtonFunction(WebDriver driver, String id, String systemName) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(MEDIUM_WAIT_SECONDS));
-        try {
-
-            Thread.sleep(2000);
-            WebElement cnclBtn = wait.until(ExpectedConditions.elementToBeClickable(By.linkText("Хадгалах")));
-            cnclBtn.click();
-        }catch (Exception e){
-
-        }
-    }
 
     public static boolean isDuplicateLogEntry(String systemName, String id) {
         return ElementsFunctionUtils.ProcessLogFields.stream()
@@ -140,9 +125,11 @@ public class ProcessPath {
     public static List<WebElement> findElementsWithSelector(WebDriver driver,String id) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(SHORT_WAIT_SECONDS));
         try {
-            wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div[id='bp-window-" + id + "']")));
+//            wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div[id='bp-window-" + id + "']")));
 
-            WebElement MainProcess = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div[id='bp-window-" + id + "'] .table-scrollable-borderless .bp-header-param")));
+//            WebElement MainProcess = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div[id='bp-window-" + id + "'] .table-scrollable-borderless .bp-header-param")));
+            WebElement MainProcess = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".table-scrollable-borderless .bp-header-param")));
+
             List<WebElement> elements = MainProcess.findElements(By.cssSelector("[data-path]"));
 
             Map<String, WebElement> uniqueDataPathElements = getUniqueTabElements(elements);
