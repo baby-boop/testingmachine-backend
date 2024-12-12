@@ -45,8 +45,7 @@ public class ProcessPath {
             if (!isDuplicateLogEntry(systemName, id)) {
                 waitUtils(driver);
                 if(TestProcessType.contains("meta")){
-                    WebElement cnclBtn = driver.findElement(By.xpath("//button[contains(@class, 'bp-btn-save') and text()='Хадгалах']"));
-                    cnclBtn.sendKeys(" ");
+                    saveButtonFromMetaFunction(driver);
                     checkMessageInfo(driver, id, systemName, code, name, TestProcessType);
                 }else{
                     saveButtonFunction(driver);
@@ -92,7 +91,7 @@ public class ProcessPath {
         } else if (ProcessWizardChecker.isWizard(driver, id)) {
             ProcessWizardSection.KpiWizardFunction(driver, id, systemName);
         } else {
-            List<WebElement> elementsWithDataPath = findElementsWithSelector(driver, id);
+            List<WebElement> elementsWithDataPath = findElementsWithSelector(driver);
             processTabElements(driver, elementsWithDataPath, id, systemName);
             tabDetailItems(driver, id, systemName);
             waitUtils(driver);
@@ -115,6 +114,19 @@ public class ProcessPath {
         }
     }
 
+    private static void saveButtonFromMetaFunction(WebDriver driver) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(MEDIUM_WAIT_SECONDS));
+        try {
+
+            Thread.sleep(2000);
+            WebElement cnclBtn = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//button[contains(@class, 'bp-btn-save') and text()='Хадгалах']")));
+            cnclBtn.sendKeys(" ");
+
+        }catch (Exception e){
+//
+        }
+    }
+
 
     public static boolean isDuplicateLogEntry(String systemName, String id) {
         return ElementsFunctionUtils.ProcessLogFields.stream()
@@ -122,7 +134,7 @@ public class ProcessPath {
     }
 
 
-    public static List<WebElement> findElementsWithSelector(WebDriver driver,String id) {
+    public static List<WebElement> findElementsWithSelector(WebDriver driver) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(SHORT_WAIT_SECONDS));
         try {
 //            wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div[id='bp-window-" + id + "']")));

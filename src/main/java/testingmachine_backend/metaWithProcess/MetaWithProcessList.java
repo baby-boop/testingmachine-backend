@@ -43,7 +43,7 @@ public class MetaWithProcessList {
 
                 Thread.sleep(2000);
 
-                ConfigForAll.loginForm(wait);;
+                ConfigForAll.loginForm(wait);
 
                 List<MetadataDTO> metaWithProcessList = CallMetaWithProcess.getProcessMetaDataList();
                 System.out.println(metaWithProcessList.size());
@@ -120,7 +120,7 @@ public class MetaWithProcessList {
                     scrollToElement(driver, firstCell);
                     rows.clear();
                     waitUtils(driver);
-                    WebElement editButton = driver.findElement(By.xpath("//div[@data-process-id='" + id + "']//a[contains(@title, '"+ processName +"')]"));
+                    WebElement editButton = driver.findElement(By.xpath("//div[@data-process-id='" + id + "']//a[text()='"+ processName +"']"));
                     if(editButton != null) {
                         editButton.click();
                     }else {

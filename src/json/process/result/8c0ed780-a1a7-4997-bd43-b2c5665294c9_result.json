@@ -1,0 +1,114 @@
+[ {
+  "fileName" : "SETTINGS",
+  "processId" : "17313127384691",
+  "processCode" : "requestLayoutTest_002_copy",
+  "processName" : "requestLayoutTest Засах copy",
+  "status" : "success",
+  "messageText" : "Амжилттай цэвэрлэгдлээ",
+  "jsonId" : "8c0ed780-a1a7-4997-bd43-b2c5665294c9",
+  "processLogDTO" : [ ],
+  "emptyDataDTO" : [ {
+    "fileName" : "SETTINGS",
+    "processId" : "17313127384691",
+    "dataPath" : "CIRS_MZ_REQUEST_REQUIREMENT_DV.customerId",
+    "dataType" : "Popup",
+    "jsonId" : "8c0ed780-a1a7-4997-bd43-b2c5665294c9"
+  } ],
+  "popupMessageDTO" : [ {
+    "fileName" : "SETTINGS",
+    "processId" : "17313127384691",
+    "dataPath" : "sectionId",
+    "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00904: \"PM2\".\"STAKE_AMOUNT\": invalid identifier",
+    "jsonId" : "8c0ed780-a1a7-4997-bd43-b2c5665294c9"
+  } ],
+  "popupStandardFieldsDTO" : [ ],
+  "requiredPathDTO" : [ ]
+}, {
+  "fileName" : "SETTINGS",
+  "processId" : "17301900519941",
+  "processCode" : "controllerSample_copy",
+  "processName" : "controllerSample copy",
+  "status" : "success",
+  "messageText" : "Амжилттай хадгалагдлаа.",
+  "jsonId" : "8c0ed780-a1a7-4997-bd43-b2c5665294c9",
+  "processLogDTO" : [ ],
+  "emptyDataDTO" : [ ],
+  "popupMessageDTO" : [ ],
+  "popupStandardFieldsDTO" : [ ],
+  "requiredPathDTO" : [ ]
+}, {
+  "fileName" : "SETTINGS",
+  "processId" : "17311229566951",
+  "processCode" : "sampleLayout12_copy",
+  "processName" : "Sample layout 12 copy",
+  "status" : "error",
+  "messageText" : "basePersonRegDv жагсаалт дээрх experiencedv группын relation тохиргоо хийгдээгүй байна.",
+  "jsonId" : "8c0ed780-a1a7-4997-bd43-b2c5665294c9",
+  "processLogDTO" : [ ],
+  "emptyDataDTO" : [ ],
+  "popupMessageDTO" : [ ],
+  "popupStandardFieldsDTO" : [ ],
+  "requiredPathDTO" : [ ]
+}, {
+  "fileName" : "SETTINGS",
+  "processId" : "17301900534131",
+  "processCode" : "sampleProcess1_001_copy",
+  "processName" : "Empty paths",
+  "status" : "info",
+  "messageText" : "* Заавал бөглөх талбаруудыг бөглөнө үү",
+  "jsonId" : "8c0ed780-a1a7-4997-bd43-b2c5665294c9",
+  "processLogDTO" : [ ],
+  "emptyDataDTO" : [ {
+    "fileName" : "SETTINGS",
+    "processId" : "17301900534131",
+    "dataPath" : "combo2",
+    "dataType" : "Combo",
+    "jsonId" : "8c0ed780-a1a7-4997-bd43-b2c5665294c9"
+  } ],
+  "popupMessageDTO" : [ {
+    "fileName" : "SETTINGS",
+    "processId" : "17301900534131",
+    "dataPath" : "popup2",
+    "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00907: missing right parenthesis",
+    "jsonId" : "8c0ed780-a1a7-4997-bd43-b2c5665294c9"
+  } ],
+  "popupStandardFieldsDTO" : [ ],
+  "requiredPathDTO" : [ {
+    "fileName" : "SETTINGS",
+    "processId" : "17301900534131",
+    "logType" : "required",
+    "messageText" : "Path: popup1\"",
+    "jsonId" : "8c0ed780-a1a7-4997-bd43-b2c5665294c9"
+  }, {
+    "fileName" : "SETTINGS",
+    "processId" : "17301900534131",
+    "logType" : "required",
+    "messageText" : "Path: combo2\"",
+    "jsonId" : "8c0ed780-a1a7-4997-bd43-b2c5665294c9"
+  }, {
+    "fileName" : "SETTINGS",
+    "processId" : "17301900534131",
+    "logType" : "required",
+    "messageText" : "Path: popup2\"",
+    "jsonId" : "8c0ed780-a1a7-4997-bd43-b2c5665294c9"
+  } ]
+}, {
+  "fileName" : "SETTINGS",
+  "processId" : "17296692043251",
+  "processCode" : "REQUEST_WORKFLOW_DV_001_001_ERROR",
+  "processName" : "RequestWorflowDv Нэмэх ERROR",
+  "status" : "info",
+  "messageText" : "* Заавал бөглөх талбаруудыг бөглөнө үү",
+  "jsonId" : "8c0ed780-a1a7-4997-bd43-b2c5665294c9",
+  "processLogDTO" : [ ],
+  "emptyDataDTO" : [ ],
+  "popupMessageDTO" : [ ],
+  "popupStandardFieldsDTO" : [ {
+    "fileName" : "SETTINGS",
+    "processId" : "17296692043251",
+    "dataPath" : "popup",
+    "dataType" : "code",
+    "jsonId" : "8c0ed780-a1a7-4997-bd43-b2c5665294c9"
+  } ],
+  "requiredPathDTO" : [ ]
+} ]

@@ -27,7 +27,7 @@ public class TabDetailsFieldUtils {
                     Optional<String> tabIdentifierOpt = extractTabIdentifier(TabHref);
                     String tabIdentifier = tabIdentifierOpt.get();
                     waitUtils(driver);
-                    List<WebElement> elementsWithHeaderPaths = findElementsWithHeaderPath(driver, tabIdentifier, id);
+                    List<WebElement> elementsWithHeaderPaths = findElementsWithHeaderPath(driver, tabIdentifier);
                     processTabElements(driver, elementsWithHeaderPaths, id, fileName);
 
                     List<WebElement> elementsWithDataSectionPath = findRowElementsWithSectionPath(driver, tabIdentifier);
@@ -35,7 +35,7 @@ public class TabDetailsFieldUtils {
                         for (WebElement elementTab : elementsWithDataSectionPath) {
                             String sectionPath = elementTab.getAttribute("data-section-path");
                             waitUtils(driver);
-                            List<WebElement> findTestElement = findTest(driver, tabIdentifier, id, sectionPath);
+                            List<WebElement> findTestElement = findTest(driver, tabIdentifier, sectionPath);
                             processTabElements(driver, findTestElement, id, fileName);
                             List<WebElement> allActionTabPath = findRowActionTabPathsButton(driver, sectionPath);
                             if (allActionTabPath != null) {
@@ -50,14 +50,14 @@ public class TabDetailsFieldUtils {
                                             waitUtils(driver);
                                             clickFirstRow(driver, id, fileName, sectionPath, "");
                                             waitUtils(driver);
-                                            List<WebElement> tabElementPaths1 = findElementsWithTabDetailsPath(driver, sectionPath, tabIdentifier, id);
+                                            List<WebElement> tabElementPaths1 = findElementsWithTabDetailsPath(driver, sectionPath, tabIdentifier);
                                             processTabElements(driver, tabElementPaths1, id, fileName);
                                             break;
                                         } else if (onclick.contains("bpAddMainRow")) {
                                             waitUtils(driver);
                                             action.click();
                                             waitUtils(driver);
-                                            List<WebElement> tabElementPaths = findElementsWithTabDetailsPath(driver, sectionPath, tabIdentifier, id);
+                                            List<WebElement> tabElementPaths = findElementsWithTabDetailsPath(driver, sectionPath, tabIdentifier);
                                             processTabElements(driver, tabElementPaths, id, fileName);
 
 //                                            List<WebElement> rowsToRowShowForms = findRowsToRowShowForm(driver, sectionPath, tabIdentifier, id);
@@ -76,7 +76,7 @@ public class TabDetailsFieldUtils {
                                         }
                                     }
                                 }else{
-                                    List<WebElement> findTestElement1 = findTest(driver, tabIdentifier, id, sectionPath);
+                                    List<WebElement> findTestElement1 = findTest(driver, tabIdentifier, sectionPath);
                                     processTabElements(driver, findTestElement1, id, fileName);
                                 }
                             }
@@ -89,16 +89,16 @@ public class TabDetailsFieldUtils {
         }
     }
 
-    public static  List<WebElement> findElementsWithHeaderPath(WebDriver driver, String tabId,String id) {
+    public static  List<WebElement> findElementsWithHeaderPath(WebDriver driver, String tabId) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(SHORT_WAIT_SECONDS));
         try {
 
             wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector
-                    ("div[id='bp-window-" + id + "'] div[id='"+ tabId +"'] .bp-header-param")
+                    ("div[id='"+ tabId +"'] .bprocess-table-row")
             ));
 
             WebElement MainProcess = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector
-                    ("div[id='bp-window-" + id + "'] div[id='"+ tabId +"'] ")
+                    ("div[id='"+ tabId +"'] ")
             ));
 
             List<WebElement> elements = MainProcess.findElements(
@@ -152,16 +152,16 @@ public class TabDetailsFieldUtils {
         }
     }
 
-    public static  List<WebElement> findElementsWithTabDetailsPath(WebDriver driver, String sectionPath, String tabId,String id) {
+    public static  List<WebElement> findElementsWithTabDetailsPath(WebDriver driver, String sectionPath, String tabId) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(SHORT_WAIT_SECONDS));
         try {
 
             wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector
-                    ("div[id='bp-window-" + id + "'] div[id='"+ tabId +"'] .row[data-section-path='"+ sectionPath +"'] .bp-detail-row")
+                    ("div[id='"+ tabId +"'] .row[data-section-path='"+ sectionPath +"'] .bp-detail-row")
             ));
 
             WebElement MainProcess = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector
-                    ("div[id='bp-window-" + id + "'] div[id='"+ tabId +"'] .row[data-section-path='"+ sectionPath +"'] ")
+                    ("div[id='"+ tabId +"'] .row[data-section-path='"+ sectionPath +"'] ")
             ));
 
             List<WebElement> elements = MainProcess.findElements(
@@ -179,17 +179,19 @@ public class TabDetailsFieldUtils {
             return Collections.emptyList();
         }
     }
-    public static  List<WebElement> findTest(WebDriver driver, String tabId, String id, String sectionPath) {
+    public static  List<WebElement> findTest(WebDriver driver, String tabId, String sectionPath) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(SHORT_WAIT_SECONDS));
         try {
 
             wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector
-                    ("div[id='bp-window-" + id + "'] div[id='"+ tabId +"'] .row[data-section-path='"+ sectionPath +"']")
+                    ("div[id='"+ tabId +"'] .row[data-section-path='"+ sectionPath +"']")
 
             ));
 
             WebElement MainProcess = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector
-                    ("div[id='bp-window-" + id + "'] div[id='"+ tabId +"'] .row[data-section-path='"+ sectionPath +"']")
+                    ("div[id='"+ tabId +"'] .row[data-section-path='"+ sectionPath +"']")
+//                ("div[id='bp-window-" + id + "'] div[id='"+ tabId +"'] .row[data-section-path='"+ sectionPath +"']")
+
             ));
 
             List<WebElement> elements = MainProcess.findElements(
@@ -229,7 +231,7 @@ public class TabDetailsFieldUtils {
             wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div[id='bp-window-" + id + "'] div[id='"+ tabId +"'] .row[data-section-path='"+ sectionPath +"'] .bp-detail-row")));
 
             WebElement MainProcess = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector
-                    ("div[id='bp-window-" + id + "'] div[id='"+ tabId +"'] .row[data-section-path='"+ sectionPath +"']")
+                    ("div[id='"+ tabId +"'] .row[data-section-path='"+ sectionPath +"']")
             ));
 
             List<WebElement> tabElements = MainProcess.findElements(By.cssSelector("[data-b-path]"));
@@ -252,10 +254,10 @@ public class TabDetailsFieldUtils {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(SHORT_WAIT_SECONDS));
         try {
             wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector
-                    ("div[id='bp-window-" + id + "'] div[id='"+ tabId +"'] .row[data-section-path='"+ sectionPath +"'] ")
+                    ("div[id='"+ tabId +"'] .row[data-section-path='"+ sectionPath +"'] ")
             ));
             WebElement MainProcess = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector
-                    ("div[id='bp-window-" + id + "'] div[id='"+ tabId +"'] .row[data-section-path='"+ sectionPath +"'] ")
+                    ("div[id='"+ tabId +"'] .row[data-section-path='"+ sectionPath +"'] ")
             ));
             WebElement SubProcess = MainProcess.findElement(By.cssSelector("div[data-section-path='"+ subSection +"']"));
 

@@ -1,0 +1,50 @@
+[ {
+  "fileName" : "testing 1",
+  "processId" : "1728368604260541",
+  "processCode" : "REQUEST_WORFLOW_LIST",
+  "processName" : "RequestWorkflowList",
+  "status" : "info",
+  "messageText" : "* Заавал бөглөх талбаруудыг бөглөнө үү",
+  "jsonId" : "3380ffdc-4d6d-4e9a-a5e3-4bfd38e51d47",
+  "processLogDTO" : [ ],
+  "emptyDataDTO" : [ {
+    "fileName" : "testing 1",
+    "processId" : "1728368604260541",
+    "dataPath" : "popup1",
+    "dataType" : "Popup",
+    "jsonId" : "3380ffdc-4d6d-4e9a-a5e3-4bfd38e51d47"
+  }, {
+    "fileName" : "testing 1",
+    "processId" : "1728368604260541",
+    "dataPath" : "combo2",
+    "dataType" : "Combo",
+    "jsonId" : "3380ffdc-4d6d-4e9a-a5e3-4bfd38e51d47"
+  } ],
+  "popupMessageDTO" : [ {
+    "fileName" : "testing 1",
+    "processId" : "1728368604260541",
+    "dataPath" : "popup2",
+    "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00907: missing right parenthesis",
+    "jsonId" : "3380ffdc-4d6d-4e9a-a5e3-4bfd38e51d47"
+  } ],
+  "popupStandardFieldsDTO" : [ ],
+  "requiredPathDTO" : [ {
+    "fileName" : "testing 1",
+    "processId" : "1728368604260541",
+    "logType" : "required",
+    "messageText" : "Path: popup1\"",
+    "jsonId" : "3380ffdc-4d6d-4e9a-a5e3-4bfd38e51d47"
+  }, {
+    "fileName" : "testing 1",
+    "processId" : "1728368604260541",
+    "logType" : "required",
+    "messageText" : "Path: combo2\"",
+    "jsonId" : "3380ffdc-4d6d-4e9a-a5e3-4bfd38e51d47"
+  }, {
+    "fileName" : "testing 1",
+    "processId" : "1728368604260541",
+    "logType" : "required",
+    "messageText" : "Path: popup2\"",
+    "jsonId" : "3380ffdc-4d6d-4e9a-a5e3-4bfd38e51d47"
+  } ]
+} ]

@@ -19,6 +19,7 @@ public class DetailsFieldUtils {
     public static void detailActionButton(WebDriver driver, String id, String fileName) {
         try {
             List<WebElement> elementsWithDataSectionPath = findRowElementsWithDataSectionPath(driver);
+            System.out.println(elementsWithDataSectionPath.size());
             if(elementsWithDataSectionPath != null) {
                 for (WebElement element : elementsWithDataSectionPath) {
                     String sectionPath = element.getAttribute("data-section-path");

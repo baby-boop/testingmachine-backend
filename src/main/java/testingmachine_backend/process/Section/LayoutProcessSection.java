@@ -66,10 +66,12 @@ public class LayoutProcessSection {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(SHORT_WAIT_SECONDS));
         try {
             Thread.sleep(2000);
-            wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div[id='bp-window-" + processId + "']")));
+//            wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div[id='bp-window-" + processId + "']")));
 
             return driver.findElements(By.xpath(
-                    "//div[@id='bp-window-" + processId + "']//div[@data-section-code and *]"
+//                    "//div[@id='bp-window-" + processId + "']//div[@data-section-code and *]"
+                    "//div[@data-section-code and *]"
+
             ));
 
 

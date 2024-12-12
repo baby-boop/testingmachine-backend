@@ -1,0 +1,20 @@
+[ {
+  "fileName" : "testing 1",
+  "processId" : "1728368604260541",
+  "processCode" : "REQUEST_WORFLOW_LIST",
+  "processName" : "RequestWorkflowList",
+  "status" : "failed",
+  "messageText" : "",
+  "jsonId" : "fe57953e-a955-4d82-be1c-bb2e5ec1130d",
+  "processLogDTO" : [ ],
+  "emptyDataDTO" : [ {
+    "fileName" : "testing 1",
+    "processId" : "1728368604260541",
+    "dataPath" : "metaId",
+    "dataType" : "Popup",
+    "jsonId" : "fe57953e-a955-4d82-be1c-bb2e5ec1130d"
+  } ],
+  "popupMessageDTO" : [ ],
+  "popupStandardFieldsDTO" : [ ],
+  "requiredPathDTO" : [ ]
+} ]

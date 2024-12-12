@@ -35,7 +35,6 @@ public class ElementsFunctionUtils {
     static final Logger LOGGER = Logger.getLogger(ElementsFunctionUtils.class.getName());
 
     private static final int SHORT_WAIT_SECONDS = 2;
-    private static final int MEDIUM_WAIT_SECONDS = 10;
     private static final int LONG_WAIT_SECONDS = 90;
     private static final Pattern TAB_ID_PATTERN = Pattern.compile("tab_\\d+_\\d+");
 
@@ -322,7 +321,6 @@ public class ElementsFunctionUtils {
 
                     RequiredPathDTO requiredPaths = new RequiredPathDTO(fileName, id, "required", pathMessage, JsonController.getJsonId());
                     RequiredPathField.add(requiredPaths);
-//                    JsonFileReader.saveToSingleJsonFile(RequiredPathField);
                 }else if (logMessage.contains("bpResult:")){
                     String pathMessage = logMessage.substring(logMessage.indexOf("bpResult:"));
                     LOGGER.log(Level.INFO, pathMessage + " Extracted Console Log: " + id);
