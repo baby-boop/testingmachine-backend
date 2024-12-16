@@ -47,8 +47,6 @@ public class IsMetaErrorList {
             WebElement messageContent = shortWait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".ui-pnotify-text")));
             String messageText = messageContent.getText();
 
-            System.out.println("hi");
-
             MetaWithProcessStatusService.addMetaStatus(moduleName, id, code, name, "error", messageText);
 
             return messageContent.isDisplayed();

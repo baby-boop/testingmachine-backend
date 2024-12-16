@@ -56,5 +56,4 @@ public class IsErrorList {
             return false;
         }
     }
-
 }

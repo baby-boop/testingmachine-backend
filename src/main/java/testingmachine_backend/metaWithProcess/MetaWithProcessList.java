@@ -88,7 +88,7 @@ public class MetaWithProcessList {
 
                     waitUtils(driver);
 
-                    if (IsErrorList.isErrorMessagePresent(driver, metaData.getId(), metaData.getModuleName(), metaData.getCode(), metaData.getName())) {
+                    if (IsMetaErrorList.isErrorMessagePresent(driver, metaData.getId(), metaData.getModuleName(), metaData.getCode(), metaData.getName())) {
                         System.out.println("Error found in ID: " + metaData.getId());
                         waitUtils(driver);
                     }else{

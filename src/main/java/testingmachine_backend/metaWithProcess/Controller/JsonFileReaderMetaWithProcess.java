@@ -25,7 +25,7 @@ public class JsonFileReaderMetaWithProcess {
      * @param <T> The type of the DTO.
      */
     public static <T> void saveToSingleJsonFile(T dto) {
-        System.out.println("hi 2");
+
         File directory = new File(DIRECTORY_PATH);
         if (!directory.exists()) {
             directory.mkdirs();
