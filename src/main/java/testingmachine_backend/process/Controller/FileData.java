@@ -8,14 +8,11 @@ import lombok.Setter;
 public class FileData {
     private String fileName;
     private Object data;
-    private String customerName;
-    private String testURL;
 
-    public FileData(String fileName, Object data, String customerName, String testURL) {
+
+    public FileData(String fileName, Object data) {
         this.fileName = fileName;
         this.data = data;
-        this.customerName = customerName;
-        this.testURL = testURL;
 
     }
 }

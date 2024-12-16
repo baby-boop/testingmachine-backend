@@ -16,7 +16,7 @@ import java.time.format.DateTimeFormatter;
 public class ConfigProcess {
 
 
-    public static final String BaseUrl = "https://"+ JsonController.getSystemURL()+"";
+    public static final String BaseUrl = "https://"+ JsonController.getSystemURL();
     public static final String LoginUrl = BaseUrl + "/login";
     public static final String MainUrl = BaseUrl + "/mdprocess/renderByTestTool/";
 

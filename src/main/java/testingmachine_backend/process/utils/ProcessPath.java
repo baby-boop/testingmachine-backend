@@ -137,9 +137,6 @@ public class ProcessPath {
     public static List<WebElement> findElementsWithSelector(WebDriver driver) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(SHORT_WAIT_SECONDS));
         try {
-//            wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div[id='bp-window-" + id + "']")));
-
-//            WebElement MainProcess = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div[id='bp-window-" + id + "'] .table-scrollable-borderless .bp-header-param")));
             WebElement MainProcess = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".table-scrollable-borderless .bp-header-param")));
 
             List<WebElement> elements = MainProcess.findElements(By.cssSelector("[data-path]"));

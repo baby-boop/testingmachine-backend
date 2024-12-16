@@ -9,6 +9,7 @@ import testingmachine_backend.meta.DTO.MetadataDTO;
 import testingmachine_backend.meta.Utils.IsErrorList;
 import testingmachine_backend.metaWithProcess.Controller.CallMetaWithProcess;
 import testingmachine_backend.metaWithProcess.Controller.Config;
+import testingmachine_backend.metaWithProcess.Controller.IsMetaErrorList;
 import testingmachine_backend.process.Config.ConfigProcess;
 import testingmachine_backend.controller.JsonController;
 import testingmachine_backend.process.utils.ProcessPath;
@@ -57,8 +58,8 @@ public class MetaWithProcessList {
 
                     waitUtils(driver);
 
-                    if (IsErrorList.isErrorMessagePresent(driver, metaData.getId(), metaData.getModuleName(), metaData.getCode(), metaData.getName())) {
-                        System.out.println("Error found in ID: " + metaData.getId());
+                    if (IsMetaErrorList.isErrorMessagePresent(driver, metaData.getId(), metaData.getModuleName(), metaData.getCode(), metaData.getName())) {
+                        System.out.println("Error with process found in ID: " + metaData.getId());
                         waitUtils(driver);
                     }else{
                         firstRowFromMeta(driver, metaData.getId(), metaData.getModuleName());

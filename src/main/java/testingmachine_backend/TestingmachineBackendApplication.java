@@ -40,17 +40,17 @@ public class TestingmachineBackendApplication
 		String result;
 		switch (module) {
 			case "meta":
-				System.out.println("Starting module...");
+				System.out.println("Тест эхлэж байна...");
 				MetaMain.mainSystem();
 				result = "Тест хийж дууссан";
 				break;
 			case "process":
-				System.out.println("Starting module... 1");
+				System.out.println("Тест эхлэж байна... 1");
 				MainProcess.mainProcess();
 				result = "Тест хийж дууссан";
 				break;
 			case "metaWithProcess":
-				System.out.println("Starting module...");
+				System.out.println("Тест эхлэж байна...");
 				MetaWithProcessMain.mainProcess();
 				result = "Тест хийж дууссан";
 				break;

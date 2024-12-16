@@ -13,6 +13,7 @@ public class MetaMessageStatusService {
         ErrorMessageDTO statusDTO = new ErrorMessageDTO(moduleName, id, code, name, type, messageText);
         metaMessageStatusList.add(statusDTO);
         JsonFileReaderMeta.saveToSingleJsonFile(statusDTO);
+        metaMessageStatusList.clear();
     }
 
     public static List<ErrorMessageDTO> getMetaStatuses() {

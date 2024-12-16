@@ -124,14 +124,12 @@ public class JsonController {
         if (jsonFiles != null) {
             for (File jsonFile : jsonFiles) {
                 try {
-                    Object data = objectMapper.readValue(jsonFile, Object.class);
                     String fileName = jsonFile.getName();
-                    String customerName = getCustomerName();
-                    String testUrl = getSystemURL();
+                    Object data = objectMapper.readValue(jsonFile, Object.class);
                     if (fileName.endsWith("_result.json")) {
                         fileName = fileName.substring(0, fileName.length() - "_result.json".length());
                     }
-                    fileDataList.add(new FileData(fileName, data, customerName, testUrl));
+                    fileDataList.add(new FileData(fileName, data));
                 } catch (IOException e) {
                     e.printStackTrace(System.out);
                 }
