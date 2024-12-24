@@ -1,0 +1,1492 @@
+[ {
+  "fileName" : "Санхүүгийн удирдлага",
+  "metaId" : "1464945272594678",
+  "metaCode" : "notaryReportChildMoneyList",
+  "metaName" : "REPORT_TEMP:Хүүхдийн мөнгөний итгэмжлэл",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00942: table or view does not exist"
+}, {
+  "fileName" : "Сонгон шалгаруулалт",
+  "metaId" : "1483350310630",
+  "metaCode" : "IM_ITEM_BOOK_LIST_WITHOUT_MANDATORY_CP",
+  "metaName" : "Шатахуун хураангуй",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00903: invalid table name"
+}, {
+  "fileName" : "Санхүүгийн удирдлага",
+  "metaId" : "1446793541574",
+  "metaCode" : "FIN_CO_A_TEMPLATE_STRUCTURE",
+  "metaName" : "finCoATemplate - Structure",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00904: \"T0\".\"MODIFIED_USER_LOG_ID\": invalid identifier"
+}, {
+  "fileName" : "Сонгон шалгаруулалт",
+  "metaId" : "1447239006038",
+  "metaCode" : "HRM_JOB_DESCRIPTION_STRUCTURE",
+  "metaName" : "hrmJobDescription - Structure",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00904: \"T0\".\"POSITION_KEY_ID\": invalid identifier"
+}, {
+  "fileName" : "Санхүүгийн удирдлага",
+  "metaId" : "1456475031379",
+  "metaCode" : "CM_BANK_ACCOUNT_DV_BY_ACCOUNT_CODE",
+  "metaName" : "Харилцах дансны жагсаалт",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00903: invalid table name"
+}, {
+  "fileName" : "Ажилтны үйлчилгээ",
+  "metaId" : "1461635653852007",
+  "metaCode" : "amActivityBudget",
+  "metaName" : "Төсвийн задаргаа",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00905: missing keyword"
+}, {
+  "fileName" : "Санхүүгийн удирдлага",
+  "metaId" : "1456473903916",
+  "metaCode" : "CASH_KEEPER_DV_BY_ACCOUNT_CODE",
+  "metaName" : "Кассын няравын жагсаалт Дансаар",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00903: invalid table name"
+}, {
+  "fileName" : "Нэгжийн удирдлага",
+  "metaId" : "1455270158291406",
+  "metaCode" : "filterdepartment",
+  "metaName" : "FILTER_DEPARTMENT",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00932: inconsistent datatypes: expected - got CLOB"
+}, {
+  "fileName" : "Ур чадварын үнэлгээ",
+  "metaId" : "1480578609808",
+  "metaCode" : "kpiTemplateDtlListRecursive",
+  "metaName" : "kpiTemplateDtlListRecursive",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00918: column ambiguously defined"
+}, {
+  "fileName" : "Сургалт хөгжил",
+  "metaId" : "1480853066010630",
+  "metaCode" : "kpiTemplateDimValueList",
+  "metaName" : "kpiTemplateDimValueList",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLException: ORA-06575: Package or function FNC_KPI_DIMENSION_LIST is in an invalid state"
+}, {
+  "fileName" : "Цалингийн удирдлага",
+  "metaId" : "1483537902254",
+  "metaCode" : "salaryListQuery_sendEmail",
+  "metaName" : "Цалингийн жагсаалт и-мэйл илгээх",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-01722: invalid number"
+}, {
+  "fileName" : "Санхүүгийн удирдлага",
+  "metaId" : "1483693325092",
+  "metaCode" : "BM_COST_METHOD_DV",
+  "metaName" : "BM_COST_METHOD_DV",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00904: \"T0\".\"COST_CENTER_ID\": invalid identifier"
+}, {
+  "fileName" : "Санхүүгийн удирдлага",
+  "metaId" : "1479094224192",
+  "metaCode" : "sdmOrderBookReportList",
+  "metaName" : "REPORT:SDM_ORDER_BOOK",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00923: FROM keyword not found where expected"
+}, {
+  "fileName" : "Нэгжийн удирдлага",
+  "metaId" : "1492362901329617",
+  "metaCode" : "getAssetAccountId",
+  "metaName" : "getAssetAccountId",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLException: ORA-01427: single-row subquery returns more than one row"
+}, {
+  "fileName" : "Цалингийн удирдлага",
+  "metaId" : "1486552620800",
+  "metaCode" : "card3_dv",
+  "metaName" : "Илүү цаг_card_dv",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLException: ORA-06575: Package or function DECRYPT is in an invalid state"
+}, {
+  "fileName" : "Санхүүгийн удирдлага",
+  "metaId" : "1509811321665",
+  "metaCode" : "SQLreportGolomtIncome",
+  "metaName" : "Гүйлгээ баланс - Орлого",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00903: invalid table name"
+}, {
+  "fileName" : "Хүний нөөцийн удирдлага",
+  "metaId" : "1449288716242",
+  "metaCode" : "sdmdv064",
+  "metaName" : "Нярвын жагсаалт",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00903: invalid table name"
+}, {
+  "fileName" : "Санхүүгийн удирдлага",
+  "metaId" : "1464671556754",
+  "metaCode" : "EXT_SHIPMENT_DTL",
+  "metaName" : "EXT_SHIPMENT_DTL",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00904: \"T0\".\"UNIT_COST_VAT\": invalid identifier"
+}, {
+  "fileName" : "Цалингийн удирдлага",
+  "metaId" : "1484041018765",
+  "metaCode" : "SALARY_ADDITION_REPORT_DV2",
+  "metaName" : "ХЧТА БАРИМТ-DV",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLException: ORA-06575: Package or function DECRYPT is in an invalid state"
+}, {
+  "fileName" : "Цалингийн удирдлага",
+  "metaId" : "1485764056301",
+  "metaCode" : "maternityStatementDv",
+  "metaName" : "maternityStatementDv",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLException: ORA-06575: Package or function DECRYPT is in an invalid state"
+}, {
+  "fileName" : "Цалингийн удирдлага",
+  "metaId" : "1486527066452997",
+  "metaCode" : "TT_11_1i",
+  "metaName" : "TT-11(1)-ИНЕГ",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLException: ORA-06575: Package or function DECRYPT is in an invalid state"
+}, {
+  "fileName" : "Цалингийн удирдлага",
+  "metaId" : "1484099557796271",
+  "metaCode" : "calcDepartmentDvIshide",
+  "metaName" : "calcDepartmentDvIshide",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00904: \"T0\".\"IS_SHOW\": invalid identifier"
+}, {
+  "fileName" : "СИСТЕМИЙН ЭРХИЙН ЗОХИЦУУЛАЛТ",
+  "metaId" : "1481254860060841",
+  "metaCode" : "canteenReportList",
+  "metaName" : "canteenReportList",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLException: ORA-06575: Package or function DECRYPT is in an invalid state"
+}, {
+  "fileName" : "СИСТЕМИЙН ЭРХИЙН ЗОХИЦУУЛАЛТ",
+  "metaId" : "1510387253135194",
+  "metaCode" : "sacUmUserDataList",
+  "metaName" : "Бичлэг",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLException: ORA-06575: Package or function FNC_DB_STRUCTURE_DATA_LIST is in an invalid state"
+}, {
+  "fileName" : "Гүйцэтгэлийн үнэлгээ",
+  "metaId" : "1505709430407",
+  "metaCode" : "employee_info_get",
+  "metaName" : "employee_info_get",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLException: ORA-06575: Package or function DECRYPT is in an invalid state"
+}, {
+  "fileName" : "Санхүүгийн удирдлага",
+  "metaId" : "1512619978042",
+  "metaCode" : "EQUITY_GL_BOOK_LIST",
+  "metaName" : "Өмчийн гүйлгээний жагсаалт",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00903: invalid table name"
+}, {
+  "fileName" : "Хүний нөөцийн удирдлага",
+  "metaId" : "1475467616787836",
+  "metaCode" : "HCMLABOURBOOK",
+  "metaName" : "Хөдөлмөрийн харилцаа",
+  "metaType" : "info",
+  "messageText" : ""
+}, {
+  "fileName" : "Санхүүгийн удирдлага",
+  "metaId" : "1485347552673",
+  "metaCode" : "procItemEndQtyListDVemployee",
+  "metaName" : "procItemEndQtyListDVemployee",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLException: ORA-01427: single-row subquery returns more than one row"
+}, {
+  "fileName" : "Сонгон шалгаруулалт",
+  "metaId" : "1476439696733",
+  "metaCode" : "HCM_LABOUR_BOOK1",
+  "metaName" : "HCM_LABOUR_BOOK_DV",
+  "metaType" : "info",
+  "messageText" : ""
+}, {
+  "fileName" : "Санхүүгийн удирдлага",
+  "metaId" : "1462536272875",
+  "metaCode" : "FA_ASSET_KEY_MOVEMENT_LIST",
+  "metaName" : "Үндсэн хөрөнгө сонгох",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00903: invalid table name"
+}, {
+  "fileName" : "Нэгжийн удирдлага",
+  "metaId" : "21573125282766",
+  "metaCode" : "docDocumentLookUp12",
+  "metaName" : "Тушаалийн сан",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-01722: invalid number"
+}, {
+  "fileName" : "БАРИМТ БИЧГИЙН УДИРДЛАГА",
+  "metaId" : "1485828441903",
+  "metaCode" : "HCM_LABOUR_BOOK_22",
+  "metaName" : "Утасны нэмэгдлийн жагсаалт",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLException: ORA-06575: Package or function DECRYPT is in an invalid state"
+}, {
+  "fileName" : "Цалингийн удирдлага",
+  "metaId" : "1485401640148",
+  "metaCode" : "overtimeStatementDv",
+  "metaName" : "overtimeStatementDv",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLException: ORA-06575: Package or function DECRYPT is in an invalid state"
+}, {
+  "fileName" : "Нэгжийн удирдлага",
+  "metaId" : "1521505043210",
+  "metaCode" : "tnaReportList11",
+  "metaName" : "ХA Нэгжийн удирдлага шинэ :Цагийн дэлгэрэнгүй баланс",
+  "metaType" : "info",
+  "messageText" : ""
+}, {
+  "fileName" : "Өмчлөх бусад хөрөнгө",
+  "metaId" : "1606452271339",
+  "metaCode" : "FA_ASSET_MOVEMENT_BOOK_OREO_DVLIST",
+  "metaName" : "FA_ASSET_MOVEMENT_BOOK_OREO_DVLIST",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00903: invalid table name"
+}, {
+  "fileName" : "Санхүүгийн удирдлага",
+  "metaId" : "1547033974743",
+  "metaCode" : "FA_ASSET_RENT_REPORT",
+  "metaName" : "Ашиглах эрх бүхий хөрөнгийн үлдэгдэл",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00903: invalid table name"
+}, {
+  "fileName" : "Түрээсийн хөрөнгийн модуль",
+  "metaId" : "1575353775223",
+  "metaCode" : "FA_ASSET_RENT_PAYMENT_REPORT1",
+  "metaName" : "Түрээсийн өр төлбөрийн хөдлөлийн тайлан",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00903: invalid table name"
+}, {
+  "fileName" : "Сонгон шалгаруулалт",
+  "metaId" : "16842328218349",
+  "metaCode" : "selective_rectorshipmenu_list3",
+  "metaName" : "selective_rectorshipmenu_list3",
+  "metaType" : "info",
+  "messageText" : ""
+}, {
+  "fileName" : "Тохиргоо",
+  "metaId" : "1459958409061541",
+  "metaCode" : "finAccountSelectList",
+  "metaName" : "Данс харах эрхтэй хэрэглэгчид",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00918: column ambiguously defined"
+}, {
+  "fileName" : "Нэгжийн удирдлага",
+  "metaId" : "1461219729382",
+  "metaCode" : "finReportAsset",
+  "metaName" : "ҮХ баримт",
+  "metaType" : "info",
+  "messageText" : ""
+}, {
+  "fileName" : "Нэгжийн удирдлага",
+  "metaId" : "1478168147345724",
+  "metaCode" : "icInvoiceCashBook",
+  "metaName" : "icInvoiceCashBook",
+  "metaType" : "error",
+  "messageText" : "icInvoiceCashBook үзүүлэлт дээр Primary Key талбар тохируулаагүй байна"
+}, {
+  "fileName" : "Санхүүгийн удирдлага",
+  "metaId" : "1490875173426",
+  "metaCode" : "IM_ITEM_MATERIAL_LIST",
+  "metaName" : "IM_ITEM_MATERIAL_LIST",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00903: invalid table name"
+}, {
+  "fileName" : "Санхүүгийн удирдлага",
+  "metaId" : "1478499042455",
+  "metaCode" : "assetKeyList",
+  "metaName" : "assetKeyList",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00904: \"T0\".\"UNIT_SALVAGE\": invalid identifier"
+}, {
+  "fileName" : "Сургалт хөгжил",
+  "metaId" : "1475634698514",
+  "metaCode" : "HRM_TRAINING_FIELD_STRUCTURE",
+  "metaName" : "hrmTrainingField - Structure",
+  "metaType" : "error",
+  "messageText" : "HRM_TRAINING_FIELD_STRUCTURE жагсаалт дээрх баганын тохиргоог шалгана уу."
+}, {
+  "fileName" : "Төсөв төсөвлөлт",
+  "metaId" : "1483693325066",
+  "metaCode" : "BM_COST_CENTER_DV",
+  "metaName" : "BM_COST_CENTER_DV",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00904: \"T0\".\"CRITERIA\": invalid identifier"
+}, {
+  "fileName" : "Санхүүгийн удирдлага",
+  "metaId" : "1493950908773819",
+  "metaCode" : "ITEMKEYCOSTDIFFLIST",
+  "metaName" : "ITEMKEYCOSTDIFFLIST",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLDataException: ORA-01843: not a valid month"
+}, {
+  "fileName" : "Төсөв төсөвлөлт",
+  "metaId" : "1478346023538",
+  "metaCode" : "FIN_ACCOUNT_DVL6",
+  "metaName" : "Эрсдлийн сангийн данс",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00903: invalid table name"
+}, {
+  "fileName" : "Санхүүгийн удирдлага",
+  "metaId" : "1459387293039653",
+  "metaCode" : "finRepInvPayment",
+  "metaName" : "Төлбөрийн даалгавар баримт",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00918: column ambiguously defined"
+}, {
+  "fileName" : "Санхүүгийн удирдлага",
+  "metaId" : "1504621498284",
+  "metaCode" : "glExpenseUpdateGet",
+  "metaName" : "glExpenseUpdateGet",
+  "metaType" : "info",
+  "messageText" : ""
+}, {
+  "fileName" : "Цалингийн удирдлага",
+  "metaId" : "1492070035542502",
+  "metaCode" : "departmentGlParameters",
+  "metaName" : "Гүйлгээ хийх/Олноор/ - Салбарын",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00942: table or view does not exist"
+}, {
+  "fileName" : "Ажилтны үйлчилгээ",
+  "metaId" : "1483606391927",
+  "metaCode" : "sessionEmployeeSalaryInfo2",
+  "metaName" : "Цалингийн мэдээ2",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLException: ORA-06575: Package or function DECRYPT is in an invalid state"
+}, {
+  "fileName" : "Санхүүгийн удирдлага",
+  "metaId" : "1465468458191",
+  "metaCode" : "FA_CONSTRUCTION_STRUCTURE",
+  "metaName" : "faConstruction - Structure",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00904: \"T0\".\"DESCISION_NUMBER\": invalid identifier"
+}, {
+  "fileName" : "Цалингийн удирдлага",
+  "metaId" : "1485401596108",
+  "metaCode" : "endTUSReportDV",
+  "metaName" : "endTUSReportDV",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLException: ORA-06575: Package or function DECRYPT is in an invalid state"
+}, {
+  "fileName" : "Өмчлөх бусад хөрөнгө",
+  "metaId" : "1493719615211",
+  "metaCode" : "getAssetKeyAccountId",
+  "metaName" : "getAssetKeyAccountId",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00904: \"T0\".\"ITEM_ID\": invalid identifier"
+}, {
+  "fileName" : "Ажилтны үйлчилгээ",
+  "metaId" : "1493097252682",
+  "metaCode" : "CON_CONTRACT_TYPE_DV_LIST8",
+  "metaName" : "Төрөл-ГБЗ",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00904: \"T0\".\"IS_EXTENSION\": invalid identifier"
+}, {
+  "fileName" : "Ажилтны үйлчилгээ",
+  "metaId" : "1495010902233",
+  "metaCode" : "icInvoiceFaBookDtl8019",
+  "metaName" : "Засварын бүртгэлийн дэлгэрэнгүй",
+  "metaType" : "error",
+  "messageText" : "Засварын бүртгэлийн дэлгэрэнгүй Жагсаалтын мөрийн тоо 10,000 -с их тул хуудаслалт хийнэ үү"
+}, {
+  "fileName" : "Цалингийн удирдлага",
+  "metaId" : "1490149662703",
+  "metaCode" : "SALARY_ADDITION_report_DV3",
+  "metaName" : "ХЧТА тайлан",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLException: ORA-06575: Package or function DECRYPT is in an invalid state"
+}, {
+  "fileName" : "Цалингийн удирдлага",
+  "metaId" : "1484130463889",
+  "metaCode" : "calcDepartmentDv_is_disable",
+  "metaName" : "calcDepartmentDvisDisable",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00904: \"T0\".\"IS_SHOW\": invalid identifier"
+}, {
+  "fileName" : "Цалингийн удирдлага",
+  "metaId" : "1486013088221613",
+  "metaCode" : "additionStatementDv",
+  "metaName" : "additionStatementDv",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLException: ORA-06575: Package or function DECRYPT is in an invalid state"
+}, {
+  "fileName" : "Санхүүгийн удирдлага",
+  "metaId" : "1512566762747",
+  "metaCode" : "GL_BOOK_LIST_BY_GL_LOG",
+  "metaName" : "GL_BOOK_LIST_BY_GL_LOG",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00903: invalid table name"
+}, {
+  "fileName" : "Санхүүгийн удирдлага",
+  "metaId" : "1489634745087",
+  "metaCode" : "AR_RECEIVABLE_BEGIN_BALANCE",
+  "metaName" : "Авлагын эхний үлдэгдэл",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00903: invalid table name"
+}, {
+  "fileName" : "Санхүүгийн удирдлага",
+  "metaId" : "1483537903259",
+  "metaCode" : "FIN_DEPOSIT_ACCOUNT_LIST",
+  "metaName" : "Харилцах дансны жагсаалт",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00903: invalid table name"
+}, {
+  "fileName" : "Санхүүгийн удирдлага",
+  "metaId" : "1512636797297987",
+  "metaCode" : "FIN_GL_GET",
+  "metaName" : "FIN_GL_GET",
+  "metaType" : "info",
+  "messageText" : ""
+}, {
+  "fileName" : "Нэгжийн удирдлага",
+  "metaId" : "1592322882170",
+  "metaCode" : "docDocumentLibrary_DepList01",
+  "metaName" : "docDocumentLibraryList04 - Баримт бичиг",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLException: ORA-01489: result of string concatenation is too long"
+}, {
+  "fileName" : "БАРИМТ БИЧГИЙН УДИРДЛАГА",
+  "metaId" : "1581412055540",
+  "metaCode" : "docDocumentLookUp020",
+  "metaName" : "Баримт бичгийн сан lookup",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-01722: invalid number"
+}, {
+  "fileName" : "Цалингийн удирдлага",
+  "metaId" : "1484534082953",
+  "metaCode" : "XXOAT_statementDV",
+  "metaName" : "ХXОАТ_ST_DV",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLException: ORA-06575: Package or function DECRYPT is in an invalid state"
+}, {
+  "fileName" : "Цалингийн удирдлага",
+  "metaId" : "1476527544315",
+  "metaCode" : "VACTION_LIST",
+  "metaName" : "Ээлжийн амралтын жагсаалт",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLException: ORA-06575: Package or function DECRYPT is in an invalid state"
+}, {
+  "fileName" : "Санхүүгийн удирдлага",
+  "metaId" : "1464052281395",
+  "metaCode" : "FA_ASSET_CAPITALIZATION_BOOK_DTL_DVLIST",
+  "metaName" : "FA_ASSET_CAPITALIZATION_BOOK_DTL_DVLIST",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00903: invalid table name"
+}, {
+  "fileName" : "Цалингийн удирдлага",
+  "metaId" : "1479889999834244",
+  "metaCode" : "dataByYear",
+  "metaName" : "Тайлан жилээр",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLException: ORA-06575: Package or function DECRYPT is in an invalid state"
+}, {
+  "fileName" : "Цалингийн удирдлага",
+  "metaId" : "1491189175304",
+  "metaCode" : "preSalaryReportDvByEmployee",
+  "metaName" : "preSalaryReportDvByEmployee",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLException: ORA-06575: Package or function DECRYPT is in an invalid state"
+}, {
+  "fileName" : "Ажилтны үйлчилгээ",
+  "metaId" : "1476070474375",
+  "metaCode" : "HRM_TRAINING_PLAN_LIST",
+  "metaName" : "hrmTrainingPlan list",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLException: ORA-01652: unable to extend temp segment by 128 in tablespace TEMP"
+}, {
+  "fileName" : "Архитект Портфолио Удирдлага",
+  "metaId" : "17200737981353",
+  "metaCode" : "GMT_ARCH_REF_STRUCTURE",
+  "metaName" : "GMT_ARCH_REF_STRUCTURE",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00904: \"T0\".\"MODIFIED_USER_NAME\": invalid identifier"
+}, {
+  "fileName" : "Санхүүгийн удирдлага",
+  "metaId" : "144435458461321",
+  "metaCode" : "vw_dans",
+  "metaName" : "Дансны мэдээлэл параметр",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00904: \"T0\".\"ACCOUNTTYPE_ID\": invalid identifier"
+}, {
+  "fileName" : "Ажилтны үйлчилгээ",
+  "metaId" : "1472105119483",
+  "metaCode" : "procItemEndQtyListDV",
+  "metaName" : "procItemEndQtyListDV",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLDataException: ORA-01843: not a valid month"
+}, {
+  "fileName" : "Санхүүгийн удирдлага",
+  "metaId" : "1446818766303",
+  "metaCode" : "AccountType",
+  "metaName" : "Дансны төрөл",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00904: \"T0\".\"META_GROUP_META_DATA_ID\": invalid identifier"
+}, {
+  "fileName" : "Санхүүгийн удирдлага",
+  "metaId" : "1447210654207",
+  "metaCode" : "CM_INV_BANK_STRUCTURE_COPY",
+  "metaName" : "Харилцахын баримтын жагсаалт",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00903: invalid table name"
+}, {
+  "fileName" : "Нэгжийн удирдлага",
+  "metaId" : "1450834214023",
+  "metaCode" : "eCashlistLC_01",
+  "metaName" : "Кассын баримтын жагсаалт",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00903: invalid table name"
+}, {
+  "fileName" : "Санхүүгийн удирдлага",
+  "metaId" : "1462785715158",
+  "metaCode" : "FA_ASSET_BOOK_DTL_DVLIST_WIHTOUT_MANDATORY",
+  "metaName" : "Дэлгэрэнгүй",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00903: invalid table name"
+}, {
+  "fileName" : "Хүний нөөцийн удирдлага",
+  "metaId" : "1519721345912",
+  "metaCode" : "DB_HCM_EMPLOYEE_NEWEMP",
+  "metaName" : "6-1| Ажилд орсон ажилтнууд",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLDataException: ORA-01476: divisor is equal to zero"
+}, {
+  "fileName" : "Хүний нөөцийн удирдлага",
+  "metaId" : "1477479828407",
+  "metaCode" : "hcmLabour05WSDV",
+  "metaName" : "Шагнал урамшуулал",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLDataException: ORA-01476: divisor is equal to zero"
+}, {
+  "fileName" : "Санхүүгийн удирдлага",
+  "metaId" : "1479983755580",
+  "metaCode" : "expense01WSDV",
+  "metaName" : "Хоолны тооцоо",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLDataException: ORA-01476: divisor is equal to zero"
+}, {
+  "fileName" : "Санхүүгийн удирдлага",
+  "metaId" : "1477543812127",
+  "metaCode" : "arReceivableKeyRiskFundDV",
+  "metaName" : "Авлагын үлдэгдэл /санд/",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00903: invalid table name"
+}, {
+  "fileName" : "Төсөв төсөвлөлт",
+  "metaId" : "1486357551137",
+  "metaCode" : "GL_BOOK_LIST1",
+  "metaName" : "Гүйлгээний жагсаалт",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00903: invalid table name"
+}, {
+  "fileName" : "Нэгжийн удирдлага",
+  "metaId" : "1449315833765",
+  "metaCode" : "FA_ASSET_KEEPER_KEY_DVLIST",
+  "metaName" : "Нярав сонгох",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00903: invalid table name"
+}, {
+  "fileName" : "Гэрээ бүртгэл",
+  "metaId" : "1492700100204",
+  "metaCode" : "contractReportView_get1",
+  "metaName" : "contractReportView_get",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLException: ORA-01489: result of string concatenation is too long"
+}, {
+  "fileName" : "Санхүүгийн удирдлага",
+  "metaId" : "1494383724635",
+  "metaCode" : "expenseAllocWSDV",
+  "metaName" : "expenseAllocWSDV",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLDataException: ORA-01476: divisor is equal to zero"
+}, {
+  "fileName" : "Цалингийн удирдлага",
+  "metaId" : "1464232671342",
+  "metaCode" : "nd_Report",
+  "metaName" : "НД Тайлан",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLException: ORA-06575: Package or function DECRYPT is in an invalid state"
+}, {
+  "fileName" : "Хүний нөөцийн удирдлага",
+  "metaId" : "1494211055536754",
+  "metaCode" : "employee_research_list",
+  "metaName" : "Анкетны судалгаа",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLException: ORA-04036: PGA memory used by the instance exceeds PGA_AGGREGATE_LIMIT"
+}, {
+  "fileName" : "Цалингийн удирдлага",
+  "metaId" : "1470641050235",
+  "metaCode" : "salaryListQueryCopy",
+  "metaName" : "Цалингийн жагсаалт хуулбар",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLException: ORA-06575: Package or function DECRYPT is in an invalid state"
+}, {
+  "fileName" : "Цалингийн удирдлага",
+  "metaId" : "1485747809114",
+  "metaCode" : "endSalaryReportDvByEmployee",
+  "metaName" : "endSalaryReportDvByEmployee",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLException: ORA-06575: Package or function DECRYPT is in an invalid state"
+}, {
+  "fileName" : "Цалингийн удирдлага",
+  "metaId" : "1484637740807",
+  "metaCode" : "calcDepartmentDv_isPROCESS",
+  "metaName" : "calcDepartmentDv_isPROCESS",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00904: \"T0\".\"IS_SHOW\": invalid identifier"
+}, {
+  "fileName" : "Цалингийн удирдлага",
+  "metaId" : "1485222715954",
+  "metaCode" : "vacationEmployeeKeyList",
+  "metaName" : "Ээлжийн амралтанд ашиглагдах ажилтны жагсаалт",
+  "metaType" : "info",
+  "messageText" : ""
+}, {
+  "fileName" : "Түрээсийн хөрөнгийн модуль",
+  "metaId" : "1545382111987",
+  "metaCode" : "FA_ASSET_RENT_CAPITALIZATION_LIST",
+  "metaName" : "FA_ASSET_RENT_CAPITALIZATION_LIST",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00903: invalid table name"
+}, {
+  "fileName" : "Хүний нөөцийн удирдлага",
+  "metaId" : "1556770368352519",
+  "metaCode" : "HRM_EMP_INTEREST_REPORT",
+  "metaName" : "Тайлан Нэгдмэл сонирхол",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-01722: invalid number"
+}, {
+  "fileName" : "Санхүүгийн удирдлага",
+  "metaId" : "1451883550227",
+  "metaCode" : "FIN_ACCOUNT_DVL3",
+  "metaName" : "Харилцахын данс",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00903: invalid table name"
+}, {
+  "fileName" : "Хүний нөөцийн удирдлага",
+  "metaId" : "1484048531158506",
+  "metaCode" : "HCM_LABOUR_BOOK_11_HISTORY",
+  "metaName" : "Ажилчдын цалингийн түүх",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLException: ORA-06575: Package or function DECRYPT is in an invalid state"
+}, {
+  "fileName" : "Сонгон шалгаруулалт",
+  "metaId" : "1519363567818014",
+  "metaCode" : "HCM_LB_SELECTIVE_LIST4",
+  "metaName" : "Ажлаас гарсан ажилтны жагсаалт",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLException: ORA-01652: unable to extend temp segment by 128 in tablespace TEMP"
+}, {
+  "fileName" : "Нэгжийн удирдлага",
+  "metaId" : "1580437514413422",
+  "metaCode" : "GCOM_ACTION_PLAN_STRUCTURE",
+  "metaName" : "GCOM_ACTION_PLAN_STRUCTURE",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00904: \"T0\".\"MATRIX\": invalid identifier"
+}, {
+  "fileName" : "Санхүүгийн удирдлага",
+  "metaId" : "1510628093651",
+  "metaCode" : "locationAkkList",
+  "metaName" : "locationAkkList",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00904: \"T0\".\"DEPARTMENT_ID\": invalid identifier"
+}, {
+  "fileName" : "Цалингийн удирдлага",
+  "metaId" : "1483350283761",
+  "metaCode" : "preSalaryReportDvByDepartment",
+  "metaName" : "preSalaryReportDvByDepartment",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLException: ORA-06575: Package or function DECRYPT is in an invalid state"
+}, {
+  "fileName" : "Эрсдэлийн удирдлага",
+  "metaId" : "1699250378100533",
+  "metaCode" : "gmt_bait_money_report",
+  "metaName" : "Report_MainData",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00904: \"BM\".\"SERIAL_NUMBER\": invalid identifier"
+}, {
+  "fileName" : "Санхүүгийн удирдлага",
+  "metaId" : "1465113287964",
+  "metaCode" : "FA_CONSTRUCTION_DV",
+  "metaName" : "FA_CONSTRUCTION_DV",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00904: \"T0\".\"DESCISION_NUMBER\": invalid identifier"
+}, {
+  "fileName" : "Цалингийн удирдлага",
+  "metaId" : "1475556129669875",
+  "metaCode" : "salaryHistoryByEmployee",
+  "metaName" : "Өмнөх саруудын бодогдсон цалин",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLException: ORA-06575: Package or function DECRYPT is in an invalid state"
+}, {
+  "fileName" : "Өмчлөх бусад хөрөнгө",
+  "metaId" : "16441995356009",
+  "metaCode" : "dMart_FIN_FA_REPORT_END_OREO",
+  "metaName" : "Үлдэгдлийн тайлан",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00903: invalid table name"
+}, {
+  "fileName" : "Цалингийн удирдлага",
+  "metaId" : "1475815039372178",
+  "metaCode" : "SALARY_ADDITION_LIST3",
+  "metaName" : "Хөдөлмөрийн чадвараа түр алдсаны тэтгэмж",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLException: ORA-06575: Package or function DECRYPT is in an invalid state"
+}, {
+  "fileName" : "Түрээсийн хөрөнгийн модуль",
+  "metaId" : "21575012093597",
+  "metaCode" : "FA_ASSET_RENT_REPORT5",
+  "metaName" : "Санхүү, татварын элэгдэл зөрүү тайлан",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00903: invalid table name"
+}, {
+  "fileName" : "Өмчлөх бусад хөрөнгө",
+  "metaId" : "164491022464910",
+  "metaCode" : "FA_ASSET_KEEPER_KEY_OREO_LIST",
+  "metaName" : "Нярав",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00903: invalid table name"
+}, {
+  "fileName" : "Нэгжийн удирдлага",
+  "metaId" : "1683796231996680",
+  "metaCode" : "emp_asset_mov_div",
+  "metaName" : "emp_asset_mov_div",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00903: invalid table name"
+}, {
+  "fileName" : "Цалингийн удирдлага",
+  "metaId" : "16181977433801",
+  "metaCode" : "salaryEndVacationHistoryByEmployee",
+  "metaName" : "Эцсийн тооцоо -Өмнөх саруудын бодогдсон цалин",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLException: ORA-06575: Package or function DECRYPT is in an invalid state"
+}, {
+  "fileName" : "Цалингийн удирдлага",
+  "metaId" : "1453697977893278",
+  "metaCode" : "orgDepartmentDV",
+  "metaName" : "orgDepartmentDV",
+  "metaType" : "error",
+  "messageText" : "orgDepartmentDV жагсаалт дээрх баганын тохиргоог шалгана уу."
+}, {
+  "fileName" : "Төсөв төсөвлөлт",
+  "metaId" : "1462273864165",
+  "metaCode" : "pm_project_dv5",
+  "metaName" : "Асуудлын жагсаалт",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00904: \"PIT\".\"PIT\".\"TASK_ID\": invalid identifier"
+}, {
+  "fileName" : "Тохиргоо",
+  "metaId" : "1459917071366",
+  "metaCode" : "finAccountUserRoleLU",
+  "metaName" : "finAccountUserRoleLU",
+  "metaType" : "info",
+  "messageText" : ""
+}, {
+  "fileName" : "Цалингийн удирдлага",
+  "metaId" : "1710730253293829",
+  "metaCode" : "gmt_compensation_salary_hnug",
+  "metaName" : "Цалин, Урамшуулал",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLException: ORA-06575: Package or function DECRYPT is in an invalid state"
+}, {
+  "fileName" : "Санхүүгийн удирдлага",
+  "metaId" : "1484788735979",
+  "metaCode" : "FA_ASSET_CARD_DVLISTCOPY",
+  "metaName" : "Хөдөлгөөн",
+  "metaType" : "info",
+  "messageText" : ""
+}, {
+  "fileName" : "Санхүүгийн удирдлага",
+  "metaId" : "1474552317618",
+  "metaCode" : "FA_ASSET_BOOK_DEPR_DEPARTMENTLIST",
+  "metaName" : "Салбарын задаргаагаар",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLDataException: ORA-01476: divisor is equal to zero"
+}, {
+  "fileName" : "Санхүүгийн удирдлага",
+  "metaId" : "1503558836870",
+  "metaCode" : "FIN_FILE_LOG_STRUCTURE",
+  "metaName" : "FileLog - Structure",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00904: \"T0\".\"DESCRIPTION\": invalid identifier"
+}, {
+  "fileName" : "Төсөв төсөвлөлт",
+  "metaId" : "1493970464821787",
+  "metaCode" : "finfiscalMultiGenerate",
+  "metaName" : "finfiscalMultiGenerate",
+  "metaType" : "error",
+  "messageText" : "Жагсааланд багана тохируулаагүй байна"
+}, {
+  "fileName" : "Санхүүгийн удирдлага",
+  "metaId" : "1493543126672105",
+  "metaCode" : "accountMultiDep",
+  "metaName" : "accountMultiDep",
+  "metaType" : "error",
+  "messageText" : "Жагсааланд багана тохируулаагүй байна"
+}, {
+  "fileName" : "Цалингийн удирдлага",
+  "metaId" : "1484130496501",
+  "metaCode" : "calcDepartmentDv_getProcessId",
+  "metaName" : "calcDepartmentDv_getProcessId",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00904: \"T0\".\"IS_SHOW\": invalid identifier"
+}, {
+  "fileName" : "Санхүүгийн удирдлага",
+  "metaId" : "1509811321571",
+  "metaCode" : "SQLreportGolomtProperty",
+  "metaName" : "Гүйлгээ баланс - Өмч",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00903: invalid table name"
+}, {
+  "fileName" : "Цалингийн удирдлага",
+  "metaId" : "1460040627986247",
+  "metaCode" : "salaryReportDornod",
+  "metaName" : "Ерөнхий тайлан",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLException: ORA-06575: Package or function DECRYPT is in an invalid state"
+}, {
+  "fileName" : "Санхүүгийн удирдлага",
+  "metaId" : "1487141219491",
+  "metaCode" : "ITEM_BOOK_DTL_LIST_WITHOUT_MANDATORY1",
+  "metaName" : "Баримт дэлгэрэнгүй",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00903: invalid table name"
+}, {
+  "fileName" : "Цалингийн удирдлага",
+  "metaId" : "1484130510162",
+  "metaCode" : "calcDepartmentDvColumnName",
+  "metaName" : "calcDepartmentDvColumnName",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00904: \"T0\".\"IS_SHOW\": invalid identifier"
+}, {
+  "fileName" : "Санхүүгийн удирдлага",
+  "metaId" : "1460178201010477",
+  "metaCode" : "assetBarcodeList",
+  "metaName" : "Үндсэн хөрөнгийн карт/баркод",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00903: invalid table name"
+}, {
+  "fileName" : "Сонгон шалгаруулалт",
+  "metaId" : "1589363005920",
+  "metaCode" : "RECRUITMENT_REQUEST_STRUCTURE",
+  "metaName" : "recruitmentRequest - Structure",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00904: \"T0\".\"END_SALARY_DATE\": invalid identifier"
+}, {
+  "fileName" : "Санхүүгийн удирдлага",
+  "metaId" : "1462162505516962",
+  "metaCode" : "FA_ASSET_EMPLOYEE_CARD_DVLIST",
+  "metaName" : "Хөрөнгө эзэмшигчийн картын мэдээлэл",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00903: invalid table name"
+}, {
+  "fileName" : "Санхүүгийн удирдлага",
+  "metaId" : "1512619979674",
+  "metaCode" : "EQUITY_SUMMARY_DV_REPORT",
+  "metaName" : "Өмчийн тайлангийн DV",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00903: invalid table name"
+}, {
+  "fileName" : "Санхүүгийн удирдлага",
+  "metaId" : "1455682361076",
+  "metaCode" : "faAssetOutComeList",
+  "metaName" : "Үндсэн хөрөнгө сонгох",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00903: invalid table name"
+}, {
+  "fileName" : "Нэгжийн удирдлага",
+  "metaId" : "1582031536559",
+  "metaCode" : "docDocumentLookUp021",
+  "metaName" : "Тушаалын сан lookup",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-01722: invalid number"
+}, {
+  "fileName" : "GMEETING",
+  "metaId" : "16753282168969",
+  "metaCode" : "EGMT_GMEETING_REPORTS_LIST_002",
+  "metaName" : "Хурлын гишүүдийн ирц бүртгэлийн тайлан",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00904: \"GMAA\".\"IS_ATTENDED1\": invalid identifier"
+}, {
+  "fileName" : "Цалингийн удирдлага",
+  "metaId" : "1481012451055",
+  "metaCode" : "dataByYear3",
+  "metaName" : "Амралтын мөнгө | жилээр",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLException: ORA-06575: Package or function DECRYPT is in an invalid state"
+}, {
+  "fileName" : "Хүний нөөцийн удирдлага",
+  "metaId" : "1519721341171",
+  "metaCode" : "DB_HCM_EMPLOYEE_QUIT_CLASSIFICATION",
+  "metaName" : "4-2| Нэгжээр орсон гарсан",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLDataException: ORA-01476: divisor is equal to zero"
+}, {
+  "fileName" : "Цалингийн удирдлага",
+  "metaId" : "1485401598161",
+  "metaCode" : "preTUSReportDV",
+  "metaName" : "preTUSReportDV",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLException: ORA-06575: Package or function DECRYPT is in an invalid state"
+}, {
+  "fileName" : "Өмчлөх бусад хөрөнгө",
+  "metaId" : "1606810178760",
+  "metaCode" : "faAssetOutComeListOreo",
+  "metaName" : "Өмчлөх бусад хөрөнгө сонгох",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00903: invalid table name"
+}, {
+  "fileName" : "Нэгжийн удирдлага",
+  "metaId" : "1683703347740791",
+  "metaCode" : "FA_ASSET_LOCATION_CARD_DVLIST_ON_DIR",
+  "metaName" : "FA_ASSET_LOCATION_CARD_DVLIST_ON_DIR",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00903: invalid table name"
+}, {
+  "fileName" : "Түрээсийн хөрөнгийн модуль",
+  "metaId" : "1459738846906",
+  "metaCode" : "conContractSimpeDv",
+  "metaName" : "conContractSimpeDv",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00904: \"T0\".\"IS_FOREIGN\": invalid identifier"
+}, {
+  "fileName" : "Цалингийн удирдлага",
+  "metaId" : "1475826010019",
+  "metaCode" : "SALARY_ADDITION_LIST2",
+  "metaName" : "Жирэмсний амралтын тэтгэмж",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLException: ORA-06575: Package or function DECRYPT is in an invalid state"
+}, {
+  "fileName" : "Санхүүгийн удирдлага",
+  "metaId" : "144487904683356",
+  "metaCode" : "CASH_KEEPER_DV",
+  "metaName" : "Кассын няравын жагсаалт",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00903: invalid table name"
+}, {
+  "fileName" : "Санхүүгийн удирдлага",
+  "metaId" : "1474505125055",
+  "metaCode" : "icInvoiceDtlListDV6005",
+  "metaName" : "icInvoiceDtlListDV6005",
+  "metaType" : "info",
+  "messageText" : ""
+}, {
+  "fileName" : "Санхүүгийн удирдлага",
+  "metaId" : "1479113500351",
+  "metaCode" : "FIN_ACCOUNT_DVL7",
+  "metaName" : "Дансны жагсаалт",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00903: invalid table name"
+}, {
+  "fileName" : "Санхүүгийн удирдлага",
+  "metaId" : "1482896161858",
+  "metaCode" : "imItemMaterialBeginList",
+  "metaName" : "Эхний үлдэгдлийн жагсаалт",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00903: invalid table name"
+}, {
+  "fileName" : "Санхүүгийн удирдлага",
+  "metaId" : "1476774377039",
+  "metaCode" : "arReceivableKeyRiskDV",
+  "metaName" : "Авлагын үлдэгдэл",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00903: invalid table name"
+}, {
+  "fileName" : "Санхүүгийн удирдлага",
+  "metaId" : "1484289463878",
+  "metaCode" : "expense05WSDV",
+  "metaName" : "Дохиолол хамгаалалтын тооцоо",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLDataException: ORA-01476: divisor is equal to zero"
+}, {
+  "fileName" : "Цалингийн удирдлага",
+  "metaId" : "1486552620688",
+  "metaCode" : "card2_dv",
+  "metaName" : "ХЧТА_бай_card_dv",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLException: ORA-06575: Package or function DECRYPT is in an invalid state"
+}, {
+  "fileName" : "Цалингийн удирдлага",
+  "metaId" : "1485914656842",
+  "metaCode" : "UM_OBJECT_PRL",
+  "metaName" : "Объект - Цалин",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00904: \"T0\".\"OBJECT_TYPE_CODE\": invalid identifier"
+}, {
+  "fileName" : "Хүний нөөцийн удирдлага",
+  "metaId" : "1512463645632494",
+  "metaCode" : "LABOURBOOK_FEEDBACK",
+  "metaName" : "Санал хүсэлт",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLException: ORA-06575: Package or function DECRYPT is in an invalid state"
+}, {
+  "fileName" : "Цалингийн удирдлага",
+  "metaId" : "1483350284518",
+  "metaCode" : "endSalaryReportDvByDepartment",
+  "metaName" : "endSalaryReportDvByDepartment",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLException: ORA-06575: Package or function DECRYPT is in an invalid state"
+}, {
+  "fileName" : "Цалингийн удирдлага",
+  "metaId" : "1485513244529226",
+  "metaCode" : "otherSalaryStatementDv",
+  "metaName" : "otherSalaryStatementDv",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLException: ORA-06575: Package or function DECRYPT is in an invalid state"
+}, {
+  "fileName" : "Санхүүгийн удирдлага",
+  "metaId" : "1489571963691",
+  "metaCode" : "AP_PAYABLE_BEGIN_BALANCE",
+  "metaName" : "Өглөгийн эхний үлдэгдэл",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00903: invalid table name"
+}, {
+  "fileName" : "Санхүүгийн удирдлага",
+  "metaId" : "1465997157100",
+  "metaCode" : "FA_ASSET_BOOK_DEPR_CALCULATED_LIST",
+  "metaName" : "Элэгдэл тооцсон жагсаалт",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00903: invalid table name"
+}, {
+  "fileName" : "Цалингийн удирдлага",
+  "metaId" : "16739287662099",
+  "metaCode" : "TT_11_1_V2",
+  "metaName" : "TT-11(1)_V2",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLException: ORA-06575: Package or function DECRYPT is in an invalid state"
+}, {
+  "fileName" : "Санхүүгийн удирдлага",
+  "metaId" : "1501233525512542",
+  "metaCode" : "wrapperPaper",
+  "metaName" : "wrapperPaper",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00903: invalid table name"
+}, {
+  "fileName" : "Санхүүгийн удирдлага",
+  "metaId" : "1462536292817",
+  "metaCode" : "FA_ASSET_KEY_COUNT_LIST",
+  "metaName" : "Үндсэн хөрөнгө сонгох /Тооллого/",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLDataException: ORA-01843: not a valid month"
+}, {
+  "fileName" : "Нэгжийн удирдлага",
+  "metaId" : "16160023617251",
+  "metaCode" : "kpiIndicatorSkillListDSS",
+  "metaName" : "kpiIndicatorSkillListDSS",
+  "metaType" : "info",
+  "messageText" : ""
+}, {
+  "fileName" : "Цалингийн удирдлага",
+  "metaId" : "1484788732375",
+  "metaCode" : "АА_LIST",
+  "metaName" : "АА -н тэтгэмж лист",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLException: ORA-06575: Package or function DECRYPT is in an invalid state"
+}, {
+  "fileName" : "Хүний нөөцийн удирдлага",
+  "metaId" : "144436218891138",
+  "metaCode" : "HRM_EMP_ADDRESS_TYPE",
+  "metaName" : "MG Өмчлөлийн хэлбэр",
+  "metaType" : "error",
+  "messageText" : "HRM_EMP_ADDRESS_TYPE жагсаалт дээрх баганын тохиргоог шалгана уу."
+}, {
+  "fileName" : "Хүний нөөцийн удирдлага",
+  "metaId" : "1446818761671",
+  "metaCode" : "HRM_EMPLOYEE_STRUCTURE",
+  "metaName" : "hrmEmployee - Structure",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00904: \"T0\".\"SYS_NC00065$\": invalid identifier"
+}, {
+  "fileName" : "Цалингийн удирдлага",
+  "metaId" : "1448268819162721",
+  "metaCode" : "calcType",
+  "metaName" : "Бодолтын дугаарын төрөл",
+  "metaType" : "error",
+  "messageText" : "calcType жагсаалт дээрх баганын тохиргоог шалгана уу."
+}, {
+  "fileName" : "Санхүүгийн удирдлага",
+  "metaId" : "1455285302795",
+  "metaCode" : "accountBeginBalanceDv",
+  "metaName" : "finAccountBeginBalance",
+  "metaType" : "error",
+  "messageText" : "accountBeginBalanceDv жагсаалт дээрх cash_balance_by_account группын relation тохиргоо хийгдээгүй байна."
+}, {
+  "fileName" : "Санхүүгийн удирдлага",
+  "metaId" : "1479895330205",
+  "metaCode" : "imItemBookDtlAllList",
+  "metaName" : "Баримтын жагсаалт /дэлгэрэнгүй/",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00903: invalid table name"
+}, {
+  "fileName" : "Тохиргоо",
+  "metaId" : "144470133873829",
+  "metaCode" : "UmUser50",
+  "metaName" : "СИСТЕМИЙН ХЭРЭГЛЭГЧИД",
+  "metaType" : "error",
+  "messageText" : "UmUser50 жагсаалт дээрх 'userid' эсвэл 'umusergroup.userid' үзүүлэлт олдсонгүй."
+}, {
+  "fileName" : "Санхүүгийн удирдлага",
+  "metaId" : "1482464144134",
+  "metaCode" : "expense04WSDV",
+  "metaName" : "Шатахууны бүртгэл workspace",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLDataException: ORA-01476: divisor is equal to zero"
+}, {
+  "fileName" : "СИСТЕМИЙН ЭРХИЙН ЗОХИЦУУЛАЛТ",
+  "metaId" : "1492399959283",
+  "metaCode" : "sysRoleDMGet",
+  "metaName" : "sysRoleDMGet",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00904: \"T0\".\"IS_SYSTEM\": invalid identifier"
+}, {
+  "fileName" : "Санхүүгийн удирдлага",
+  "metaId" : "1448277684740",
+  "metaCode" : "sdmdv051",
+  "metaName" : "Бараа материалын дансны жагсаалт",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00903: invalid table name"
+}, {
+  "fileName" : "Цалингийн удирдлага",
+  "metaId" : "1479869206808",
+  "metaCode" : "salaryReportDornodOsson",
+  "metaName" : "Ерөнхий тайлан өссөн дүнгээр",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLException: ORA-06575: Package or function DECRYPT is in an invalid state"
+}, {
+  "fileName" : "Цалингийн удирдлага",
+  "metaId" : "1495099142998",
+  "metaCode" : "salaryHistoryByEmployee3",
+  "metaName" : "Өмнөх саруудын бодогдсон цалин ЖА, ХЧТА",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLException: ORA-06575: Package or function DECRYPT is in an invalid state"
+}, {
+  "fileName" : "Санхүүгийн удирдлага",
+  "metaId" : "1464671634784",
+  "metaCode" : "FA_ASSET_MOVEMENT_BOOK_LIST",
+  "metaName" : "FA_ASSET_MOVEMENT_BOOK_LIST",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00903: invalid table name"
+}, {
+  "fileName" : "Цалингийн удирдлага",
+  "metaId" : "1484221850645",
+  "metaCode" : "calcDepartmentDv_getExpression",
+  "metaName" : "calcDepartmentDv_geetExpression",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00904: \"T0\".\"IS_SHOW\": invalid identifier"
+}, {
+  "fileName" : "Санхүүгийн удирдлага",
+  "metaId" : "1479888485406",
+  "metaCode" : "whItemBookAllList",
+  "metaName" : "Баримтын жагсаалт /хураангуй/",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00903: invalid table name"
+}, {
+  "fileName" : "Санхүүгийн удирдлага",
+  "metaId" : "1512619980909",
+  "metaCode" : "EQUITY_BOOK_LIST",
+  "metaName" : "Өмчийн баримтын жагсаалт",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00903: invalid table name"
+}, {
+  "fileName" : "Цалингийн удирдлага",
+  "metaId" : "1481012450569",
+  "metaCode" : "dataByYear1",
+  "metaName" : "НДШТ | Тайлан жилээр",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLException: ORA-06575: Package or function DECRYPT is in an invalid state"
+}, {
+  "fileName" : "Сургалт хөгжил",
+  "metaId" : "16659890130651",
+  "metaCode" : "hrmTrainingNeedList3",
+  "metaName" : "Судлагдсан хүсэлт",
+  "metaType" : "info",
+  "messageText" : ""
+}, {
+  "fileName" : "Нэгжийн удирдлага",
+  "metaId" : "1664257636192814",
+  "metaCode" : "HCM_LABOUR_BOOK_11_HISTORYSUB_GMTMANUAL",
+  "metaName" : "HCM_LABOUR_BOOK_11_HISTORYSUB_GMTMANUAL",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLException: ORA-06575: Package or function DECRYPT is in an invalid state"
+}, {
+  "fileName" : "Санхүүгийн удирдлага",
+  "metaId" : "1484541184497373",
+  "metaCode" : "icSecurityServicesList",
+  "metaName" : "icSecurityServicesList",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00918: column ambiguously defined"
+}, {
+  "fileName" : "Түрээсийн хөрөнгийн модуль",
+  "metaId" : "1575353764893",
+  "metaCode" : "FA_ASSET_RENT_PAYMENT_REPORT",
+  "metaName" : "Түрээсийн өр төлбөрийн үлдэгдэл",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00903: invalid table name"
+}, {
+  "fileName" : "Түрээсийн хөрөнгийн модуль",
+  "metaId" : "1560141934539",
+  "metaCode" : "FA_ASSET_RENT_REPORT2",
+  "metaName" : "Түрээсийн хөрөнгийн дэлгэрэнгүй тайлан",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00903: invalid table name"
+}, {
+  "fileName" : "Цалингийн удирдлага",
+  "metaId" : "16739287499459",
+  "metaCode" : "ndExcelV2",
+  "metaName" : "НД эксел",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLException: ORA-06575: Package or function DECRYPT is in an invalid state"
+}, {
+  "fileName" : "Цалингийн удирдлага",
+  "metaId" : "1709607082228163",
+  "metaCode" : "salaryGetFromKeyDV",
+  "metaName" : "salaryGetFromKeyDV",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLException: ORA-06575: Package or function DECRYPT is in an invalid state"
+}, {
+  "fileName" : "DevOps",
+  "metaId" : "1457677129908111",
+  "metaCode" : "sysMetaPermissionList",
+  "metaName" : "sysMetaPermissionList",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00918: column ambiguously defined"
+}, {
+  "fileName" : "Санхүүгийн удирдлага",
+  "metaId" : "1446720422011",
+  "metaCode" : "coAgroup",
+  "metaName" : "Дансны төлөвлөгөө",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00904: \"T0\".\"MODIFIED_USER_LOG_ID\": invalid identifier"
+}, {
+  "fileName" : "Санхүүгийн удирдлага",
+  "metaId" : "1587519014851",
+  "metaCode" : "sealList",
+  "metaName" : "seallist",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLException: ORA-01427: single-row subquery returns more than one row"
+}, {
+  "fileName" : "Сургалт хөгжил",
+  "metaId" : "1475570854759",
+  "metaCode" : "HRM_TRAINING_LOCATION_STRUCTURE",
+  "metaName" : "hrmTrainingLocation - Structure",
+  "metaType" : "error",
+  "messageText" : "HRM_TRAINING_LOCATION_STRUCTURE жагсаалт дээрх баганын тохиргоог шалгана уу."
+}, {
+  "fileName" : "Тохиргоо",
+  "metaId" : "1455678444994",
+  "metaCode" : "metaDataProcess",
+  "metaName" : "metaDataProcess",
+  "metaType" : "error",
+  "messageText" : "metaDataProcess жагсаалт дээрх 'metaprocessparamattrlinktranslation.labelname' эсвэл 'metaprocessparamattrlinktranslation.globedictionary.storecode' үзүүлэлт олдсонгүй."
+}, {
+  "fileName" : "Санхүүгийн удирдлага",
+  "metaId" : "1472180766964",
+  "metaCode" : "amActivityBudgetInvDV",
+  "metaName" : "amActivityBudgetInvDV",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00918: column ambiguously defined"
+}, {
+  "fileName" : "Санхүүгийн удирдлага",
+  "metaId" : "1470288043419",
+  "metaCode" : "faAssetDtlSUBGRID",
+  "metaName" : "Баримтын жагсаалт /дэлгэрэнгүй/",
+  "metaType" : "error",
+  "messageText" : "Баримтын жагсаалт /дэлгэрэнгүй/ Жагсаалтын мөрийн тоо 10,000 -с их тул хуудаслалт хийнэ үү"
+}, {
+  "fileName" : "DevOps",
+  "metaId" : "1491368075111859",
+  "metaCode" : "PACKAGE_SUB_GROUP",
+  "metaName" : "PACKAGE SUB GROUP",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00904: \"MP\".\"MP\".\"TRG_META_DATA_ID\": invalid identifier"
+}, {
+  "fileName" : "Санхүүгийн удирдлага",
+  "metaId" : "1501071746888",
+  "metaCode" : "GL_BOOK_LIST_02",
+  "metaName" : "Гүйлгээний жагсаалт /Голомт /",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00903: invalid table name"
+}, {
+  "fileName" : "Цалингийн удирдлага",
+  "metaId" : "1484637740237",
+  "metaCode" : "calcDepartmentDv_isEXPRESSION",
+  "metaName" : "calcDepartmentDv_isEXPRESSION",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00904: \"T0\".\"IS_SHOW\": invalid identifier"
+}, {
+  "fileName" : "Санхүүгийн удирдлага",
+  "metaId" : "1457327992067",
+  "metaCode" : "FA_ASSET_DTL_DVLIST",
+  "metaName" : "FA_ASSET_DTL_DVLIST",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00903: invalid table name"
+}, {
+  "fileName" : "Санхүүгийн удирдлага",
+  "metaId" : "1462785714794",
+  "metaCode" : "FA_ASSET_BOOK_DVLIST_WITHOUT_MANDATORY",
+  "metaName" : "Хураангуй",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00903: invalid table name"
+}, {
+  "fileName" : "Санхүүгийн удирдлага",
+  "metaId" : "1491197489048",
+  "metaCode" : "expenseDtl1ReportList",
+  "metaName" : "expenseDtl1ReportList",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLException: ORA-06575: Package or function DECRYPT is in an invalid state"
+}, {
+  "fileName" : "Ажилтны үйлчилгээ",
+  "metaId" : "1507870370445",
+  "metaCode" : "IM_ITEM_MATERIAL_LIST_EMPLOYEE",
+  "metaName" : "IM_ITEM_MATERIAL_LIST_EMPLOYEE",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00903: invalid table name"
+}, {
+  "fileName" : "Шинэчлэлтийн түүх",
+  "metaId" : "1684834729148453",
+  "metaCode" : "gmt_devops_systems_ref",
+  "metaName" : "Системүүд ref",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00904: \"T0\".\"WFM_STATUS_ID\": invalid identifier"
+}, {
+  "fileName" : "Цалингийн удирдлага",
+  "metaId" : "1681379398240599",
+  "metaCode" : "prlSalaryDtlImportExcelList",
+  "metaName" : "Шууд бус орлогын бүртгэл",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00904: \"PSD\".\"CALC_ID\": invalid identifier"
+}, {
+  "fileName" : "Түрээсийн хөрөнгийн модуль",
+  "metaId" : "1551060437312",
+  "metaCode" : "faAssetRentDeprList",
+  "metaName" : "Түрээсийн хөрөнгийн элэгдлийн жагсаалт",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00903: invalid table name"
+}, {
+  "fileName" : "Цалингийн удирдлага",
+  "metaId" : "17095231428159",
+  "metaCode" : "getAdditionalF278",
+  "metaName" : "getAdditionalF278",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLException: ORA-06575: Package or function DECRYPT is in an invalid state"
+}, {
+  "fileName" : "Тохиргоо",
+  "metaId" : "1459917070584",
+  "metaCode" : "finAccountUseList",
+  "metaName" : "Дансаар гүйлгээ хийх эрхтэй хэрэглэгчид",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00918: column ambiguously defined"
+}, {
+  "fileName" : "Хүний нөөцийн удирдлага",
+  "metaId" : "1467688608018",
+  "metaCode" : "notSysUmSystemUserList",
+  "metaName" : "Системийн хэрэглэгчийн жагсаалт",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00918: column ambiguously defined"
+}, {
+  "fileName" : "Санхүүгийн удирдлага",
+  "metaId" : "1487153791739",
+  "metaCode" : "FA_ASSET_LOCATION_CARD_DVLIST",
+  "metaName" : "Байршилын картын мэдээлэл",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00903: invalid table name"
+}, {
+  "fileName" : "Гэрээ бүртгэл",
+  "metaId" : "1492663559084",
+  "metaCode" : "contractReportView_get",
+  "metaName" : "contractReportView_get",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLException: ORA-01489: result of string concatenation is too long"
+}, {
+  "fileName" : "Цалингийн удирдлага",
+  "metaId" : "1485401587412",
+  "metaCode" : "Card4_DV",
+  "metaName" : "Цалин бодолт_card_DV",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLException: ORA-06575: Package or function DECRYPT is in an invalid state"
+}, {
+  "fileName" : "Цалингийн удирдлага",
+  "metaId" : "1486552620595",
+  "metaCode" : "card1_dv",
+  "metaName" : "Ээлжийн амралт_Card",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLException: ORA-06575: Package or function DECRYPT is in an invalid state"
+}, {
+  "fileName" : "Санхүүгийн удирдлага",
+  "metaId" : "1459848692168211",
+  "metaCode" : "imItemCountBookList",
+  "metaName" : "Тооллогын жагсаалт",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00903: invalid table name"
+}, {
+  "fileName" : "Санхүүгийн удирдлага",
+  "metaId" : "1456954539183642",
+  "metaCode" : "EwhItemBookBeginBalanceList",
+  "metaName" : "Эхний үлдэгдлийн жагсаалт",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00903: invalid table name"
+}, {
+  "fileName" : "Цалингийн удирдлага",
+  "metaId" : "1484041016750",
+  "metaCode" : "SALARY_ADDITION_report_DV",
+  "metaName" : "ЖA-н тэтгэмжийн баримт-DV",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLException: ORA-06575: Package or function DECRYPT is in an invalid state"
+}, {
+  "fileName" : "Хүний нөөцийн удирдлага",
+  "metaId" : "1495045496007",
+  "metaCode" : "gb_department_list_dparent",
+  "metaName" : "Салбар нэгжийн жагсаалт шууд бус",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLException: ORA-22835: Buffer too small for CLOB to CHAR or BLOB to RAW conversion (actual: 6352, maximum: 4000)"
+}, {
+  "fileName" : "Цалингийн удирдлага",
+  "metaId" : "1523005152291",
+  "metaCode" : "tus002",
+  "metaName" : "tus002",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLException: ORA-06575: Package or function DECRYPT is in an invalid state"
+}, {
+  "fileName" : "Гүйцэтгэлийн үнэлгээ",
+  "metaId" : "21557809283030",
+  "metaCode" : "HCM_KPI_DATA_MART",
+  "metaName" : "hcmKpiDataMart",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00904: \"T0\".\"FILTER_START_DATE\": invalid identifier"
+}, {
+  "fileName" : "Цалингийн удирдлага",
+  "metaId" : "1481012450620",
+  "metaCode" : "dataByYear2",
+  "metaName" : "ХЧТА тэтгэмж | жилээр",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLException: ORA-06575: Package or function DECRYPT is in an invalid state"
+}, {
+  "fileName" : "Цалингийн удирдлага",
+  "metaId" : "1485401592516",
+  "metaCode" : "vacationStatementDv",
+  "metaName" : "vacationStatementDv",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLException: ORA-06575: Package or function DECRYPT is in an invalid state"
+}, {
+  "fileName" : "Нэгжийн удирдлага",
+  "metaId" : "16281917526231",
+  "metaCode" : "recCampaignKeyDepList",
+  "metaName" : "Хэрэгцээний жагсаалт-НЭГЖИЙН УДИРДЛАГА",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00903: invalid table name"
+}, {
+  "fileName" : "Түрээсийн хөрөнгийн модуль",
+  "metaId" : "21575012087835",
+  "metaCode" : "FA_ASSET_RENT_REPORT1",
+  "metaName" : "Ашиглах эрх бүхий хөрөнгийн хөдлөлийн тайлан",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00903: invalid table name"
+}, {
+  "fileName" : "Цалингийн удирдлага",
+  "metaId" : "1567420988929",
+  "metaCode" : "restRequestInfo",
+  "metaName" : "restRequestInfo",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00904: \"FNC_HRM_GET_VACATION_DAY\": invalid identifier"
+} ]

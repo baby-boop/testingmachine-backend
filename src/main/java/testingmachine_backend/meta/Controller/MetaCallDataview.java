@@ -8,6 +8,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
+import testingmachine_backend.config.SslDisableClass;
 import testingmachine_backend.meta.DTO.MetadataDTO;
 import testingmachine_backend.controller.JsonController;
 
@@ -17,15 +18,22 @@ import java.util.List;
 @Slf4j
 public class MetaCallDataview {
 
-    private static final String http = "http://";
-    static String HOST = JsonController.getSystemURL();
-    private static final String PORT = "8080";
-    private static final String URL = "/erp-services/RestWS/runJson";
-    private static final String SERVICE_URL = http + HOST + ":" + PORT + URL;
-    private static final String DATAVIEW = "pfFindModuleMetaLookupIdsDv";
+    //    private static final String http = "http://";
+//    static String HOST = JsonController.getSystemURL();
+//    private static final String PORT = "8080";
+//    private static final String URL = "/erp-services/RestWS/runJson";
+//    private static final String SERVICE_URL = http + HOST + ":" + PORT + URL;
+//    private static final String DATAVIEW = "pfFindModuleMetaLookupIdsDv";
 
+    private static final String HOST =  "http://" + JsonController.getSystemURL();
+//    private static final String HOST = JsonController.getSystemURL();
+    private static final String PORT = ":8080";
+    private static final String URL = "/erp-services/RestWS/runJson";
+    private static final String SERVICE_URL =  HOST  + PORT + URL;
+    private static final String DATAVIEW = "pfFindModuleMetaLookupIdsDv";
     public static List<MetadataDTO> getProcessMetaDataList() {
 
+        SslDisableClass.SslDisabler();
         String systemId = JsonController.getModuleId();
         String USERNAME = JsonController.getUsername();
         String PASSWORD = JsonController.getPassword();
@@ -45,7 +53,6 @@ public class MetaCallDataview {
                 }
             }
             """.formatted(USERNAME, PASSWORD, UNITNAME, DATAVIEW, systemId);
-        System.out.println(payload);
         try {
             RestTemplate restTemplate = new RestTemplate();
 
@@ -80,7 +87,6 @@ public class MetaCallDataview {
         } catch (Exception e) {
             log.error("Error while calling service: ", e);
         }
-
         return metaList;
     }
 }

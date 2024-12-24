@@ -445,5 +445,4 @@ public class ElementsFunctionUtils {
     public static List<PopupStandardFieldsDTO> getPopupStandartMessages() {
         return new ArrayList<>(PopupStandartField);
     }
-
 }

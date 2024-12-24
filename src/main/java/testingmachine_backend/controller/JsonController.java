@@ -22,26 +22,77 @@ import java.util.List;
 @CrossOrigin(origins = "*")
 public class JsonController {
 
-    @Getter
-    public static String moduleId;
-    @Getter
-    public static String customerName;
-    @Getter
-    public static String  createdDate;
-    @Getter
-    public static String systemURL;
-    @Getter
-    public static String username;
-    @Getter
-    public static String password;
-    @Getter
-    public static String databaseName;
-    @Getter
-    public static String databaseUsername;
-    @Getter
-    public static String jsonId;
-    @Getter
-    public static String selectedModule;
+//    @Getter
+//    public static String moduleId;
+//    @Getter
+//    public static String customerName;
+//    @Getter
+//    public static String  createdDate;
+//    @Getter
+//    public static String systemURL;
+//    @Getter
+//    public static String username;
+//    @Getter
+//    public static String password;
+//    @Getter
+//    public static String databaseName;
+//    @Getter
+//    public static String databaseUsername;
+//    @Getter
+//    public static String jsonId;
+//    @Getter
+//    public static String selectedModule;
+
+    private static String moduleId;
+    private static String customerName;
+    private static String createdDate;
+    private static String systemURL;
+    private static String username;
+    private static String password;
+    private static String databaseName;
+    private static String databaseUsername;
+    private static String jsonId;
+    private static String selectedModule;
+
+    public static String getModuleId() {
+        return moduleId != null ? moduleId : "";
+    }
+
+    public static String getCustomerName() {
+        return customerName != null ? customerName : "";
+    }
+
+    public static String getCreatedDate() {
+        return createdDate != null ? createdDate : "";
+    }
+
+    public static String getSystemURL() {
+        return systemURL != null ? systemURL : "";
+    }
+
+    public static String getUsername() {
+        return username != null ? username : "";
+    }
+
+    public static String getPassword() {
+        return password != null ? password : "";
+    }
+
+    public static String getDatabaseName() {
+        return databaseName != null ? databaseName : "";
+    }
+
+    public static String getDatabaseUsername() {
+        return databaseUsername != null ? databaseUsername : "";
+    }
+
+    public static String getJsonId() {
+        return jsonId != null ? jsonId : "";
+    }
+
+    public static String getSelectedModule() {
+        return selectedModule != null ? selectedModule : "";
+    }
 
     @Autowired
     public SystemService service;
@@ -52,16 +103,16 @@ public class JsonController {
     }
 
     private static void clearStaticData() {
-        moduleId = null;
-        customerName = null;
-        createdDate = null;
-        systemURL = null;
-        username = null;
-        password = null;
-        databaseName = null;
-        databaseUsername = null;
-        jsonId = null;
-        selectedModule = null;
+        moduleId = "";
+        customerName = "";
+        createdDate = "";
+        systemURL = "";
+        username = "";
+        password = "";
+        databaseName = "";
+        databaseUsername = "";
+        jsonId = "";
+        selectedModule = "";
     }
 
     @PostMapping("/system-data")

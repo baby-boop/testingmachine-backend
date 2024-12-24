@@ -8,7 +8,8 @@ public class MetaMain {
 
     public  static void mainSystem(){
         ChromeOptions options = new ChromeOptions();
-/*         options.addArguments("--headless");*/
+        options.addArguments("--headless");
+        options.addArguments("--disable-gpu");
         WebDriver driver = new ChromeDriver(options);
         try{
 

@@ -11,19 +11,28 @@ import testingmachine_backend.config.ConfigForAll;
 import testingmachine_backend.meta.Controller.ListConfig;
 import testingmachine_backend.meta.Controller.MetaCallDataview;
 import testingmachine_backend.meta.DTO.MetadataDTO;
-import testingmachine_backend.meta.Utils.IsErrorList;
+import testingmachine_backend.meta.Fields.FindBeforeUsedIds;
+import testingmachine_backend.meta.Fields.FindUserIdsDTO;
+import testingmachine_backend.meta.Utils.IsError;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import testingmachine_backend.meta.Utils.WaitUtils;
 import testingmachine_backend.controller.JsonController;
 
+import static testingmachine_backend.meta.Utils.FileUtils.readDataFromExcel;
+
 public class MetaLists {
 
     private final WebDriver driver;
-    private static int metaCount = 0;
-    private static int totalMetaCount = 0;
+    private final static int metaCount = 0;
+    private final static int totalMetaCount = 0;
 
+    @FindBeforeUsedIds
+    public static final List<FindUserIdsDTO> findBeforeUsedId = new ArrayList<>();
 
     public MetaLists(WebDriver driver) {
         this.driver = driver;
@@ -35,12 +44,10 @@ public class MetaLists {
 
             driver.get(ListConfig.LoginUrl);
 
-            Thread.sleep(500);
-
             String databaseName = JsonController.getDatabaseName();
             if (!databaseName.isEmpty()) {
 
-                System.out.println("Database not set: " + databaseName);
+                System.out.println("Database name is already set: " + databaseName);
 
                 WebElement selectDb = wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("dbName")));
                 Select dbSelect = new Select(selectDb);
@@ -70,38 +77,21 @@ public class MetaLists {
                     WaitUtils.retryWaitForLoadToDisappear(driver, metaData.getModuleName(), metaData.getId(), metaData.getCode(), metaData.getName(), 3);
                     WaitUtils.retryWaitForLoadingToDisappear(driver, metaData.getModuleName(), metaData.getId(), metaData.getCode(), metaData.getName(),3);
 
-                    if (IsErrorList.isErrorMessagePresent(driver, metaData.getId(), metaData.getModuleName(), metaData.getCode(), metaData.getName())) {
+                    if (IsError.isErrorMessagePresent(driver, metaData.getId(), metaData.getModuleName(), metaData.getCode(), metaData.getName())) {
                         System.out.println("Error found in ID: " + metaData.getId());
                     }
                     count++;
                     System.out.println("Process count: " + count + ", id: " + metaData.getId());
                 }
-            } else {
-                System.out.println("Database name is already set: " + databaseName);
+            }
+            else {
 
                 ConfigForAll.loginForm(wait);
 
-                Thread.sleep(2000);
+//                workingWithExcel(driver, wait);
 
-                List<MetadataDTO> metaDataList = MetaCallDataview.getProcessMetaDataList();
+                workingWithMainList(driver);
 
-                int count = 0;
-
-                for (MetadataDTO metaData : metaDataList) {
-                    String url = ListConfig.MainUrl + metaData.getId();
-                    driver.get(url);
-
-                    Thread.sleep(1000);
-
-                    WaitUtils.retryWaitForLoadToDisappear(driver, metaData.getModuleName(), metaData.getId(), metaData.getCode(), metaData.getName(), 3);
-                    WaitUtils.retryWaitForLoadingToDisappear(driver, metaData.getModuleName(), metaData.getId(), metaData.getCode(), metaData.getName(), 3);
-
-                    if (IsErrorList.isErrorMessagePresent(driver, metaData.getId(), metaData.getModuleName(), metaData.getCode(), metaData.getName())) {
-                        System.out.println("Error found in ID: " + metaData.getId());
-                    }
-                    count++;
-                    System.out.println("Process count: " + count + ", id: " + metaData.getId());
-                }
             }
 
 
@@ -118,4 +108,101 @@ public class MetaLists {
         return totalMetaCount;
     }
 
+    private static void workingWithMainList(WebDriver driver) {
+
+        List<MetadataDTO> metaDataList = MetaCallDataview.getProcessMetaDataList();
+
+        int count = 0;
+        int errorCount = 0;
+
+        for (MetadataDTO metaData : metaDataList) {
+
+            String url = ListConfig.MainUrl + metaData.getId();
+
+            driver.get(url);
+
+            WaitUtils.retryWaitForLoadToDisappear(driver, metaData.getModuleName(), metaData.getId(), metaData.getCode(), metaData.getName(), 3);
+            WaitUtils.retryWaitForLoadingToDisappear(driver, metaData.getModuleName(), metaData.getId(), metaData.getCode(), metaData.getName(), 3);
+
+
+            if (IsError.isErrorMessagePresent(driver, metaData.getId(), metaData.getModuleName(), metaData.getCode(), metaData.getName())) {
+                errorCount++;
+                System.out.println("Error found in ID: " + metaData.getId() + ", errorCount: " + errorCount);
+            }
+//            if (IsErrorTest.isErrorMessagePresent(driver, metaData.getId(), metaData.getModuleName(), metaData.getCode(), metaData.getName())) {
+//                errorCount++;
+//                System.out.println("Error found in ID: " + metaData.getId() + ", errorCount: " + errorCount);
+//            }
+
+            count++;
+            System.out.println("Process count: " + count + ", id: " + metaData.getId());
+        }
+    }
+
+    private static void workingWithExcel(WebDriver driver, WebDriverWait wait) {
+        try {
+
+
+            String directoryPath = "C:\\Users\\batde\\Downloads\\golomt excel";
+            File folder = new File(directoryPath);
+            File[] listOfFiles = folder.listFiles((dir, name) -> name.endsWith(".xlsx"));
+
+            int metaCount = 0;
+            int errorCount = 0;
+
+            List<Map<String, String>> allIds = new ArrayList<>();
+
+            for (File file : listOfFiles) {
+                List<Map<String, String>> dataFromExcel = readDataFromExcel(file.getAbsolutePath());
+                allIds.addAll(dataFromExcel);
+            }
+
+            int totalIds = allIds.size();
+            System.out.println("Metadata length: " + totalIds);
+
+            for (File file : listOfFiles) {
+                System.out.println("Processing file: " + file.getName());
+                List<Map<String, String>> dataFromExcel = readDataFromExcel(file.getAbsolutePath());
+
+                for (Map<String, String> record : dataFromExcel) {
+                    String id = record.get("id");
+                    String code = record.get("code");
+                    String name = record.get("name");
+                    String moduleName = record.get("moduleName");
+
+                    if(!isDuplicateIdEntry(id)){
+                        String url = ListConfig.MainUrl + id;
+                        driver.get(url);
+                        driver.navigate().refresh();
+
+                        FindUserIdsDTO userId = new FindUserIdsDTO(id);
+                        findBeforeUsedId.add(userId);
+
+                        wait.until(ExpectedConditions.visibilityOfElementLocated(By.tagName("body")));
+
+                        WaitUtils.retryWaitForLoadToDisappear(driver, moduleName, id, code, name, 3);
+                        WaitUtils.retryWaitForLoadingToDisappear(driver, moduleName, id, code, name, 3);
+
+                        if (IsError.isErrorMessagePresent(driver, id, moduleName, code, name)) {
+                            errorCount++;
+                            System.out.println("Error found in ID: " + id + "    Module name: " + moduleName + "    Meta error count: " + errorCount);
+                        }
+
+                        metaCount++;
+                        System.out.println("Meta count: " + metaCount + ", id: " + id);
+                    }
+                }
+            }
+        }catch (Exception e) {
+            System.err.println("Error: " + e.getMessage());
+        }
+    }
+
+    public static boolean isDuplicateIdEntry(String id) {
+        return MetaLists.findBeforeUsedId.stream()
+                .anyMatch(log -> log.getId().equals(id));
+    }
 }
+
+
+//Надад маш олон Id байгаа. гэхдээ давхардсан id маш олон тиймээс нэг удаа дуудаад дараагын удаа skip хийдэг больё

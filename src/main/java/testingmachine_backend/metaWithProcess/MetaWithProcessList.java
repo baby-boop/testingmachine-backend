@@ -6,7 +6,6 @@ import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import testingmachine_backend.config.ConfigForAll;
 import testingmachine_backend.meta.DTO.MetadataDTO;
-import testingmachine_backend.meta.Utils.IsErrorList;
 import testingmachine_backend.metaWithProcess.Controller.CallMetaWithProcess;
 import testingmachine_backend.metaWithProcess.Controller.Config;
 import testingmachine_backend.metaWithProcess.Controller.IsMetaErrorList;
@@ -80,6 +79,7 @@ public class MetaWithProcessList {
                 System.out.println(metaWithProcessList.size());
 
                 int count = 0;
+
                 for (MetadataDTO metaData : metaWithProcessList) {
                     String url = Config.MainUrl + metaData.getId();
                     driver.get(url);

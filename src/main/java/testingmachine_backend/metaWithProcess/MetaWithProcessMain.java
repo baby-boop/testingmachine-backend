@@ -17,8 +17,8 @@ public class MetaWithProcessMain {
         );
 
         ChromeOptions options = new ChromeOptions();
-//        options.addArguments("--headless");
-//        options.addArguments("--disable-gpu");
+        options.addArguments("--headless");
+        options.addArguments("--disable-gpu");
         options.setCapability("goog:loggingPrefs", loggingPrefs);
 
         WebDriver driver = new ChromeDriver(options);

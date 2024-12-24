@@ -17,8 +17,6 @@ public class TestingmachineBackendApplication
 
 	public static void main(String[] args) {
 		SpringApplication.run(TestingmachineBackendApplication.class, args);
-//		MainProcess.mainProcess();
-
 	}
 
 	@Override
