@@ -13,8 +13,9 @@ import java.util.UUID;
 public class SystemService {
 
     private static final String DIRECTORY_PATH1 = "C:\\Users\\batde\\Documents\\testingmachine-backend\\src\\json\\process\\header";
-    private static final String DIRECTORY_PATH2 = "C:\\Users\\batde\\Documents\\testingmachine-backend\\src\\json\\metalist\\header";
+//    private static final String DIRECTORY_PATH2 = "C:\\Users\\batde\\Documents\\testingmachine-backend\\src\\json\\metalist\\header";
     private static final String DIRECTORY_PATH3 = "C:\\Users\\batde\\Documents\\testingmachine-backend\\src\\json\\metalistwithprocess\\header";
+    private static final String DIRECTORY_PATH2 = "..\\..\\..\\..\\..\\json\\metalist\\header";
 
 
     private String determineDirectoryPath(String selectedModule) {

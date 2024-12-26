@@ -8,12 +8,14 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import testingmachine_backend.config.ConfigForAll;
+import testingmachine_backend.config.CounterService;
 import testingmachine_backend.meta.Controller.ListConfig;
 import testingmachine_backend.meta.Controller.MetaCallDataview;
 import testingmachine_backend.meta.DTO.MetadataDTO;
 import testingmachine_backend.meta.Fields.FindBeforeUsedIds;
 import testingmachine_backend.meta.Fields.FindUserIdsDTO;
-import testingmachine_backend.meta.Utils.IsError;
+import testingmachine_backend.meta.Service.MetaMessageStatusService;
+import testingmachine_backend.meta.Utils.IsErrorMessage;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -28,8 +30,6 @@ import static testingmachine_backend.meta.Utils.FileUtils.readDataFromExcel;
 public class MetaLists {
 
     private final WebDriver driver;
-    private final static int metaCount = 0;
-    private final static int totalMetaCount = 0;
 
     @FindBeforeUsedIds
     public static final List<FindUserIdsDTO> findBeforeUsedId = new ArrayList<>();
@@ -77,7 +77,7 @@ public class MetaLists {
                     WaitUtils.retryWaitForLoadToDisappear(driver, metaData.getModuleName(), metaData.getId(), metaData.getCode(), metaData.getName(), 3);
                     WaitUtils.retryWaitForLoadingToDisappear(driver, metaData.getModuleName(), metaData.getId(), metaData.getCode(), metaData.getName(),3);
 
-                    if (IsError.isErrorMessagePresent(driver, metaData.getId(), metaData.getModuleName(), metaData.getCode(), metaData.getName())) {
+                    if (IsErrorMessage.isErrorMessagePresent(driver, metaData.getId(), metaData.getModuleName(), metaData.getCode(), metaData.getName())) {
                         System.out.println("Error found in ID: " + metaData.getId());
                     }
                     count++;
@@ -99,18 +99,12 @@ public class MetaLists {
             System.err.println("Error: " + e.getMessage());
         }
     }
-
-    public static int getCheckCount() {
-        return metaCount;
-    }
-
-    public static int getTotalCount() {
-        return totalMetaCount;
-    }
+//
 
     private static void workingWithMainList(WebDriver driver) {
 
         List<MetadataDTO> metaDataList = MetaCallDataview.getProcessMetaDataList();
+        int totalMetaCount = metaDataList.size();
 
         int count = 0;
         int errorCount = 0;
@@ -124,17 +118,14 @@ public class MetaLists {
             WaitUtils.retryWaitForLoadToDisappear(driver, metaData.getModuleName(), metaData.getId(), metaData.getCode(), metaData.getName(), 3);
             WaitUtils.retryWaitForLoadingToDisappear(driver, metaData.getModuleName(), metaData.getId(), metaData.getCode(), metaData.getName(), 3);
 
-
-            if (IsError.isErrorMessagePresent(driver, metaData.getId(), metaData.getModuleName(), metaData.getCode(), metaData.getName())) {
+            if (IsErrorMessage.isErrorMessagePresent(driver, metaData.getId(), metaData.getModuleName(), metaData.getCode(), metaData.getName())) {
                 errorCount++;
                 System.out.println("Error found in ID: " + metaData.getId() + ", errorCount: " + errorCount);
+
             }
-//            if (IsErrorTest.isErrorMessagePresent(driver, metaData.getId(), metaData.getModuleName(), metaData.getCode(), metaData.getName())) {
-//                errorCount++;
-//                System.out.println("Error found in ID: " + metaData.getId() + ", errorCount: " + errorCount);
-//            }
 
             count++;
+            CounterService.addCounter(count, totalMetaCount);
             System.out.println("Process count: " + count + ", id: " + metaData.getId());
         }
     }
@@ -183,7 +174,7 @@ public class MetaLists {
                         WaitUtils.retryWaitForLoadToDisappear(driver, moduleName, id, code, name, 3);
                         WaitUtils.retryWaitForLoadingToDisappear(driver, moduleName, id, code, name, 3);
 
-                        if (IsError.isErrorMessagePresent(driver, id, moduleName, code, name)) {
+                        if (IsErrorMessage.isErrorMessagePresent(driver, id, moduleName, code, name)) {
                             errorCount++;
                             System.out.println("Error found in ID: " + id + "    Module name: " + moduleName + "    Meta error count: " + errorCount);
                         }

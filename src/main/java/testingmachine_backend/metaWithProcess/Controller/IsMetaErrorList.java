@@ -5,7 +5,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import testingmachine_backend.meta.Service.MetaMessageStatusService;
 
 import java.time.Duration;
 
@@ -13,7 +12,7 @@ public class IsMetaErrorList {
 
     public static boolean isErrorMessagePresent(WebDriver driver, String id, String moduleName, String code, String name) {
         try {
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(2));
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(1));
             WebElement messageContainer = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".brighttheme.ui-pnotify-container")));
             WebElement messageTitle = messageContainer.findElement(By.cssSelector(".ui-pnotify-title"));
             String messageTitleText = messageTitle.getText().toLowerCase();
@@ -43,7 +42,7 @@ public class IsMetaErrorList {
 
     private static boolean extractErrorMessage(WebDriver driver, String id, String moduleName, String code, String name) {
         try {
-            WebDriverWait shortWait = new WebDriverWait(driver, Duration.ofSeconds(2));
+            WebDriverWait shortWait = new WebDriverWait(driver, Duration.ofSeconds(1));
             WebElement messageContent = shortWait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".ui-pnotify-text")));
             String messageText = messageContent.getText();
 

@@ -1,12 +1,11 @@
 package testingmachine_backend.controller;
 
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import testingmachine_backend.TestingmachineBackendApplication;
-import testingmachine_backend.meta.MetaList.MetaLists;
+import testingmachine_backend.config.CounterDTO;
+import testingmachine_backend.config.CounterService;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -19,6 +18,15 @@ public class ModuleController {
         this.application = application;
     }
 
+    @GetMapping("/meta-counter")
+    public CounterDTO getLatestCounter() {
+        CounterDTO latestCounter = CounterService.getLatestCounter();
+        if (latestCounter == null) {
+            throw new RuntimeException("No counter data available.");
+        }
+        return latestCounter;
+    }
+
     @PostMapping("/module")
     public String executeModule(@RequestBody Map<String, String> request) {
         String module = request.get("module");
@@ -28,10 +36,10 @@ public class ModuleController {
         try {
             String moduleMessage = application.executeModule(module);
 
-            int metaCount = MetaLists.getCheckCount();
-            int totalCount = MetaLists.getTotalCount();
+            int count = CounterService.getLatestCounter() != null ? CounterService.getLatestCounter().getCount() : 0;
+            int totalCount = CounterService.getLatestCounter() != null ? CounterService.getLatestCounter().getTotalCount() : 1;
 
-            if (metaCount == totalCount) {
+            if (count == totalCount) {
                 successMessage = moduleMessage;
                 return successMessage;
             }

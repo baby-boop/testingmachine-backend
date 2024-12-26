@@ -11,9 +11,9 @@ import testingmachine_backend.meta.Service.MetaMessageStatusService;
 
 import java.time.Duration;
 
-public class IsError {
+public class IsErrorMessage {
 
-    private static final Logger logger = LogManager.getLogger(IsError.class);
+    private static final Logger logger = LogManager.getLogger(IsErrorMessage.class);
 
     public static boolean isErrorMessagePresent(WebDriver driver, String id, String moduleName, String code, String name) {
         try {
@@ -21,7 +21,7 @@ public class IsError {
 
             WebElement messageContainer = wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("[id='objectdatagrid-" + id + "']")));
             String tagName = messageContainer.getTagName();
-            System.out.println(tagName);
+
             if ("table".equals(tagName)) {
 
                 WebElement messageContainer1 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".brighttheme.ui-pnotify-container")));
@@ -39,7 +39,9 @@ public class IsError {
                     }
                 }
                 return false;
+
             } else if ("div".equals(tagName)) {
+
                 WebElement messageContainer1 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div[id='objectdatagrid-" + id + "']")));
                 WebElement messageTitle = messageContainer1.findElement(By.cssSelector(".alert-danger"));
                 String messageTitleText = messageTitle.getText().toLowerCase();
@@ -49,7 +51,6 @@ public class IsError {
                 }
                 return false;
             }
-
             return false;
         } catch (Exception e) {
 //            logger.error("Error in isErrorMessagePresent: ", e);

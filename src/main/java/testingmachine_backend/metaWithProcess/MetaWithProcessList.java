@@ -5,6 +5,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import testingmachine_backend.config.ConfigForAll;
+import testingmachine_backend.config.CounterService;
 import testingmachine_backend.meta.DTO.MetadataDTO;
 import testingmachine_backend.metaWithProcess.Controller.CallMetaWithProcess;
 import testingmachine_backend.metaWithProcess.Controller.Config;
@@ -76,8 +77,7 @@ public class MetaWithProcessList {
                 ConfigForAll.loginForm(wait);
 
                 List<MetadataDTO> metaWithProcessList = CallMetaWithProcess.getProcessMetaDataList();
-                System.out.println(metaWithProcessList.size());
-
+                int totalMetaCount = metaWithProcessList.size();
                 int count = 0;
 
                 for (MetadataDTO metaData : metaWithProcessList) {
@@ -96,7 +96,10 @@ public class MetaWithProcessList {
                         waitUtils(driver);
                         ProcessPath.isProcessPersent(driver, metaData.getId(), metaData.getModuleName(), metaData.getCode(), metaData.getName(), "meta");
                     }
+
                     count++;
+
+                    CounterService.addCounter(count, totalMetaCount);
 
                     System.out.println("Process count: " + count + ", id: " + metaData.getId());
                 }

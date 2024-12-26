@@ -1,7 +1,6 @@
 package testingmachine_backend.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,27 +21,13 @@ import java.util.List;
 @CrossOrigin(origins = "*")
 public class JsonController {
 
-//    @Getter
-//    public static String moduleId;
-//    @Getter
-//    public static String customerName;
-//    @Getter
-//    public static String  createdDate;
-//    @Getter
-//    public static String systemURL;
-//    @Getter
-//    public static String username;
-//    @Getter
-//    public static String password;
-//    @Getter
-//    public static String databaseName;
-//    @Getter
-//    public static String databaseUsername;
-//    @Getter
-//    public static String jsonId;
-//    @Getter
-//    public static String selectedModule;
-
+    private static final String PROCESS_HEADER_PATH = "C:\\Users\\batde\\Documents\\testingmachine-backend\\src\\main\\java\\testingmachine_backend\\json\\process\\header";
+    private static final String PROCESS_RESULT_PATH = "C:\\Users\\batde\\Documents\\testingmachine-backend\\src\\main\\java\\testingmachine_backend\\json\\process\\result";
+    private static final String META_HEADER_PATH = "C:\\Users\\batde\\Documents\\testingmachine-backend\\src\\main\\java\\testingmachine_backend\\json\\metalist\\header";
+    private static final String META_RESULT_PATH = "C:\\Users\\batde\\Documents\\testingmachine-backend\\src\\main\\java\\testingmachine_backend\\json\\metalist\\result";
+    private static final String META_PROCESS_HEADER_PATH = "C:\\Users\\batde\\Documents\\testingmachine-backend\\src\\main\\java\\testingmachine_backend\\json\\metalistwithprocess\\header";
+    private static final String META_PROCESS_RESULT_PATH = "C:\\Users\\batde\\Documents\\testingmachine-backend\\src\\main\\java\\testingmachine_backend\\json\\metalistwithprocess\\result";
+    
     private static String moduleId;
     private static String customerName;
     private static String createdDate;
@@ -139,8 +124,31 @@ public class JsonController {
 
     @GetMapping("/process-header")
     public ResponseEntity<List<Object>> getHeaderData() {
-        String processHeaderPath = "C:\\Users\\batde\\Documents\\testingmachine-backend\\src\\json\\process\\header";
-        return ResponseEntity.ok(readJsonFilesFromFolder(processHeaderPath));
+        return ResponseEntity.ok(readJsonFilesFromFolder(PROCESS_HEADER_PATH));
+    }
+    
+    @GetMapping("/process-result")
+    public ResponseEntity<List<FileData>> getResultData() {
+        return ResponseEntity.ok(readJsonFilesFromFolderResult(PROCESS_RESULT_PATH));
+    }
+    
+    @GetMapping("/meta-header")
+    public ResponseEntity<List<Object>> getMetaHeaderData() {
+        return ResponseEntity.ok(readJsonFilesFromFolder(META_HEADER_PATH));
+    }
+
+    @GetMapping("/meta-result")
+    public ResponseEntity<List<FileData>> getMetaResultData() {
+        return ResponseEntity.ok(readJsonFilesFromFolderResult(META_RESULT_PATH));
+    }
+
+    @GetMapping("/metaprocess-header")
+    public ResponseEntity<List<Object>> getMetaProcessHeaderData() {
+        return ResponseEntity.ok(readJsonFilesFromFolder(META_PROCESS_HEADER_PATH));
+    }
+    @GetMapping("/metaprocess-result")
+    public ResponseEntity<List<FileData>> getMetaProcessResultData() {
+        return ResponseEntity.ok(readJsonFilesFromFolderResult(META_PROCESS_RESULT_PATH));
     }
 
     private List<Object> readJsonFilesFromFolder(String folderPath) {
@@ -159,13 +167,6 @@ public class JsonController {
             }
         }
         return jsonDataList;
-    }
-
-
-    @GetMapping("/process-result")
-    public ResponseEntity<List<FileData>> getResultData() {
-        String processResultPath = "C:\\Users\\batde\\Documents\\testingmachine-backend\\src\\json\\process\\result";
-        return ResponseEntity.ok(readJsonFilesFromFolderResult(processResultPath));
     }
 
     private List<FileData> readJsonFilesFromFolderResult(String folderPath) {
@@ -188,29 +189,5 @@ public class JsonController {
         }
         return fileDataList;
     }
-
-
-    @GetMapping("/meta-header")
-    public ResponseEntity<List<Object>> getMetaHeaderData() {
-        String metaHeaderPath = "C:\\Users\\batde\\Documents\\testingmachine-backend\\src\\json\\metalist\\header";
-        return ResponseEntity.ok(readJsonFilesFromFolder(metaHeaderPath));
-    }
-    @GetMapping("/meta-result")
-    public ResponseEntity<List<FileData>> getMetaResultData() {
-        String metaResultPath = "C:\\Users\\batde\\Documents\\testingmachine-backend\\src\\json\\metalist\\result";
-        return ResponseEntity.ok(readJsonFilesFromFolderResult(metaResultPath));
-    }
-
-    @GetMapping("/metaprocess-header")
-    public ResponseEntity<List<Object>> getMetaProcessHeaderData() {
-        String metaHeaderPath = "C:\\Users\\batde\\Documents\\testingmachine-backend\\src\\json\\metalistwithprocess\\header";
-        return ResponseEntity.ok(readJsonFilesFromFolder(metaHeaderPath));
-    }
-    @GetMapping("/metaprocess-result")
-    public ResponseEntity<List<FileData>> getMetaProcessResultData() {
-        String metaResultPath = "C:\\Users\\batde\\Documents\\testingmachine-backend\\src\\json\\metalistwithprocess\\result";
-        return ResponseEntity.ok(readJsonFilesFromFolderResult(metaResultPath));
-    }
-
 }
 
