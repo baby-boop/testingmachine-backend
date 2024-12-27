@@ -14,7 +14,6 @@ import testingmachine_backend.meta.Controller.MetaCallDataview;
 import testingmachine_backend.meta.DTO.MetadataDTO;
 import testingmachine_backend.meta.Fields.FindBeforeUsedIds;
 import testingmachine_backend.meta.Fields.FindUserIdsDTO;
-import testingmachine_backend.meta.Service.MetaMessageStatusService;
 import testingmachine_backend.meta.Utils.IsErrorMessage;
 
 import java.io.File;
@@ -143,6 +142,7 @@ public class MetaLists {
 
             List<Map<String, String>> allIds = new ArrayList<>();
 
+            assert listOfFiles != null;
             for (File file : listOfFiles) {
                 List<Map<String, String>> dataFromExcel = readDataFromExcel(file.getAbsolutePath());
                 allIds.addAll(dataFromExcel);

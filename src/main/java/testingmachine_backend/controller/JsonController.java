@@ -21,12 +21,13 @@ import java.util.List;
 @CrossOrigin(origins = "*")
 public class JsonController {
 
-    private static final String PROCESS_HEADER_PATH = "C:\\Users\\batde\\Documents\\testingmachine-backend\\src\\main\\java\\testingmachine_backend\\json\\process\\header";
-    private static final String PROCESS_RESULT_PATH = "C:\\Users\\batde\\Documents\\testingmachine-backend\\src\\main\\java\\testingmachine_backend\\json\\process\\result";
-    private static final String META_HEADER_PATH = "C:\\Users\\batde\\Documents\\testingmachine-backend\\src\\main\\java\\testingmachine_backend\\json\\metalist\\header";
-    private static final String META_RESULT_PATH = "C:\\Users\\batde\\Documents\\testingmachine-backend\\src\\main\\java\\testingmachine_backend\\json\\metalist\\result";
-    private static final String META_PROCESS_HEADER_PATH = "C:\\Users\\batde\\Documents\\testingmachine-backend\\src\\main\\java\\testingmachine_backend\\json\\metalistwithprocess\\header";
-    private static final String META_PROCESS_RESULT_PATH = "C:\\Users\\batde\\Documents\\testingmachine-backend\\src\\main\\java\\testingmachine_backend\\json\\metalistwithprocess\\result";
+
+    private static final String META_HEADER_PATH = "src/main/java/testingmachine_backend/json/metalist/header";
+    private static final String META_RESULT_PATH = "src/main/java/testingmachine_backend/json/metalist/result";
+    private static final String PROCESS_HEADER_PATH = "src/main/java/testingmachine_backend/json/header";
+    private static final String PROCESS_RESULT_PATH = "src/main/java/testingmachine_backend/json/process/result";
+    private static final String META_PROCESS_HEADER_PATH = "src/main/java/testingmachine_backend/json/metalistwithprocess/header";
+    private static final String META_PROCESS_RESULT_PATH = "src/main/java/testingmachine_backend/json/metalistwithprocess/result";
     
     private static String moduleId;
     private static String customerName;

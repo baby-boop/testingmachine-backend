@@ -6,7 +6,7 @@ RUN mkdir -p /opt/app && chown -R appuser:appuser /opt/app
 
 USER appuser
 
-COPY --chown=appuser:appuser ./target/testingmachine-backend-0.0.1-SNAPSHOT.jar /opt/app/japp.jar
+COPY --chown=appuser:appuser ./target/time-service.jar /opt/app/japp.jar
 
 EXPOSE 8080
 

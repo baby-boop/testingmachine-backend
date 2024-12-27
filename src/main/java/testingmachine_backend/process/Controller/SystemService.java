@@ -12,11 +12,9 @@ import java.util.UUID;
 @Service
 public class SystemService {
 
-    private static final String DIRECTORY_PATH1 = "C:\\Users\\batde\\Documents\\testingmachine-backend\\src\\json\\process\\header";
-//    private static final String DIRECTORY_PATH2 = "C:\\Users\\batde\\Documents\\testingmachine-backend\\src\\json\\metalist\\header";
-    private static final String DIRECTORY_PATH3 = "C:\\Users\\batde\\Documents\\testingmachine-backend\\src\\json\\metalistwithprocess\\header";
-    private static final String DIRECTORY_PATH2 = "..\\..\\..\\..\\..\\json\\metalist\\header";
-
+    private static final String DIRECTORY_PATH1 = "src/main/java/testingmachine_backend/json/process/header";
+    private static final String DIRECTORY_PATH2 = "src/main/java/testingmachine_backend/json/metalist/header";
+    private static final String DIRECTORY_PATH3 = "src/main/java/testingmachine_backend/json/metalistwithprocess/header";
 
     private String determineDirectoryPath(String selectedModule) {
         if ("process".equalsIgnoreCase(selectedModule)) {

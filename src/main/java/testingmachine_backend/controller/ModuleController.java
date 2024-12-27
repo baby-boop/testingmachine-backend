@@ -22,7 +22,7 @@ public class ModuleController {
     public CounterDTO getLatestCounter() {
         CounterDTO latestCounter = CounterService.getLatestCounter();
         if (latestCounter == null) {
-            throw new RuntimeException("No counter data available.");
+            return null;
         }
         return latestCounter;
     }

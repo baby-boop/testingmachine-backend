@@ -1,0 +1,400 @@
+[ {
+  "fileName" : "Нягтлан бодох бүртгэл",
+  "metaId" : "1530816124689",
+  "metaCode" : "IM_ITEM_MATERIAL_OUTCOME_LIST",
+  "metaName" : "Барааны жагсаалт /зарлага/",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00904: \"K\".\"COMPANY_DEPARTMENT_ID\": invalid identifier"
+}, {
+  "fileName" : "Нягтлан бодох бүртгэл",
+  "metaId" : "1551662972260456",
+  "metaCode" : "EmployeeDvList",
+  "metaName" : "EmployeeDvList",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00904: \"T0\".\"WFM_DESCRIPTION\": invalid identifier"
+}, {
+  "fileName" : "Нягтлан бодох бүртгэл",
+  "metaId" : "1492748080501",
+  "metaCode" : "conContractSimple1List",
+  "metaName" : "Гэрээний жагсаалт",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00942: table or view does not exist"
+}, {
+  "fileName" : "Нягтлан бодох бүртгэл",
+  "metaId" : "1503558836870",
+  "metaCode" : "FIN_FILE_LOG_STRUCTURE",
+  "metaName" : "finFileLog - Structure",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00904: \"T0\".\"DESCRIPTION\": invalid identifier"
+}, {
+  "fileName" : "Нягтлан бодох бүртгэл",
+  "metaId" : "1527503060981839",
+  "metaCode" : "employeeForGLAdd",
+  "metaName" : "employeeForGLAdd",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00904: \"T0\".\"ID\": invalid identifier"
+}, {
+  "fileName" : "Нягтлан бодох бүртгэл",
+  "metaId" : "1518063394781",
+  "metaCode" : "itemMovementDtlLog",
+  "metaName" : "itemMovementDtlLog",
+  "metaType" : "error",
+  "messageText" : "Жагсаалтыг ажиллуулахад алдаа гарлаа Үйлдлийн төрөл заавал утгатай байна./Устгасан , Зассан/"
+}, {
+  "fileName" : "Нягтлан бодох бүртгэл",
+  "metaId" : "1518063421355",
+  "metaCode" : "itemCountDtlLog",
+  "metaName" : "itemCountDtlLog",
+  "metaType" : "error",
+  "messageText" : "Жагсаалтыг ажиллуулахад алдаа гарлаа Үйлдлийн төрөл заавал утгатай байна./Устгасан , Зассан/"
+}, {
+  "fileName" : "Нягтлан бодох бүртгэл",
+  "metaId" : "1540788609889",
+  "metaCode" : "sysUmUserAccList",
+  "metaName" : "Хэрэглэгчийн жагсаалт /Санхүү/",
+  "metaType" : "error",
+  "messageText" : "Сервис асаагүй байна түр хүлээнэ үү."
+}, {
+  "fileName" : "Нягтлан бодох бүртгэл",
+  "metaId" : "1461219729382",
+  "metaCode" : "finReportAsset",
+  "metaName" : "ҮХ баримт",
+  "metaType" : "error",
+  "messageText" : "Сервис асаагүй байна түр хүлээнэ үү."
+}, {
+  "fileName" : "Нягтлан бодох бүртгэл",
+  "metaId" : "1537165425265616",
+  "metaCode" : "payment_category_dv",
+  "metaName" : "Төлбөрийн давтамж",
+  "metaType" : "error",
+  "messageText" : "Сервис асаагүй байна түр хүлээнэ үү."
+}, {
+  "fileName" : "Нягтлан бодох бүртгэл",
+  "metaId" : "1515576114483",
+  "metaCode" : "KPI_ITEM_LIST",
+  "metaName" : "Барааны жагсаалт",
+  "metaType" : "error",
+  "messageText" : "Сервис асаагүй байна түр хүлээнэ үү."
+}, {
+  "fileName" : "Нягтлан бодох бүртгэл",
+  "metaId" : "1530521446696",
+  "metaCode" : "getMaxNumberString",
+  "metaName" : "getMaxNumberString",
+  "metaType" : "error",
+  "messageText" : "Сервис асаагүй байна түр хүлээнэ үү."
+}, {
+  "fileName" : "Нягтлан бодох бүртгэл",
+  "metaId" : "1532324476018445",
+  "metaCode" : "FIN_INVOICE_IM_BOOK_TYPE",
+  "metaName" : "FIN_INVOICE_IM_BOOK_TYPE",
+  "metaType" : "error",
+  "messageText" : "Сервис асаагүй байна түр хүлээнэ үү."
+}, {
+  "fileName" : "Нягтлан бодох бүртгэл",
+  "metaId" : "1527755668290",
+  "metaCode" : "IM_ITEM_FA_ASSET_LIST",
+  "metaName" : "IM_ITEM_FA_ASSET_LIST",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-01789: query block has incorrect number of result columns"
+}, {
+  "fileName" : "Нягтлан бодох бүртгэл",
+  "metaId" : "1578378231259816",
+  "metaCode" : "importCmTransactionFromKhaanGetLast_Dv",
+  "metaName" : "importCmTransactionFromKhaanGetLast_Dv",
+  "metaType" : "error",
+  "messageText" : "Сервис асаагүй байна түр хүлээнэ үү."
+}, {
+  "fileName" : "Нягтлан бодох бүртгэл",
+  "metaId" : "1532465800871113",
+  "metaCode" : "getAssetKeyList",
+  "metaName" : "getAssetKeyList",
+  "metaType" : "error",
+  "messageText" : "Сервис асаагүй байна түр хүлээнэ үү."
+}, {
+  "fileName" : "Нягтлан бодох бүртгэл",
+  "metaId" : "1564707385143",
+  "metaCode" : "OUTCOME_IM_ITEM_BUTEZ_LIST",
+  "metaName" : "OUTCOME_IM_ITEM_BUTEZ_LIST",
+  "metaType" : "error",
+  "messageText" : "Сервис асаагүй байна түр хүлээнэ үү."
+}, {
+  "fileName" : "Нягтлан бодох бүртгэл",
+  "metaId" : "1493719278041",
+  "metaCode" : "FA_ASSET_COUNT_DIFF_LIST",
+  "metaName" : "Зөрүүтэй хөрөнгийн жагсаалт",
+  "metaType" : "error",
+  "messageText" : "Сервис асаагүй байна түр хүлээнэ үү."
+}, {
+  "fileName" : "Нягтлан бодох бүртгэл",
+  "metaId" : "1567739742580",
+  "metaCode" : "FIN_COUNT_GROUP_FA_DV",
+  "metaName" : "Комисс",
+  "metaType" : "error",
+  "messageText" : "Сервис асаагүй байна түр хүлээнэ үү."
+}, {
+  "fileName" : "Нягтлан бодох бүртгэл",
+  "metaId" : "1456214419948",
+  "metaCode" : "FIN_ACCOUNT_DVL5",
+  "metaName" : "Мөнгөн хөрөнгийн данс",
+  "metaType" : "error",
+  "messageText" : "Сервис асаагүй байна түр хүлээнэ үү."
+}, {
+  "fileName" : "Нягтлан бодох бүртгэл",
+  "metaId" : "1572006963533",
+  "metaCode" : "faRentRoleList",
+  "metaName" : "faRentRoleList",
+  "metaType" : "error",
+  "messageText" : "Сервис асаагүй байна түр хүлээнэ үү."
+}, {
+  "fileName" : "Нягтлан бодох бүртгэл",
+  "metaId" : "1525922994814",
+  "metaCode" : "IM_ITEM_BOOK_STRUCTURE_STANDART",
+  "metaName" : "imItemBookStandart - Structure",
+  "metaType" : "error",
+  "messageText" : "Сервис асаагүй байна түр хүлээнэ үү."
+}, {
+  "fileName" : "Нягтлан бодох бүртгэл",
+  "metaId" : "1683087041225373",
+  "metaCode" : "FaAssetCardUpdate",
+  "metaName" : "Баркод шинэчлэх",
+  "metaType" : "error",
+  "messageText" : "Сервис асаагүй байна түр хүлээнэ үү."
+}, {
+  "fileName" : "Нягтлан бодох бүртгэл",
+  "metaId" : "1594007739122390",
+  "metaCode" : "CLOSE_TRX_ACCOUNT_LIST",
+  "metaName" : "Хаалтын төрлийн жагсаалт",
+  "metaType" : "error",
+  "messageText" : "Сервис асаагүй байна түр хүлээнэ үү."
+}, {
+  "fileName" : "Нягтлан бодох бүртгэл",
+  "metaId" : "1595312361243345",
+  "metaCode" : "finCoAGroupSortOrderDv",
+  "metaName" : "finCoAGroupSortOrderDv",
+  "metaType" : "error",
+  "messageText" : "Сервис асаагүй байна түр хүлээнэ үү."
+}, {
+  "fileName" : "Нягтлан бодох бүртгэл",
+  "metaId" : "1577155044844",
+  "metaCode" : "bmRequirementList",
+  "metaName" : "bmRequirementList",
+  "metaType" : "error",
+  "messageText" : "Сервис асаагүй байна түр хүлээнэ үү."
+}, {
+  "fileName" : "Нягтлан бодох бүртгэл",
+  "metaId" : "16093019235253",
+  "metaCode" : "FA_ASSET_CARD_CONTAINERS_DVLIST",
+  "metaName" : "FA_ASSET_CARD_CONTAINERS_DVLIST",
+  "metaType" : "error",
+  "messageText" : "Сервис асаагүй байна түр хүлээнэ үү."
+}, {
+  "fileName" : "Нягтлан бодох бүртгэл",
+  "metaId" : "1601026320408",
+  "metaCode" : "FIN_CUSTOMER_SEG_DVLIST",
+  "metaName" : "Харилцагчийн жагсаалт /сегмент/",
+  "metaType" : "error",
+  "messageText" : "Сервис асаагүй байна түр хүлээнэ үү."
+}, {
+  "fileName" : "Нягтлан бодох бүртгэл",
+  "metaId" : "1528428459232544",
+  "metaCode" : "IM_CLASSIFICATION_DV",
+  "metaName" : "Ангилал",
+  "metaType" : "error",
+  "messageText" : "Сервис асаагүй байна түр хүлээнэ үү."
+}, {
+  "fileName" : "Нягтлан бодох бүртгэл",
+  "metaId" : "1605694823425420",
+  "metaCode" : "SM_INVOICE_STRUCTURE",
+  "metaName" : "Буцаалт",
+  "metaType" : "error",
+  "messageText" : "Сервис асаагүй байна түр хүлээнэ үү."
+}, {
+  "fileName" : "Нягтлан бодох бүртгэл",
+  "metaId" : "16141598156591",
+  "metaCode" : "REP_FIN_AUDIT_CT3A",
+  "metaName" : "Мөнгөн гүйлгээний тайлан",
+  "metaType" : "error",
+  "messageText" : "Сервис асаагүй байна түр хүлээнэ үү."
+}, {
+  "fileName" : "Нягтлан бодох бүртгэл",
+  "metaId" : "1616097098136131",
+  "metaCode" : "META_GROUP_CRITERIA_TEMPLATE_DV",
+  "metaName" : "META_GROUP_CRITERIA_TEMPLATE_DV",
+  "metaType" : "error",
+  "messageText" : "Сервис асаагүй байна түр хүлээнэ үү."
+}, {
+  "fileName" : "Нягтлан бодох бүртгэл",
+  "metaId" : "16136547133651",
+  "metaCode" : "REP_FIN_AUDIT_CTT2",
+  "metaName" : "Богино хугацаат хөрөнгө оруулалтын тодруулга",
+  "metaType" : "error",
+  "messageText" : "Сервис асаагүй байна түр хүлээнэ үү."
+}, {
+  "fileName" : "Нягтлан бодох бүртгэл",
+  "metaId" : "1616096815137286",
+  "metaCode" : "META_GROUP_CRITERIA_TEMPLATE_LIST",
+  "metaName" : "Тайлангийн шүүлтийн жагсаалт",
+  "metaType" : "error",
+  "messageText" : "Сервис асаагүй байна түр хүлээнэ үү."
+}, {
+  "fileName" : "Нягтлан бодох бүртгэл",
+  "metaId" : "16145725802791",
+  "metaCode" : "ACCREAL_BASED_TRIAL_BALANCE_DV",
+  "metaName" : "Аккрэуль суурьт шалгах баланс",
+  "metaType" : "error",
+  "messageText" : "Сервис асаагүй байна түр хүлээнэ үү."
+}, {
+  "fileName" : "Нягтлан бодох бүртгэл",
+  "metaId" : "1622346332368872",
+  "metaCode" : "getTableNameDeleteQuery",
+  "metaName" : "getTableNameDeleteQuery",
+  "metaType" : "error",
+  "messageText" : "Сервис асаагүй байна түр хүлээнэ үү."
+}, {
+  "fileName" : "Нягтлан бодох бүртгэл",
+  "metaId" : "1464225567165",
+  "metaCode" : "finFiscalPeriodDepartment",
+  "metaName" : "finFiscalPeriodDepartment",
+  "metaType" : "error",
+  "messageText" : "Сервис асаагүй байна түр хүлээнэ үү."
+}, {
+  "fileName" : "Нягтлан бодох бүртгэл",
+  "metaId" : "1621561254751000",
+  "metaCode" : "FinCrmBlacklistTypeDv",
+  "metaName" : "FinCrmBlacklistTypeDv",
+  "metaType" : "error",
+  "messageText" : "Сервис асаагүй байна түр хүлээнэ үү."
+}, {
+  "fileName" : "Нягтлан бодох бүртгэл",
+  "metaId" : "1461219719110",
+  "metaCode" : "SM_SECTION_DV_LIST",
+  "metaName" : "Тасаг",
+  "metaType" : "error",
+  "messageText" : "Сервис асаагүй байна түр хүлээнэ үү."
+}, {
+  "fileName" : "Нягтлан бодох бүртгэл",
+  "metaId" : "1605642542582312",
+  "metaCode" : "imCheckBookWarehouseSaleReturnList",
+  "metaName" : "Барааны жагсаалт /борлуулатын буцаалт/",
+  "metaType" : "error",
+  "messageText" : "Сервис асаагүй байна түр хүлээнэ үү."
+}, {
+  "fileName" : "Нягтлан бодох бүртгэл",
+  "metaId" : "1622183055824540",
+  "metaCode" : "sdmUmUserCompany",
+  "metaName" : "sdmUmUserCompany",
+  "metaType" : "error",
+  "messageText" : "Сервис асаагүй байна түр хүлээнэ үү."
+}, {
+  "fileName" : "Нягтлан бодох бүртгэл",
+  "metaId" : "1500885726830015",
+  "metaCode" : "imItemCostLog",
+  "metaName" : "Өртөг бодолтын явц",
+  "metaType" : "error",
+  "messageText" : "Сервис асаагүй байна түр хүлээнэ үү."
+}, {
+  "fileName" : "Нягтлан бодох бүртгэл",
+  "metaId" : "1456295501371",
+  "metaCode" : "sdmdv044dv",
+  "metaName" : "Барааны жагсаалт",
+  "metaType" : "error",
+  "messageText" : "Сервис асаагүй байна түр хүлээнэ үү."
+}, {
+  "fileName" : "Нягтлан бодох бүртгэл",
+  "metaId" : "1606051153814080",
+  "metaCode" : "ТТ-12-3_XM-12_3_DV",
+  "metaName" : "ТТ-12-3_XM-12_3_DV",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00942: table or view does not exist"
+}, {
+  "fileName" : "Нягтлан бодох бүртгэл",
+  "metaId" : "1482142709589",
+  "metaCode" : "networkExpInvList",
+  "metaName" : "Сүлжээний нэхэмжлэхийн жагсаалт",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00942: table or view does not exist"
+}, {
+  "fileName" : "Нягтлан бодох бүртгэл",
+  "metaId" : "1482831797418512",
+  "metaCode" : "icInvoiceBookFuelExpenseList",
+  "metaName" : "icInvoiceBookFuelExpenseList",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00942: table or view does not exist"
+}, {
+  "fileName" : "Нягтлан бодох бүртгэл",
+  "metaId" : "1709805538007630",
+  "metaCode" : "V_AR_RISK_LGD",
+  "metaName" : "LGD",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00904: \"T0\".\"C37\": invalid identifier"
+}, {
+  "fileName" : "Нягтлан бодох бүртгэл",
+  "metaId" : "1477362255752",
+  "metaCode" : "arRiskRuleDV",
+  "metaName" : "arRiskRuleDV",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00904: \"T0\".\"STAGE\": invalid identifier"
+}, {
+  "fileName" : "Нягтлан бодох бүртгэл",
+  "metaId" : "1542451416336",
+  "metaCode" : "imItemMaterialEqItemEndList",
+  "metaName" : "imItemMaterialEqItemEndList",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00904: \"K\".\"COMPANY_DEPARTMENT_ID\": invalid identifier"
+}, {
+  "fileName" : "Агуулахын удирдлага",
+  "metaId" : "16178666727211",
+  "metaCode" : "intUokMainDvList",
+  "metaName" : "Үндсэн ажилтны жагсаалт",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00942: table or view does not exist"
+}, {
+  "fileName" : "Нягтлан бодох бүртгэл",
+  "metaId" : "21603873481509",
+  "metaCode" : "USHT_03_DV",
+  "metaName" : "USHT_03 DV",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00942: table or view does not exist"
+}, {
+  "fileName" : "Нягтлан бодох бүртгэл",
+  "metaId" : "21603873469157",
+  "metaCode" : "USHT_01_DV",
+  "metaName" : "USHT_01 DV",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00904: \"CURRENCY_ID\": invalid identifier"
+}, {
+  "fileName" : "Нягтлан бодох бүртгэл",
+  "metaId" : "16476550606519",
+  "metaCode" : "FIN_IM_MPR16",
+  "metaName" : "FIN_IM_MPR16",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00907: missing right parenthesis"
+}, {
+  "fileName" : "Нягтлан бодох бүртгэл",
+  "metaId" : "1606047449569297",
+  "metaCode" : "ТТ-12-3_XM-12_4_DV",
+  "metaName" : "ТТ-12-3_XM-12_4_DV",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00942: table or view does not exist"
+}, {
+  "fileName" : "Нягтлан бодох бүртгэл",
+  "metaId" : "16564139247529",
+  "metaCode" : "FIN_IM_MPR1CHECK",
+  "metaName" : "Журналд холбогдоогүй баримт/БМ check/",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLException: ORA-01427: single-row subquery returns more than one row"
+}, {
+  "fileName" : "Нягтлан бодох бүртгэл",
+  "metaId" : "1489743033905",
+  "metaCode" : "arRiskRuleDVList",
+  "metaName" : "Эрсдлийн хувь",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00904: \"STAGE\": invalid identifier"
+}, {
+  "fileName" : "Нягтлан бодох бүртгэл",
+  "metaId" : "1447224047700",
+  "metaCode" : "FIN_GENERAL_LEDGER_BOOK_STRUCTURE",
+  "metaName" : "finGeneralLedgerBook - Structure",
+  "metaType" : "error",
+  "messageText" : "java.sql.SQLSyntaxErrorException: ORA-00904: \"T0\".\"MODIFIED_USER_LOG_ID\": invalid identifier"
+} ]

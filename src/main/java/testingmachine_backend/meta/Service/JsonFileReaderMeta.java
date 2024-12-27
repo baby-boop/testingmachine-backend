@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 public class JsonFileReaderMeta {
 
     private static final Logger LOGGER = Logger.getLogger(JsonFileReaderMeta.class.getName());
-    private static final String DIRECTORY_PATH = "C:\\Users\\batde\\Documents\\testingmachine-backend\\src\\json\\metalist\\result";
+    private static final String DIRECTORY_PATH = "src/main/java/testingmachine_backend/json/metalist/result";
     private static final String JSON_FILE_NAME = DIRECTORY_PATH + File.separator + JsonController.getJsonId() + "_result.json";
 
     /**

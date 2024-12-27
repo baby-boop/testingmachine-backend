@@ -14,8 +14,8 @@ public class FileController {
 //            "C:\\Users\\batde\\Documents\\testingmachine-backend\\src\\json\\process\\header",
 //            "C:\\Users\\batde\\Documents\\testingmachine-backend\\src\\json\\process\\result"
 
-            "C:\\Users\\batde\\Documents\\testingmachine-backend\\src\\main\\java\\testingmachine_backend\\json\\metalistwithprocess\\header",
-            "C:\\Users\\batde\\Documents\\testingmachine-backend\\src\\main\\java\\testingmachine_backend\\json\\metalistwithprocess\\result"
+            "src/main/java/testingmachine_backend/json/metalistwithprocess/header",
+            "src/main/java/testingmachine_backend/json/metalistwithprocess/result"
     );
 
     @GetMapping("/list-folders")
