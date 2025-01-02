@@ -28,13 +28,14 @@ public class MetaCallDataview {
     private static final String HOST =  "http://" + JsonController.getSystemURL();
 //    private static final String HOST = JsonController.getSystemURL();
     private static final String PORT = ":8080";
+//    private static final String URL = "/javarestapi";
     private static final String URL = "/erp-services/RestWS/runJson";
-    private static final String SERVICE_URL =  HOST  + PORT + URL;
+    private static final String SERVICE_URL =  HOST + PORT + URL;
     private static final String DATAVIEW = "pfFindModuleMetaLookupIdsDv";
     public static List<MetadataDTO> getProcessMetaDataList() {
 
         SslDisableClass.SslDisabler();
-        String systemId = JsonController.getModuleId();
+        String moduleId = JsonController.getModuleId();
         String USERNAME = JsonController.getUsername();
         String PASSWORD = JsonController.getPassword();
         String UNITNAME = JsonController.getDatabaseUsername();
@@ -52,7 +53,7 @@ public class MetaCallDataview {
                     "filtermoduleid": "%s"
                 }
             }
-            """.formatted(USERNAME, PASSWORD, UNITNAME, DATAVIEW, systemId);
+            """.formatted(USERNAME, PASSWORD, UNITNAME, DATAVIEW, moduleId);
         try {
             RestTemplate restTemplate = new RestTemplate();
 

@@ -9,20 +9,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import static testingmachine_backend.controller.JsonController.BASE_DIRECTORY;
+
 @Service
 public class SystemService {
 
-    private static final String DIRECTORY_PATH1 = "src/main/java/testingmachine_backend/json/process/header";
-    private static final String DIRECTORY_PATH2 = "src/main/java/testingmachine_backend/json/metalist/header";
-    private static final String DIRECTORY_PATH3 = "src/main/java/testingmachine_backend/json/metalistwithprocess/header";
-
     private String determineDirectoryPath(String selectedModule) {
         if ("process".equalsIgnoreCase(selectedModule)) {
-            return DIRECTORY_PATH1;
+            return BASE_DIRECTORY + "/process/header";
         } else if ("meta".equalsIgnoreCase(selectedModule)) {
-            return DIRECTORY_PATH2;
+            return BASE_DIRECTORY + "/metalist/header";
         } else {
-            return DIRECTORY_PATH3;
+            return BASE_DIRECTORY + "/metalistwithprocess/header";
         }
     }
 
@@ -44,9 +42,7 @@ public class SystemService {
                     SystemData data = objectMapper.readValue(file, SystemData.class);
                     allSystemData.add(data);
                 } catch (IOException e) {
-                    e.printStackTrace(
-                            System.out
-                    );
+                    e.printStackTrace(System.out); // Log errors to the console
                 }
             }
         }
@@ -60,7 +56,7 @@ public class SystemService {
             String directoryPath = determineDirectoryPath(data.getSelectedModule());
             File directory = new File(directoryPath);
             if (!directory.exists()) {
-                directory.mkdirs();
+                directory.mkdirs(); // Ensure the directory exists
             }
 
             String generatedId = UUID.randomUUID().toString();
@@ -70,7 +66,7 @@ public class SystemService {
 
             return data;
         } catch (IOException e) {
-            e.printStackTrace(System.out);
+            e.printStackTrace(System.out); // Log errors to the console
             return null;
         }
     }

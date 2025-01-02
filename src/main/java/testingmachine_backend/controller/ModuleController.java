@@ -5,7 +5,6 @@ import testingmachine_backend.TestingmachineBackendApplication;
 import testingmachine_backend.config.CounterDTO;
 import testingmachine_backend.config.CounterService;
 
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -45,7 +44,7 @@ public class ModuleController {
             }
 
         } catch (Exception e) {
-            errorMessage = "Модуль ажиллуулахад алдаа гарлаа! ";
+            errorMessage = "Модуль ажиллуулахад алдаа гарлаа! " + e;
             return errorMessage;
         }
 

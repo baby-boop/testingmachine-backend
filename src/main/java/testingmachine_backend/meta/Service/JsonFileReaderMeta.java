@@ -11,10 +11,13 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static testingmachine_backend.controller.JsonController.BASE_DIRECTORY;
+
 public class JsonFileReaderMeta {
 
     private static final Logger LOGGER = Logger.getLogger(JsonFileReaderMeta.class.getName());
-    private static final String DIRECTORY_PATH = "src/main/java/testingmachine_backend/json/metalist/result";
+
+    private static final String DIRECTORY_PATH = BASE_DIRECTORY + "/metalist/result";
     private static final String JSON_FILE_NAME = DIRECTORY_PATH + File.separator + JsonController.getJsonId() + "_result.json";
 
     /**
