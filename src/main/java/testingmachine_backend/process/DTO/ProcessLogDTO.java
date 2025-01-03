@@ -9,14 +9,14 @@ import java.util.Objects;
 @Getter
 public class ProcessLogDTO {
 
-    private String fileName;
+    private String moduleName;
     private String processId;
     private String logType;
     private String messageText;
     private String jsonId;
 
-    public ProcessLogDTO(String fileName, String processId, String logType, String messageText, String jsonId) {
-        this.fileName = fileName;
+    public ProcessLogDTO(String moduleName, String processId, String logType, String messageText, String jsonId) {
+        this.moduleName = moduleName;
         this.processId = processId;
         this.logType = logType;
         this.messageText = messageText;
@@ -28,7 +28,7 @@ public class ProcessLogDTO {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ProcessLogDTO that = (ProcessLogDTO) o;
-        return Objects.equals(fileName, that.fileName) &&
+        return Objects.equals(moduleName, that.moduleName) &&
                 Objects.equals(processId, that.processId) &&
                 Objects.equals(logType, that.logType) &&
                 Objects.equals(messageText, that.messageText) &&
@@ -37,7 +37,7 @@ public class ProcessLogDTO {
 
     @Override
     public int hashCode() {
-        return Objects.hash(fileName, processId, logType, messageText, jsonId);
+        return Objects.hash(moduleName, processId, logType, messageText, jsonId);
     }
 }
 

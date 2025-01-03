@@ -27,12 +27,15 @@ public class JsonFileReaderMeta {
      * @param <T> The type of the DTO.
      */
     public static <T> void saveToSingleJsonFile(T dto) {
+        // Шинэ JSON ID-г авах
+        String jsonId = JsonController.getJsonId();
+        String currentJsonFileName = DIRECTORY_PATH + File.separator + jsonId + "_result.json";
         File directory = new File(DIRECTORY_PATH);
         if (!directory.exists()) {
             directory.mkdirs();
         }
 
-        File jsonFile = new File(JSON_FILE_NAME);
+        File jsonFile = new File(currentJsonFileName);
         ObjectMapper objectMapper = new ObjectMapper();
         List<Object> dtoList = new ArrayList<>();
 
@@ -40,8 +43,10 @@ public class JsonFileReaderMeta {
             try {
                 dtoList = objectMapper.readValue(jsonFile, new TypeReference<List<Object>>() {});
             } catch (IOException e) {
-                LOGGER.log(Level.WARNING, "Error reading existing JSON file. Creating a new list.", e);
+                LOGGER.log(Level.WARNING, "Error reading JSON file.", e);
             }
+        } else {
+            LOGGER.log(Level.INFO, "Creating new JSON file for ID: " + jsonId);
         }
 
         dtoList.add(dto);
@@ -52,4 +57,7 @@ public class JsonFileReaderMeta {
             LOGGER.log(Level.SEVERE, "Error saving DTO to JSON file", e);
         }
     }
+
 }
+
+//Энэхүү код эхний удаа зөв үүсгээд ажиллаж байгаа боловч 2 дахь удаа шинээр үүсгэхгүй эхний үүсгэсэн дээр датагаа нэмэж байна. JsonController.getJsonId()-оор шалгаж хэрэв байхгүй бол үүсгэх. Үүссэн байвал одоо байгаа JsonController.getJsonId()-аар шалгаж тухайн Json дээр л датаг нэмэх хэрэгтэй

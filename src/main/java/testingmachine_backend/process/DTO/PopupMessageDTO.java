@@ -8,15 +8,15 @@ import java.util.Objects;
 @Getter
 @Setter
 public class PopupMessageDTO {
-    private String fileName;
+    private String moduleName;
 
     private String processId;
     private String dataPath;
     private String messageText;
     private String jsonId;
 
-    public PopupMessageDTO(String fileName, String processId, String dataPath, String messageText, String jsonId) {
-        this.fileName = fileName;
+    public PopupMessageDTO(String moduleName, String processId, String dataPath, String messageText, String jsonId) {
+        this.moduleName = moduleName;
         this.processId = processId;
         this.dataPath = dataPath;
         this.messageText = messageText;
@@ -28,7 +28,7 @@ public class PopupMessageDTO {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PopupMessageDTO that = (PopupMessageDTO) o;
-        return Objects.equals(fileName, that.fileName) &&
+        return Objects.equals(moduleName, that.moduleName) &&
                 Objects.equals(processId, that.processId) &&
                 Objects.equals(dataPath, that.dataPath) &&
                 Objects.equals(messageText, that.messageText) &&
@@ -37,6 +37,6 @@ public class PopupMessageDTO {
 
     @Override
     public int hashCode() {
-        return Objects.hash(fileName, processId, dataPath, messageText, jsonId);
+        return Objects.hash(moduleName, processId, dataPath, messageText, jsonId);
     }
 }

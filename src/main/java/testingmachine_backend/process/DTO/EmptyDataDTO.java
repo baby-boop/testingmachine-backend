@@ -9,14 +9,14 @@ import java.util.Objects;
 @Setter
 public class EmptyDataDTO {
 
-    private String fileName;
+    private String moduleName;
     private String processId;
     private String dataPath;
     private String dataType;
     private String jsonId;
 
-    public EmptyDataDTO(String fileName, String processId, String dataPath, String dataType, String jsonId) {
-        this.fileName = fileName;
+    public EmptyDataDTO(String moduleName, String processId, String dataPath, String dataType, String jsonId) {
+        this.moduleName = moduleName;
         this.processId = processId;
         this.dataPath = dataPath;
         this.dataType = dataType;
@@ -28,7 +28,7 @@ public class EmptyDataDTO {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         EmptyDataDTO that = (EmptyDataDTO) o;
-        return Objects.equals(fileName, that.fileName) &&
+        return Objects.equals(moduleName, that.moduleName) &&
                 Objects.equals(processId, that.processId) &&
                 Objects.equals(dataPath, that.dataPath) &&
                 Objects.equals(dataType, that.dataType) &&
@@ -37,6 +37,6 @@ public class EmptyDataDTO {
 
     @Override
     public int hashCode() {
-        return Objects.hash(fileName, processId, dataPath, dataType, jsonId);
+        return Objects.hash(moduleName, processId, dataPath, dataType, jsonId);
     }
 }

@@ -130,7 +130,7 @@ public class ProcessPath {
 
     public static boolean isDuplicateLogEntry(String systemName, String id) {
         return ElementsFunctionUtils.ProcessLogFields.stream()
-                .anyMatch(log -> log.getFileName().equals(systemName) && log.getProcessId().equals(id));
+                .anyMatch(log -> log.getModuleName().equals(systemName) && log.getProcessId().equals(id));
     }
 
 

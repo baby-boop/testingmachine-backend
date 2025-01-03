@@ -7,15 +7,15 @@ import lombok.Setter;
 @Getter
 public class RequiredPathDTO {
 
-    private String fileName;
+    private String moduleName;
     private String processId;
     private String logType;
     private String messageText;
     private String jsonId;
 
 
-    public RequiredPathDTO(String fileName, String processId, String logType, String messageText, String jsonId) {
-        this.fileName = fileName;
+    public RequiredPathDTO(String moduleName, String processId, String logType, String messageText, String jsonId) {
+        this.moduleName = moduleName;
         this.processId = processId;
         this.logType = logType;
         this.messageText = messageText;
