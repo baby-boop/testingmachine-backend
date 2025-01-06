@@ -21,7 +21,7 @@ import java.util.List;
 @CrossOrigin(origins = "*")
 public class JsonController {
 
-    public static final String BASE_DIRECTORY = "/opt/app/json_data";
+    public static final String BASE_DIRECTORY = "/json_data";
 //    public static final String BASE_DIRECTORY = "src/main/java/testingmachine_backend/json";
     private static final String META_HEADER_PATH = BASE_DIRECTORY + "/metalist/header";
     private static final String META_RESULT_PATH = BASE_DIRECTORY + "/metalist/result";

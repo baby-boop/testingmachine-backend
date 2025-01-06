@@ -6,6 +6,7 @@ import testingmachine_backend.controller.JsonController;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -18,7 +19,6 @@ public class JsonFileReaderMeta {
     private static final Logger LOGGER = Logger.getLogger(JsonFileReaderMeta.class.getName());
 
     private static final String DIRECTORY_PATH = BASE_DIRECTORY + "/metalist/result";
-    private static final String JSON_FILE_NAME = DIRECTORY_PATH + File.separator + JsonController.getJsonId() + "_result.json";
 
     /**
      * Save a DTO to a single JSON file, appending it to a list of existing DTOs.
@@ -26,9 +26,8 @@ public class JsonFileReaderMeta {
      * @param dto The DTO object to save.
      * @param <T> The type of the DTO.
      */
-    public static <T> void saveToSingleJsonFile(T dto) {
-        // Шинэ JSON ID-г авах
-        String jsonId = JsonController.getJsonId();
+    public static <T> void saveToSingleJsonFile(T dto, String jsonId) {
+
         String currentJsonFileName = DIRECTORY_PATH + File.separator + jsonId + "_result.json";
         File directory = new File(DIRECTORY_PATH);
         if (!directory.exists()) {
@@ -59,5 +58,3 @@ public class JsonFileReaderMeta {
     }
 
 }
-
-//Энэхүү код эхний удаа зөв үүсгээд ажиллаж байгаа боловч 2 дахь удаа шинээр үүсгэхгүй эхний үүсгэсэн дээр датагаа нэмэж байна. JsonController.getJsonId()-оор шалгаж хэрэв байхгүй бол үүсгэх. Үүссэн байвал одоо байгаа JsonController.getJsonId()-аар шалгаж тухайн Json дээр л датаг нэмэх хэрэгтэй

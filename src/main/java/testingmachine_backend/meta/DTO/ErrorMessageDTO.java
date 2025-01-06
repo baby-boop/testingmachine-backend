@@ -25,5 +25,4 @@ public class ErrorMessageDTO {
         this.jsonId = jsonId;
     }
 
-
 }

@@ -14,7 +14,7 @@ public class MainProcess {
 
     private static final Logger logger = Logger.getLogger(MainProcess.class.getName());
 
-    public static void mainProcess() {
+    public static void mainProcess(String jsonId) {
         Map<String, String> loggingPrefs = Map.of(
                 LogType.BROWSER, "ALL"
         );
@@ -32,7 +32,7 @@ public class MainProcess {
         WebDriver driver = new ChromeDriver(options);
         try {
             ProcessList tool = new ProcessList(driver);
-            tool.mainTool();
+            tool.mainTool(jsonId);
 
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Error RemoteWebDriver", e);

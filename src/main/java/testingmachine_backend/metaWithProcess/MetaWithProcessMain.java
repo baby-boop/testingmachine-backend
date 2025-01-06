@@ -10,7 +10,7 @@ import java.util.Map;
 public class MetaWithProcessMain {
 
 
-    public static void mainProcess() {
+    public static void mainProcess(String jsonId) {
 
         Map<String, String> loggingPrefs = Map.of(
                 LogType.BROWSER, "ALL"
@@ -26,7 +26,7 @@ public class MetaWithProcessMain {
         try{
             MetaWithProcessList tool = new MetaWithProcessList(driver);
 
-            tool.mainTool();
+            tool.mainTool(jsonId);
         }finally {
 //            driver.quit();
             System.out.println("completed");

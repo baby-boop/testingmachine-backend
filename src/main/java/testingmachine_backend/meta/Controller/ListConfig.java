@@ -57,7 +57,7 @@ public class ListConfig {
     * GOLOMT UAT
     *
     * */
-    public static final String BaseUrl = "https://"+ JsonController.getSystemURL();
+    public static final String BaseUrl = JsonController.getSystemURL();
     public static final String LoginUrl = BaseUrl + "/login";
     public static final String MainUrl = BaseUrl + "/mdobject/dataview/";
     public static final String USERNAME = "264b12848";

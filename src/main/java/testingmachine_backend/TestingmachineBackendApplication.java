@@ -1,9 +1,14 @@
+
+
+
+
 package testingmachine_backend;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import testingmachine_backend.controller.JsonController;
 import testingmachine_backend.meta.MetaList.MetaMain;
 
 import testingmachine_backend.metaWithProcess.MetaWithProcessMain;
@@ -39,17 +44,17 @@ public class TestingmachineBackendApplication
 		switch (module) {
 			case "meta":
 				System.out.println("Тест эхлэж байна... 1");
-				MetaMain.mainSystem();
+				MetaMain.mainSystem(JsonController.getJsonId());
 				result = "Тест хийж дууссан";
 				break;
 			case "process":
 				System.out.println("Тест эхлэж байна... 2");
-				MainProcess.mainProcess();
+				MainProcess.mainProcess(JsonController.getJsonId());
 				result = "Тест хийж дууссан";
 				break;
 			case "metaWithProcess":
 				System.out.println("Тест эхлэж байна... 3");
-				MetaWithProcessMain.mainProcess();
+				MetaWithProcessMain.mainProcess(JsonController.getJsonId());
 				result = "Тест хийж дууссан";
 				break;
 			default:
@@ -59,3 +64,4 @@ public class TestingmachineBackendApplication
 	}
 }
 
+//Би selenium-ийг зэрэгцээ байдлаар ашиглаж чадах уу? Жишээ нь: module сонгоод цаашлаад маш олон үйлдэл хийдэг бөгөөд одоо эхний command ажиллаж байхад дараагийн command орж ирсэн тохиолдолд хамт зэрэгцээ байдлаар ажиллана. Ерөнхийдөө маш олон command ирэх бөгөөд тухай бүрийг ажлуулна. Одоо эхний command ажиллаж байхад дараагийн ирэх үед өмнөх command зогсодог. Тэгэж ажиллаж боломжтой юу?

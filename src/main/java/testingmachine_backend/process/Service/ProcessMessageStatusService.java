@@ -15,9 +15,9 @@ public class ProcessMessageStatusService {
 
     private static final List<ProcessMessageStatusDTO> processMessageStatusList = new ArrayList<>();
 
-    public static void addProcessStatus(String fileName, String id, String code, String name, String status, String messageText, String TestProcessType) {
+    public static void addProcessStatus(String fileName, String id, String code, String name, String status, String messageText, String TestProcessType, String jsonId) {
 
-        ProcessMessageStatusDTO statusDTO = new ProcessMessageStatusDTO(fileName, id, code, name, status, messageText, JsonController.getJsonId(),
+        ProcessMessageStatusDTO statusDTO = new ProcessMessageStatusDTO(fileName, id, code, name, status, messageText, jsonId,
                 ElementsFunctionUtils.getProcessLogMessages(),
                 ElementsFunctionUtils.getUniqueEmptyDataPath(),
                 PopupMessage.getUniquePopupMessages(),
@@ -25,7 +25,7 @@ public class ProcessMessageStatusService {
                 ElementsFunctionUtils.getRequiredPathMessages());
         processMessageStatusList.add(statusDTO);
 
-        JsonFileReader.saveToSingleJsonFile(statusDTO, TestProcessType);
+        JsonFileReader.saveToSingleJsonFile(statusDTO, TestProcessType, jsonId);
         clearAllDTOField();
     }
 

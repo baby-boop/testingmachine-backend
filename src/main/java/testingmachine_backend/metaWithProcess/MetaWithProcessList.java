@@ -27,7 +27,7 @@ public class MetaWithProcessList {
         this.driver = driver;
     }
 
-    public void mainTool() {
+    public void mainTool(String jsonId) {
         try {
             WebDriverWait wait = ConfigProcess.getWebDriverWait(driver);
 
@@ -43,73 +43,17 @@ public class MetaWithProcessList {
                 dbSelect.selectByVisibleText(databaseName);
 
                 Thread.sleep(2000);
-
-                ConfigForAll.loginForm(wait);
-
-                List<MetadataDTO> metaWithProcessList = CallMetaWithProcess.getProcessMetaDataList();
-                System.out.println(metaWithProcessList.size());
-
-                int count = 0;
-                for (MetadataDTO metaData : metaWithProcessList) {
-                    String url = Config.MainUrl + metaData.getId();
-                    driver.get(url);
-
-                    Thread.sleep(1000);
-
-                    waitUtils(driver);
-
-                    if (IsMetaErrorList.isErrorMessagePresent(driver, metaData.getId(), metaData.getModuleName(), metaData.getCode(), metaData.getName())) {
-                        System.out.println("Error with process found in ID: " + metaData.getId());
-                        waitUtils(driver);
-                    }else{
-                        firstRowFromMeta(driver, metaData.getId(), metaData.getModuleName());
-                        waitUtils(driver);
-                        Thread.sleep(5000);
-                        ProcessPath.isProcessPersent(driver, metaData.getId(), metaData.getModuleName(), metaData.getCode(), metaData.getName(), "meta");
-                    }
-                    count++;
-
-                    System.out.println("Process count: " + count + ", id: " + metaData.getId());
                 }
-                System.out.println("End date: " + ConfigProcess.DateUtils.getCurrentDateTime());
-            }
             else{
                 ConfigForAll.loginForm(wait);
-
-                List<MetadataDTO> metaWithProcessList = CallMetaWithProcess.getProcessMetaDataList();
-                int totalMetaCount = metaWithProcessList.size();
-                int count = 0;
-
-                for (MetadataDTO metaData : metaWithProcessList) {
-                    String url = Config.MainUrl + metaData.getId();
-                    driver.get(url);
-
-                    Thread.sleep(1000);
-
-                    waitUtils(driver);
-
-                    if (IsMetaErrorList.isErrorMessagePresent(driver, metaData.getId(), metaData.getModuleName(), metaData.getCode(), metaData.getName())) {
-                        System.out.println("Error found in ID: " + metaData.getId());
-                        waitUtils(driver);
-                    }else{
-                        firstRowFromMeta(driver, metaData.getId(), metaData.getProcessName());
-                        waitUtils(driver);
-                        ProcessPath.isProcessPersent(driver, metaData.getId(), metaData.getModuleName(), metaData.getCode(), metaData.getName(), "meta");
-                    }
-
-                    count++;
-
-                    CounterService.addCounter(count, totalMetaCount);
-
-                    System.out.println("Process count: " + count + ", id: " + metaData.getId());
-                }
-                System.out.println("End date: " + ConfigProcess.DateUtils.getCurrentDateTime());
-                waitUtils(driver);
+                mainList(wait, driver, jsonId);
             }
-            } catch (Exception e) {
+
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
+
     private static void firstRowFromMeta(WebDriver driver, String id, String processName) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(SHORT_WAIT_SECONDS));
         try{
@@ -132,6 +76,41 @@ public class MetaWithProcessList {
                     }
                 }
             }
+        }catch (Exception e){
+            e.printStackTrace(System.out);
+        }
+    }
+
+    public static void mainList(WebDriverWait wait, WebDriver driver, String jsonId) {
+        try{
+            ConfigForAll.loginForm(wait);
+
+            List<MetadataDTO> metaWithProcessList = CallMetaWithProcess.getProcessMetaDataList();
+            System.out.println(metaWithProcessList.size());
+
+            int count = 0;
+            for (MetadataDTO metaData : metaWithProcessList) {
+                String url = Config.MainUrl + metaData.getId();
+                driver.get(url);
+
+                Thread.sleep(1000);
+
+                waitUtils(driver);
+
+                if (IsMetaErrorList.isErrorMessagePresent(driver, metaData.getId(), metaData.getModuleName(), metaData.getCode(), metaData.getName(), jsonId)) {
+                    System.out.println("Error with process found in ID: " + metaData.getId());
+                    waitUtils(driver);
+                }else{
+                    firstRowFromMeta(driver, metaData.getId(), metaData.getModuleName());
+                    waitUtils(driver);
+                    Thread.sleep(5000);
+                    ProcessPath.isProcessPersent(driver, metaData.getId(), metaData.getModuleName(), metaData.getCode(), metaData.getName(), "meta", jsonId);
+                }
+                count++;
+
+                System.out.println("Process count: " + count + ", id: " + metaData.getId());
+            }
+            System.out.println("End date: " + ConfigProcess.DateUtils.getCurrentDateTime());
         }catch (Exception e){
             e.printStackTrace(System.out);
         }

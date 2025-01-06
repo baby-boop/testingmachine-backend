@@ -27,7 +27,7 @@ public class JsonFileReader {
      * @param <T>  The type of the DTO.
      * @param type The type of the JSON file (either "meta" or "process").
      */
-    public static <T> void saveToSingleJsonFile(T dto, String type) {
+    public static <T> void saveToSingleJsonFile(T dto, String type, String jsonId) {
         String directoryPath;
         String jsonFileName;
 
@@ -43,7 +43,7 @@ public class JsonFileReader {
                 return;
         }
 
-        jsonFileName = directoryPath + File.separator + JsonController.getJsonId() + "_result.json";
+        jsonFileName = directoryPath + File.separator + jsonId + "_result.json";
         File directory = new File(directoryPath);
         File jsonFile = new File(jsonFileName);
 

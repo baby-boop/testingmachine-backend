@@ -13,11 +13,9 @@ public class ConfigForAll {
     public static void loginForm(WebDriverWait wait) {
         WebElement userNameField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("user_name")));
         userNameField.sendKeys(JsonController.getUsername());
-//        userNameField.sendKeys(ListConfig.USERNAME);
 
         WebElement passwordField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("pass_word")));
         passwordField.sendKeys(JsonController.getPassword());
-//        passwordField.sendKeys(ListConfig.PASSWORD);
 
         WebElement checkBox = wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("isLdap")));
         checkBox.click();

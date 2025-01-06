@@ -17,11 +17,10 @@ import java.util.List;
 @Slf4j
 public class ProcessCallDataview {
 
-    private static final String http = "http://";
     static String HOST = JsonController.getSystemURL();
     private static final String PORT = "8080";
     private static final String URL = "/erp-services/RestWS/runJson";
-    private static final String SERVICE_URL = http + HOST + ":" + PORT + URL;
+    private static final String SERVICE_URL =  HOST + ":" + PORT + URL;
     private static final String DATAVIEW = "testCaseDvList";
 
     public static List<ProcessMetaData> getProcessMetaDataList() {

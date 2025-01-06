@@ -21,14 +21,14 @@ public class ProcessWizardSection {
     private static final Logger LOGGER = Logger.getLogger(ProcessWizardSection.class.getName());
     private static final int SHORT_WAIT_SECONDS = 2;
 
-    public static void KpiWizardFunction(WebDriver driver, String id, String fileName) {
+    public static void KpiWizardFunction(WebDriver driver, String id, String fileName, String jsonId) {
         List<WebElement> wizardTabpanelPaths = findWizardTabpanelPath(driver, id);
         if(wizardTabpanelPaths != null){
             for (WebElement sectionPath : wizardTabpanelPaths) {
                 String wizardTabId = sectionPath.getAttribute("id");
                 waitUtils(driver);
                 List<WebElement> wizardFieldPath = findWizardFieldPath(driver, id, wizardTabId);
-                processTabElements(driver, wizardFieldPath, id, fileName);
+                processTabElements(driver, wizardFieldPath, id, fileName, jsonId);
 
                 WebElement findNextButton = driver.findElement(By.cssSelector("div[id='bp-window-" + id + "'] li[aria-hidden='false'] a.btn.btn-primary"));
                 findNextButton.click();

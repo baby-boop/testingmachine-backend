@@ -25,7 +25,7 @@ public class MetaCallDataview {
 //    private static final String SERVICE_URL = http + HOST + ":" + PORT + URL;
 //    private static final String DATAVIEW = "pfFindModuleMetaLookupIdsDv";
 
-    private static final String HOST =  "http://" + JsonController.getSystemURL();
+    private static final String HOST =  JsonController.getSystemURL();
 //    private static final String HOST = JsonController.getSystemURL();
     private static final String PORT = ":8080";
 //    private static final String URL = "/javarestapi";

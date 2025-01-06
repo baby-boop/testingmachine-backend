@@ -25,7 +25,7 @@ public class ProcessList {
         this.driver = driver;
     }
 
-    public void mainTool(){
+    public void mainTool(String jsonId){
         try{
 
             WebDriverWait wait = ConfigProcess.getWebDriverWait(driver);
@@ -42,11 +42,11 @@ public class ProcessList {
 
                 Thread.sleep(2000);
 
-                mainProcess(wait);
+                mainProcess(wait, jsonId);
             } else {
                 System.out.println("Database name is empty or null: " + databaseName);
 
-                mainProcess(wait);
+                mainProcess(wait, jsonId);
             }
 
 
@@ -55,7 +55,7 @@ public class ProcessList {
         }
     }
 
-    private void mainProcess(WebDriverWait wait) throws InterruptedException {
+    private void mainProcess(WebDriverWait wait, String jsonId) throws InterruptedException {
 
         ConfigForAll.loginForm(wait);
 
@@ -71,7 +71,7 @@ public class ProcessList {
 
             waitUtils(driver);
 
-            ProcessPath.isProcessPersent(driver, metaData.getId(), metaData.getSystemName(), metaData.getCode(), metaData.getName(), "process");
+            ProcessPath.isProcessPersent(driver, metaData.getId(), metaData.getSystemName(), metaData.getCode(), metaData.getName(), "process", jsonId);
             count++;
 
             CounterService.addCounter(count, totalMetaCount);

@@ -1,7 +1,6 @@
 package testingmachine_backend.meta.MetaList;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -37,13 +36,14 @@ public class MetaLists {
         this.driver = driver;
     }
 
-    public void mainList() {
+    public void mainList(String jsonId) {
         try {
             WebDriverWait wait = ListConfig.getWebDriverWait(driver);
 
             driver.get(ListConfig.LoginUrl);
 
             String databaseName = JsonController.getDatabaseName();
+
             if (!databaseName.isEmpty()) {
 
                 System.out.println("Database name is already set: " + databaseName);
@@ -52,44 +52,18 @@ public class MetaLists {
                 Select dbSelect = new Select(selectDb);
                 dbSelect.selectByVisibleText(databaseName);
 
-                WebElement userNameField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("user_name")));
-                userNameField.sendKeys(JsonController.getUsername());
+                ConfigForAll.loginForm(wait);
 
-                WebElement passwordField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("pass_word")));
-                passwordField.sendKeys(JsonController.getPassword());
-                passwordField.sendKeys(Keys.ENTER);
-
-                Thread.sleep(3000);
                 ListConfig.selectCompanyFunction(driver, wait, "Хишиг-Арвин Групп");
 
-                Thread.sleep(2000);
+                workingWithMainList(driver, jsonId);
 
-                List<MetadataDTO> metaDataList = MetaCallDataview.getProcessMetaDataList();
-
-                int count = 0;
-                for (MetadataDTO metaData : metaDataList) {
-                    String url = ListConfig.MainUrl + metaData.getId();
-                    driver.get(url);
-
-                    Thread.sleep(1000);
-
-                    WaitUtils.retryWaitForLoadToDisappear(driver, metaData.getModuleName(), metaData.getId(), metaData.getCode(), metaData.getName(), 3);
-                    WaitUtils.retryWaitForLoadingToDisappear(driver, metaData.getModuleName(), metaData.getId(), metaData.getCode(), metaData.getName(),3);
-
-                    if (IsErrorMessage.isErrorMessagePresent(driver, metaData.getId(), metaData.getModuleName(), metaData.getCode(), metaData.getName())) {
-                        System.out.println("Error found in ID: " + metaData.getId());
-                    }
-                    count++;
-                    System.out.println("Process count: " + count + ", id: " + metaData.getId());
-                }
             }
             else {
 
                 ConfigForAll.loginForm(wait);
 
-//                workingWithExcel(driver, wait);
-
-                workingWithMainList(driver);
+                workingWithMainList(driver, jsonId);
 
             }
 
@@ -100,7 +74,7 @@ public class MetaLists {
     }
 //
 
-    private static void workingWithMainList(WebDriver driver) {
+    private static void workingWithMainList(WebDriver driver, String jsonId) {
 
         List<MetadataDTO> metaDataList = MetaCallDataview.getProcessMetaDataList();
         int totalMetaCount = metaDataList.size();
@@ -114,10 +88,10 @@ public class MetaLists {
 
             driver.get(url);
 
-            WaitUtils.retryWaitForLoadToDisappear(driver, metaData.getModuleName(), metaData.getId(), metaData.getCode(), metaData.getName(), 3);
-            WaitUtils.retryWaitForLoadingToDisappear(driver, metaData.getModuleName(), metaData.getId(), metaData.getCode(), metaData.getName(), 3);
+            WaitUtils.retryWaitForLoadToDisappear(driver, metaData.getModuleName(), metaData.getId(), metaData.getCode(), metaData.getName(), jsonId, 3);
+            WaitUtils.retryWaitForLoadingToDisappear(driver, metaData.getModuleName(), metaData.getId(), metaData.getCode(), metaData.getName(), jsonId, 3);
 
-            if (IsErrorMessage.isErrorMessagePresent(driver, metaData.getId(), metaData.getModuleName(), metaData.getCode(), metaData.getName())) {
+            if (IsErrorMessage.isErrorMessagePresent(driver, metaData.getId(), metaData.getModuleName(), metaData.getCode(), metaData.getName(), jsonId)) {
                 errorCount++;
                 System.out.println("Error found in ID: " + metaData.getId() + ", errorCount: " + errorCount);
 
@@ -129,10 +103,8 @@ public class MetaLists {
         }
     }
 
-    private static void workingWithExcel(WebDriver driver, WebDriverWait wait) {
+    private static void workingWithExcel(WebDriver driver, WebDriverWait wait, String jsonId) {
         try {
-
-
             String directoryPath = "C:\\Users\\batde\\Downloads\\golomt excel";
             File folder = new File(directoryPath);
             File[] listOfFiles = folder.listFiles((dir, name) -> name.endsWith(".xlsx"));
@@ -171,10 +143,10 @@ public class MetaLists {
 
                         wait.until(ExpectedConditions.visibilityOfElementLocated(By.tagName("body")));
 
-                        WaitUtils.retryWaitForLoadToDisappear(driver, moduleName, id, code, name, 3);
-                        WaitUtils.retryWaitForLoadingToDisappear(driver, moduleName, id, code, name, 3);
+                        WaitUtils.retryWaitForLoadToDisappear(driver, moduleName, id, code, name, jsonId, 3);
+                        WaitUtils.retryWaitForLoadingToDisappear(driver, moduleName, id, code, name, jsonId, 3);
 
-                        if (IsErrorMessage.isErrorMessagePresent(driver, id, moduleName, code, name)) {
+                        if (IsErrorMessage.isErrorMessagePresent(driver, id, moduleName, code, name, jsonId)) {
                             errorCount++;
                             System.out.println("Error found in ID: " + id + "    Module name: " + moduleName + "    Meta error count: " + errorCount);
                         }

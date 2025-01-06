@@ -24,19 +24,19 @@ public class IsProcessMessage {
 
     private static final int SHORT_WAIT_SECONDS = 10;
 
-    public static boolean isErrorMessagePresent(WebDriver driver, String id, String code, String name, String systemName, String TestProcessType) {
+    public static boolean isErrorMessagePresent(WebDriver driver, String id, String code, String name, String systemName, String TestProcessType, String jsonId) {
         try {
             WebElement messageContainer = waitForElement(driver, By.cssSelector(".brighttheme.ui-pnotify-container"), SHORT_WAIT_SECONDS);
             String messageTitle = messageContainer.findElement(By.cssSelector(".ui-pnotify-title")).getText().toLowerCase();
 
             if (messageTitle.contains("warning")) {
-                return processMessage(driver, "warning", id, code, name, systemName, TestProcessType);
+                return processMessage(driver, "warning", id, code, name, systemName, TestProcessType, jsonId );
             } else if (messageTitle.contains("error")) {
-                return processMessage(driver, "error", id, code, name, systemName, TestProcessType);
+                return processMessage(driver, "error", id, code, name, systemName, TestProcessType, jsonId );
             } else if (messageTitle.contains("success")) {
-                return processMessage(driver, "success", id, code, name, systemName, TestProcessType);
+                return processMessage(driver, "success", id, code, name, systemName, TestProcessType, jsonId );
             }   else if (messageTitle.contains("info")) {
-                return processMessage(driver, "info", id, code, name, systemName, TestProcessType);
+                return processMessage(driver, "info", id, code, name, systemName, TestProcessType, jsonId );
             }
             return false;
         } catch (Exception e) {
@@ -45,7 +45,7 @@ public class IsProcessMessage {
         }
     }
 
-    private static boolean processMessage(WebDriver driver, String type, String id, String code, String name, String systemName, String TestProcessType) {
+    private static boolean processMessage(WebDriver driver, String type, String id, String code, String name, String systemName, String TestProcessType, String jsonId) {
         try {
             WebElement messageContent = waitForElement(driver, By.cssSelector(".ui-pnotify-text"), 2);
             String messageText = messageContent.getText();
@@ -65,7 +65,7 @@ public class IsProcessMessage {
                     break;
             }
 
-            ProcessMessageStatusService.addProcessStatus(systemName, id, code, name, type, messageText, TestProcessType);
+            ProcessMessageStatusService.addProcessStatus(systemName, id, code, name, type, messageText, TestProcessType, jsonId);
 
             return true;
         } catch (Exception e) {

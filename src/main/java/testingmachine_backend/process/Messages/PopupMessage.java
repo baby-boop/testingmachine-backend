@@ -20,14 +20,14 @@ public class PopupMessage {
 
     private static final int SHORT_WAIT_SECONDS = 1;
 
-    public static boolean isErrorMessagePresent(WebDriver driver, String datapath, String id, String fileName) {
+    public static boolean isErrorMessagePresent(WebDriver driver, String datapath, String id, String fileName, String jsonId) {
         try {
             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(SHORT_WAIT_SECONDS));
             WebElement messageContainer = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".brighttheme.ui-pnotify-container")));
             WebElement messageTitle = messageContainer.findElement(By.cssSelector(".ui-pnotify-title"));
             String messageTitleText = messageTitle.getText().toLowerCase();
             if (messageTitleText.contains("error") ) {
-                return extractErrorMessage(driver, datapath, id, fileName);
+                return extractErrorMessage(driver, datapath, id, fileName, jsonId);
             }
             return false;
         } catch (Exception e) {
@@ -35,13 +35,13 @@ public class PopupMessage {
         }
     }
 
-    private static boolean extractErrorMessage(WebDriver driver, String datapath, String id, String fileName) {
+    private static boolean extractErrorMessage(WebDriver driver, String datapath, String id, String fileName, String jsonId) {
         try {
             WebDriverWait shortWait = new WebDriverWait(driver, Duration.ofSeconds(2));
             WebElement messageContent = shortWait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".ui-pnotify-text")));
             String messageText = messageContent.getText();
 
-            PopupMessageDTO popupMessages = new PopupMessageDTO(fileName, id, datapath, messageText, JsonController.getJsonId());
+            PopupMessageDTO popupMessages = new PopupMessageDTO(fileName, id, datapath, messageText, jsonId);
 
             PopupMessageField.add(popupMessages);
 //            JsonFileReader.saveToSingleJsonFile(popupMessages);

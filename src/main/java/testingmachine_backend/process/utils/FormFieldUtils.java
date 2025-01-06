@@ -11,11 +11,11 @@ public class FormFieldUtils {
 
     public static void handleElementAction(WebDriver driver, WebElement element, String classAttribute,
                                            String valueAttribute, String typeAttribute, String dataPath,
-                                           String regexData, String required, String id, String fileName) {
+                                           String regexData, String required, String id, String fileName, String jsonId) {
         waitUtils(driver);
-        consoleLogChecker(driver, id, fileName);
+        consoleLogChecker(driver, id, fileName, jsonId);
         if (valueAttribute != null && valueAttribute.isEmpty()) {
-            handleElementSubAction(driver, element, classAttribute, dataPath, regexData, required, id, fileName);}
+            handleElementSubAction(driver, element, classAttribute, dataPath, regexData, required, id, fileName, jsonId);}
         else if (isRadioField(classAttribute)) {
             if (!element.findElement(By.xpath("..")).getAttribute("class").contains("checked")) {
                 element.click();
@@ -29,20 +29,20 @@ public class FormFieldUtils {
 
     }
 
-    private static void handleElementSubAction(WebDriver driver, WebElement element, String classAttribute, String dataPath, String regexData, String required, String id, String fileName) {
+    private static void handleElementSubAction(WebDriver driver, WebElement element, String classAttribute, String dataPath, String regexData, String required, String id, String fileName, String jsonId) {
         if (classAttribute != null && !classAttribute.isEmpty()) {
             if (isPopupField(classAttribute)) {
                 waitUtils(driver);
-                findElementWithPopup(driver, element, dataPath, required, id, fileName);
+                findElementWithPopup(driver, element, dataPath, required, id, fileName, jsonId);
             }  else {
-                handleFieldByType(element, classAttribute, regexData, driver, dataPath, required, id, fileName);
+                handleFieldByType(element, classAttribute, regexData, driver, dataPath, required, id, fileName, jsonId);
             }
         }
 
     }
 
     private static void handleFieldByType(WebElement element, String classAttribute, String regexData,
-                                          WebDriver driver, String dataPath, String required, String id, String fileName) {
+                                          WebDriver driver, String dataPath, String required, String id, String fileName, String jsonId) {
         if (isStringField(classAttribute)) {
             sendKeysBasedOnRegex(element, regexData);
         } else if (isLongField(classAttribute)) {
@@ -77,7 +77,7 @@ public class FormFieldUtils {
         } else if (isTextEditorField(classAttribute)) {
             findTextEditorInput(driver, dataPath, id);
         } else if (isComboField(classAttribute)) {
-            comboboxFunction(driver, dataPath, required, id, fileName);
+            comboboxFunction(driver, dataPath, required, id, fileName, jsonId);
         }else if (isComboGridField(classAttribute)) {
             comboGridFunction(driver, element, dataPath, id , fileName);
         }else if (isIconField(classAttribute)) {

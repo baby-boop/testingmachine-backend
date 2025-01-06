@@ -16,7 +16,7 @@ public class TabDetailsFieldUtils {
     static final Logger LOGGER = Logger.getLogger(TabDetailsFieldUtils.class.getName());
     public static final int SHORT_WAIT_SECONDS = 2;
 
-    public static void tabDetailItems(WebDriver driver, String id, String fileName) {
+    public static void tabDetailItems(WebDriver driver, String id, String fileName, String jsonId) {
         try {
             List<WebElement> tabElementItems = findTabElements(driver);
             if(tabElementItems != null ) {
@@ -28,7 +28,7 @@ public class TabDetailsFieldUtils {
                     String tabIdentifier = tabIdentifierOpt.get();
                     waitUtils(driver);
                     List<WebElement> elementsWithHeaderPaths = findElementsWithHeaderPath(driver, tabIdentifier);
-                    processTabElements(driver, elementsWithHeaderPaths, id, fileName);
+                    processTabElements(driver, elementsWithHeaderPaths, id, fileName, jsonId);
 
                     List<WebElement> elementsWithDataSectionPath = findRowElementsWithSectionPath(driver, tabIdentifier);
                     if (elementsWithDataSectionPath != null) {
@@ -36,7 +36,7 @@ public class TabDetailsFieldUtils {
                             String sectionPath = elementTab.getAttribute("data-section-path");
                             waitUtils(driver);
                             List<WebElement> findTestElement = findTest(driver, tabIdentifier, sectionPath);
-                            processTabElements(driver, findTestElement, id, fileName);
+                            processTabElements(driver, findTestElement, id, fileName, jsonId);
                             List<WebElement> allActionTabPath = findRowActionTabPathsButton(driver, sectionPath);
                             if (allActionTabPath != null) {
                                 List<WebElement> findTabDefaultRows = findRowActionTabDefaultRow(driver, sectionPath);
@@ -48,17 +48,17 @@ public class TabDetailsFieldUtils {
                                         if (onclick.contains("bpAddMainMultiRow")) {
                                             action.click();
                                             waitUtils(driver);
-                                            clickFirstRow(driver, id, fileName, sectionPath, "");
+                                            clickFirstRow(driver, id, fileName, sectionPath, "", jsonId);
                                             waitUtils(driver);
                                             List<WebElement> tabElementPaths1 = findElementsWithTabDetailsPath(driver, sectionPath, tabIdentifier);
-                                            processTabElements(driver, tabElementPaths1, id, fileName);
+                                            processTabElements(driver, tabElementPaths1, id, fileName, jsonId);
                                             break;
                                         } else if (onclick.contains("bpAddMainRow")) {
                                             waitUtils(driver);
                                             action.click();
                                             waitUtils(driver);
                                             List<WebElement> tabElementPaths = findElementsWithTabDetailsPath(driver, sectionPath, tabIdentifier);
-                                            processTabElements(driver, tabElementPaths, id, fileName);
+                                            processTabElements(driver, tabElementPaths, id, fileName, jsonId);
 
 //                                            List<WebElement> rowsToRowShowForms = findRowsToRowShowForm(driver, sectionPath, tabIdentifier, id);
 //                                            if (rowsToRowShowForms != null) {
@@ -77,7 +77,7 @@ public class TabDetailsFieldUtils {
                                     }
                                 }else{
                                     List<WebElement> findTestElement1 = findTest(driver, tabIdentifier, sectionPath);
-                                    processTabElements(driver, findTestElement1, id, fileName);
+                                    processTabElements(driver, findTestElement1, id, fileName, jsonId);
                                 }
                             }
                         }

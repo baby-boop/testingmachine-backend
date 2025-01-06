@@ -1,5 +1,6 @@
 package testingmachine_backend.metaWithProcess.Controller;
 
+import testingmachine_backend.config.JsonFileReader;
 import testingmachine_backend.controller.JsonController;
 import testingmachine_backend.meta.DTO.ErrorMessageDTO;
 
@@ -10,11 +11,11 @@ public class MetaWithProcessStatusService {
 
     private static final List<ErrorMessageDTO> metaMessageStatusList1 = new ArrayList<>();
 
-    public static void addMetaStatus(String moduleName, String id, String code, String name, String type, String messageText) {
-        ErrorMessageDTO statusDTO = new ErrorMessageDTO(moduleName, id, code, name, type, messageText, JsonController.getJsonId());
+    public static void addMetaStatus(String moduleName, String id, String code, String name, String type, String messageText, String jsonId) {
+        ErrorMessageDTO statusDTO = new ErrorMessageDTO(moduleName, id, code, name, type, messageText, jsonId);
         metaMessageStatusList1.add(statusDTO);
 
-        JsonFileReaderMetaWithProcess.saveToSingleJsonFile(statusDTO);
+        JsonFileReader.saveToSingleJsonFile(statusDTO, type, jsonId);
 
         metaMessageStatusList1.clear();
     }

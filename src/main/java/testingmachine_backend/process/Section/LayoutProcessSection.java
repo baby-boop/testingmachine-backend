@@ -19,14 +19,14 @@ public class LayoutProcessSection {
     private static final Logger LOGGER = Logger.getLogger(LayoutProcessSection.class.getName());
     private static final int SHORT_WAIT_SECONDS = 2;
 
-    public static void LayoutFieldFunction(WebDriver driver, String id, String fileName) {
+    public static void LayoutFieldFunction(WebDriver driver, String id, String fileName, String jsonId) {
         List<WebElement> layoutSectionPaths = findLayoutSectionPath(driver, id);
         if (layoutSectionPaths != null) {
             for (WebElement sectionPath : layoutSectionPaths) {
                 String dataSectionCode = sectionPath.getAttribute("data-section-code");
                 waitUtils(driver);
                 List<WebElement> layoutPath = findLayoutFieldPath(driver, dataSectionCode);
-                processTabElements(driver, layoutPath, id, fileName);
+                processTabElements(driver, layoutPath, id, fileName, jsonId);
                 List<WebElement> allActionTabPath = findLayoutActionButton(driver, dataSectionCode);
                 if (allActionTabPath != null) {
                     List<WebElement> findLayoutDefaultRows = findLayoutDefaultRow(driver, dataSectionCode);
@@ -39,23 +39,23 @@ public class LayoutProcessSection {
                             if (onclick.contains("bpAddMainMultiRow")) {
                                 action.click();
                                 waitUtils(driver);
-                                clickFirstRow(driver,  id, fileName, dataSectionCode, "");
+                                clickFirstRow(driver,  id, fileName, dataSectionCode, "", jsonId);
                                 waitUtils(driver);
                                 List<WebElement> layoutDtlPath2 = findLayoutDtlFieldPath(driver, dataSectionCode);
-                                processTabElements(driver, layoutDtlPath2, id, fileName);
+                                processTabElements(driver, layoutDtlPath2, id, fileName, jsonId);
                                 break;
                             } else if (onclick.contains("bpAddMainRow")) {
                                 waitUtils(driver);
                                 action.click();
                                 waitUtils(driver);
                                 List<WebElement> layoutDtlPath = findLayoutDtlFieldPath(driver, dataSectionCode);
-                                processTabElements(driver, layoutDtlPath, id, fileName);
+                                processTabElements(driver, layoutDtlPath, id, fileName, jsonId);
                                 break;
                             }
                         }
                     }else{
                         List<WebElement> layoutPath1 = findLayoutFieldPath(driver, dataSectionCode);
-                        processTabElements(driver, layoutPath1, id, fileName);
+                        processTabElements(driver, layoutPath1, id, fileName, jsonId);
                     }
                 }
             }

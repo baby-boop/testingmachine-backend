@@ -22,7 +22,7 @@ public class CheckWorkflow {
     private static final int LONG_WAIT_MILLISECONDS = 1000;
     private static int workflowCount = 0;
 
-    public static boolean isErrorMessagePresent(WebDriver driver,  String fileName, String id, String code, String name) {
+    public static boolean isErrorMessagePresent(WebDriver driver,  String fileName, String id, String code, String name, String jsonId) {
         try {
             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
@@ -33,7 +33,7 @@ public class CheckWorkflow {
 
             workflowCount++;
 
-            List<WebElement> rows = findRows(driver, fileName, id, code, name);
+            List<WebElement> rows = findRows(driver, fileName, id, code, name, jsonId);
             boolean foundWorkflowId = false;
             LOGGER.info("Number of rows found: " + rows.size());
 
@@ -44,7 +44,7 @@ public class CheckWorkflow {
                 WebElement dropdownMenu = waitForElementVisible(driver, By.cssSelector(".dropdown-menu.workflow-dropdown-" + id + ".show"), 10);
 
                 if (dropdownMenu != null) {
-                    foundWorkflowId = clickValidMenuOption(driver, wait, dropdownMenu, fileName,id, code, name);
+                    foundWorkflowId = clickValidMenuOption(driver, wait, dropdownMenu, fileName,id, code, name, jsonId);
                 }
 
                 if (foundWorkflowId) {
@@ -68,14 +68,14 @@ public class CheckWorkflow {
 
 
 
-    private static List<WebElement> findRows(WebDriver driver,String fileName, String id, String code, String name) {
+    private static List<WebElement> findRows(WebDriver driver,String fileName, String id, String code, String name, String jsonId) {
         try {
             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(SHORT_WAIT_SECONDS));
             wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//tr[contains(@id,'datagrid-row-r1-1')]")));
             return driver.findElements(By.xpath("//tr[contains(@id,'datagrid-row-r1-1')]"));
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Rows not found", e.getMessage());
-            NoDataLogger.logError(fileName, id, code, name);
+            NoDataLogger.logError(fileName, id, code, name, jsonId);
             return new ArrayList<>();
         }
     }
@@ -94,7 +94,7 @@ public class CheckWorkflow {
 
     }
 
-    private static boolean clickValidMenuOption(WebDriver driver, WebDriverWait wait, WebElement dropdownMenu, String fileName, String id, String code, String name) {
+    private static boolean clickValidMenuOption(WebDriver driver, WebDriverWait wait, WebElement dropdownMenu, String fileName, String id, String code, String name, String jsonId) {
         List<WebElement> listItems = dropdownMenu.findElements(By.tagName("li"));
 
         for (WebElement listItem : listItems) {
@@ -111,7 +111,7 @@ public class CheckWorkflow {
                     WebElement wfmSaveButton = wfmDialog.findElement(By.xpath("//button[contains(text(),'Хадгалах')]"));
                     wfmSaveButton.click();
 
-                    if(checkForMessages(driver, wait, fileName ,id, code, name)){
+                    if(checkForMessages(driver, wait, fileName ,id, code, name, jsonId)){
                         return true;
                     }
                 }
@@ -125,13 +125,13 @@ public class CheckWorkflow {
         return false;
     }
 
-    private static boolean checkForMessages(WebDriver driver, WebDriverWait wait,  String moduleName, String id, String code, String name) {
+    private static boolean checkForMessages(WebDriver driver, WebDriverWait wait,  String moduleName, String id, String code, String name, String jsonId) {
         try {
             WebElement messageContainer = waitForElementVisible(driver, By.cssSelector(".brighttheme.ui-pnotify-container"), SHORT_WAIT_SECONDS);
             if (messageContainer != null) {
                 WebElement messageTitle = messageContainer.findElement(By.cssSelector(".ui-pnotify-title"));
                 String messageTitleText = messageTitle.getText().toLowerCase();
-                return processMessage(driver, messageTitleText,moduleName, id, code, name);
+                return processMessage(driver, messageTitleText,moduleName, id, code, name, jsonId);
             }
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error while checking messages: {0}", e.getMessage());
@@ -139,7 +139,7 @@ public class CheckWorkflow {
         return false;
     }
 
-    private static boolean processMessage(WebDriver driver, String messageTitleText, String id, String moduleName, String code, String name) {
+    private static boolean processMessage(WebDriver driver, String messageTitleText, String id, String moduleName, String code, String name, String jsonId) {
         if (messageTitleText.contains("warning") || messageTitleText.contains("Warning") || messageTitleText.contains("error") || messageTitleText.contains("Error") ||
                 messageTitleText.contains("info") || messageTitleText.contains("Info")) {
 
@@ -148,19 +148,19 @@ public class CheckWorkflow {
                 driver.quit();
                 return false;
             } else {
-                return extractErrorMessage(driver, moduleName, id,  code, name);
+                return extractErrorMessage(driver, moduleName, id,  code, name, jsonId);
             }
         }
         return false;
     }
 
-    private static boolean extractErrorMessage(WebDriver driver, String moduleName, String id, String code, String name) {
+    private static boolean extractErrorMessage(WebDriver driver, String moduleName, String id, String code, String name, String jsonId) {
         try {
             WebDriverWait shortWait = new WebDriverWait(driver, Duration.ofSeconds(SHORT_WAIT_SECONDS));
             WebElement messageContent = waitForElementVisible(driver, By.cssSelector(".ui-pnotify-text"), SHORT_WAIT_SECONDS);
             if (messageContent != null) {
                 String messageText = messageContent.getText();
-                MetaMessageStatusService.addMetaStatus(moduleName, id, code, name, "worflow", messageText);
+                MetaMessageStatusService.addMetaStatus(moduleName, id, code, name, "worflow", messageText, jsonId);
                 return true;
             }
         } catch (Exception e) {

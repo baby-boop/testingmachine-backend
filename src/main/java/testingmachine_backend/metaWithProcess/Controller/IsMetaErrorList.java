@@ -10,7 +10,7 @@ import java.time.Duration;
 
 public class IsMetaErrorList {
 
-    public static boolean isErrorMessagePresent(WebDriver driver, String id, String moduleName, String code, String name) {
+    public static boolean isErrorMessagePresent(WebDriver driver, String id, String moduleName, String code, String name, String jsonId) {
         try {
             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(1));
             WebElement messageContainer = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".brighttheme.ui-pnotify-container")));
@@ -29,7 +29,7 @@ public class IsMetaErrorList {
                     driver.quit();
                 }
                 else{
-                    return extractErrorMessage(driver,  id, moduleName , code , name);
+                    return extractErrorMessage(driver,  id, moduleName , code , name, jsonId);
                 }
             }
 
@@ -40,13 +40,13 @@ public class IsMetaErrorList {
         }
     }
 
-    private static boolean extractErrorMessage(WebDriver driver, String id, String moduleName, String code, String name) {
+    private static boolean extractErrorMessage(WebDriver driver, String id, String moduleName, String code, String name, String jsonId) {
         try {
             WebDriverWait shortWait = new WebDriverWait(driver, Duration.ofSeconds(1));
             WebElement messageContent = shortWait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".ui-pnotify-text")));
             String messageText = messageContent.getText();
 
-            MetaWithProcessStatusService.addMetaStatus(moduleName, id, code, name, "error", messageText);
+            MetaWithProcessStatusService.addMetaStatus(moduleName, id, code, name, "error", messageText, jsonId);
 
             return messageContent.isDisplayed();
         } catch (Exception e) {

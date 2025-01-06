@@ -4,10 +4,10 @@ import testingmachine_backend.meta.Service.MetaMessageStatusService;
 
 public class ErrorLogger {
 
-    public static void logError(String fileName, String id, String code, String name) {
+    public static void logError(String fileName, String id, String code, String name, String jsonId) {
         System.err.println("metaId: " + id + ", fileName: " + fileName);
 
-        MetaMessageStatusService.addMetaStatus(fileName, id, code, name, "info", "");
+        MetaMessageStatusService.addMetaStatus(fileName, id, code, name, "info", "", jsonId);
     }
 
 }

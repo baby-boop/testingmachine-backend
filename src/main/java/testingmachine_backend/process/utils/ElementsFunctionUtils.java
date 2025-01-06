@@ -66,13 +66,13 @@ public class ElementsFunctionUtils {
     }
 
 
-    public static void findElementWithPopup(WebDriver driver,WebElement element, String dataPath, String required, String id, String fileName ) {
+    public static void findElementWithPopup(WebDriver driver,WebElement element, String dataPath, String required, String id, String fileName, String jsonId) {
         try{
             WebElement popupButton = element.findElement(By.xpath("..//span[@class='input-group-btn']/button"));
             if (popupButton != null) {
                 popupButton.click();
                 waitUtils(driver);
-                clickFirstPopup(driver, id, fileName, dataPath, required);
+                clickFirstPopup(driver, id, fileName, dataPath, required, jsonId);
                 waitUtils(driver);
             }
         }catch(TimeoutException t){
@@ -90,7 +90,7 @@ public class ElementsFunctionUtils {
         element.click();
     }
 
-    public static void clickFirstRow(WebDriver driver, String id, String fileName, String datapath, String required) {
+    public static void clickFirstRow(WebDriver driver, String id, String fileName, String datapath, String required, String jsonId) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(SHORT_WAIT_SECONDS));
         try{
             waitUtils(driver);
@@ -120,12 +120,12 @@ public class ElementsFunctionUtils {
             rows.clear();
             wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div[id='bp-window-" + id + "']")));
         } catch (TimeoutException t){
-            if (PopupMessage.isErrorMessagePresent(driver, datapath, id, fileName)) {
+            if (PopupMessage.isErrorMessagePresent(driver, datapath, id, fileName, jsonId)) {
                 WebElement closeBtn = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[contains(@class, 'btn blue-hoki btn-sm')]")));
                 closeBtn.click();
             }else{
                 if(required != null) {
-                    EmptyDataDTO emptyPath = new EmptyDataDTO(fileName, id, datapath, "Popup", JsonController.getJsonId());
+                    EmptyDataDTO emptyPath = new EmptyDataDTO(fileName, id, datapath, "Popup", jsonId);
                     emptyPathField.add(emptyPath);
                     WebElement closeBtn = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[contains(@class, 'btn blue-hoki btn-sm')]")));
                     closeBtn.click();
@@ -143,7 +143,7 @@ public class ElementsFunctionUtils {
         }
     }
 
-    public static void comboboxFunction(WebDriver driver, String dataSPath, String required, String id, String fileName) {
+    public static void comboboxFunction(WebDriver driver, String dataSPath, String required, String id, String fileName, String jsonId) {
         try {
             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(2));
             Thread.sleep(500);
@@ -154,7 +154,7 @@ public class ElementsFunctionUtils {
                 comboBoxes.click();
                 By comboBoxSelectLocator = By.cssSelector("select[data-path='" + dataSPath + "']");
                 Thread.sleep(500);
-                selectSecondOption(driver, comboBoxSelectLocator, id, dataSPath, required, fileName);
+                selectSecondOption(driver, comboBoxSelectLocator, id, dataSPath, required, fileName, jsonId);
             }
         }
         catch (Exception e) {
@@ -197,7 +197,7 @@ public class ElementsFunctionUtils {
             LOGGER.log(Level.SEVERE, "Error comboGrid: " + dataPath + id + fileName);
         }
     }
-    public static void selectSecondOption(WebDriver driver, By selectorLocator, String id, String dataPath, String required, String fileName) {
+    public static void selectSecondOption(WebDriver driver, By selectorLocator, String id, String dataPath, String required, String fileName, String jsonId) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(1));
         WebElement selector = wait.until(ExpectedConditions.visibilityOfElementLocated(selectorLocator));
         List<WebElement> options = selector.findElements(By.tagName("option"));
@@ -205,7 +205,7 @@ public class ElementsFunctionUtils {
             options.get(1).click();
         } else {
             if (required != null){
-                EmptyDataDTO emptyPath = new EmptyDataDTO(fileName, id, dataPath, "Combo", JsonController.getJsonId());
+                EmptyDataDTO emptyPath = new EmptyDataDTO(fileName, id, dataPath, "Combo", jsonId);
                 emptyPathField.add(emptyPath);
 //                JsonFileReader.saveToSingleJsonFile(emptyPath);
             }
@@ -265,7 +265,7 @@ public class ElementsFunctionUtils {
         return attributes;
     }
 
-    public static void processTabElements(WebDriver driver, List<WebElement> elements, String id, String fileName) {
+    public static void processTabElements(WebDriver driver, List<WebElement> elements, String id, String fileName, String jsonId) {
         if (elements != null) {
             for (WebElement element : elements) {
                 Map<String, String> attributes = getElementAttributes(element);
@@ -279,13 +279,14 @@ public class ElementsFunctionUtils {
                         attributes.get("data-regex"),
                         attributes.get("required"),
                         id,
-                        fileName
+                        fileName,
+                        jsonId
                 );
             }
         }
     }
 
-    public static void consoleLogChecker(WebDriver driver, String id, String fileName) {
+    public static void consoleLogChecker(WebDriver driver, String id, String fileName, String jsonId) {
         LogEntries logs = driver.manage().logs().get(LogType.BROWSER);
         for (LogEntry entry : logs) {
             if (entry.getLevel() == Level.SEVERE && entry.getMessage() != null && !isIgnorableError(entry.getMessage())) {
@@ -300,7 +301,7 @@ public class ElementsFunctionUtils {
 
                 String formattedTimestamp = new Date(entry.getTimestamp()).toString();
                 LOGGER.log(Level.SEVERE, formattedTimestamp + " " + entry.getLevel() + " " + uncaughtMessage  + " " + id);
-                ProcessLogDTO processLogFields = new ProcessLogDTO(fileName, id, "error", uncaughtMessage, JsonController.getJsonId());
+                ProcessLogDTO processLogFields = new ProcessLogDTO(fileName, id, "error", uncaughtMessage, jsonId);
                 ProcessLogFields.add(processLogFields);
 
             }
@@ -309,7 +310,7 @@ public class ElementsFunctionUtils {
     public static List<ProcessLogDTO> getProcessLogMessages() {
         return new ArrayList<>(ProcessLogFields);
     }
-    public static void consoleLogRequiredPath(WebDriver driver, String id, String fileName) {
+    public static void consoleLogRequiredPath(WebDriver driver, String id, String fileName, String jsonId) {
         LogEntries logs = driver.manage().logs().get(LogType.BROWSER);
         for (LogEntry entry : logs) {
             if ( entry.getMessage() != null ) {
@@ -319,7 +320,7 @@ public class ElementsFunctionUtils {
                     String formattedTimestamp = new Date(entry.getTimestamp()).toString();
                     LOGGER.log(Level.INFO, formattedTimestamp + " Extracted Console Log: " + pathMessage + " " + id);
 
-                    RequiredPathDTO requiredPaths = new RequiredPathDTO(fileName, id, "required", pathMessage, JsonController.getJsonId());
+                    RequiredPathDTO requiredPaths = new RequiredPathDTO(fileName, id, "required", pathMessage, jsonId);
                     RequiredPathField.add(requiredPaths);
                 }else if (logMessage.contains("bpResult:")){
                     String pathMessage = logMessage.substring(logMessage.indexOf("bpResult:"));
@@ -350,7 +351,7 @@ public class ElementsFunctionUtils {
     }
 
 
-    public static void clickFirstPopup(WebDriver driver, String id, String fileName, String datapath, String required) {
+    public static void clickFirstPopup(WebDriver driver, String id, String fileName, String datapath, String required, String jsonId) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(SHORT_WAIT_SECONDS));
         try{
             waitUtils(driver);
@@ -380,18 +381,18 @@ public class ElementsFunctionUtils {
 
                 if(required != null) {
                     Thread.sleep(2000);
-                    findNameAndCodeWithPopup(driver, datapath, id, fileName);
+                    findNameAndCodeWithPopup(driver, datapath, id, fileName, jsonId);
                 }
             }
             rows.clear();
             wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div[id='bp-window-" + id + "']")));
         } catch (TimeoutException t){
-            if (PopupMessage.isErrorMessagePresent(driver, datapath, id, fileName)) {
+            if (PopupMessage.isErrorMessagePresent(driver, datapath, id, fileName, jsonId)) {
                 WebElement closeBtn = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[contains(@aria-describedby, 'dialog-dataview-selectable-')]//button[contains(@class, 'btn blue-hoki btn-sm')]")));
                 closeBtn.click();
             }else{
                 if(required != null) {
-                    EmptyDataDTO emptyPath = new EmptyDataDTO(fileName, id, datapath, "Popup", JsonController.getJsonId());
+                    EmptyDataDTO emptyPath = new EmptyDataDTO(fileName, id, datapath, "Popup", jsonId);
                     emptyPathField.add(emptyPath);
                     WebElement closeBtn = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[contains(@aria-describedby, 'dialog-dataview-selectable-')]//button[contains(@class, 'btn blue-hoki btn-sm')]")));
                     closeBtn.click();
@@ -410,7 +411,7 @@ public class ElementsFunctionUtils {
     }
 
 
-    public static void findNameAndCodeWithPopup(WebDriver driver, String dataPath, String id, String fileName) {
+    public static void findNameAndCodeWithPopup(WebDriver driver, String dataPath, String id, String fileName, String jsonId) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(SHORT_WAIT_SECONDS));
         try{
             waitUtils(driver);
@@ -423,7 +424,7 @@ public class ElementsFunctionUtils {
                     System.out.println("Title has a value: " + titleValue);
                 } else {
                     System.out.println("Title is empty or null");
-                    PopupStandardFieldsDTO popupStandardFields = new PopupStandardFieldsDTO(fileName, id, dataPath, "code", JsonController.getJsonId());
+                    PopupStandardFieldsDTO popupStandardFields = new PopupStandardFieldsDTO(fileName, id, dataPath, "code", jsonId);
                     PopupStandartField.add(popupStandardFields);
 //                    JsonFileReader.saveToSingleJsonFile(popupStandardFields);
                 }

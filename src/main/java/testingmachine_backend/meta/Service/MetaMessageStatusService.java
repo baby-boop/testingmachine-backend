@@ -10,10 +10,10 @@ public class MetaMessageStatusService {
 
     private static final List<ErrorMessageDTO> metaMessageStatusList = new ArrayList<>();
 
-    public static void addMetaStatus(String moduleName, String id, String code, String name, String type, String messageText) {
-        ErrorMessageDTO statusDTO = new ErrorMessageDTO(moduleName, id, code, name, type, messageText, JsonController.getJsonId());
+    public static void addMetaStatus(String moduleName, String id, String code, String name, String type, String messageText, String jsonId) {
+        ErrorMessageDTO statusDTO = new ErrorMessageDTO(moduleName, id, code, name, type, messageText, jsonId);
         metaMessageStatusList.add(statusDTO);
-        JsonFileReaderMeta.saveToSingleJsonFile(statusDTO);
+        JsonFileReaderMeta.saveToSingleJsonFile(statusDTO, jsonId);
         metaMessageStatusList.clear();
     }
 
