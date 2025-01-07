@@ -148,11 +148,11 @@ public class MetaLists {
 
                         if (IsErrorMessage.isErrorMessagePresent(driver, id, moduleName, code, name, jsonId)) {
                             errorCount++;
-                            System.out.println("Error found in ID: " + id + "    Module name: " + moduleName + "    Meta error count: " + errorCount);
+                            System.out.println("Error found in ID: " + id + "    Module name: " + moduleName + "    Meta error count: " + errorCount + "  jsonId: " + jsonId);
                         }
 
                         metaCount++;
-                        System.out.println("Meta count: " + metaCount + ", id: " + id);
+                        System.out.println("Meta count: " + metaCount + ", id: " + id + "   jsonId: " + jsonId);
                     }
                 }
             }

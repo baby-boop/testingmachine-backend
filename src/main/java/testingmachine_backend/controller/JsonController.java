@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import testingmachine_backend.TestingmachineBackendApplication;
+import testingmachine_backend.config.CounterService;
 import testingmachine_backend.process.Config.ConfigProcess;
 import testingmachine_backend.process.Controller.FileData;
 import testingmachine_backend.process.Controller.SystemData;
@@ -21,7 +23,7 @@ import java.util.List;
 @CrossOrigin(origins = "*")
 public class JsonController {
 
-    public static final String BASE_DIRECTORY = "/json_data";
+    public static final String BASE_DIRECTORY = "/opt/app/json_data";
 //    public static final String BASE_DIRECTORY = "src/main/java/testingmachine_backend/json";
     private static final String META_HEADER_PATH = BASE_DIRECTORY + "/metalist/header";
     private static final String META_RESULT_PATH = BASE_DIRECTORY + "/metalist/result";
@@ -40,9 +42,14 @@ public class JsonController {
     private static String databaseUsername;
     private static String jsonId;
     private static String selectedModule;
+    private static String metaProcessId;
 
     public static String getModuleId() {
         return moduleId != null ? moduleId : "";
+    }
+
+    public static String getMetaProcessId() {
+        return metaProcessId != null ? metaProcessId : "";
     }
 
     public static String getCustomerName() {
@@ -100,6 +107,14 @@ public class JsonController {
         databaseUsername = "";
         jsonId = "";
         selectedModule = "";
+        metaProcessId = "";
+    }
+
+
+    private final TestingmachineBackendApplication application;
+
+    public JsonController(TestingmachineBackendApplication application) {
+        this.application = application;
     }
 
     @PostMapping("/system-data")
@@ -116,9 +131,20 @@ public class JsonController {
         databaseUsername = savedData.getDatabaseUsername();
         jsonId = savedData.getGeneratedId();
         selectedModule =savedData.getSelectedModule();
-        log.info("Created system data: ID = {},databaseName = {}, databaseUserame = {}, ModuleId = {}, CustomerName = {}, SystemURL = {}, username = {}, password = {}, selectedModule = {}",
+        metaProcessId = savedData.getMetaProcessId();
+
+        log.info("Created system data: ID = {},databaseName = {}, databaseUserame = {}, ModuleId = {}, CustomerName = {}, SystemURL = {}, username = {}, password = {}, selectedModule = {}, metaProcessId = {}",
                 savedData.getGeneratedId(), savedData.getDatabaseName(), savedData.getDatabaseUsername(), savedData.getModuleId(), savedData.getCustomerName(),
-                savedData.getSystemURL(), savedData.getUsername(), savedData.getPassword(), savedData.getSelectedModule());
+                savedData.getSystemURL(), savedData.getUsername(), savedData.getPassword(), savedData.getSelectedModule(), savedData.getMetaProcessId());
+
+        String module = data.getSelectedModule();
+        try {
+            String moduleMessage = application.executeModule(module);
+            log.info("Module executed successfully: {}", moduleMessage);
+        } catch (Exception e) {
+            log.error("Error executing module {}: {}", module, e.getMessage(), e);
+        }
+
         return ResponseEntity.status(HttpStatus.CREATED).body(savedData);
     }
 

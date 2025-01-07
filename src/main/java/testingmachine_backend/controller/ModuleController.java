@@ -8,7 +8,6 @@ import testingmachine_backend.config.CounterService;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api")
 public class ModuleController {
 
     private final TestingmachineBackendApplication application;

@@ -1,7 +1,3 @@
-
-
-
-
 package testingmachine_backend;
 
 import org.springframework.boot.CommandLineRunner;
@@ -30,7 +26,7 @@ public class TestingmachineBackendApplication
 			String module = args[0];
 			try {
 				String result = executeModule(module);
-				System.out.println(result);
+				System.out.println("result: " +result);
 			} catch (Exception e) {
 				System.err.println("Модуль ажиллуулахад алдаа гарлаа : " + e.getMessage());
 			}
@@ -38,7 +34,6 @@ public class TestingmachineBackendApplication
 			System.out.println("Модуль олдсонгүй .");
 		}
 	}
-
 	public String executeModule(String module) {
 		String result;
 		switch (module) {
@@ -64,4 +59,4 @@ public class TestingmachineBackendApplication
 	}
 }
 
-//Би selenium-ийг зэрэгцээ байдлаар ашиглаж чадах уу? Жишээ нь: module сонгоод цаашлаад маш олон үйлдэл хийдэг бөгөөд одоо эхний command ажиллаж байхад дараагийн command орж ирсэн тохиолдолд хамт зэрэгцээ байдлаар ажиллана. Ерөнхийдөө маш олон command ирэх бөгөөд тухай бүрийг ажлуулна. Одоо эхний command ажиллаж байхад дараагийн ирэх үед өмнөх command зогсодог. Тэгэж ажиллаж боломжтой юу?
+//Би selenium-ийг зэрэгцээ байдлаар ашиглаж чадах уу? Жишээ нь: module сонгоод цаашлаад маш олон үйлдэл хийдэг бөгөөд одоо эхний command ажиллаж байхад дараагийн command орж ирсэн тохиолдолд хамт зэрэгцээ байдлаар ажиллана. Ерөнхийдөө маш олон command ирэх бөгөөд тухай бүрийг ажлуулна. Одоо эхний command ажиллаж байхад дараагийн ирэх үед өмнөх command зогсоодог. Тэгэж ажиллаж боломжтой юу?

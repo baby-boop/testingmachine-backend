@@ -21,7 +21,7 @@ public class MainProcess {
 
         ChromeOptions options = new ChromeOptions();
         options.addArguments(
-                "--headless",
+//                "--headless",
                 "--no-sandbox",
                 "--disable-gpu",
                 "--ignore-ssl-errors=yes",
@@ -31,6 +31,7 @@ public class MainProcess {
         options.setCapability("goog:loggingPrefs", loggingPrefs);
         WebDriver driver = new ChromeDriver(options);
         try {
+
             ProcessList tool = new ProcessList(driver);
             tool.mainTool(jsonId);
 

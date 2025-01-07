@@ -22,5 +22,6 @@ public class SystemData {
     private String databaseUsername;
     private String generatedId;
     private String selectedModule;
+    private String metaProcessId;
 
 }

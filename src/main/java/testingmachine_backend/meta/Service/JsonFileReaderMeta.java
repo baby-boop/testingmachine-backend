@@ -45,7 +45,7 @@ public class JsonFileReaderMeta {
                 LOGGER.log(Level.WARNING, "Error reading JSON file.", e);
             }
         } else {
-            LOGGER.log(Level.INFO, "Creating new JSON file for ID: " + jsonId);
+            LOGGER.log(Level.INFO, "Successfully saved to: " + jsonId);
         }
 
         dtoList.add(dto);
@@ -53,7 +53,7 @@ public class JsonFileReaderMeta {
         try {
             objectMapper.writerWithDefaultPrettyPrinter().writeValue(jsonFile, dtoList);
         } catch (IOException e) {
-            LOGGER.log(Level.SEVERE, "Error saving DTO to JSON file", e);
+            LOGGER.log(Level.SEVERE, "Error saving to JSON file", e);
         }
     }
 

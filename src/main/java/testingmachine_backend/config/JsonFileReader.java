@@ -62,9 +62,9 @@ public class JsonFileReader {
             dtoList.add(dto);
             objectMapper.writerWithDefaultPrettyPrinter().writeValue(jsonFile, dtoList);
 
-            LOGGER.log(Level.INFO, "DTO successfully saved to {0}", jsonFileName);
+            LOGGER.log(Level.INFO, "Successfully saved to {0}", jsonFileName);
         } catch (IOException e) {
-            LOGGER.log(Level.SEVERE, "Error saving DTO to JSON file: " + jsonFileName, e);
+            LOGGER.log(Level.SEVERE, "Error saving to JSON file: " + jsonFileName, e);
         }
     }
 }

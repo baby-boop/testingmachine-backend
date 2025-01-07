@@ -11,6 +11,7 @@ import testingmachine_backend.meta.Controller.ProcessMetaData;
 import testingmachine_backend.process.Config.ConfigProcess;
 import testingmachine_backend.process.Controller.ProcessCallDataview;
 import testingmachine_backend.controller.JsonController;
+import testingmachine_backend.process.Controller.ProcessCallDataviewWithId;
 import testingmachine_backend.process.utils.ProcessPath;
 
 import java.util.List;
@@ -42,20 +43,22 @@ public class ProcessList {
 
                 Thread.sleep(2000);
 
-                mainProcess(wait, jsonId);
+                mainProcessWithModule(wait, jsonId);
             } else {
-                System.out.println("Database name is empty or null: " + databaseName);
+                String metaProcessId = JsonController.getMetaProcessId();
+                if (!metaProcessId.isEmpty()) {
+                    mainProcessWithModuleWithId(wait, jsonId);
+                }else{
+                    mainProcessWithModule(wait, jsonId);
+                }
 
-                mainProcess(wait, jsonId);
             }
-
-
         } catch (Exception e) {
 //
         }
     }
 
-    private void mainProcess(WebDriverWait wait, String jsonId) throws InterruptedException {
+    private void mainProcessWithModule(WebDriverWait wait, String jsonId) throws InterruptedException {
 
         ConfigForAll.loginForm(wait);
 
@@ -63,6 +66,34 @@ public class ProcessList {
         int totalMetaCount = processMetaDataList.size();
 
         int count = 0;
+        for (ProcessMetaData metaData : processMetaDataList) {
+            String url = ConfigProcess.MainUrl + metaData.getId();
+            driver.get(url);
+
+            Thread.sleep(1000);
+
+            waitUtils(driver);
+
+            ProcessPath.isProcessPersent(driver, metaData.getId(), metaData.getSystemName(), metaData.getCode(), metaData.getName(), "process", jsonId);
+            count++;
+
+            CounterService.addCounter(count, totalMetaCount);
+
+            System.out.println("Process count: " + count + ", id: " + metaData.getId());
+        }
+        System.out.println("End date: " + DateUtils.getCurrentDateTime());
+    }
+
+
+    private void mainProcessWithModuleWithId(WebDriverWait wait, String jsonId) throws InterruptedException {
+
+        ConfigForAll.loginForm(wait);
+
+        List<ProcessMetaData> processMetaDataList = ProcessCallDataviewWithId.getProcessMetaDataList();
+        int totalMetaCount = processMetaDataList.size();
+
+        int count = 0;
+
         for (ProcessMetaData metaData : processMetaDataList) {
             String url = ConfigProcess.MainUrl + metaData.getId();
             driver.get(url);
