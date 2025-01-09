@@ -1,6 +1,7 @@
 package testingmachine_backend.process.Service;
 
 import org.springframework.stereotype.Service;
+import testingmachine_backend.config.JsonMetaPersent;
 import testingmachine_backend.process.DTO.ProcessDTO;
 
 import java.util.List;
@@ -41,6 +42,7 @@ public class ProcessService {
         } else {
             processResults.add(processDTO);
         }
+        JsonMetaPersent.saveToSingleJsonFile(processDTO, existingDTO.getJsonId());
     }
 
     public List<ProcessDTO> getProcessResults() {

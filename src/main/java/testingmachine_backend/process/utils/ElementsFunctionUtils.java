@@ -293,8 +293,8 @@ public class ElementsFunctionUtils {
                 String logMessage = entry.getMessage();
                 String uncaughtMessage;
                 if (logMessage.contains("Uncaught")) {
-                    if(!isDuplicateLogWrite( fileName, id, jsonId)){
-                        uncaughtMessage = logMessage.substring(logMessage.indexOf("Uncaught"));
+                    uncaughtMessage = logMessage.substring(logMessage.indexOf("Uncaught"));
+                    if(!isDuplicateLogWrite( fileName, id, jsonId, uncaughtMessage)){
                         String formattedTimestamp = new Date(entry.getTimestamp()).toString();
                         LOGGER.log(Level.SEVERE, formattedTimestamp + " " + entry.getLevel() + " " + uncaughtMessage  + " " + id + "  " + jsonId);
                         ProcessLogDTO processLogFields = new ProcessLogDTO(fileName, id, "error", uncaughtMessage, jsonId);
@@ -312,9 +312,9 @@ public class ElementsFunctionUtils {
         }
     }
 
-    public static boolean isDuplicateLogWrite(String systemName, String id, String jsonId) {
+    public static boolean isDuplicateLogWrite(String systemName, String id, String jsonId, String uncaughtMessage) {
         return ElementsFunctionUtils.ProcessLogFields.get().stream()
-                .anyMatch(log -> log.getModuleName().equals(systemName) && log.getMetaDataId().equals(id) && log.getJsonId().equals(jsonId));
+                .anyMatch(log -> log.getModuleName().equals(systemName) && log.getMetaDataId().equals(id) && log.getJsonId().equals(jsonId) && log.getMessageText().equals(uncaughtMessage));
     }
     public static List<ProcessLogDTO> getProcessLogMessages() {
         return new ArrayList<>(ProcessLogFields.get());
@@ -342,8 +342,6 @@ public class ElementsFunctionUtils {
     public static List<RequiredPathDTO> getRequiredPathMessages() {
         return new ArrayList<>(RequiredPathField.get());
     }
-
-
 
     public static boolean isIgnorableError(String message) {
         return message.contains("Uncaught TypeError: Cannot read properties of null")

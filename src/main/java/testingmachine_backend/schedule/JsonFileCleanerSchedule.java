@@ -21,8 +21,9 @@ public class JsonFileCleanerSchedule {
 
     };
 
-//    @Scheduled(cron = "0 0 0 L * ?")
+
 //    @Scheduled(fixedRate = 600_000)
+    @Scheduled(cron = "0 0 0 L * ?")
     public void cleanJsonFiles() {
         for (String directoryPath : DIRECTORIES_TO_CLEAN) {
             File folder = new File(directoryPath);

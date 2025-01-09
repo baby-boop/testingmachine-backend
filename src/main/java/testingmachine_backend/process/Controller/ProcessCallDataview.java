@@ -8,22 +8,26 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
+import testingmachine_backend.config.SslDisableClass;
 import testingmachine_backend.controller.JsonController;
 import testingmachine_backend.meta.Controller.ProcessMetaData;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static testingmachine_backend.config.ConfigForAll.API_URL;
+
 @Slf4j
 public class ProcessCallDataview {
 
-    private static final String PORT = "8080";
-    private static final String URL = "/erp-services/RestWS/runJson";
+
     private static final String DATAVIEW = "testCaseDvList";
 
     public static List<ProcessMetaData> getProcessMetaDataList(String moduleId, String unitName, String systemUrl, String username, String password) {
 
-        String SERVICE_URL =  systemUrl + ":" + PORT + URL;
+        SslDisableClass.SslDisabler();
+
+        String SERVICE_URL =  systemUrl + API_URL;
 
         List<ProcessMetaData> processList = new ArrayList<>();
 
@@ -39,7 +43,6 @@ public class ProcessCallDataview {
                 }
             }
             """.formatted(username, password, unitName, DATAVIEW, moduleId);
-//        System.out.println(payload);
         try {
             RestTemplate restTemplate = new RestTemplate();
 

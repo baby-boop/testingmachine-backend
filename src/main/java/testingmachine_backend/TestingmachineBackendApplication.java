@@ -10,12 +10,7 @@ import testingmachine_backend.meta.MetaList.MetaMain;
 import testingmachine_backend.metaWithProcess.MetaWithProcessMain;
 import testingmachine_backend.patch.patchMain;
 import testingmachine_backend.process.MainProcess;
-import testingmachine_backend.schedule.ScheduledData;
-import testingmachine_backend.schedule.ScheduledDataService;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -53,7 +48,9 @@ public class TestingmachineBackendApplication
 		switch (module) {
 			case "meta":
 				System.out.println("Тест эхлэж байна... meta");
-				MetaMain.mainSystem(JsonController.getJsonId());
+				MetaMain.mainSystem(JsonController.getJsonId(), String.valueOf(Thread.currentThread().getId()), JsonController.getCustomerName(),
+						JsonController.getCreatedDate(), JsonController.getModuleId(), JsonController.getDatabaseName(), JsonController.getDatabaseUsername(),
+						JsonController.getSystemURL(), JsonController.getUsername(), JsonController.getPassword());
 				result = "Тест хийж дууссан";
 				break;
 			case "process":

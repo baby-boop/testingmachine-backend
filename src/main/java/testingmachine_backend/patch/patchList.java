@@ -20,6 +20,8 @@ import testingmachine_backend.process.utils.ProcessPath;
 
 import java.util.List;
 
+import static testingmachine_backend.config.ConfigForAll.CALL_DATAVIEW;
+import static testingmachine_backend.config.ConfigForAll.CALL_PROCESS;
 import static testingmachine_backend.process.Config.ConfigProcess.waitUtils;
 
 public class patchList {
@@ -35,7 +37,9 @@ public class patchList {
         try{
 
             WebDriverWait wait = ConfigProcess.getWebDriverWait(driver);
-            driver.get(ConfigProcess.LoginUrl);
+
+            String sysURL = systemUrl + "/login";
+            driver.get(sysURL);
 
             if (!databaseName.isEmpty()) {
 
@@ -58,17 +62,16 @@ public class patchList {
     private void mainProcessWithModuleWithId(WebDriverWait wait, String jsonId, String theadId, String customerName, String createdDate, String moduleId,
                                              String unitName, String systemUrl, String username, String password, String patchId) throws InterruptedException {
 
-        ConfigForAll.loginFormTest(wait, username, password);
+        ConfigForAll.loginForm(wait, username, password);
 
         List<PatchDTO> processMetaDataList = PatchCallService.getPatchMetaDataList(unitName, systemUrl, username, password, patchId);
-        int totalMetaCount = processMetaDataList.size();
 
         int count = 0;
 
         for (PatchDTO metaData : processMetaDataList) {
             if("200101010000011".equals(metaData.getTypeId())){
 
-                String processUrl = "https://dev.veritech.mn/mdprocess/renderByTestTool/" + metaData.getId();
+                String processUrl = systemUrl + CALL_PROCESS + metaData.getId();
                 driver.get(processUrl);
                 Thread.sleep(1000);
 
@@ -78,7 +81,7 @@ public class patchList {
                 count++;
             }else if ("200101010000016".equals(metaData.getTypeId())){
 
-                String metaUrl = "https://dev.veritech.mn/mdobject/dataview/" + metaData.getId();
+                String metaUrl = systemUrl + CALL_DATAVIEW + metaData.getId();
                 driver.get(metaUrl);
 
                 WaitUtils.retryWaitForLoadToDisappear(driver, metaData.getPatchName(), metaData.getId(), metaData.getCode(), metaData.getName(), jsonId, "patch", 3);
@@ -90,10 +93,10 @@ public class patchList {
                 count++;
             }
 
-            ProcessDTO processDTO = new ProcessDTO(theadId, totalMetaCount, count, customerName, createdDate, jsonId, moduleId);
+            ProcessDTO processDTO = new ProcessDTO(theadId, processMetaDataList.size(), count, customerName, createdDate, jsonId, moduleId);
             ProcessService.getInstance().updateOrAddProcessResult(processDTO);
 
-            System.out.println("Process count: " + count + ", id: " + metaData.getId() + ",  total: " + totalMetaCount);
+            System.out.println("Process count: " + count + ", id: " + metaData.getId() + ",  total: " + processMetaDataList.size());
         }
         System.out.println("End date: " + ConfigProcess.DateUtils.getCurrentDateTime());
 

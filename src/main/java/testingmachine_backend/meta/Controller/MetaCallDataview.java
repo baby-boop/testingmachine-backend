@@ -10,38 +10,24 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 import testingmachine_backend.config.SslDisableClass;
 import testingmachine_backend.meta.DTO.MetadataDTO;
-import testingmachine_backend.controller.JsonController;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static testingmachine_backend.config.ConfigForAll.API_URL;
+
 @Slf4j
 public class MetaCallDataview {
 
-    //    private static final String http = "http://";
-//    static String HOST = JsonController.getSystemURL();
-//    private static final String PORT = "8080";
-//    private static final String URL = "/erp-services/RestWS/runJson";
-//    private static final String SERVICE_URL = http + HOST + ":" + PORT + URL;
-//    private static final String DATAVIEW = "pfFindModuleMetaLookupIdsDv";
-
-    private static final String HOST =  JsonController.getSystemURL();
-//    private static final String HOST = JsonController.getSystemURL();
-    private static final String PORT = ":8080";
-//    private static final String URL = "/javarestapi";
-    private static final String URL = "/erp-services/RestWS/runJson";
-    private static final String SERVICE_URL =  HOST + PORT + URL;
     private static final String DATAVIEW = "pfFindModuleMetaLookupIdsDv";
-    public static List<MetadataDTO> getProcessMetaDataList() {
+
+    public static List<MetadataDTO> getProcessMetaDataList(String moduleId, String unitName, String systemUrl, String username, String password) {
 
         SslDisableClass.SslDisabler();
-        String moduleId = JsonController.getModuleId();
-        String USERNAME = JsonController.getUsername();
-        String PASSWORD = JsonController.getPassword();
-        String UNITNAME = JsonController.getDatabaseUsername();
+
+        String SERVICE_URL =  systemUrl + API_URL;
 
         List<MetadataDTO> metaList = new ArrayList<>();
-
         String payload = """
             {
                 "username": "%s",
@@ -53,7 +39,7 @@ public class MetaCallDataview {
                     "filtermoduleid": "%s"
                 }
             }
-            """.formatted(USERNAME, PASSWORD, UNITNAME, DATAVIEW, moduleId);
+            """.formatted(username, password, unitName, DATAVIEW, moduleId);
         try {
             RestTemplate restTemplate = new RestTemplate();
 

@@ -21,6 +21,8 @@ import java.util.Map;
 
 import testingmachine_backend.meta.Utils.WaitUtils;
 import testingmachine_backend.controller.JsonController;
+import testingmachine_backend.process.DTO.ProcessDTO;
+import testingmachine_backend.process.Service.ProcessService;
 
 import static testingmachine_backend.meta.Utils.FileUtils.readDataFromExcel;
 
@@ -35,13 +37,13 @@ public class MetaLists {
         this.driver = driver;
     }
 
-    public void mainList(String jsonId) {
+    public void mainList(String jsonId, String theadId, String customerName, String createdDate, String moduleId,
+                         String databaseName, String unitName, String systemUrl, String username, String password) {
         try {
             WebDriverWait wait = ListConfig.getWebDriverWait(driver);
 
-            driver.get(ListConfig.LoginUrl);
-
-            String databaseName = JsonController.getDatabaseName();
+            String loginUrl = systemUrl + "/login";
+            driver.get(loginUrl);
 
             if (!databaseName.isEmpty()) {
 
@@ -51,18 +53,18 @@ public class MetaLists {
                 Select dbSelect = new Select(selectDb);
                 dbSelect.selectByVisibleText(databaseName);
 
-                ConfigForAll.loginForm(wait);
+                ConfigForAll.loginForm(wait, username, password);
 
                 ListConfig.selectCompanyFunction(driver, wait, "Хишиг-Арвин Групп");
 
-                workingWithMainList(driver, jsonId);
+                workingWithMainList(driver, jsonId, theadId, customerName, createdDate, moduleId, unitName, systemUrl, username, password);
 
             }
             else {
 
-                ConfigForAll.loginForm(wait);
+                ConfigForAll.loginForm(wait, username, password);
 
-                workingWithMainList(driver, jsonId);
+                workingWithMainList(driver, jsonId, theadId, customerName, createdDate, moduleId, unitName, systemUrl, username, password);
 
             }
 
@@ -71,12 +73,11 @@ public class MetaLists {
             System.err.println("Error: " + e.getMessage());
         }
     }
-//
 
-    private static void workingWithMainList(WebDriver driver, String jsonId) {
+    private static void workingWithMainList(WebDriver driver,  String jsonId, String theadId, String customerName, String createdDate, String moduleId,
+                                            String unitName, String systemUrl, String username, String password) {
 
-        List<MetadataDTO> metaDataList = MetaCallDataview.getProcessMetaDataList();
-        int totalMetaCount = metaDataList.size();
+        List<MetadataDTO> metaDataList = MetaCallDataview.getProcessMetaDataList(moduleId, unitName, systemUrl, username, password);
 
         int count = 0;
         int errorCount = 0;
@@ -97,7 +98,12 @@ public class MetaLists {
             }
 
             count++;
+
+            ProcessDTO processDTO = new ProcessDTO(theadId, metaDataList.size(), count, customerName, createdDate, jsonId, moduleId);
+            ProcessService.getInstance().updateOrAddProcessResult(processDTO);
+
             System.out.println("Process count: " + count + ", id: " + metaData.getId());
+
         }
     }
 

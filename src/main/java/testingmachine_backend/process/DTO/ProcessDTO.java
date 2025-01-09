@@ -27,5 +27,4 @@ public class ProcessDTO {
         this.jsonId = jsonId;
         this.moduleId = moduleId;
     }
-
 }

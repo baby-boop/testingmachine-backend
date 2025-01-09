@@ -22,6 +22,7 @@ import static testingmachine_backend.process.Config.ConfigProcess.waitUtils;
 public class MetaWithProcessList {
     private final WebDriver driver;
     private static final int SHORT_WAIT_SECONDS = 2;
+
     public MetaWithProcessList(WebDriver driver) {
         this.driver = driver;
     }
@@ -44,7 +45,7 @@ public class MetaWithProcessList {
                 Thread.sleep(2000);
                 }
             else{
-                ConfigForAll.loginForm(wait);
+                ConfigForAll.loginFormTest(wait);
                 mainList(wait, driver, jsonId);
             }
 
@@ -82,7 +83,7 @@ public class MetaWithProcessList {
 
     public static void mainList(WebDriverWait wait, WebDriver driver, String jsonId) {
         try{
-            ConfigForAll.loginForm(wait);
+            ConfigForAll.loginFormTest(wait);
 
             List<MetadataDTO> metaWithProcessList = CallMetaWithProcess.getProcessMetaDataList();
             System.out.println(metaWithProcessList.size());

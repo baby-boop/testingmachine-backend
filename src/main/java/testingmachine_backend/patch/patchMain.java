@@ -23,7 +23,7 @@ public class patchMain {
 
         ChromeOptions options = new ChromeOptions();
         options.addArguments(
-//                "--headless",
+                "--headless",
                 "--no-sandbox",
                 "--disable-gpu",
                 "--ignore-ssl-errors=yes",

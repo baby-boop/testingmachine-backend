@@ -16,6 +16,7 @@ import testingmachine_backend.process.utils.ProcessPath;
 
 import java.util.List;
 
+import static testingmachine_backend.config.ConfigForAll.CALL_PROCESS;
 import static testingmachine_backend.process.Config.ConfigProcess.*;
 
 public class ProcessList {
@@ -32,7 +33,8 @@ public class ProcessList {
 
             WebDriverWait wait = ConfigProcess.getWebDriverWait(driver);
 
-            driver.get(ConfigProcess.LoginUrl);
+            String sysURL = systemUrl + "/login";
+            driver.get(sysURL);
 
             if (!databaseName.isEmpty()) {
 
@@ -59,15 +61,14 @@ public class ProcessList {
     private void mainProcessWithModule(WebDriverWait wait, String jsonId, String theadId, String customerName, String createdDate, String moduleId,
                                        String unitName, String systemUrl, String username, String password) throws InterruptedException {
 
-        ConfigForAll.loginForm(wait);
+        ConfigForAll.loginForm(wait, username, password);
 
         List<ProcessMetaData> processMetaDataList = ProcessCallDataview.getProcessMetaDataList(moduleId, unitName, systemUrl, username, password);
-        int totalMetaCount = processMetaDataList.size();
 
         int count = 0;
         for (ProcessMetaData metaData : processMetaDataList) {
 
-            String url = ConfigProcess.MainUrl + metaData.getId();
+            String url = systemUrl + CALL_PROCESS + metaData.getId();
 
             driver.get(url);
 
@@ -78,11 +79,13 @@ public class ProcessList {
             ProcessPath.isProcessPersent(driver, metaData.getId(), metaData.getSystemName(), metaData.getCode(), metaData.getName(), "process", jsonId);
             count++;
 
-            ProcessDTO processDTO = new ProcessDTO(theadId, totalMetaCount, count, customerName, createdDate, jsonId, moduleId);
+            ProcessDTO processDTO = new ProcessDTO(theadId, processMetaDataList.size(), count, customerName, createdDate, jsonId, moduleId);
             ProcessService.getInstance().updateOrAddProcessResult(processDTO);
 
             System.out.println("Process count: " + count + ", id: " + metaData.getId());
         }
+        ProcessDTO processDTO = new ProcessDTO(theadId, processMetaDataList.size(), count, customerName, createdDate, jsonId, moduleId);
+        ProcessService.getInstance().updateOrAddProcessResult(processDTO);
         System.out.println("End date: " + DateUtils.getCurrentDateTime());
     }
 
@@ -90,15 +93,14 @@ public class ProcessList {
     private void mainProcessWithModuleWithId(WebDriverWait wait, String jsonId, String theadId, String customerName, String createdDate, String moduleId,
                                              String unitName, String systemUrl, String username, String password, String processId) throws InterruptedException {
 
-        ConfigForAll.loginForm(wait);
+        ConfigForAll.loginForm(wait, username, password);
 
         List<ProcessMetaData> processMetaDataList = ProcessCallDataviewWithId.getProcessMetaDataList(unitName, systemUrl, username, password, processId);
-        int totalMetaCount = processMetaDataList.size();
 
         int count = 0;
 
         for (ProcessMetaData metaData : processMetaDataList) {
-            String url = ConfigProcess.MainUrl + metaData.getId();
+            String url = systemUrl + CALL_PROCESS + metaData.getId();
             driver.get(url);
 
             Thread.sleep(1000);
@@ -108,7 +110,7 @@ public class ProcessList {
             ProcessPath.isProcessPersent(driver, metaData.getId(), metaData.getSystemName(), metaData.getCode(), metaData.getName(), "process", jsonId);
             count++;
 
-            ProcessDTO processDTO = new ProcessDTO(theadId, totalMetaCount, count, customerName, createdDate, jsonId, moduleId);
+            ProcessDTO processDTO = new ProcessDTO(theadId, processMetaDataList.size(), count, customerName, createdDate, jsonId, moduleId);
             ProcessService.getInstance().updateOrAddProcessResult(processDTO);
 
             System.out.println("Process count: " + count + ", id: " + metaData.getId());

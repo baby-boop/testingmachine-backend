@@ -48,7 +48,9 @@ public class FormFieldUtils {
         } else if (isLongField(classAttribute)) {
             element.sendKeys("11112222");
         } else if (isFileField(classAttribute)) {
-            element.sendKeys("C:\\Users\\batde\\Downloads\\pngForTest.png");
+//            element.sendKeys("C:\\Users\\batde\\Downloads\\pngForTest.png");
+            element.sendKeys("C:\\pngForTest.png");
+
         } else if (isIntegerField(classAttribute)) {
             element.sendKeys("123");
         } else if (isDescriptionField(classAttribute)) {
