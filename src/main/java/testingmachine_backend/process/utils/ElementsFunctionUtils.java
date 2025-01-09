@@ -8,7 +8,6 @@ import org.openqa.selenium.logging.LogEntry;
 import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import testingmachine_backend.controller.JsonController;
 import testingmachine_backend.process.DTO.EmptyDataDTO;
 import testingmachine_backend.process.DTO.PopupStandardFieldsDTO;
 import testingmachine_backend.process.DTO.ProcessLogDTO;
@@ -39,16 +38,16 @@ public class ElementsFunctionUtils {
     private static final Pattern TAB_ID_PATTERN = Pattern.compile("tab_\\d+_\\d+");
 
     @EmptyDataField
-    public static final List<EmptyDataDTO> emptyPathField = new ArrayList<>();
+    public static final ThreadLocal<List<EmptyDataDTO>> emptyPathField = ThreadLocal.withInitial(ArrayList::new);
 
     @RequiredPathField
-    public static final List<RequiredPathDTO> RequiredPathField = new ArrayList<>();
+    public static final ThreadLocal<List<RequiredPathDTO>> RequiredPathField = ThreadLocal.withInitial(ArrayList::new);
 
     @ProcessLogFields
-    public static final List<ProcessLogDTO> ProcessLogFields = new ArrayList<>();
+    public static final ThreadLocal<List<ProcessLogDTO>> ProcessLogFields = ThreadLocal.withInitial(ArrayList::new);
 
     @PopupStandartField
-    public static final List<PopupStandardFieldsDTO> PopupStandartField = new ArrayList<>();
+    public static final ThreadLocal<List<PopupStandardFieldsDTO>> PopupStandartField = ThreadLocal.withInitial(ArrayList::new);
 
     public static void findTextEditorInput(WebDriver driver, String dataSPath, String id) {
         try{
@@ -126,7 +125,7 @@ public class ElementsFunctionUtils {
             }else{
                 if(required != null) {
                     EmptyDataDTO emptyPath = new EmptyDataDTO(fileName, id, datapath, "Popup", jsonId);
-                    emptyPathField.add(emptyPath);
+                    emptyPathField.get().add(emptyPath);
                     WebElement closeBtn = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[contains(@class, 'btn blue-hoki btn-sm')]")));
                     closeBtn.click();
                 }else{
@@ -206,7 +205,7 @@ public class ElementsFunctionUtils {
         } else {
             if (required != null){
                 EmptyDataDTO emptyPath = new EmptyDataDTO(fileName, id, dataPath, "Combo", jsonId);
-                emptyPathField.add(emptyPath);
+                emptyPathField.get().add(emptyPath);
 //                JsonFileReader.saveToSingleJsonFile(emptyPath);
             }
             selector.sendKeys(Keys.ENTER);
@@ -289,26 +288,36 @@ public class ElementsFunctionUtils {
     public static void consoleLogChecker(WebDriver driver, String id, String fileName, String jsonId) {
         LogEntries logs = driver.manage().logs().get(LogType.BROWSER);
         for (LogEntry entry : logs) {
-            if (entry.getLevel() == Level.SEVERE && entry.getMessage() != null && !isIgnorableError(entry.getMessage())) {
+            if (/*entry.getLevel() == Level.SEVERE &&*/ entry.getMessage() != null && !isIgnorableError(entry.getMessage())) {
 
                 String logMessage = entry.getMessage();
-                String uncaughtMessage ;
+                String uncaughtMessage;
                 if (logMessage.contains("Uncaught")) {
-                    uncaughtMessage = logMessage.substring(logMessage.indexOf("Uncaught"));
-                } else {
-                    uncaughtMessage = logMessage;
+                    if(!isDuplicateLogWrite( fileName, id, jsonId)){
+                        uncaughtMessage = logMessage.substring(logMessage.indexOf("Uncaught"));
+                        String formattedTimestamp = new Date(entry.getTimestamp()).toString();
+                        LOGGER.log(Level.SEVERE, formattedTimestamp + " " + entry.getLevel() + " " + uncaughtMessage  + " " + id + "  " + jsonId);
+                        ProcessLogDTO processLogFields = new ProcessLogDTO(fileName, id, "error", uncaughtMessage, jsonId);
+                        ProcessLogFields.get().add(processLogFields);
+                    }
+                } else if (logMessage.contains("#expressionMessage:")) {
+                    String modifiedMessage = logMessage.substring(logMessage.indexOf("expressionMessage") + "expressionMessage:".length());
+                    uncaughtMessage = modifiedMessage.replaceAll("\\s*#expressionMessage:\\s*|_\\d+", " ");
+                    String formattedTimestamp = new Date(entry.getTimestamp()).toString();
+                    LOGGER.log(Level.SEVERE, formattedTimestamp + " " + entry.getLevel() + " " + uncaughtMessage  + " " + id);
+                    ProcessLogDTO processLogFields = new ProcessLogDTO(fileName, id, "error", uncaughtMessage, jsonId);
+                    ProcessLogFields.get().add(processLogFields);
                 }
-
-                String formattedTimestamp = new Date(entry.getTimestamp()).toString();
-                LOGGER.log(Level.SEVERE, formattedTimestamp + " " + entry.getLevel() + " " + uncaughtMessage  + " " + id);
-                ProcessLogDTO processLogFields = new ProcessLogDTO(fileName, id, "error", uncaughtMessage, jsonId);
-                ProcessLogFields.add(processLogFields);
-
             }
         }
     }
+
+    public static boolean isDuplicateLogWrite(String systemName, String id, String jsonId) {
+        return ElementsFunctionUtils.ProcessLogFields.get().stream()
+                .anyMatch(log -> log.getModuleName().equals(systemName) && log.getMetaDataId().equals(id) && log.getJsonId().equals(jsonId));
+    }
     public static List<ProcessLogDTO> getProcessLogMessages() {
-        return new ArrayList<>(ProcessLogFields);
+        return new ArrayList<>(ProcessLogFields.get());
     }
     public static void consoleLogRequiredPath(WebDriver driver, String id, String fileName, String jsonId) {
         LogEntries logs = driver.manage().logs().get(LogType.BROWSER);
@@ -321,7 +330,7 @@ public class ElementsFunctionUtils {
                     LOGGER.log(Level.INFO, formattedTimestamp + " Extracted Console Log: " + pathMessage + " " + id);
 
                     RequiredPathDTO requiredPaths = new RequiredPathDTO(fileName, id, "required", pathMessage, jsonId);
-                    RequiredPathField.add(requiredPaths);
+                    RequiredPathField.get().add(requiredPaths);
                 }else if (logMessage.contains("bpResult:")){
                     String pathMessage = logMessage.substring(logMessage.indexOf("bpResult:"));
                     LOGGER.log(Level.INFO, pathMessage + " Extracted Console Log: " + id);
@@ -331,7 +340,7 @@ public class ElementsFunctionUtils {
     }
 
     public static List<RequiredPathDTO> getRequiredPathMessages() {
-        return new ArrayList<>(RequiredPathField);
+        return new ArrayList<>(RequiredPathField.get());
     }
 
 
@@ -346,7 +355,7 @@ public class ElementsFunctionUtils {
     }
 
     public static List<EmptyDataDTO> getUniqueEmptyDataPath() {
-        Set<EmptyDataDTO> uniqueData = new LinkedHashSet<>(emptyPathField);
+        Set<EmptyDataDTO> uniqueData = new LinkedHashSet<>(emptyPathField.get());
         return new ArrayList<>(uniqueData);
     }
 
@@ -393,7 +402,7 @@ public class ElementsFunctionUtils {
             }else{
                 if(required != null) {
                     EmptyDataDTO emptyPath = new EmptyDataDTO(fileName, id, datapath, "Popup", jsonId);
-                    emptyPathField.add(emptyPath);
+                    emptyPathField.get().add(emptyPath);
                     WebElement closeBtn = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[contains(@aria-describedby, 'dialog-dataview-selectable-')]//button[contains(@class, 'btn blue-hoki btn-sm')]")));
                     closeBtn.click();
                 }else{
@@ -425,7 +434,7 @@ public class ElementsFunctionUtils {
                 } else {
                     System.out.println("Title is empty or null");
                     PopupStandardFieldsDTO popupStandardFields = new PopupStandardFieldsDTO(fileName, id, dataPath, "code", jsonId);
-                    PopupStandartField.add(popupStandardFields);
+                    PopupStandartField.get().add(popupStandardFields);
 //                    JsonFileReader.saveToSingleJsonFile(popupStandardFields);
                 }
 
@@ -444,6 +453,6 @@ public class ElementsFunctionUtils {
         }
     }
     public static List<PopupStandardFieldsDTO> getPopupStandartMessages() {
-        return new ArrayList<>(PopupStandartField);
+        return new ArrayList<>(PopupStandartField.get());
     }
 }

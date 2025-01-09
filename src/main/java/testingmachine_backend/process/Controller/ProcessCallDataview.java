@@ -17,18 +17,13 @@ import java.util.List;
 @Slf4j
 public class ProcessCallDataview {
 
-    static String HOST = JsonController.getSystemURL();
     private static final String PORT = "8080";
     private static final String URL = "/erp-services/RestWS/runJson";
-    private static final String SERVICE_URL =  HOST + ":" + PORT + URL;
     private static final String DATAVIEW = "testCaseDvList";
 
-    public static List<ProcessMetaData> getProcessMetaDataList() {
+    public static List<ProcessMetaData> getProcessMetaDataList(String moduleId, String unitName, String systemUrl, String username, String password) {
 
-        String systemId = JsonController.getModuleId();
-        String USERNAME = JsonController.getUsername();
-        String PASSWORD = JsonController.getPassword();
-        String UNITNAME = JsonController.getDatabaseUsername();
+        String SERVICE_URL =  systemUrl + ":" + PORT + URL;
 
         List<ProcessMetaData> processList = new ArrayList<>();
 
@@ -43,7 +38,7 @@ public class ProcessCallDataview {
                     "systemId": "%s"
                 }
             }
-            """.formatted(USERNAME, PASSWORD, UNITNAME, DATAVIEW, systemId);
+            """.formatted(username, password, unitName, DATAVIEW, moduleId);
 //        System.out.println(payload);
         try {
             RestTemplate restTemplate = new RestTemplate();

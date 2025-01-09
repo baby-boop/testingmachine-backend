@@ -7,11 +7,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import testingmachine_backend.TestingmachineBackendApplication;
-import testingmachine_backend.config.CounterService;
 import testingmachine_backend.process.Config.ConfigProcess;
 import testingmachine_backend.process.Controller.FileData;
 import testingmachine_backend.process.Controller.SystemData;
 import testingmachine_backend.process.Controller.SystemService;
+import testingmachine_backend.process.DTO.ProcessDTO;
+import testingmachine_backend.process.Service.ProcessService;
 
 import java.io.File;
 import java.io.IOException;
@@ -31,7 +32,9 @@ public class JsonController {
     private static final String PROCESS_RESULT_PATH = BASE_DIRECTORY + "/process/result";
     private static final String META_PROCESS_HEADER_PATH = BASE_DIRECTORY + "/metalistwithprocess/header";
     private static final String META_PROCESS_RESULT_PATH = BASE_DIRECTORY + "/metalistwithprocess/result";
-    
+    private static final String PATCH_HEADER_PATH = BASE_DIRECTORY + "/patch/header";
+    private static final String PATCH_RESULT_PATH = BASE_DIRECTORY + "/patch/result";
+
     private static String moduleId;
     private static String customerName;
     private static String createdDate;
@@ -42,14 +45,14 @@ public class JsonController {
     private static String databaseUsername;
     private static String jsonId;
     private static String selectedModule;
-    private static String metaProcessId;
+    private static String metaOrPatchId;
 
     public static String getModuleId() {
         return moduleId != null ? moduleId : "";
     }
 
-    public static String getMetaProcessId() {
-        return metaProcessId != null ? metaProcessId : "";
+    public static String getMetaOrPatchId() {
+        return metaOrPatchId != null ? metaOrPatchId : "";
     }
 
     public static String getCustomerName() {
@@ -88,6 +91,15 @@ public class JsonController {
         return selectedModule != null ? selectedModule : "";
     }
 
+    @GetMapping("/process-percent")
+    public ResponseEntity<List<ProcessDTO>> getProcessPercent() {
+        List<ProcessDTO> processResults = ProcessService.getInstance().getProcessResults();
+        if (processResults.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(processResults);
+    }
+
     @Autowired
     public SystemService service;
 
@@ -107,7 +119,7 @@ public class JsonController {
         databaseUsername = "";
         jsonId = "";
         selectedModule = "";
-        metaProcessId = "";
+        metaOrPatchId = "";
     }
 
 
@@ -131,11 +143,11 @@ public class JsonController {
         databaseUsername = savedData.getDatabaseUsername();
         jsonId = savedData.getGeneratedId();
         selectedModule =savedData.getSelectedModule();
-        metaProcessId = savedData.getMetaProcessId();
+        metaOrPatchId = savedData.getMetaOrPatchId();
 
         log.info("Created system data: ID = {},databaseName = {}, databaseUserame = {}, ModuleId = {}, CustomerName = {}, SystemURL = {}, username = {}, password = {}, selectedModule = {}, metaProcessId = {}",
                 savedData.getGeneratedId(), savedData.getDatabaseName(), savedData.getDatabaseUsername(), savedData.getModuleId(), savedData.getCustomerName(),
-                savedData.getSystemURL(), savedData.getUsername(), savedData.getPassword(), savedData.getSelectedModule(), savedData.getMetaProcessId());
+                savedData.getSystemURL(), savedData.getUsername(), savedData.getPassword(), savedData.getSelectedModule(), savedData.getMetaOrPatchId());
 
         String module = data.getSelectedModule();
         try {
@@ -177,6 +189,15 @@ public class JsonController {
     @GetMapping("/metaprocess-result")
     public ResponseEntity<List<FileData>> getMetaProcessResultData() {
         return ResponseEntity.ok(readJsonFilesFromFolderResult(META_PROCESS_RESULT_PATH));
+    }
+
+    @GetMapping("/patch-header")
+    public ResponseEntity<List<Object>> getPatchHeaderData() {
+        return ResponseEntity.ok(readJsonFilesFromFolder(PATCH_HEADER_PATH));
+    }
+    @GetMapping("/patch-result")
+    public ResponseEntity<List<FileData>> getPatchResultData() {
+        return ResponseEntity.ok(readJsonFilesFromFolderResult(PATCH_RESULT_PATH));
     }
 
     private List<Object> readJsonFilesFromFolder(String folderPath) {

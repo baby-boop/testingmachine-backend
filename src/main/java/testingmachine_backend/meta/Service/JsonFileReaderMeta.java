@@ -18,18 +18,32 @@ public class JsonFileReaderMeta {
 
     private static final Logger LOGGER = Logger.getLogger(JsonFileReaderMeta.class.getName());
 
-    private static final String DIRECTORY_PATH = BASE_DIRECTORY + "/metalist/result";
-
+    private static final String DIRECTORY_PATH_META = BASE_DIRECTORY + "/metalist/result";
+    private static final String DIRECTORY_PATH_PATCH = BASE_DIRECTORY + "/patch/result";
     /**
      * Save a DTO to a single JSON file, appending it to a list of existing DTOs.
      *
      * @param dto The DTO object to save.
      * @param <T> The type of the DTO.
+     * @param type The type of the JSON file (either "meta" or "patch").
      */
-    public static <T> void saveToSingleJsonFile(T dto, String jsonId) {
+    public static <T> void saveToSingleJsonFile(T dto, String jsonId, String type) {
+        String directoryPath;
+        String currentJsonFileName;
+        switch (type) {
+            case "meta":
+                directoryPath = DIRECTORY_PATH_META;
+                break;
+            case "patch":
+                directoryPath = DIRECTORY_PATH_PATCH;
+                break;
+            default:
+                LOGGER.log(Level.WARNING, "Invalid type: {0}. Must be 'meta' or 'process'.", type);
+                return;
+        }
+        currentJsonFileName = directoryPath + File.separator + jsonId + "_result.json";
 
-        String currentJsonFileName = DIRECTORY_PATH + File.separator + jsonId + "_result.json";
-        File directory = new File(DIRECTORY_PATH);
+        File directory = new File(directoryPath);
         if (!directory.exists()) {
             directory.mkdirs();
         }

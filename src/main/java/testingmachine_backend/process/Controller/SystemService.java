@@ -19,6 +19,8 @@ public class SystemService {
             return BASE_DIRECTORY + "/process/header";
         } else if ("meta".equalsIgnoreCase(selectedModule)) {
             return BASE_DIRECTORY + "/metalist/header";
+        } else if ("patch".equalsIgnoreCase(selectedModule)) {
+            return BASE_DIRECTORY + "/patch/header";
         } else {
             return BASE_DIRECTORY + "/metalistwithprocess/header";
         }

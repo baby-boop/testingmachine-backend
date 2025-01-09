@@ -1,4 +1,4 @@
-package testingmachine_backend.config;
+package testingmachine_backend.schedule;
 
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -7,19 +7,22 @@ import testingmachine_backend.controller.JsonController;
 import java.io.File;
 
 @Component
-public class JsonFileCleaner {
+public class JsonFileCleanerSchedule {
 
     private static final String[] DIRECTORIES_TO_CLEAN = {
             JsonController.BASE_DIRECTORY + "/metalist/header",
             JsonController.BASE_DIRECTORY + "/metalist/result",
             JsonController.BASE_DIRECTORY + "/process/header",
             JsonController.BASE_DIRECTORY + "/process/result",
+            JsonController.BASE_DIRECTORY + "/patch/header",
+            JsonController.BASE_DIRECTORY + "/patch/result",
             JsonController.BASE_DIRECTORY + "/metalistwithprocess/header",
             JsonController.BASE_DIRECTORY + "/metalistwithprocess/result"
+
     };
 
 //    @Scheduled(cron = "0 0 0 L * ?")
-    @Scheduled(fixedRate = 600_000)
+//    @Scheduled(fixedRate = 600_000)
     public void cleanJsonFiles() {
         for (String directoryPath : DIRECTORIES_TO_CLEAN) {
             File folder = new File(directoryPath);

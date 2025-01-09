@@ -7,7 +7,7 @@ public class ErrorLogger {
     public static void logError(String fileName, String id, String code, String name, String jsonId) {
         System.err.println("metaId: " + id + ", fileName: " + fileName);
 
-        MetaMessageStatusService.addMetaStatus(fileName, id, code, name, "info", "", jsonId);
+//        MetaMessageStatusService.addMetaStatus(fileName, id, code, name, "info", "", jsonId);
     }
 
 }

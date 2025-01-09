@@ -19,7 +19,7 @@ public class JsonFileReader {
 
     private static final String DIRECTORY_PATH_PROCESS = BASE_DIRECTORY + "/process/result";
     private static final String DIRECTORY_PATH_META = BASE_DIRECTORY + "/metalistwithprocess/result";
-
+    private static final String DIRECTORY_PATH_PATCH = BASE_DIRECTORY + "/patch/result";
     /**
      * Save a DTO to a single JSON file, appending it to a list of existing DTOs.
      *
@@ -37,6 +37,9 @@ public class JsonFileReader {
                 break;
             case "meta":
                 directoryPath = DIRECTORY_PATH_META;
+                break;
+            case "patch":
+                directoryPath = DIRECTORY_PATH_PATCH;
                 break;
             default:
                 LOGGER.log(Level.WARNING, "Invalid type: {0}. Must be 'meta' or 'process'.", type);

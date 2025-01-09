@@ -7,6 +7,10 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.support.ui.*;
 import testingmachine_backend.process.Checkers.LayoutChecker;
 
+import testingmachine_backend.process.DTO.EmptyDataDTO;
+import testingmachine_backend.process.DTO.ProcessDTO;
+import testingmachine_backend.process.Fields.EmptyDataField;
+import testingmachine_backend.process.Fields.ProcessField;
 import testingmachine_backend.process.Messages.IsProcessMessage;
 import testingmachine_backend.process.Section.LayoutProcessSection;
 import testingmachine_backend.process.Checkers.ProcessWizardChecker;
@@ -28,6 +32,7 @@ public class ProcessPath {
     static final Logger LOGGER = Logger.getLogger(ProcessPath.class.getName());
     private static final int SHORT_WAIT_SECONDS = 2;
     private static final int MEDIUM_WAIT_SECONDS = 5;
+
 
     @Getter
     private static int failedCount = 0;
@@ -129,8 +134,8 @@ public class ProcessPath {
 
 
     public static boolean isDuplicateLogEntry(String systemName, String id, String jsonId) {
-        return ElementsFunctionUtils.ProcessLogFields.stream()
-                .anyMatch(log -> log.getModuleName().equals(systemName) && log.getProcessId().equals(id) && log.getJsonId().equals(jsonId));
+        return ElementsFunctionUtils.ProcessLogFields.get().stream()
+                .anyMatch(log -> log.getModuleName().equals(systemName) && log.getMetaDataId().equals(id) && log.getJsonId().equals(jsonId));
     }
 
 

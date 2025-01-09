@@ -8,48 +8,71 @@ import testingmachine_backend.controller.JsonController;
 import testingmachine_backend.meta.MetaList.MetaMain;
 
 import testingmachine_backend.metaWithProcess.MetaWithProcessMain;
+import testingmachine_backend.patch.patchMain;
 import testingmachine_backend.process.MainProcess;
+import testingmachine_backend.schedule.ScheduledData;
+import testingmachine_backend.schedule.ScheduledDataService;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @EnableScheduling
 @SpringBootApplication
 public class TestingmachineBackendApplication
 		implements CommandLineRunner
 {
-
 	public static void main(String[] args) {
 		SpringApplication.run(TestingmachineBackendApplication.class, args);
 	}
+
+	private final ExecutorService executor = Executors.newCachedThreadPool();
 
 	@Override
 	public void run(String... args) {
 		if (args.length > 0) {
 			String module = args[0];
-			try {
-				String result = executeModule(module);
-				System.out.println("result: " +result);
-			} catch (Exception e) {
-				System.err.println("Модуль ажиллуулахад алдаа гарлаа : " + e.getMessage());
-			}
+			executor.submit(() -> {
+
+				try {
+					System.out.println("Current Thread: " + Thread.currentThread().getName() + ", ID: " + Thread.currentThread().getId());
+					String result = executeModule(module);
+					System.out.println("result: " + result);
+				} catch (Exception e) {
+					System.err.println("Модуль ажиллуулахад алдаа гарлаа: " + e.getMessage());
+				}
+			});
 		} else {
-			System.out.println("Модуль олдсонгүй .");
+			System.out.println("Модуль олдсонгүй.");
 		}
 	}
 	public String executeModule(String module) {
 		String result;
 		switch (module) {
 			case "meta":
-				System.out.println("Тест эхлэж байна... 1");
+				System.out.println("Тест эхлэж байна... meta");
 				MetaMain.mainSystem(JsonController.getJsonId());
 				result = "Тест хийж дууссан";
 				break;
 			case "process":
-				System.out.println("Тест эхлэж байна... 2");
-				MainProcess.mainProcess(JsonController.getJsonId());
+				System.out.println("Тест эхлэж байна... process");
+				MainProcess.mainProcess(JsonController.getJsonId(), String.valueOf(Thread.currentThread().getId()), JsonController.getCustomerName(),
+						JsonController.getCreatedDate(), JsonController.getModuleId(), JsonController.getDatabaseName(), JsonController.getDatabaseUsername(),
+						JsonController.getSystemURL(), JsonController.getUsername(), JsonController.getPassword(), JsonController.getMetaOrPatchId());
 				result = "Тест хийж дууссан";
 				break;
 			case "metaWithProcess":
-				System.out.println("Тест эхлэж байна... 3");
+				System.out.println("Тест эхлэж байна... metaWithProcess");
 				MetaWithProcessMain.mainProcess(JsonController.getJsonId());
+				result = "Тест хийж дууссан";
+				break;
+			case "patch":
+				System.out.println("Patch тест эхлэж байна");
+				patchMain.mainProcess(JsonController.getJsonId(), String.valueOf(Thread.currentThread().getId()), JsonController.getCustomerName(),
+						JsonController.getCreatedDate(), JsonController.getModuleId(), JsonController.getDatabaseName(), JsonController.getDatabaseUsername(),
+						JsonController.getSystemURL(), JsonController.getUsername(), JsonController.getPassword(), JsonController.getMetaOrPatchId());
 				result = "Тест хийж дууссан";
 				break;
 			default:
@@ -59,4 +82,3 @@ public class TestingmachineBackendApplication
 	}
 }
 
-//Би selenium-ийг зэрэгцээ байдлаар ашиглаж чадах уу? Жишээ нь: module сонгоод цаашлаад маш олон үйлдэл хийдэг бөгөөд одоо эхний command ажиллаж байхад дараагийн command орж ирсэн тохиолдолд хамт зэрэгцээ байдлаар ажиллана. Ерөнхийдөө маш олон command ирэх бөгөөд тухай бүрийг ажлуулна. Одоо эхний command ажиллаж байхад дараагийн ирэх үед өмнөх command зогсоодог. Тэгэж ажиллаж боломжтой юу?

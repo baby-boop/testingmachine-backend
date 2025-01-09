@@ -11,11 +11,11 @@ public class WaitUtils {
     public static int waitTime = 120;
 
 
-    public static void retryWaitForLoadingToDisappear(WebDriver driver, String fileName, String id, String code, String name, String jsonId, int maxAttempts) {
-        retryAction(() -> waitForLoadingToDisappear(driver, fileName, id, code, name, jsonId), maxAttempts);
+    public static void retryWaitForLoadingToDisappear(WebDriver driver, String fileName, String id, String code, String name, String jsonId, String type, int maxAttempts) {
+        retryAction(() -> waitForLoadingToDisappear(driver, fileName, id, code, name, jsonId, type), maxAttempts);
     }
-    public static void retryWaitForLoadToDisappear(WebDriver driver, String fileName, String id, String code, String name, String jsonId, int maxAttempts) {
-        retryAction(() -> waitForLoadToDisappear(driver, fileName, id, code, name, jsonId), maxAttempts);
+    public static void retryWaitForLoadToDisappear(WebDriver driver, String fileName, String id, String code, String name, String jsonId, String type, int maxAttempts) {
+        retryAction(() -> waitForLoadToDisappear(driver, fileName, id, code, name, jsonId, type), maxAttempts);
     }
     public static void retryWaitForLoadForWorkflow(WebDriver driver, int maxAttempts) {
         retryAction(() -> waitForLoadForWorkflow(driver), maxAttempts);
@@ -25,7 +25,7 @@ public class WaitUtils {
         retryAction(() -> waitForLoadingForWorkflow(driver), maxAttempts);
     }
 
-    private static void waitForLoadingToDisappear(WebDriver driver, String fileName, String id, String code, String name, String jsonId) {
+    private static void waitForLoadingToDisappear(WebDriver driver, String fileName, String id, String code, String name, String jsonId, String type) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(waitTime));
         try {
             WebElement loadingMessage = driver.findElement(By.xpath("//div[contains(@class, 'datagrid-mask-msg') and text()='Түр хүлээнэ үү']"));
@@ -39,7 +39,7 @@ public class WaitUtils {
         }
     }
 
-    private static void waitForLoadToDisappear(WebDriver driver, String fileName, String id, String code, String name, String jsonId) {
+    private static void waitForLoadToDisappear(WebDriver driver, String fileName, String id, String code, String name, String jsonId, String type) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(waitTime));
         try {
             WebElement loadingMessages = driver.findElement(By.cssSelector("div.loading-message.loading-message-boxed"));

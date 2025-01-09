@@ -2,8 +2,6 @@ package testingmachine_backend.controller;
 
 import org.springframework.web.bind.annotation.*;
 import testingmachine_backend.TestingmachineBackendApplication;
-import testingmachine_backend.config.CounterDTO;
-import testingmachine_backend.config.CounterService;
 
 import java.util.Map;
 
@@ -16,14 +14,7 @@ public class ModuleController {
         this.application = application;
     }
 
-    @GetMapping("/meta-counter")
-    public CounterDTO getLatestCounter() {
-        CounterDTO latestCounter = CounterService.getLatestCounter();
-        if (latestCounter == null) {
-            return null;
-        }
-        return latestCounter;
-    }
+
 
     @PostMapping("/module")
     public String executeModule(@RequestBody Map<String, String> request) {
@@ -34,13 +25,7 @@ public class ModuleController {
         try {
             String moduleMessage = application.executeModule(module);
 
-            int count = CounterService.getLatestCounter() != null ? CounterService.getLatestCounter().getCount() : 0;
-            int totalCount = CounterService.getLatestCounter() != null ? CounterService.getLatestCounter().getTotalCount() : 1;
 
-            if (count == totalCount) {
-                successMessage = moduleMessage;
-                return successMessage;
-            }
 
         } catch (Exception e) {
             errorMessage = "Модуль ажиллуулахад алдаа гарлаа! " + e;

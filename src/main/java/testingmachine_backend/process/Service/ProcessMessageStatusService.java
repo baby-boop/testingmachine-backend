@@ -13,7 +13,7 @@ import java.util.List;
 @Service
 public class ProcessMessageStatusService {
 
-    private static final List<ProcessMessageStatusDTO> processMessageStatusList = new ArrayList<>();
+    private static final ThreadLocal<List<ProcessMessageStatusDTO>> processMessageStatusList = ThreadLocal.withInitial(ArrayList::new);
 
     public static void addProcessStatus(String fileName, String id, String code, String name, String status, String messageText, String TestProcessType, String jsonId) {
 
@@ -23,22 +23,22 @@ public class ProcessMessageStatusService {
                 PopupMessage.getUniquePopupMessages(),
                 ElementsFunctionUtils.getPopupStandartMessages(),
                 ElementsFunctionUtils.getRequiredPathMessages());
-        processMessageStatusList.add(statusDTO);
+        processMessageStatusList.get().add(statusDTO);
 
         JsonFileReader.saveToSingleJsonFile(statusDTO, TestProcessType, jsonId);
         clearAllDTOField();
     }
 
     public static List<ProcessMessageStatusDTO> getProcessStatuses() {
-        return new ArrayList<>(processMessageStatusList);
+        return new ArrayList<>(processMessageStatusList.get());
     }
 
     public static void clearAllDTOField(){
-        processMessageStatusList.clear();
-        ElementsFunctionUtils.ProcessLogFields.clear();
-        ElementsFunctionUtils.emptyPathField.clear();
-        PopupMessage.PopupMessageField.clear();
-        ElementsFunctionUtils.PopupStandartField.clear();
-        ElementsFunctionUtils.RequiredPathField.clear();
+        processMessageStatusList.get().clear();
+        ElementsFunctionUtils.ProcessLogFields.get().clear();
+        ElementsFunctionUtils.emptyPathField.get().clear();
+        PopupMessage.PopupMessageField.get().clear();
+        ElementsFunctionUtils.PopupStandartField.get().clear();
+        ElementsFunctionUtils.RequiredPathField.get().clear();
     }
 }

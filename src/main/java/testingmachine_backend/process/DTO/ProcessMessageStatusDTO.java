@@ -10,9 +10,9 @@ import java.util.List;
 public class ProcessMessageStatusDTO {
 
     private String moduleName;
-    private String processId;
-    private String processCode;
-    private String processName;
+    private String metaDataId;
+    private String metaDataCode;
+    private String metaDataName;
     private String status;
     private String messageText;
     private String jsonId;
@@ -22,13 +22,13 @@ public class ProcessMessageStatusDTO {
     private List<PopupStandardFieldsDTO> popupStandardFieldsDTO;
     private List<RequiredPathDTO> requiredPathDTO;
 
-    public ProcessMessageStatusDTO(String moduleName, String processId, String processCode, String processName, String status, String messageText,
+    public ProcessMessageStatusDTO(String moduleName, String metaDataId, String metaDataCode, String metaDataName, String status, String messageText,
                                    String jsonId, List<ProcessLogDTO> processLogDTO, List<EmptyDataDTO> emptyDataDTO, List<PopupMessageDTO> popupMessageDTO,
                                    List<PopupStandardFieldsDTO> popupStandardFieldsDTO, List<RequiredPathDTO> requiredPathDTO) {
         this.moduleName = moduleName;
-        this.processId = processId;
-        this.processCode = processCode;
-        this.processName = processName;
+        this.metaDataId = metaDataId;
+        this.metaDataCode = metaDataCode;
+        this.metaDataName = metaDataName;
         this.status = status;
         this.messageText = messageText;
         this.jsonId = jsonId;

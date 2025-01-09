@@ -16,7 +16,7 @@ import java.util.Set;
 
 public class PopupMessage {
 
-    public static final List<PopupMessageDTO> PopupMessageField = new ArrayList<>();
+    public static final ThreadLocal<List<PopupMessageDTO>> PopupMessageField = ThreadLocal.withInitial(ArrayList::new);
 
     private static final int SHORT_WAIT_SECONDS = 1;
 
@@ -43,7 +43,7 @@ public class PopupMessage {
 
             PopupMessageDTO popupMessages = new PopupMessageDTO(fileName, id, datapath, messageText, jsonId);
 
-            PopupMessageField.add(popupMessages);
+            PopupMessageField.get().add(popupMessages);
 //            JsonFileReader.saveToSingleJsonFile(popupMessages);
 
             return messageContent.isDisplayed();
@@ -54,7 +54,7 @@ public class PopupMessage {
         }
     }
     public static List<PopupMessageDTO> getUniquePopupMessages() {
-        Set<PopupMessageDTO> uniqueData = new LinkedHashSet<>(PopupMessageField);
+        Set<PopupMessageDTO> uniqueData = new LinkedHashSet<>(PopupMessageField.get());
         return new ArrayList<>(uniqueData);
     }
 }

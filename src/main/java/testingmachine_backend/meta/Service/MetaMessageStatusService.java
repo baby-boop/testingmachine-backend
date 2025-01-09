@@ -8,16 +8,16 @@ import java.util.List;
 
 public class MetaMessageStatusService {
 
-    private static final List<ErrorMessageDTO> metaMessageStatusList = new ArrayList<>();
+    private static final ThreadLocal<List<ErrorMessageDTO>> metaMessageStatusList = ThreadLocal.withInitial(ArrayList::new);
 
-    public static void addMetaStatus(String moduleName, String id, String code, String name, String type, String messageText, String jsonId) {
+    public static void addMetaStatus(String moduleName, String id, String code, String name, String type, String messageText, String jsonId, String checkerType) {
         ErrorMessageDTO statusDTO = new ErrorMessageDTO(moduleName, id, code, name, type, messageText, jsonId);
-        metaMessageStatusList.add(statusDTO);
-        JsonFileReaderMeta.saveToSingleJsonFile(statusDTO, jsonId);
-        metaMessageStatusList.clear();
+        metaMessageStatusList.get().add(statusDTO);
+        JsonFileReaderMeta.saveToSingleJsonFile(statusDTO, jsonId, checkerType);
+        metaMessageStatusList.get().clear();
     }
 
     public static List<ErrorMessageDTO> getMetaStatuses() {
-        return new ArrayList<>(metaMessageStatusList);
+        return new ArrayList<>(metaMessageStatusList.get());
     }
 }

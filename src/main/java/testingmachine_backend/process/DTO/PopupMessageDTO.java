@@ -10,14 +10,14 @@ import java.util.Objects;
 public class PopupMessageDTO {
     private String moduleName;
 
-    private String processId;
+    private String metaDataId;
     private String dataPath;
     private String messageText;
     private String jsonId;
 
-    public PopupMessageDTO(String moduleName, String processId, String dataPath, String messageText, String jsonId) {
+    public PopupMessageDTO(String moduleName, String metaDataId, String dataPath, String messageText, String jsonId) {
         this.moduleName = moduleName;
-        this.processId = processId;
+        this.metaDataId = metaDataId;
         this.dataPath = dataPath;
         this.messageText = messageText;
         this.jsonId = jsonId;
@@ -29,7 +29,7 @@ public class PopupMessageDTO {
         if (o == null || getClass() != o.getClass()) return false;
         PopupMessageDTO that = (PopupMessageDTO) o;
         return Objects.equals(moduleName, that.moduleName) &&
-                Objects.equals(processId, that.processId) &&
+                Objects.equals(metaDataId, that.metaDataId) &&
                 Objects.equals(dataPath, that.dataPath) &&
                 Objects.equals(messageText, that.messageText) &&
                 Objects.equals(jsonId, that.jsonId);
@@ -37,6 +37,6 @@ public class PopupMessageDTO {
 
     @Override
     public int hashCode() {
-        return Objects.hash(moduleName, processId, dataPath, messageText, jsonId);
+        return Objects.hash(moduleName, metaDataId, dataPath, messageText, jsonId);
     }
 }

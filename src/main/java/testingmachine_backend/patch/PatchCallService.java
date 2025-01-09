@@ -1,4 +1,4 @@
-package testingmachine_backend.process.Controller;
+package testingmachine_backend.patch;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -8,24 +8,23 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
-import testingmachine_backend.controller.JsonController;
 import testingmachine_backend.meta.Controller.ProcessMetaData;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
-public class ProcessCallDataviewWithId {
+public class PatchCallService {
 
     private static final String PORT = "8080";
     private static final String URL = "/erp-services/RestWS/runJson";
-    private static final String DATAVIEW = "testCaseFindAllProcessList";
+    private static final String DATAVIEW = "pfFindPatchMetaIdsDv";
 
-    public static List<ProcessMetaData> getProcessMetaDataList(String unitName, String systemUrl, String username, String password, String processId) {
+    public static List<PatchDTO> getPatchMetaDataList(String unitName, String systemUrl, String username, String password, String patchId) {
 
         String SERVICE_URL =  systemUrl + ":" + PORT + URL;
 
-        List<ProcessMetaData> processList = new ArrayList<>();
+        List<PatchDTO> patchList = new ArrayList<>();
 
         String payload = """
             {
@@ -35,10 +34,10 @@ public class ProcessCallDataviewWithId {
                 "unitname": "%s",
                 "parameters": {
                     "systemmetagroupcode": "%s",
-                    "metaDataId": "%s"
+                    "patchId": "%s"
                 }
             }
-            """.formatted(username, password, unitName, DATAVIEW, processId);
+            """.formatted(username, password, unitName, DATAVIEW, patchId);
 
         try {
             RestTemplate restTemplate = new RestTemplate();
@@ -54,17 +53,17 @@ public class ProcessCallDataviewWithId {
             JsonNode rootNode = objectMapper.readTree(response.getBody());
 
             JsonNode resultNode = rootNode.path("response").path("result");
-
             if (resultNode.isObject()) {
                 resultNode.fields().forEachRemaining(entry -> {
                     JsonNode item = entry.getValue();
 
-                    String id = item.path("metadataid").asText("N/A");
-                    String systemName = item.path("systemname").asText("N/A");
-                    String code = item.path("metadatacode").asText("N/A");
-                    String name = item.path("metadataname").asText("N/A");
+                    String id = item.path("metaid").asText("N/A");
+                    String code = item.path("metacode").asText("N/A");
+                    String name = item.path("metaname").asText("N/A");
+                    String typeId = item.path("typeid").asText("N/A");
+                    String patchName = item.path("patchname").asText("N/A");
 
-                    processList.add(new ProcessMetaData(id, systemName, code, name));
+                    patchList.add(new PatchDTO(id, code, name, typeId, patchId, patchName));
                 });
             } else {
                 log.warn("The 'result' node is missing or not an object.");
@@ -74,6 +73,6 @@ public class ProcessCallDataviewWithId {
             log.error("Error while calling service: ", e);
         }
 
-        return processList;
+        return patchList;
     }
 }

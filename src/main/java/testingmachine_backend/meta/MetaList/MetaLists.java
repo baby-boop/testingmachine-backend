@@ -7,7 +7,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import testingmachine_backend.config.ConfigForAll;
-import testingmachine_backend.config.CounterService;
 import testingmachine_backend.meta.Controller.ListConfig;
 import testingmachine_backend.meta.Controller.MetaCallDataview;
 import testingmachine_backend.meta.DTO.MetadataDTO;
@@ -88,17 +87,16 @@ public class MetaLists {
 
             driver.get(url);
 
-            WaitUtils.retryWaitForLoadToDisappear(driver, metaData.getModuleName(), metaData.getId(), metaData.getCode(), metaData.getName(), jsonId, 3);
-            WaitUtils.retryWaitForLoadingToDisappear(driver, metaData.getModuleName(), metaData.getId(), metaData.getCode(), metaData.getName(), jsonId, 3);
+            WaitUtils.retryWaitForLoadToDisappear(driver, metaData.getModuleName(), metaData.getId(), metaData.getCode(), metaData.getName(), jsonId, "patch", 3);
+            WaitUtils.retryWaitForLoadingToDisappear(driver, metaData.getModuleName(), metaData.getId(), metaData.getCode(), metaData.getName(), jsonId, "patch", 3);
 
-            if (IsErrorMessage.isErrorMessagePresent(driver, metaData.getId(), metaData.getModuleName(), metaData.getCode(), metaData.getName(), jsonId)) {
+            if (IsErrorMessage.isErrorMessagePresent(driver, metaData.getId(), metaData.getModuleName(), metaData.getCode(), metaData.getName(), jsonId, "meta")) {
                 errorCount++;
                 System.out.println("Error found in ID: " + metaData.getId() + ", errorCount: " + errorCount);
 
             }
 
             count++;
-            CounterService.addCounter(count, totalMetaCount);
             System.out.println("Process count: " + count + ", id: " + metaData.getId());
         }
     }
@@ -143,10 +141,10 @@ public class MetaLists {
 
                         wait.until(ExpectedConditions.visibilityOfElementLocated(By.tagName("body")));
 
-                        WaitUtils.retryWaitForLoadToDisappear(driver, moduleName, id, code, name, jsonId, 3);
-                        WaitUtils.retryWaitForLoadingToDisappear(driver, moduleName, id, code, name, jsonId, 3);
+                        WaitUtils.retryWaitForLoadToDisappear(driver, moduleName, id, code, name, jsonId, "meta", 3);
+                        WaitUtils.retryWaitForLoadingToDisappear(driver, moduleName, id, code, name, jsonId, "meta", 3);
 
-                        if (IsErrorMessage.isErrorMessagePresent(driver, id, moduleName, code, name, jsonId)) {
+                        if (IsErrorMessage.isErrorMessagePresent(driver, id, moduleName, code, name, jsonId, "meta")) {
                             errorCount++;
                             System.out.println("Error found in ID: " + id + "    Module name: " + moduleName + "    Meta error count: " + errorCount + "  jsonId: " + jsonId);
                         }

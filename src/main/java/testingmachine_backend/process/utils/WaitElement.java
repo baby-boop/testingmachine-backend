@@ -8,7 +8,7 @@ import java.time.Duration;
 
 public class WaitElement {
 
-    public static int TIMEOUT = 120;
+    public static int TIMEOUT = 5;
 
     public static void retryWaitForLoadingToDisappear(WebDriver driver, int maxAttempts) {
         retryAction(() -> waitForLoadingToDisappear(driver), maxAttempts);
@@ -18,6 +18,25 @@ public class WaitElement {
     }
     public static void retryWaitForSpinner(WebDriver driver, int maxAttempts) {
         retryAction(() -> waitForSpinner(driver), maxAttempts);
+    }
+
+    public static void retryWaitForBlockUIDisappear(WebDriver driver, int maxAttempts) {
+        retryAction(() -> waitForBlockUIDisappear(driver), maxAttempts);
+    }
+
+    private static void waitForBlockUIDisappear(WebDriver driver) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(TIMEOUT));
+        try {
+            WebElement blockUI = driver.findElement(By.cssSelector("div.blockUI.blockMsg.blockPage"));
+            if (blockUI.isDisplayed()) {
+                wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("div.blockUI.blockMsg.blockPage")));
+            }
+        } catch (NoSuchElementException e) {
+            // Block UI not found, proceed
+        } catch (TimeoutException e) {
+            // Handle timeout case if needed
+            System.out.println("Timeout waiting for Block UI to disappear.");
+        }
     }
 
     private static void waitForLoadingToDisappear(WebDriver driver) {

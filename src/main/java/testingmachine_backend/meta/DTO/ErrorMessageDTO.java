@@ -8,19 +8,19 @@ import lombok.Setter;
 @Setter
 public class ErrorMessageDTO {
     private String moduleName;
-    private String metaId;
-    private String metaCode;
-    private String metaName;
-    private String metaType;
+    private String metaDataId;
+    private String metaDataCode;
+    private String metaDataName;
+    private String status;
     private String messageText;
     private String jsonId;
 
-    public ErrorMessageDTO(String moduleName, String metaId, String metaCode, String metaName, String metaType, String messageText, String jsonId) {
+    public ErrorMessageDTO(String moduleName, String metaDataId, String metaDataCode, String metaDataName, String status, String messageText, String jsonId) {
         this.moduleName = moduleName;
-        this.metaId = metaId;
-        this.metaCode = metaCode;
-        this.metaName = metaName;
-        this.metaType = metaType;
+        this.metaDataId = metaDataId;
+        this.metaDataCode = metaDataCode;
+        this.metaDataName = metaDataName;
+        this.status = status;
         this.messageText = messageText;
         this.jsonId = jsonId;
     }

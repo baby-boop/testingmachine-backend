@@ -22,4 +22,17 @@ public class ConfigForAll {
 
         passwordField.sendKeys(Keys.ENTER);
     }
+
+    public static void loginFormTest(WebDriverWait wait, String username, String password) {
+        WebElement userNameField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("user_name")));
+        userNameField.sendKeys(username);
+
+        WebElement passwordField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("pass_word")));
+        passwordField.sendKeys(password);
+
+        WebElement checkBox = wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("isLdap")));
+        checkBox.click();
+
+        passwordField.sendKeys(Keys.ENTER);
+    }
 }

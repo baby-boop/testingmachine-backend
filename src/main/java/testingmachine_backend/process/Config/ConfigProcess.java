@@ -30,6 +30,7 @@ public class ConfigProcess {
         try{
             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(TIMEOUT));
             wait.until(ExpectedConditions.visibilityOfElementLocated(By.tagName("body")));
+            WaitElement.retryWaitForBlockUIDisappear(driver, 3);
             WaitElement.retryWaitForLoadToDisappear(driver, 3);
             WaitElement.retryWaitForLoadingToDisappear(driver, 3);
         } catch (Exception e) {
