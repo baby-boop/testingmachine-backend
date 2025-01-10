@@ -1,4 +1,4 @@
-package testingmachine_backend.config;
+package testingmachine_backend.schedule;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -14,11 +14,11 @@ import java.util.logging.Logger;
 import static testingmachine_backend.controller.JsonController.BASE_DIRECTORY;
 
 @Slf4j
-public class JsonMetaPersent {
+public class JsonPersentResult {
 
-    private static final Logger LOGGER = Logger.getLogger(JsonMetaPersent.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(JsonPersentResult.class.getName());
 
-    private static final String DIRECTORY_PATH_PERCENT = BASE_DIRECTORY + "/percent";
+    private static final String DIRECTORY_PATH_PERCENT = BASE_DIRECTORY + "/percent/result";
     /**
      * Save a DTO to a single JSON file, appending it to a list of existing DTOs.
      *

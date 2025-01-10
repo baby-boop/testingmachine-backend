@@ -10,12 +10,16 @@ import java.util.List;
 import java.util.UUID;
 
 import static testingmachine_backend.controller.JsonController.BASE_DIRECTORY;
+import static testingmachine_backend.controller.JsonController.generateProcessData;
 
 @Service
 public class SystemService {
 
-    private String determineDirectoryPath(String selectedModule) {
-        if ("process".equalsIgnoreCase(selectedModule)) {
+    private String determineDirectoryPath(String selectedModule, String metaOrPatchId) {
+        if ("process".equals(selectedModule) && !metaOrPatchId.isEmpty()) {
+            return BASE_DIRECTORY + "/nodatas";
+        }
+        else if ("process".equalsIgnoreCase(selectedModule)) {
             return BASE_DIRECTORY + "/process/header";
         } else if ("meta".equalsIgnoreCase(selectedModule)) {
             return BASE_DIRECTORY + "/metalist/header";
@@ -26,39 +30,40 @@ public class SystemService {
         }
     }
 
-    public List<SystemData> getAllSystemData(String selectedModule) {
-        ObjectMapper objectMapper = new ObjectMapper();
-        List<SystemData> allSystemData = new ArrayList<>();
-
-        String directoryPath = determineDirectoryPath(selectedModule);
-        File directory = new File(directoryPath);
-        if (!directory.exists()) {
-            directory.mkdirs();
-        }
-
-        File[] files = directory.listFiles((dir, name) -> name.endsWith("_header.json"));
-
-        if (files != null) {
-            for (File file : files) {
-                try {
-                    SystemData data = objectMapper.readValue(file, SystemData.class);
-                    allSystemData.add(data);
-                } catch (IOException e) {
-                    e.printStackTrace(System.out); // Log errors to the console
-                }
-            }
-        }
-
-        return allSystemData;
-    }
+    //Бүх файлыг унших
+//    public List<SystemData> getAllSystemData(String selectedModule) {
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        List<SystemData> allSystemData = new ArrayList<>();
+//
+//        String directoryPath = determineDirectoryPath(selectedModule);
+//        File directory = new File(directoryPath);
+//        if (!directory.exists()) {
+//            directory.mkdirs();
+//        }
+//
+//        File[] files = directory.listFiles((dir, name) -> name.endsWith("_header.json"));
+//
+//        if (files != null) {
+//            for (File file : files) {
+//                try {
+//                    SystemData data = objectMapper.readValue(file, SystemData.class);
+//                    allSystemData.add(data);
+//                } catch (IOException e) {
+//                    e.printStackTrace(System.out); // Log errors to the console
+//                }
+//            }
+//        }
+//
+//        return allSystemData;
+//    }
 
     public SystemData addSystemData(SystemData data) {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            String directoryPath = determineDirectoryPath(data.getSelectedModule());
+            String directoryPath = determineDirectoryPath(data.getSelectedModule(), data.getMetaOrPatchId());
             File directory = new File(directoryPath);
             if (!directory.exists()) {
-                directory.mkdirs(); // Ensure the directory exists
+                directory.mkdirs();
             }
 
             String generatedId = UUID.randomUUID().toString();

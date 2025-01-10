@@ -1,7 +1,7 @@
 package testingmachine_backend.process.Service;
 
 import org.springframework.stereotype.Service;
-import testingmachine_backend.config.JsonMetaPersent;
+import testingmachine_backend.schedule.JsonPersentHeader;
 import testingmachine_backend.process.DTO.ProcessDTO;
 
 import java.util.List;
@@ -33,7 +33,8 @@ public class ProcessService {
                         dto.getCustomerName().equals(processDTO.getCustomerName()) &&
                         dto.getCreatedDate().equals(processDTO.getCreatedDate()) &&
                         dto.getJsonId().equals(processDTO.getJsonId()) &&
-                        dto.getModuleId().equals(processDTO.getModuleId()))
+                        dto.getModuleId().equals(processDTO.getModuleId()) &&
+                        dto.getSystemUrl().equals(processDTO.getSystemUrl()))
                 .findFirst()
                 .orElse(null);
 
@@ -42,7 +43,8 @@ public class ProcessService {
         } else {
             processResults.add(processDTO);
         }
-        JsonMetaPersent.saveToSingleJsonFile(processDTO, existingDTO.getJsonId());
+//        JsonPersentHeader.saveToSingleJsonFile(processDTO, processDTO.getJsonId()); //jsonPercent
+
     }
 
     public List<ProcessDTO> getProcessResults() {

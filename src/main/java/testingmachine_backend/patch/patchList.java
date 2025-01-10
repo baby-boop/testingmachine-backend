@@ -93,7 +93,7 @@ public class patchList {
                 count++;
             }
 
-            ProcessDTO processDTO = new ProcessDTO(theadId, processMetaDataList.size(), count, customerName, createdDate, jsonId, moduleId);
+            ProcessDTO processDTO = new ProcessDTO(theadId, processMetaDataList.size(), count, customerName, createdDate, jsonId, moduleId, systemUrl);
             ProcessService.getInstance().updateOrAddProcessResult(processDTO);
 
             System.out.println("Process count: " + count + ", id: " + metaData.getId() + ",  total: " + processMetaDataList.size());

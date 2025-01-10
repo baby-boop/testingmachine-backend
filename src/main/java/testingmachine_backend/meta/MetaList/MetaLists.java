@@ -99,7 +99,7 @@ public class MetaLists {
 
             count++;
 
-            ProcessDTO processDTO = new ProcessDTO(theadId, metaDataList.size(), count, customerName, createdDate, jsonId, moduleId);
+            ProcessDTO processDTO = new ProcessDTO(theadId, metaDataList.size(), count, customerName, createdDate, jsonId, moduleId, systemUrl);
             ProcessService.getInstance().updateOrAddProcessResult(processDTO);
 
             System.out.println("Process count: " + count + ", id: " + metaData.getId());

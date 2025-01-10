@@ -6,12 +6,12 @@ import lombok.Setter;
 @Getter
 @Setter
 public class FileData {
-    private String fileName;
+    private String id;
     private Object data;
 
 
-    public FileData(String fileName, Object data) {
-        this.fileName = fileName;
+    public FileData(String id, Object data) {
+        this.id = id;
         this.data = data;
 
     }

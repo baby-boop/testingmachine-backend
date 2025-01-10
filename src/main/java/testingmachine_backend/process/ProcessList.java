@@ -46,9 +46,10 @@ public class ProcessList {
                 Thread.sleep(2000);
 
                 mainProcessWithModule(wait, jsonId, theadId, customerName, createdDate, moduleId, unitName, systemUrl, username, password);
+
             } else {
                 if (!processId.isEmpty()) {
-                    mainProcessWithModuleWithId(wait, jsonId, theadId, customerName, createdDate, moduleId, unitName, systemUrl, username, password, processId);
+                    mainProcessWithId(wait, jsonId, theadId, customerName, createdDate, moduleId, unitName, systemUrl, username, password, processId);
                 }else{
                     mainProcessWithModule(wait, jsonId, theadId, customerName, createdDate, moduleId, unitName, systemUrl, username, password);
                 }
@@ -79,18 +80,18 @@ public class ProcessList {
             ProcessPath.isProcessPersent(driver, metaData.getId(), metaData.getSystemName(), metaData.getCode(), metaData.getName(), "process", jsonId);
             count++;
 
-            ProcessDTO processDTO = new ProcessDTO(theadId, processMetaDataList.size(), count, customerName, createdDate, jsonId, moduleId);
+            ProcessDTO processDTO = new ProcessDTO(theadId, processMetaDataList.size(), count, customerName, createdDate, jsonId, moduleId, systemUrl);
             ProcessService.getInstance().updateOrAddProcessResult(processDTO);
 
             System.out.println("Process count: " + count + ", id: " + metaData.getId());
         }
-        ProcessDTO processDTO = new ProcessDTO(theadId, processMetaDataList.size(), count, customerName, createdDate, jsonId, moduleId);
+        ProcessDTO processDTO = new ProcessDTO(theadId, processMetaDataList.size(), count, customerName, createdDate, jsonId, moduleId, systemUrl);
         ProcessService.getInstance().updateOrAddProcessResult(processDTO);
         System.out.println("End date: " + DateUtils.getCurrentDateTime());
     }
 
 
-    private void mainProcessWithModuleWithId(WebDriverWait wait, String jsonId, String theadId, String customerName, String createdDate, String moduleId,
+    private void mainProcessWithId(WebDriverWait wait, String jsonId, String theadId, String customerName, String createdDate, String moduleId,
                                              String unitName, String systemUrl, String username, String password, String processId) throws InterruptedException {
 
         ConfigForAll.loginForm(wait, username, password);
@@ -107,10 +108,10 @@ public class ProcessList {
 
             waitUtils(driver);
 
-            ProcessPath.isProcessPersent(driver, metaData.getId(), metaData.getSystemName(), metaData.getCode(), metaData.getName(), "process", jsonId);
+            ProcessPath.isProcessPersent(driver, metaData.getId(), metaData.getSystemName(), metaData.getCode(), metaData.getName(), "nodata", jsonId);
             count++;
 
-            ProcessDTO processDTO = new ProcessDTO(theadId, processMetaDataList.size(), count, customerName, createdDate, jsonId, moduleId);
+            ProcessDTO processDTO = new ProcessDTO(theadId, processMetaDataList.size(), count, customerName, createdDate, jsonId, moduleId, systemUrl);
             ProcessService.getInstance().updateOrAddProcessResult(processDTO);
 
             System.out.println("Process count: " + count + ", id: " + metaData.getId());

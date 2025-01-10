@@ -6,6 +6,7 @@ import testingmachine_backend.controller.JsonController;
 import testingmachine_backend.process.DTO.ProcessMessageStatusDTO;
 import testingmachine_backend.process.Messages.PopupMessage;
 import testingmachine_backend.process.utils.ElementsFunctionUtils;
+import testingmachine_backend.schedule.JsonPersentResult;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +26,8 @@ public class ProcessMessageStatusService {
                 ElementsFunctionUtils.getRequiredPathMessages());
         processMessageStatusList.get().add(statusDTO);
 
-        JsonFileReader.saveToSingleJsonFile(statusDTO, TestProcessType, jsonId);
+        JsonFileReader.saveToSingleJsonFile(statusDTO, TestProcessType, jsonId); /* Тусдаа фолдер */
+//        JsonPersentResult.saveToSingleJsonFile(jsonId, jsonId); /* Нэг фолдер */
         clearAllDTOField();
     }
 

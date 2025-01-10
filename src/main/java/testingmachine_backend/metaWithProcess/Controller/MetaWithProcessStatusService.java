@@ -3,6 +3,7 @@ package testingmachine_backend.metaWithProcess.Controller;
 import testingmachine_backend.config.JsonFileReader;
 import testingmachine_backend.controller.JsonController;
 import testingmachine_backend.meta.DTO.ErrorMessageDTO;
+import testingmachine_backend.schedule.JsonPersentResult;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +16,8 @@ public class MetaWithProcessStatusService {
         ErrorMessageDTO statusDTO = new ErrorMessageDTO(moduleName, id, code, name, type, messageText, jsonId);
         metaMessageStatusList1.add(statusDTO);
 
-        JsonFileReader.saveToSingleJsonFile(statusDTO, type, jsonId);
+        JsonFileReader.saveToSingleJsonFile(statusDTO, type, jsonId); /* Тусдаа фолдер */
+//        JsonPersentResult.saveToSingleJsonFile(jsonId, jsonId); /* Нэг фолдер */
 
         metaMessageStatusList1.clear();
     }
