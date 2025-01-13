@@ -45,10 +45,12 @@ public class JsonFileCleanerSchedule {
         }
     }
 
-    @Scheduled(cron = "0 0 0 * * ?")
+//    @Scheduled(cron = "0 0 0 * * ?")
+@Scheduled(fixedRate = 5000)
     public void cleanAllJsonNodata() {
         String[] directories = {
-                JsonController.BASE_DIRECTORY + "/nodata"
+                JsonController.BASE_DIRECTORY + "/nodata",
+                JsonController.BASE_DIRECTORY + "/nodatas",
         };
 
         for (String folderPath : directories) {
@@ -67,7 +69,7 @@ public class JsonFileCleanerSchedule {
                     Instant creationTime = Files.readAttributes(filePath, BasicFileAttributes.class).creationTime().toInstant();
                     long fileAgeInMinutes = Duration.between(creationTime, Instant.now()).toMinutes();
 
-                    if (fileAgeInMinutes > MAX_FILE_AGE_MINUTES) {
+                    if (fileAgeInMinutes > 140) {
                         boolean deleted = jsonFile.delete();
                         if (deleted) {
                             log.info("Deleted old JSON file: {}", jsonFile.getName());
@@ -90,7 +92,7 @@ public class JsonFileCleanerSchedule {
                 try {
                     Path filePath = jsonFile.toPath();
                     Instant creationTime = Files.readAttributes(filePath, BasicFileAttributes.class).creationTime().toInstant();
-                    long fileAgeInDays = Duration.between(creationTime, Instant.now()).toDays();  // Насжилтыг өдөрт тооцно
+                    long fileAgeInDays = Duration.between(creationTime, Instant.now()).toDays();
 
                     // 14 хоногоос дээш настай файлуудыг устгах
                     if (fileAgeInDays > MAX_FILE_AGE_DAYS) {

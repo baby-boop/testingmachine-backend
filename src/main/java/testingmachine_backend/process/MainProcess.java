@@ -37,7 +37,7 @@ public class MainProcess {
             tool.mainTool(jsonId, theadId, customerName, createdDate, moduleId, databaseName, unitName, systemUrl, username, password, processId);
 
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "Error RemoteWebDriver", e);
+            logger.log(Level.SEVERE, "Error mainProcess: ", e);
         }
     }
 }

@@ -23,7 +23,9 @@ public class ProcessMessageStatusService {
                 ElementsFunctionUtils.getUniqueEmptyDataPath(),
                 PopupMessage.getUniquePopupMessages(),
                 ElementsFunctionUtils.getPopupStandartMessages(),
-                ElementsFunctionUtils.getRequiredPathMessages());
+                ElementsFunctionUtils.getRequiredPathMessages(),
+                ElementsFunctionUtils.getComboMessages()
+        );
         processMessageStatusList.get().add(statusDTO);
 
         JsonFileReader.saveToSingleJsonFile(statusDTO, TestProcessType, jsonId); /* Тусдаа фолдер */
@@ -42,5 +44,7 @@ public class ProcessMessageStatusService {
         PopupMessage.PopupMessageField.get().clear();
         ElementsFunctionUtils.PopupStandartField.get().clear();
         ElementsFunctionUtils.RequiredPathField.get().clear();
+        ElementsFunctionUtils.ComboMessageField.get().clear();
+
     }
 }

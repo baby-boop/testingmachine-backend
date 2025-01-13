@@ -1,26 +1,29 @@
 package testingmachine_backend.process.utils;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import org.openqa.selenium.*;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.devtools.DevTools;
+import org.openqa.selenium.devtools.v128.network.Network;
+import org.openqa.selenium.devtools.v128.network.model.RequestId;
+import org.openqa.selenium.devtools.v128.network.model.Response;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.logging.LogEntries;
 import org.openqa.selenium.logging.LogEntry;
 import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import testingmachine_backend.process.DTO.EmptyDataDTO;
-import testingmachine_backend.process.DTO.PopupStandardFieldsDTO;
-import testingmachine_backend.process.DTO.ProcessLogDTO;
-import testingmachine_backend.process.DTO.RequiredPathDTO;
-import testingmachine_backend.process.Fields.EmptyDataField;
-import testingmachine_backend.process.Fields.PopupStandartField;
-import testingmachine_backend.process.Fields.ProcessLogFields;
-import testingmachine_backend.process.Fields.RequiredPathField;
+import testingmachine_backend.process.DTO.*;
+import testingmachine_backend.process.Fields.*;
 import testingmachine_backend.process.Messages.PopupMessage;
 
 import java.sql.Date;
 import java.time.Duration;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -48,6 +51,9 @@ public class ElementsFunctionUtils {
 
     @PopupStandartField
     public static final ThreadLocal<List<PopupStandardFieldsDTO>> PopupStandartField = ThreadLocal.withInitial(ArrayList::new);
+
+    @ComboMessageField
+    public static final ThreadLocal<List<ComboMessageDTO>> ComboMessageField = ThreadLocal.withInitial(ArrayList::new);
 
     public static void findTextEditorInput(WebDriver driver, String dataSPath, String id) {
         try{
@@ -143,23 +149,66 @@ public class ElementsFunctionUtils {
     }
 
     public static void comboboxFunction(WebDriver driver, String dataSPath, String required, String id, String fileName, String jsonId) {
-        try {
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(2));
-            Thread.sleep(500);
-            wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div[data-s-path='" + dataSPath + "']")));
-            WebElement comboBoxLocator = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div[data-s-path='" + dataSPath + "']")));
-            if (comboBoxLocator != null) {
-                WebElement comboBoxes = wait.until(ExpectedConditions.elementToBeClickable(comboBoxLocator));
-                comboBoxes.click();
-                By comboBoxSelectLocator = By.cssSelector("select[data-path='" + dataSPath + "']");
-                Thread.sleep(500);
-                selectSecondOption(driver, comboBoxSelectLocator, id, dataSPath, required, fileName, jsonId);
+        DevTools devTools = ((ChromeDriver) driver).getDevTools();
+        devTools.createSession();
+        devTools.send(Network.enable(Optional.empty(), Optional.empty(), Optional.empty()));
+        devTools.send(Network.clearBrowserCache());
+        devTools.send(Network.setCacheDisabled(true));
+
+        AtomicReference<String> responseBody = new AtomicReference<>("");
+
+        devTools.addListener(Network.responseReceived(), responseReceived -> {
+            RequestId requestId = responseReceived.getRequestId();
+            if(responseReceived.getResponse().getUrl().contains("comboDataSet")) {
+                String body = devTools.send(Network.getResponseBody(requestId)).getBody();
+                responseBody.set(body);
+
             }
-        }
-        catch (Exception e) {
-//            LOGGER.log(Level.SEVERE, "Error selecting the first visible comboBox option: " + dataSPath);
+        });
+
+        try {
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10)); // Increased wait time to 10 seconds for network delay
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div[data-s-path='" + dataSPath + "']")));
+            WebElement comboBoxLocator = driver.findElement(By.cssSelector("div[data-s-path='" + dataSPath + "']"));
+
+            if (comboBoxLocator != null) {
+                WebElement comboBoxElement = wait.until(ExpectedConditions.elementToBeClickable(comboBoxLocator));
+                comboBoxElement.click();
+
+                By comboBoxSelectLocator = By.cssSelector("select[data-path='" + dataSPath + "']");
+                wait.until(ExpectedConditions.elementToBeClickable(comboBoxSelectLocator));
+                if (responseBody.get().contains("errorMessage")) {
+                    String responseJson = responseBody.get();
+                    JsonObject jsonResponse = JsonParser.parseString(responseJson).getAsJsonObject();
+                    String errorMessage = jsonResponse.has("errorMessage") ? jsonResponse.get("errorMessage").getAsString() : null;
+                    if (errorMessage != null && !errorMessage.isEmpty()) {
+                        if (!isDuplicateNetwork(id, dataSPath, jsonId)) {
+                            System.out.println("Found combox errorMessage id: " + id + " dataPath: " + dataSPath );
+                            ComboMessageDTO comboMessageDTO = new ComboMessageDTO(fileName, id, dataSPath, jsonId, errorMessage);
+                            ComboMessageField.get().add(comboMessageDTO);
+                        } else {
+                            System.out.println("Duplicated data: " + "id: " + id + " dataPath: " + dataSPath + " responseBody: " + responseBody.get());
+                        }
+                    }
+                }
+//                i want to get message in errorMessage
+                selectSecondOption(driver, comboBoxSelectLocator, id, dataSPath, required, fileName, jsonId);
+
+            }
+        } catch (Exception e) {
+//            System.err.println("Error interacting with comboBox: " + e.getMessage());
+        } finally {
+            devTools.close();
         }
     }
+
+
+
+    public static boolean isDuplicateNetwork(String id, String dataPath, String jsonId) {
+        return ElementsFunctionUtils.ComboMessageField.get().stream()
+                .anyMatch(log -> log.getMetaDataId().equals(id) && log.getDataPath().equals(dataPath) && log.getJsonId().equals(jsonId) );
+    }
+
     public static void comboGridFunction(WebDriver driver, WebElement element, String dataPath, String id, String fileName) {
         try {
             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(2));
@@ -203,20 +252,22 @@ public class ElementsFunctionUtils {
         if (options.size() > 1) {
             options.get(1).click();
         } else {
+
             if (required != null){
                 EmptyDataDTO emptyPath = new EmptyDataDTO(fileName, id, dataPath, "Combo", jsonId);
                 emptyPathField.get().add(emptyPath);
-//                JsonFileReader.saveToSingleJsonFile(emptyPath);
             }
             selector.sendKeys(Keys.ENTER);
         }
         selector.clear();
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div[id='bp-window-" + id + "']")));
     }
+
     public static Optional<String> extractTabIdentifier(String href) {
         Matcher matcher = TAB_ID_PATTERN.matcher(href);
         return matcher.find() ? Optional.of(matcher.group()) : Optional.empty();
     }
+
     public static Map<String, WebElement> getUniqueTabElements(List<WebElement> elements) {
         Map<String, WebElement> uniqueTabElements = new LinkedHashMap<>();
         for (WebElement element : elements) {
@@ -341,6 +392,10 @@ public class ElementsFunctionUtils {
 
     public static List<RequiredPathDTO> getRequiredPathMessages() {
         return new ArrayList<>(RequiredPathField.get());
+    }
+
+    public static List<ComboMessageDTO> getComboMessages() {
+        return new ArrayList<>(ComboMessageField.get());
     }
 
     public static boolean isIgnorableError(String message) {
