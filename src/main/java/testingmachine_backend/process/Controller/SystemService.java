@@ -16,7 +16,7 @@ import static testingmachine_backend.controller.JsonController.generateProcessDa
 public class SystemService {
 
     private String determineDirectoryPath(String selectedModule, String metaOrPatchId) {
-        if ("process".equals(selectedModule) && !metaOrPatchId.isEmpty()) {
+        if ("process".equals(selectedModule) && metaOrPatchId != null) {
             return BASE_DIRECTORY + "/nodatas";
         }
         else if ("process".equalsIgnoreCase(selectedModule)) {

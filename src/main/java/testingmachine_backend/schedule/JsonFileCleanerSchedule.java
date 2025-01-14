@@ -45,8 +45,8 @@ public class JsonFileCleanerSchedule {
         }
     }
 
-//    @Scheduled(cron = "0 0 0 * * ?")
-@Scheduled(fixedRate = 5000)
+    @Scheduled(cron = "0 0 0 * * ?")
+//@Scheduled(fixedRate = 5000)
     public void cleanAllJsonNodata() {
         String[] directories = {
                 JsonController.BASE_DIRECTORY + "/nodata",

@@ -164,10 +164,11 @@ public class ElementsFunctionUtils {
                 responseBody.set(body);
 
             }
+
         });
 
         try {
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10)); // Increased wait time to 10 seconds for network delay
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
             wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div[data-s-path='" + dataSPath + "']")));
             WebElement comboBoxLocator = driver.findElement(By.cssSelector("div[data-s-path='" + dataSPath + "']"));
 
