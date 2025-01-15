@@ -119,8 +119,4 @@ public class ProcessList {
         System.out.println("End date: " + DateUtils.getCurrentDateTime());
 
     }
-
 }
-
-
-

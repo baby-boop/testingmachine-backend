@@ -4,9 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 import testingmachine_backend.process.Config.ConfigProcess;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-
 @Getter
 @Setter
 public class SystemData {

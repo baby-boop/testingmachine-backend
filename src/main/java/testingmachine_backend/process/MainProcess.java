@@ -4,7 +4,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.logging.LogType;
-
+import io.github.bonigarcia.wdm.WebDriverManager;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,16 +18,23 @@ public class MainProcess {
         Map<String, String> loggingPrefs = Map.of(
                 LogType.BROWSER, "ALL"
         );
-
         ChromeOptions options = new ChromeOptions();
         options.addArguments(
-                "--headless",
+                "--headless=new",
+                "--disable-cache",
+                "--disable-software-rasterizer",
+                "--window-size=1920x1080",
+                "--disable-background-timer-throttling",
+                "--disable-renderer-backgrounding",
+                "--disable-backgrounding-occluded-windows",
+                "--disable-blink-features=AutomationControlled",
+                "--disable-dev-shm-usage",
                 "--no-sandbox",
                 "--disable-gpu",
-                "--ignore-ssl-errors=yes",
-                "--ignore-certificate-errors",
-                "--disable-dev-shm-usage"
-                );
+                "--disable-logging",
+                "--disable-software-rasterizer"
+        );
+
         options.setCapability("goog:loggingPrefs", loggingPrefs);
         WebDriver driver = new ChromeDriver(options);
 
@@ -38,6 +45,8 @@ public class MainProcess {
 
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Error mainProcess: ", e);
+        } finally {
+            driver.quit();
         }
     }
 }
