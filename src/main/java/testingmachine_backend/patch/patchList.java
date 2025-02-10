@@ -67,6 +67,7 @@ public class patchList {
         List<PatchDTO> processMetaDataList = PatchCallService.getPatchMetaDataList(unitName, systemUrl, username, password, patchId);
 
         int count = 0;
+        int totalCount = processMetaDataList.size();
 
         for (PatchDTO metaData : processMetaDataList) {
             if("200101010000011".equals(metaData.getTypeId())){
@@ -87,7 +88,7 @@ public class patchList {
                 WaitUtils.retryWaitForLoadToDisappear(driver, metaData.getPatchName(), metaData.getId(), metaData.getCode(), metaData.getName(), jsonId, "patch", 3);
                 WaitUtils.retryWaitForLoadingToDisappear(driver, metaData.getPatchName(), metaData.getId(), metaData.getCode(), metaData.getName(), jsonId, "patch", 3);
 
-                if (IsErrorMessage.isErrorMessagePresent(driver, metaData.getId(), metaData.getPatchName(), metaData.getCode(), metaData.getName(), jsonId, "patch")) {
+                if (IsErrorMessage.isErrorMessagePresent(driver, metaData.getId(), metaData.getPatchName(), metaData.getCode(), metaData.getName(), jsonId, "patch", totalCount, customerName)) {
                     System.out.println("Error found in ID: " + metaData.getId() );
                 }
                 count++;

@@ -3,12 +3,13 @@ package testingmachine_backend.meta.MetaList;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import testingmachine_backend.controller.JsonController;
 
 public class MetaMain {
 
     public  static void mainSystem(String jsonId, String theadId, String customerName, String createdDate, String moduleId,
                                    String databaseName, String unitName, String systemUrl, String username, String password){
+
+
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--headless");
         options.addArguments("--disable-gpu");

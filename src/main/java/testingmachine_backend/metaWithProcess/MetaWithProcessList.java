@@ -45,7 +45,7 @@ public class MetaWithProcessList {
                 Thread.sleep(2000);
                 }
             else{
-                ConfigForAll.loginFormTest(wait);
+//                ConfigForAll.loginForm(wait);
                 mainList(wait, driver, jsonId);
             }
 
@@ -83,7 +83,7 @@ public class MetaWithProcessList {
 
     public static void mainList(WebDriverWait wait, WebDriver driver, String jsonId) {
         try{
-            ConfigForAll.loginFormTest(wait);
+//            ConfigForAll.loginFormTest(wait);
 
             List<MetadataDTO> metaWithProcessList = CallMetaWithProcess.getProcessMetaDataList();
             System.out.println(metaWithProcessList.size());

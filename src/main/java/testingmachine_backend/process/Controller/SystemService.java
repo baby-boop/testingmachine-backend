@@ -73,7 +73,7 @@ public class SystemService {
 
             return data;
         } catch (IOException e) {
-            e.printStackTrace(System.out); // Log errors to the console
+            e.printStackTrace(System.out);
             return null;
         }
     }

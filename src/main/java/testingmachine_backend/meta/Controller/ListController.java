@@ -11,10 +11,10 @@ import java.util.List;
 @RestController
 public class ListController {
 
-    @GetMapping("/metalist")
-    public List<ErrorMessageDTO> getAlerts() {
-         return MetaMessageStatusService.getMetaStatuses();
-    }
+//    @GetMapping("/metalist")
+//    public List<ErrorMessageDTO> getAlerts() {
+//         return MetaMessageStatusService.getMetaStatuses();
+//    }
 
 //    @GetMapping("/meta")
 //    public ListDTO displayList() {

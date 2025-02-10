@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static testingmachine_backend.config.ConfigForAll.API_URL;
+import static testingmachine_backend.config.ConfigForAll.GOLOMT_URL;
 
 @Slf4j
 public class MetaCallDataview {

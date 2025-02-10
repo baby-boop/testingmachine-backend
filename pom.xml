@@ -60,11 +60,11 @@
 			<artifactId>selenium-java</artifactId>
 			<version>4.26.0</version>
 		</dependency>
-		<dependency>
-			<groupId>io.github.bonigarcia</groupId>
-			<artifactId>webdrivermanager</artifactId>
-			<version>5.3.0</version> <!-- эсвэл хамгийн сүүлийн хувилбар -->
-		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>io.github.bonigarcia</groupId>-->
+<!--			<artifactId>webdrivermanager</artifactId>-->
+<!--			<version>5.3.0</version> &lt;!&ndash; эсвэл хамгийн сүүлийн хувилбар &ndash;&gt;-->
+<!--		</dependency>-->
 
 
 		<!-- Logging -->
@@ -122,11 +122,23 @@
 		<finalName>test-service</finalName>
 		<plugins>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>3.5.0</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>analyze</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
 					<executable>true</executable>
 				</configuration>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
 	</build>

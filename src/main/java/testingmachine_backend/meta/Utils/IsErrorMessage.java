@@ -15,7 +15,7 @@ public class IsErrorMessage {
 
     private static final Logger logger = LogManager.getLogger(IsErrorMessage.class);
 
-    public static boolean isErrorMessagePresent(WebDriver driver, String id, String moduleName, String code, String name, String jsonId, String type) {
+    public static boolean isErrorMessagePresent(WebDriver driver, String id, String moduleName, String code, String name, String jsonId, String type, int totalCount, String customerName) {
         try {
             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(1));
 
@@ -35,7 +35,7 @@ public class IsErrorMessage {
                         logger.warn("Холболтоо шалгана уу! Сүүлд ажилласан: {} - {}", moduleName, id);
                         driver.quit();
                     } else {
-                        return extractErrorMessage(driver, id, moduleName, code, name, tagName, jsonId, type);
+                        return extractErrorMessage(driver, id, moduleName, code, name, tagName, jsonId, type, totalCount, customerName);
                     }
                 }
                 return false;
@@ -47,7 +47,7 @@ public class IsErrorMessage {
                 String messageTitleText = messageTitle.getText().toLowerCase();
 
                 if (messageTitleText.contains("error message")) {
-                    return extractErrorMessage(driver, id, moduleName, code, name, tagName, jsonId, type);
+                    return extractErrorMessage(driver, id, moduleName, code, name, tagName, jsonId, type, totalCount, customerName);
                 }
                 return false;
             }
@@ -58,14 +58,14 @@ public class IsErrorMessage {
         }
     }
 
-    private static boolean extractErrorMessage(WebDriver driver, String id, String moduleName, String code, String name, String tagName, String jsonId, String type) {
+    private static boolean extractErrorMessage(WebDriver driver, String id, String moduleName, String code, String name, String tagName, String jsonId, String type, int totalCount, String customerName) {
         try {
             WebDriverWait shortWait = new WebDriverWait(driver, Duration.ofSeconds(1));
 
             if ("table".equals(tagName)) {
                 WebElement messageContent = shortWait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".ui-pnotify-text")));
                 String messageText = messageContent.getText();
-                MetaMessageStatusService.addMetaStatus(moduleName, id, code, name, "error", messageText, jsonId, type);
+                MetaMessageStatusService.addMetaStatus(moduleName, id, code, name, "error", messageText, jsonId, type, totalCount, customerName);
 
                 return messageContent.isDisplayed();
             } else if ("div".equals(tagName)) {
@@ -73,7 +73,7 @@ public class IsErrorMessage {
                 WebElement messageContent = messageContainer.findElement(By.cssSelector(".alert-danger"));
                 String messageText = messageContent.getText();
 
-                MetaMessageStatusService.addMetaStatus(moduleName, id, code, name, "error", messageText, jsonId, type);
+                MetaMessageStatusService.addMetaStatus(moduleName, id, code, name, "error", messageText, jsonId, type, totalCount, customerName);
 
                 return messageContent.isDisplayed();
             }

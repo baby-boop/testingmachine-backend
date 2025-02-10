@@ -26,7 +26,7 @@ import java.util.concurrent.CompletableFuture;
 public class JsonController {
 
     public static final String BASE_DIRECTORY = "/opt/app/json_data";
-    //    public static final String BASE_DIRECTORY = "src/main/java/testingmachine_backend/json";
+//    public static final String BASE_DIRECTORY = "src/main/java/testingmachine_backend/json";
     private static final String META_HEADER_PATH = BASE_DIRECTORY + "/metalist/header";
     private static final String META_RESULT_PATH = BASE_DIRECTORY + "/metalist/result";
     private static final String PROCESS_HEADER_PATH = BASE_DIRECTORY + "/process/header";
@@ -195,7 +195,6 @@ public class JsonController {
                 savedData.getGeneratedId(), savedData.getDatabaseName(), savedData.getDatabaseUsername(), savedData.getModuleId(), savedData.getCustomerName(),
                 savedData.getSystemURL(), savedData.getUsername(), savedData.getPassword(), savedData.getSelectedModule(), savedData.getMetaOrPatchId());
 
-        // Ensure that system data is added before executing the module
         String module = data.getSelectedModule();
         CompletableFuture<Void> resultFuture = moduleExecutionService.executeModuleAsync(module, savedData)
                 .thenAccept(result -> log.info("Амжилттай ажиллав: {}", result))
@@ -204,33 +203,11 @@ public class JsonController {
                     return null;
                 });
 
-        resultFuture.join();  // Ensure completion of the async task
+        resultFuture.join();
 
         return ResponseEntity.status(HttpStatus.CREATED).body(savedData);
     }
 
-
-
-
-//    @PostMapping("/system-data")
-//    public ResponseEntity<SystemData> addSystemData(@RequestBody SystemData data) {
-//        clearStaticData();
-//        SystemData savedData = service.addSystemData(data);
-//        updateStaticData(savedData);
-//
-//        log.info("Created system data: ID = {},databaseName = {}, databaseUserame = {}, ModuleId = {}, CustomerName = {}, SystemURL = {}, username = {}, password = {}, selectedModule = {}, metaProcessId = {}",
-//                savedData.getGeneratedId(), savedData.getDatabaseName(), savedData.getDatabaseUsername(), savedData.getModuleId(), savedData.getCustomerName(),
-//                savedData.getSystemURL(), savedData.getUsername(), savedData.getPassword(), savedData.getSelectedModule(), savedData.getMetaOrPatchId());
-//
-//        String module = data.getSelectedModule();
-//        try {
-//            String moduleMessage = application.executeModule(module);
-//            log.info("Successfully: {}", moduleMessage);
-//        } catch (Exception e) {
-//            log.error("Error executing module {}: {}", module, e.getMessage(), e);
-//        }
-//        return ResponseEntity.status(HttpStatus.CREATED).body(savedData);
-//    }
 
     private void updateStaticData(SystemData data) {
         moduleId = data.getModuleId();

@@ -28,8 +28,8 @@ public class ProcessList {
     }
 
     public void mainTool(String jsonId, String theadId, String customerName, String createdDate, String moduleId,
-                         String databaseName, String unitName, String systemUrl, String username, String password, String processId){
-        try{
+                         String databaseName, String unitName, String systemUrl, String username, String password, String processId) {
+        try {
 
             WebDriverWait wait = ConfigProcess.getWebDriverWait(driver);
 
@@ -50,13 +50,42 @@ public class ProcessList {
             } else {
                 if (!processId.isEmpty()) {
                     mainProcessWithId(wait, jsonId, theadId, customerName, createdDate, moduleId, unitName, systemUrl, username, password, processId);
-                }else{
+                } else {
                     mainProcessWithModule(wait, jsonId, theadId, customerName, createdDate, moduleId, unitName, systemUrl, username, password);
                 }
             }
         } catch (Exception e) {
 //
         }
+    }
+
+    private void mainProcessWithId(WebDriverWait wait, String jsonId, String theadId, String customerName, String createdDate, String moduleId,
+                                   String unitName, String systemUrl, String username, String password, String processId) throws InterruptedException {
+
+        ConfigForAll.loginForm(wait, username, password);
+
+        List<ProcessMetaData> processMetaDataList = ProcessCallDataviewWithId.getProcessMetaDataList(unitName, systemUrl, username, password, processId);
+
+        int count = 0;
+
+        for (ProcessMetaData metaData : processMetaDataList) {
+            String url = systemUrl + CALL_PROCESS + metaData.getId();
+            driver.get(url);
+
+            Thread.sleep(1000);
+
+            waitUtils(driver);
+
+            ProcessPath.isProcessPersent(driver, metaData.getId(), metaData.getSystemName(), metaData.getCode(), metaData.getName(), "nodata", jsonId);
+            count++;
+
+            ProcessDTO processDTO = new ProcessDTO(theadId, processMetaDataList.size(), count, customerName, createdDate, jsonId, moduleId, systemUrl);
+            ProcessService.getInstance().updateOrAddProcessResult(processDTO);
+
+            System.out.println("Process count: " + count + ", id: " + metaData.getId());
+        }
+        System.out.println("End date: " + DateUtils.getCurrentDateTime());
+
     }
 
     private void mainProcessWithModule(WebDriverWait wait, String jsonId, String theadId, String customerName, String createdDate, String moduleId,
@@ -90,33 +119,4 @@ public class ProcessList {
         System.out.println("End date: " + DateUtils.getCurrentDateTime());
     }
 
-
-    private void mainProcessWithId(WebDriverWait wait, String jsonId, String theadId, String customerName, String createdDate, String moduleId,
-                                             String unitName, String systemUrl, String username, String password, String processId) throws InterruptedException {
-
-        ConfigForAll.loginForm(wait, username, password);
-
-        List<ProcessMetaData> processMetaDataList = ProcessCallDataviewWithId.getProcessMetaDataList(unitName, systemUrl, username, password, processId);
-
-        int count = 0;
-
-        for (ProcessMetaData metaData : processMetaDataList) {
-            String url = systemUrl + CALL_PROCESS + metaData.getId();
-            driver.get(url);
-
-            Thread.sleep(1000);
-
-            waitUtils(driver);
-
-            ProcessPath.isProcessPersent(driver, metaData.getId(), metaData.getSystemName(), metaData.getCode(), metaData.getName(), "nodata", jsonId);
-            count++;
-
-            ProcessDTO processDTO = new ProcessDTO(theadId, processMetaDataList.size(), count, customerName, createdDate, jsonId, moduleId, systemUrl);
-            ProcessService.getInstance().updateOrAddProcessResult(processDTO);
-
-            System.out.println("Process count: " + count + ", id: " + metaData.getId());
-        }
-        System.out.println("End date: " + DateUtils.getCurrentDateTime());
-
-    }
 }

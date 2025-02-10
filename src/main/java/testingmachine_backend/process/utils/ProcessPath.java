@@ -33,7 +33,6 @@ public class ProcessPath {
     private static final int SHORT_WAIT_SECONDS = 2;
     private static final int MEDIUM_WAIT_SECONDS = 5;
 
-
     @Getter
     private static int failedCount = 0;
 

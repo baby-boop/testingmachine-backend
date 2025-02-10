@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.Map;
 
 import testingmachine_backend.meta.Utils.WaitUtils;
-import testingmachine_backend.controller.JsonController;
 import testingmachine_backend.process.DTO.ProcessDTO;
 import testingmachine_backend.process.Service.ProcessService;
 
@@ -78,9 +77,9 @@ public class MetaLists {
                                             String unitName, String systemUrl, String username, String password) {
 
         List<MetadataDTO> metaDataList = MetaCallDataview.getProcessMetaDataList(moduleId, unitName, systemUrl, username, password);
-
         int count = 0;
         int errorCount = 0;
+        int totalCount = metaDataList.size();
 
         for (MetadataDTO metaData : metaDataList) {
 
@@ -91,7 +90,7 @@ public class MetaLists {
             WaitUtils.retryWaitForLoadToDisappear(driver, metaData.getModuleName(), metaData.getId(), metaData.getCode(), metaData.getName(), jsonId, "patch", 3);
             WaitUtils.retryWaitForLoadingToDisappear(driver, metaData.getModuleName(), metaData.getId(), metaData.getCode(), metaData.getName(), jsonId, "patch", 3);
 
-            if (IsErrorMessage.isErrorMessagePresent(driver, metaData.getId(), metaData.getModuleName(), metaData.getCode(), metaData.getName(), jsonId, "meta")) {
+            if (IsErrorMessage.isErrorMessagePresent(driver, metaData.getId(), metaData.getModuleName(), metaData.getCode(), metaData.getName(), jsonId, "meta", totalCount, customerName)) {
                 errorCount++;
                 System.out.println("Error found in ID: " + metaData.getId() + ", errorCount: " + errorCount);
 
@@ -150,7 +149,7 @@ public class MetaLists {
                         WaitUtils.retryWaitForLoadToDisappear(driver, moduleName, id, code, name, jsonId, "meta", 3);
                         WaitUtils.retryWaitForLoadingToDisappear(driver, moduleName, id, code, name, jsonId, "meta", 3);
 
-                        if (IsErrorMessage.isErrorMessagePresent(driver, id, moduleName, code, name, jsonId, "meta")) {
+                        if (IsErrorMessage.isErrorMessagePresent(driver, id, moduleName, code, name, jsonId, "meta", totalIds, "excel")) {
                             errorCount++;
                             System.out.println("Error found in ID: " + id + "    Module name: " + moduleName + "    Meta error count: " + errorCount + "  jsonId: " + jsonId);
                         }

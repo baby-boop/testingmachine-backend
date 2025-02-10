@@ -12,7 +12,6 @@ import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.concurrent.TimeUnit;
 
 @Component
 @Slf4j
@@ -46,7 +45,7 @@ public class JsonFileCleanerSchedule {
     }
 
     @Scheduled(cron = "0 0 0 * * ?")
-//@Scheduled(fixedRate = 5000)
+//    @Scheduled(fixedRate = 50000000)
     public void cleanAllJsonNodata() {
         String[] directories = {
                 JsonController.BASE_DIRECTORY + "/nodata",
@@ -69,7 +68,7 @@ public class JsonFileCleanerSchedule {
                     Instant creationTime = Files.readAttributes(filePath, BasicFileAttributes.class).creationTime().toInstant();
                     long fileAgeInMinutes = Duration.between(creationTime, Instant.now()).toMinutes();
 
-                    if (fileAgeInMinutes > 140) {
+                    if (fileAgeInMinutes > MAX_FILE_AGE_MINUTES) {
                         boolean deleted = jsonFile.delete();
                         if (deleted) {
                             log.info("Deleted old JSON file: {}", jsonFile.getName());
@@ -83,6 +82,7 @@ public class JsonFileCleanerSchedule {
             }
         }
     }
+
     private void cleanUpOldDaysFiles(String folderPath) {
         File folder = new File(folderPath);
         File[] jsonFiles = folder.listFiles((dir, name) -> name.endsWith(".json"));
