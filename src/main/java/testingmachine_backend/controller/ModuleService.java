@@ -1,6 +1,8 @@
 package testingmachine_backend.controller;
 
 import org.springframework.stereotype.Service;
+import testingmachine_backend.indicator.IndicatorMain;
+import testingmachine_backend.metaverse.MetaverseMain;
 import testingmachine_backend.process.Controller.SystemData;
 import testingmachine_backend.meta.MetaList.MetaMain;
 import testingmachine_backend.metaWithProcess.MetaWithProcessMain;
@@ -38,6 +40,20 @@ public class ModuleService {
                         systemData.getCreatedDate(), systemData.getModuleId(), systemData.getDatabaseName(), systemData.getDatabaseUsername(),
                         systemData.getSystemURL(), systemData.getUsername(), systemData.getPassword(), systemData.getMetaOrPatchId());
                 result = "Тест хийж дууссан (patch)";
+                break;
+            case "metaverse":
+                System.out.println("Тест эхлэж байна... metaverse");
+                MetaverseMain.mainSystem(systemData.getGeneratedId(), String.valueOf(Thread.currentThread().getId()), systemData.getCustomerName(),
+                        systemData.getCreatedDate(), systemData.getModuleId(), systemData.getDatabaseName(), systemData.getDatabaseUsername(),
+                        systemData.getSystemURL(), systemData.getUsername(), systemData.getPassword());
+                result = "Тест хийж дууссан (metaverse)";
+                break;
+            case "indicator":
+                System.out.println("Тест эхлэж байна... indicator");
+                IndicatorMain.mainProcess(systemData.getGeneratedId(), String.valueOf(Thread.currentThread().getId()), systemData.getCustomerName(),
+                        systemData.getCreatedDate(), systemData.getModuleId(), systemData.getDatabaseName(), systemData.getDatabaseUsername(),
+                        systemData.getSystemURL(), systemData.getUsername(), systemData.getPassword(), systemData.getMetaOrPatchId());
+                result = "Тест хийж дууссан (indicator)";
                 break;
             default:
                 throw new IllegalArgumentException("Модуль олдсонгүй");

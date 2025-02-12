@@ -6,18 +6,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import testingmachine_backend.TestingmachineBackendApplication;
+import testingmachine_backend.meta.DTO.ErrorMessageDTO;
+import testingmachine_backend.meta.Service.JsonFileReaderMeta;
+import testingmachine_backend.meta.Service.MetaMessageStatusService;
 import testingmachine_backend.process.Config.ConfigProcess;
 import testingmachine_backend.process.Controller.FileData;
 import testingmachine_backend.process.Controller.SystemData;
 import testingmachine_backend.process.Controller.SystemService;
 import testingmachine_backend.process.DTO.ProcessDTO;
-import testingmachine_backend.process.Service.ProcessService;
+import testingmachine_backend.process.DTO.ProcessMessageStatusDTO;
+import testingmachine_backend.process.Service.ProcessMessageStatusService;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 @RestController
@@ -26,7 +31,7 @@ import java.util.concurrent.CompletableFuture;
 public class JsonController {
 
     public static final String BASE_DIRECTORY = "/opt/app/json_data";
-//    public static final String BASE_DIRECTORY = "src/main/java/testingmachine_backend/json";
+//    public static final String BASE_DIRECTORY = "src/main/java/testingmachine_backend/json"; //Өөрийн датаг хадгалах
     private static final String META_HEADER_PATH = BASE_DIRECTORY + "/metalist/header";
     private static final String META_RESULT_PATH = BASE_DIRECTORY + "/metalist/result";
     private static final String PROCESS_HEADER_PATH = BASE_DIRECTORY + "/process/header";
@@ -37,7 +42,6 @@ public class JsonController {
     private static final String PATCH_RESULT_PATH = BASE_DIRECTORY + "/patch/result";
     private static final String DIRECTORY_PERCENT_HEADER = BASE_DIRECTORY + "/percent/header";
     private static final String DIRECTORY_PERCENT_RESULT = BASE_DIRECTORY + "/percent/result";
-    private static final String NO_DATA = BASE_DIRECTORY + "/nodata";
 
     private static String moduleId;
     private static String customerName;
@@ -95,7 +99,7 @@ public class JsonController {
         return selectedModule != null ? selectedModule : "";
     }
 
-
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     public static List<ProcessDTO> generateProcessData() {
         List<ProcessDTO> processData = new ArrayList<>();
@@ -126,8 +130,7 @@ public class JsonController {
 
     }
 
-
-    @GetMapping("/process-percent")
+    @GetMapping("/process-testdata")
     public ResponseEntity<List<ProcessDTO>> getProcessPercent() {
 //        List<ProcessDTO> processResults = ProcessService.getInstance().getProcessResults();
         List<ProcessDTO> processResults = generateProcessData();
@@ -136,6 +139,7 @@ public class JsonController {
         }
         return ResponseEntity.ok(processResults);
     }
+
 
     @Autowired
     public SystemService service;
@@ -155,48 +159,21 @@ public class JsonController {
     }
 
 
-    @GetMapping("/process-result/{jsonId}")
-    public ResponseEntity<FileData> getResultDataByJsonId(@PathVariable String jsonId) {
-        File folder = new File(NO_DATA);
-        File[] jsonFiles = folder.listFiles((dir, name) -> name.endsWith(".json"));
-
-        if (jsonFiles != null) {
-            for (File jsonFile : jsonFiles) {
-                String id = jsonFile.getName();
-                if (id.startsWith(jsonId)) {
-                    try {
-                        Object data = objectMapper.readValue(jsonFile, Object.class);
-                        if (id.endsWith("_result.json")) {
-                            id = id.substring(0, id.length() - "_result.json".length());
-                        }
-                        return ResponseEntity.ok(new FileData(id, data));
-                    } catch (IOException e) {
-                        e.printStackTrace(System.out);
-                        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-                    }
-                }
-            }
-        }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-    }
-
-
-
     @Autowired
     private ModuleExecutionService moduleExecutionService;
 
     @PostMapping("/system-data")
-    public ResponseEntity<SystemData> addSystemData(@RequestBody SystemData data) {
+    public ResponseEntity<Map<String, Object>> addSystemData(@RequestBody SystemData data) {
         clearStaticData();
         SystemData savedData = service.addSystemData(data);
         updateStaticData(savedData);
 
-        log.info("Created system data: ID = {}, databaseName = {}, databaseUsername = {}, ModuleId = {}, CustomerName = {}, SystemURL = {}, username = {}, password = {}, selectedModule = {}, metaProcessId = {}",
-                savedData.getGeneratedId(), savedData.getDatabaseName(), savedData.getDatabaseUsername(), savedData.getModuleId(), savedData.getCustomerName(),
-                savedData.getSystemURL(), savedData.getUsername(), savedData.getPassword(), savedData.getSelectedModule(), savedData.getMetaOrPatchId());
+        log.info("Created system data: ID = {}, databaseName = {}", savedData.getGeneratedId(), savedData.getDatabaseName());
 
-        String module = data.getSelectedModule();
-        CompletableFuture<Void> resultFuture = moduleExecutionService.executeModuleAsync(module, savedData)
+        String jsonId = savedData.getGeneratedId();
+
+
+        CompletableFuture<Void> resultFuture = moduleExecutionService.executeModuleAsync(data.getSelectedModule(), savedData)
                 .thenAccept(result -> log.info("Амжилттай ажиллав: {}", result))
                 .exceptionally(e -> {
                     log.error("Модуль ажиллуулахад алдаа: {}", e.getMessage(), e);
@@ -205,9 +182,31 @@ public class JsonController {
 
         resultFuture.join();
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedData);
-    }
+        List<ProcessMessageStatusDTO> processStatuses = ProcessMessageStatusService.getProcessStatuses(jsonId);
+        List<ErrorMessageDTO> metaStatuses = MetaMessageStatusService.getMetaStatuses(jsonId);
 
+        Map<String, Object> combinedResponse = new HashMap<>();
+        combinedResponse.put("jsonId", jsonId);
+        if (!processStatuses.isEmpty() && metaStatuses.isEmpty()) {
+            combinedResponse.put("processDetails", processStatuses);
+        } else if (!metaStatuses.isEmpty() && processStatuses.isEmpty()) {
+            combinedResponse.put("metaDetails", metaStatuses);
+        } else if (!processStatuses.isEmpty() && !metaStatuses.isEmpty()) {
+            combinedResponse.put("processDetails", processStatuses);
+            combinedResponse.put("metaDetails", metaStatuses);
+        } else {
+            combinedResponse.put("message", "No status data available");
+        }
+
+        ProcessMessageStatusService.saveToJson(jsonId, 1, selectedModule, customerName);
+        MetaMessageStatusService.saveToJson(jsonId,1, selectedModule, customerName);
+
+        // Ашигласан өгөгдлийг цэвэрлэх
+        ProcessMessageStatusService.clearAllDTOField(jsonId);
+        MetaMessageStatusService.clearMetaStatuses(jsonId);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(combinedResponse);
+    }
 
     private void updateStaticData(SystemData data) {
         moduleId = data.getModuleId();
@@ -222,10 +221,6 @@ public class JsonController {
         selectedModule = data.getSelectedModule();
         metaOrPatchId = data.getMetaOrPatchId();
     }
-
-    private final ObjectMapper objectMapper = new ObjectMapper();
-
-
 
     @GetMapping("/process-header")
     public ResponseEntity<List<Object>> getHeaderData() {
@@ -251,6 +246,7 @@ public class JsonController {
     public ResponseEntity<List<Object>> getMetaProcessHeaderData() {
         return ResponseEntity.ok(readJsonFilesFromFolder(META_PROCESS_HEADER_PATH));
     }
+
     @GetMapping("/metaprocess-result")
     public ResponseEntity<List<FileData>> getMetaProcessResultData() {
         return ResponseEntity.ok(readJsonFilesFromFolderResult(META_PROCESS_RESULT_PATH));
@@ -260,6 +256,7 @@ public class JsonController {
     public ResponseEntity<List<Object>> getPatchHeaderData() {
         return ResponseEntity.ok(readJsonFilesFromFolder(PATCH_HEADER_PATH));
     }
+
     @GetMapping("/patch-result")
     public ResponseEntity<List<FileData>> getPatchResultData() {
         return ResponseEntity.ok(readJsonFilesFromFolderResult(PATCH_RESULT_PATH));

@@ -1,13 +1,11 @@
-package testingmachine_backend.meta.MetaList;
+package testingmachine_backend.metaverse;
 
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
 import testingmachine_backend.config.WebDriverManager;
 
-public class MetaMain {
+public class MetaverseMain {
 
-    public  static void mainSystem(String jsonId, String theadId, String customerName, String createdDate, String moduleId,
+    public static void mainSystem(String jsonId, String theadId, String customerName, String createdDate, String moduleId,
                                    String databaseName, String unitName, String systemUrl, String username, String password){
 
 
@@ -15,7 +13,7 @@ public class MetaMain {
 
         try {
 
-            MetaLists main = new MetaLists(driver);
+            MetaverseList main = new MetaverseList(driver);
 
             main.mainList(jsonId, theadId, customerName, createdDate, moduleId, databaseName, unitName, systemUrl, username, password);
 

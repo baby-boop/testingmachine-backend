@@ -19,14 +19,21 @@ public class SystemService {
         if ("process".equals(selectedModule) && metaOrPatchId != null) {
             return BASE_DIRECTORY + "/nodatas";
         }
-        else if ("process".equalsIgnoreCase(selectedModule)) {
+        else if ("process".equalsIgnoreCase(selectedModule) && metaOrPatchId == null) {
             return BASE_DIRECTORY + "/process/header";
         } else if ("meta".equalsIgnoreCase(selectedModule)) {
             return BASE_DIRECTORY + "/metalist/header";
         } else if ("patch".equalsIgnoreCase(selectedModule)) {
             return BASE_DIRECTORY + "/patch/header";
-        } else {
+        } else if ("metalistwithprocess".equalsIgnoreCase(selectedModule)) {
             return BASE_DIRECTORY + "/metalistwithprocess/header";
+        } else if ("metaverse".equalsIgnoreCase(selectedModule)){
+            return BASE_DIRECTORY + "/metaverse/header";
+        } else if ("indicator".equalsIgnoreCase(selectedModule)){
+            return BASE_DIRECTORY + "/indicator/header";
+        }
+            else {
+            return BASE_DIRECTORY + "/default";
         }
     }
 
@@ -59,6 +66,14 @@ public class SystemService {
 
     public SystemData addSystemData(SystemData data) {
         ObjectMapper objectMapper = new ObjectMapper();
+        String generatedId = UUID.randomUUID().toString();
+        data.setGeneratedId(generatedId);
+
+        // `metaOrPatchId` нь `null` биш бол файл хадгалахгүй, зөвхөн `generatedId` үүсгэнэ.
+        if ("process".equals(data.getSelectedModule()) && data.getMetaOrPatchId() != null) {
+            return data;
+        }
+
         try {
             String directoryPath = determineDirectoryPath(data.getSelectedModule(), data.getMetaOrPatchId());
             File directory = new File(directoryPath);
@@ -66,9 +81,7 @@ public class SystemService {
                 directory.mkdirs();
             }
 
-            String generatedId = UUID.randomUUID().toString();
             File file = new File(directoryPath + File.separator + generatedId + "_header.json");
-            data.setGeneratedId(generatedId);
             objectMapper.writeValue(file, data);
 
             return data;

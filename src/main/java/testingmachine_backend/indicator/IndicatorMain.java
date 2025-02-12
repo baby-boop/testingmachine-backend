@@ -1,15 +1,16 @@
-package testingmachine_backend.process;
+package testingmachine_backend.indicator;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.logging.LogType;
+import testingmachine_backend.process.MainProcess;
 
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class MainProcess {
+public class IndicatorMain {
 
     private static final Logger logger = Logger.getLogger(MainProcess.class.getName());
 
@@ -25,36 +26,20 @@ public class MainProcess {
 
         try {
 
-            ProcessList tool = new ProcessList(driver);
+            IndicatorList tool = new IndicatorList(driver);
             tool.mainTool(jsonId, theadId, customerName, createdDate, moduleId, databaseName, unitName, systemUrl, username, password, processId);
 
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "Error mainProcess: ", e);
+            logger.log(Level.SEVERE, "Error mainIndicator: ", e);
         } finally {
-            driver.quit();
+//            driver.quit();
         }
     }
 
     private static ChromeOptions getChromeOptions() {
         ChromeOptions options = new ChromeOptions();
-//        options.addArguments(
-//                "--headless=new",
-//                "--disable-cache",
-//                "--disable-software-rasterizer",
-//                "--window-size=1920x1080",
-//                "--disable-background-timer-throttling",
-//                "--disable-renderer-backgrounding",
-//                "--disable-backgrounding-occluded-windows",
-//                "--disable-blink-features=AutomationControlled",
-//                "--disable-dev-shm-usage",
-//                "--no-sandbox",
-//                "--disable-gpu",
-//                "--disable-software-rasterizer",
-//                "--disable-logging"
-//
-//        );
         options.addArguments(
-                "--headless",
+//                "--headless",
                 "--disable-gpu",
                 "--no-sandbox",
                 "--disable-dev-shm-usage"

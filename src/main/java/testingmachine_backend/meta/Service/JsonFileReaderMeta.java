@@ -17,6 +17,8 @@ public class JsonFileReaderMeta {
 
     private static final String DIRECTORY_PATH_META = BASE_DIRECTORY + "/metalist/result";
     private static final String DIRECTORY_PATH_PATCH = BASE_DIRECTORY + "/patch/result";
+    private static final String DIRECTORY_PATH_METAVERSE = BASE_DIRECTORY + "/metaverse/result";
+    private static final String DIRECTORY_PATH_INDICATOR = BASE_DIRECTORY + "/indicator/result";
 
     /**
      * JSON файл руу хадгалах функц
@@ -27,6 +29,7 @@ public class JsonFileReaderMeta {
 
         String currentJsonFileName = directoryPath + File.separator + jsonId + "_result.json";
         File directory = new File(directoryPath);
+
         if (!directory.exists()) {
             directory.mkdirs();
         }
@@ -43,7 +46,7 @@ public class JsonFileReaderMeta {
     }
 
     /**
-     * Хэрэв JSON файл байвал унших
+     * Хэрэв JSON файл
      */
     public static Map<String, Object> readJsonFromFile(String jsonId, String type) {
         String directoryPath = getDirectoryPath(type);
@@ -64,14 +67,15 @@ public class JsonFileReaderMeta {
     }
 
     private static String getDirectoryPath(String type) {
-        switch (type) {
-            case "meta":
-                return DIRECTORY_PATH_META;
-            case "patch":
-                return DIRECTORY_PATH_PATCH;
-            default:
+        return switch (type) {
+            case "meta" -> DIRECTORY_PATH_META;
+            case "patch" -> DIRECTORY_PATH_PATCH;
+            case "metaverse" -> DIRECTORY_PATH_METAVERSE;
+            case "indicator" -> DIRECTORY_PATH_INDICATOR;
+            default -> {
                 LOGGER.log(Level.WARNING, "Invalid type: {0}. Must be 'meta' or 'patch'.", type);
-                return null;
-        }
+                yield null;
+            }
+        };
     }
 }

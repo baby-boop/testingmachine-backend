@@ -1,4 +1,4 @@
-package testingmachine_backend.meta.MetaList;
+package testingmachine_backend.metaverse;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -11,18 +11,20 @@ import testingmachine_backend.meta.Controller.ListConfig;
 import testingmachine_backend.meta.Controller.MetaCallDataview;
 import testingmachine_backend.meta.DTO.MetadataDTO;
 import testingmachine_backend.meta.Utils.IsErrorMessage;
-
-import java.util.List;
-
 import testingmachine_backend.meta.Utils.WaitUtils;
 import testingmachine_backend.process.DTO.ProcessDTO;
 import testingmachine_backend.process.Service.ProcessService;
 
-public class MetaLists {
+import java.util.List;
+
+import static testingmachine_backend.config.ConfigForAll.CALL_METAVERSE;
+
+public class MetaverseList {
+
 
     private final WebDriver driver;
 
-    public MetaLists(WebDriver driver) {
+    public MetaverseList(WebDriver driver) {
         this.driver = driver;
     }
 
@@ -73,14 +75,14 @@ public class MetaLists {
 
         for (MetadataDTO metaData : metaDataList) {
 
-            String url = ListConfig.MainUrl + metaData.getId();
+            String url = systemUrl + CALL_METAVERSE + metaData.getId();
 
             driver.get(url);
 
-            WaitUtils.retryWaitForLoadToDisappear(driver, metaData.getModuleName(), metaData.getId(), metaData.getCode(), metaData.getName(), jsonId, "meta", 3);
-            WaitUtils.retryWaitForLoadingToDisappear(driver, metaData.getModuleName(), metaData.getId(), metaData.getCode(), metaData.getName(), jsonId, "meta", 3);
+            WaitUtils.retryWaitForLoadToDisappear(driver, metaData.getModuleName(), metaData.getId(), metaData.getCode(), metaData.getName(), jsonId, "metaverse", 3);
+            WaitUtils.retryWaitForLoadingToDisappear(driver, metaData.getModuleName(), metaData.getId(), metaData.getCode(), metaData.getName(), jsonId, "metaverse", 3);
 
-            if (IsErrorMessage.isErrorMessagePresent(driver, metaData.getId(), metaData.getModuleName(), metaData.getCode(), metaData.getName(), jsonId, "meta", totalCount, customerName)) {
+            if (IsErrorMessage.isErrorMessagePresent(driver, metaData.getId(), metaData.getModuleName(), metaData.getCode(), metaData.getName(), jsonId, "metaverse", totalCount, customerName)) {
                 errorCount++;
                 System.out.println("Error found in ID: " + metaData.getId() + ", errorCount: " + errorCount);
 
@@ -95,5 +97,4 @@ public class MetaLists {
 
         }
     }
-
 }

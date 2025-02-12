@@ -2,7 +2,6 @@ package testingmachine_backend.config;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import testingmachine_backend.controller.JsonController;
 
 import java.io.File;
 import java.io.IOException;
@@ -43,9 +42,9 @@ public class JsonFileReader {
             case "patch":
                 directoryPath = DIRECTORY_PATH_PATCH;
                 break;
-            case "nodata":
-                directoryPath = DIRECTORY_PATH_NODATA;
-                break;
+//            case "nodata":
+//                directoryPath = DIRECTORY_PATH_NODATA;
+//                break;
             default:
                 LOGGER.log(Level.WARNING, "Invalid type: {0}. Must be 'meta' or 'process'.", type);
                 return;

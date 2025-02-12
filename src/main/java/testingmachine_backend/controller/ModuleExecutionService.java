@@ -1,34 +1,32 @@
 package testingmachine_backend.controller;
 
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import testingmachine_backend.process.Controller.SystemData;
 
 import java.util.concurrent.CompletableFuture;
 
-import java.util.concurrent.Executor;
-
 @Service
 public class ModuleExecutionService {
 
     private final ModuleService moduleService;
-    private final Executor asyncExecutor;
 
-    public ModuleExecutionService(ModuleService moduleService, Executor asyncExecutor) {
+    public ModuleExecutionService(ModuleService moduleService) {
         this.moduleService = moduleService;
-        this.asyncExecutor = asyncExecutor;
     }
 
+    @Async("asyncExecutor")  // Thread Pool ашиглана
     public CompletableFuture<String> executeModuleAsync(String module, SystemData systemData) {
-        return CompletableFuture.supplyAsync(() -> {
-            try {
-                if (systemData != null) {
-                    return moduleService.executeModule(module, systemData);
-                } else {
-                    throw new RuntimeException("Өгөгдөл олдсонгүй");
-                }
-            } catch (Exception e) {
-                throw new RuntimeException("Модуль ажиллуулахад алдаа гарлаа: " + e.getMessage(), e);
+        try {
+            if (systemData != null) {
+                String result = moduleService.executeModule(module, systemData);
+                return CompletableFuture.completedFuture(result);
+            } else {
+                throw new RuntimeException("Өгөгдөл олдсонгүй");
             }
-        }, asyncExecutor);
+        } catch (Exception e) {
+            return CompletableFuture.failedFuture(new RuntimeException("Модуль ажиллуулахад алдаа гарлаа: " + e.getMessage(), e));
+        }
     }
 }
+

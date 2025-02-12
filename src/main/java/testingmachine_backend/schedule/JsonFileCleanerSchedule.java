@@ -44,19 +44,7 @@ public class JsonFileCleanerSchedule {
         }
     }
 
-    @Scheduled(cron = "0 0 0 * * ?")
-//    @Scheduled(fixedRate = 50000000)
-    public void cleanAllJsonNodata() {
-        String[] directories = {
-                JsonController.BASE_DIRECTORY + "/nodata",
-                JsonController.BASE_DIRECTORY + "/nodatas",
-        };
-
-        for (String folderPath : directories) {
-            cleanUpOldMinuteFiles(folderPath);
-        }
-    }
-
+    //Минутаар тооцоолж устгах
     private void cleanUpOldMinuteFiles(String folderPath) {
         File folder = new File(folderPath);
         File[] jsonFiles = folder.listFiles((dir, name) -> name.endsWith(".json"));
@@ -83,6 +71,7 @@ public class JsonFileCleanerSchedule {
         }
     }
 
+    //Өдрөөр тооцоолж устгах
     private void cleanUpOldDaysFiles(String folderPath) {
         File folder = new File(folderPath);
         File[] jsonFiles = folder.listFiles((dir, name) -> name.endsWith(".json"));
