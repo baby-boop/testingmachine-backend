@@ -16,6 +16,7 @@ import testingmachine_backend.process.Controller.SystemService;
 import testingmachine_backend.process.DTO.ProcessDTO;
 import testingmachine_backend.process.DTO.ProcessMessageStatusDTO;
 import testingmachine_backend.process.Service.ProcessMessageStatusService;
+import testingmachine_backend.schedule.JsonFileCleanerSchedule;
 
 import java.io.File;
 import java.io.IOException;
@@ -165,13 +166,13 @@ public class JsonController {
     @PostMapping("/system-data")
     public ResponseEntity<Map<String, Object>> addSystemData(@RequestBody SystemData data) {
         clearStaticData();
+        JsonFileCleanerSchedule.allClearData();
         SystemData savedData = service.addSystemData(data);
         updateStaticData(savedData);
 
         log.info("Created system data: ID = {}, databaseName = {}", savedData.getGeneratedId(), savedData.getDatabaseName());
 
         String jsonId = savedData.getGeneratedId();
-
 
         CompletableFuture<Void> resultFuture = moduleExecutionService.executeModuleAsync(data.getSelectedModule(), savedData)
                 .thenAccept(result -> log.info("Амжилттай ажиллав: {}", result))

@@ -12,6 +12,7 @@ import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Arrays;
 
 @Component
 @Slf4j
@@ -20,8 +21,34 @@ public class JsonFileCleanerSchedule {
     private static final long MAX_FILE_AGE_DAYS = 14;
     private static final long MAX_FILE_AGE_MINUTES = 5;
 
+    public static void allClearData() {
+        String[] directories = {
+                JsonController.BASE_DIRECTORY + "/metaverse/header",
+                JsonController.BASE_DIRECTORY + "/metaverse/result",
+                JsonController.BASE_DIRECTORY + "/indicator/header",
+                JsonController.BASE_DIRECTORY + "/indicator/result"
+        };
 
-//    @Scheduled(cron = "0 0/1 * * * ?")
+        for (String dirPath : directories) {
+            File folder = new File(dirPath);
+
+            if (folder.exists() && folder.isDirectory()) {
+                File[] jsonFiles = folder.listFiles((dir, name) -> name.endsWith(".json"));
+
+                if (jsonFiles != null) {
+                    for (File jsonFile : jsonFiles) {
+                        boolean deleted = jsonFile.delete();
+                        if (!deleted) {
+                            System.err.println("Failed to delete file: " + jsonFile.getAbsolutePath());
+                        }
+                    }
+                }
+            } else {
+                System.err.println("Directory does not exist or is not a directory: " + dirPath);
+            }
+        }
+    }
+    //    @Scheduled(cron = "0 0/1 * * * ?")
 //    @Scheduled(fixedRate = 5000)
     @Scheduled(cron = "0 0 0 * * ?")
     public void cleanAllJsonDirectories() {

@@ -64,8 +64,11 @@ public class IsProcessMessage {
                     infoCount++;
                     break;
             }
-
-            ProcessMessageStatusService.addProcessStatus(systemName, id, code, name, type, messageText, TestProcessType, jsonId);
+            if(type == "success" && TestProcessType.equals("indicator")) {
+               System.out.println("Successfully processed message: " + messageText);
+            }else{
+                ProcessMessageStatusService.addProcessStatus(systemName, id, code, name, type, messageText, TestProcessType, jsonId);
+            }
 
             return true;
         } catch (Exception e) {

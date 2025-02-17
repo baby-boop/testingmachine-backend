@@ -70,19 +70,21 @@ public class IndicatorList {
             ConfigForAll.loginForm(wait, username, password);
 
 //        List<ProcessMetaData> processMetaDataList = ProcessCallDataviewWithId.getProcessMetaDataList(unitName, systemUrl, username, password, processId);
-            List<ProcessMetaData> processMetaDataList = List.of(new ProcessMetaData("1525", "testIndicator", "1", "indicator"));
+            List<ProcessMetaData> processMetaDataList = List.of(new ProcessMetaData(processId, "testIndicator", "1", "indicator"));
 
             int count = 0;
 
             for (ProcessMetaData metaData : processMetaDataList) {
-                String url = "https://dev.veritech.mn/mdobject/dataview/16413658595761?pdfid=17059188884159&pdsid=196119458&mmid=164560279791910";
+
+                String url = "https://dev.veritech.mn/mdobject/dataview/16413658595761?pdfid=170141762610410&pdsid=204597849&mmid=164560279791910";
                 driver.get(url);
 
-                Thread.sleep(15000);
+                Thread.sleep(8000);
 
                 driver.findElement(By.xpath("//div[@class='main-container-1641543359224498']//li[@data-auto-number='5']/a")).click();
 
                 Thread.sleep(2000);
+//                driver.findElement(By.xpath("//div[@class='main-container-1641543359224498']//a[contains(@class, 'btn-success') and contains(text(), 'Маягт бичих')]")).click();
                 driver.findElement(By.xpath("//div[@class='main-container-1641543359224498']//a[contains(@class, 'btn-success') and contains(text(), 'Нэмэх')]")).click();
 
                 Thread.sleep(2000);

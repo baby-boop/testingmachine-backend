@@ -8,7 +8,6 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.devtools.DevTools;
 import org.openqa.selenium.devtools.v128.network.Network;
 import org.openqa.selenium.devtools.v128.network.model.RequestId;
-import org.openqa.selenium.devtools.v128.network.model.Response;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.logging.LogEntries;
 import org.openqa.selenium.logging.LogEntry;
@@ -22,7 +21,6 @@ import testingmachine_backend.process.Messages.PopupMessage;
 import java.sql.Date;
 import java.time.Duration;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -141,10 +139,10 @@ public class ElementsFunctionUtils {
             }
         }
         catch (NoSuchElementException n){
-            LOGGER.log(Level.SEVERE, "NoSuchElementException first row");
+            LOGGER.log(Level.SEVERE, "NoSuchElementException first row 1");
         }
         catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Error first row");
+            LOGGER.log(Level.SEVERE, "Error first row 1");
         }
     }
 
@@ -162,9 +160,7 @@ public class ElementsFunctionUtils {
             if(responseReceived.getResponse().getUrl().contains("comboDataSet")) {
                 String body = devTools.send(Network.getResponseBody(requestId)).getBody();
                 responseBody.set(body);
-
             }
-
         });
 
         try {
@@ -192,7 +188,6 @@ public class ElementsFunctionUtils {
                         }
                     }
                 }
-//                i want to get message in errorMessage
                 selectSecondOption(driver, comboBoxSelectLocator, id, dataSPath, required, fileName, jsonId);
 
             }
@@ -249,19 +244,26 @@ public class ElementsFunctionUtils {
     public static void selectSecondOption(WebDriver driver, By selectorLocator, String id, String dataPath, String required, String fileName, String jsonId) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(1));
         WebElement selector = wait.until(ExpectedConditions.visibilityOfElementLocated(selectorLocator));
-        List<WebElement> options = selector.findElements(By.tagName("option"));
-        if (options.size() > 1) {
-            options.get(1).click();
-        } else {
 
-            if (required != null){
-                EmptyDataDTO emptyPath = new EmptyDataDTO(fileName, id, dataPath, "Combo", jsonId);
-                emptyPathField.get().add(emptyPath);
+            List<WebElement> options = selector.findElements(By.tagName("option"));
+            if (options.size() > 1) {
+                options.get(1).click();
+                options.clear();
+                selector.clear();
+            } else {
+
+                if (required != null){
+                    EmptyDataDTO emptyPath = new EmptyDataDTO(fileName, id, dataPath, "Combo", jsonId);
+                    emptyPathField.get().add(emptyPath);
+                    selector.clear();
+                    options.clear();
+                }
+                selector.sendKeys(Keys.ENTER);
+                selector.clear();
+                options.clear();
             }
-            selector.sendKeys(Keys.ENTER);
-        }
-        selector.clear();
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div[id='bp-window-" + id + "']")));
+            selector.clear();
+//        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div[id='bp-window-" + id + "']")));
     }
 
     public static Optional<String> extractTabIdentifier(String href) {
@@ -362,6 +364,7 @@ public class ElementsFunctionUtils {
                 }
             }
         }
+        driver.manage().logs().get(LogType.BROWSER);
     }
 
     public static boolean isDuplicateLogWrite(String systemName, String id, String jsonId, String uncaughtMessage) {
@@ -378,6 +381,7 @@ public class ElementsFunctionUtils {
                 String logMessage = entry.getMessage();
                 if(logMessage.contains("Path:")){
                     String pathMessage = logMessage.substring(logMessage.indexOf("Path:"));
+
                     String formattedTimestamp = new Date(entry.getTimestamp()).toString();
                     LOGGER.log(Level.INFO, formattedTimestamp + " Extracted Console Log: " + pathMessage + " " + id);
 
@@ -389,6 +393,7 @@ public class ElementsFunctionUtils {
                 }
             }
         }
+        driver.manage().logs().get(LogType.BROWSER);
     }
 
     public static List<RequiredPathDTO> getRequiredPathMessages() {
@@ -448,7 +453,7 @@ public class ElementsFunctionUtils {
                 }
             }
             rows.clear();
-            wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div[id='bp-window-" + id + "']")));
+//            wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div[id='bp-window-" + id + "']")));
         } catch (TimeoutException t){
             if (PopupMessage.isErrorMessagePresent(driver, datapath, id, fileName, jsonId)) {
                 WebElement closeBtn = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[contains(@aria-describedby, 'dialog-dataview-selectable-')]//button[contains(@class, 'btn blue-hoki btn-sm')]")));
@@ -466,10 +471,10 @@ public class ElementsFunctionUtils {
             }
         }
         catch (NoSuchElementException n){
-            LOGGER.log(Level.SEVERE, "NoSuchElementException first row");
+            LOGGER.log(Level.WARNING, "NoSuchElementException first row 2: " + datapath);
         }
         catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Error first row");
+            LOGGER.log(Level.SEVERE, "Error first row 2: " + datapath);
         }
     }
 

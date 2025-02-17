@@ -5,6 +5,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import testingmachine_backend.controller.JsonController;
+import testingmachine_backend.schedule.JsonFileCleanerSchedule;
+
+import java.io.File;
 
 @EnableScheduling
 @EnableAsync

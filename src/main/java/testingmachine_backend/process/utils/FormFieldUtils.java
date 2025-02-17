@@ -92,6 +92,12 @@ public class FormFieldUtils {
     public static boolean isRegisterRegex(String regexData){
         return regexData.contains("^[ФЦУЖЭНГШҮЗКЪЙЫБӨАХРОЛДПЯЧЁСМИТЬВЮЕЩфцужэнгшүзкъйыбөахролдпячёсмитьвюещ]{2}[0-9]{8}$");
     }
+    public static boolean isMongolianRegex(String regexData){
+        return regexData.contains("^[ФЦУЖЭНГШҮЗКЪЙЫБӨАХРОЛДПЯЧЁСМИТЬВЮЕЩфцужэнгшүзкъйыбөахролдпячёсмитьвюещ ,.-]{1,1024}$");
+    }
+    public static boolean isEnglishRegex(String regexData){
+        return regexData.contains("^[QWERTYUIOPASDFGHJKLZXCVBNMqwertyuiopasdfghjklzxcvbnm -]{1,256}$");
+    }
     public static boolean isPhoneRegex(String regexData){
         return regexData.contains("^[0-9]{1}[0-9]{1}[0-9]{1}[0-9]{1}[0-9]{1}[0-9]{1}[0-9]{1}[0-9]{1}$");
     }
@@ -191,6 +197,10 @@ public class FormFieldUtils {
                 element.sendKeys("11000110");
             } else if (isCompanyStateRegRegex(regexData)){
                 element.sendKeys("1100001000");
+            } else if (isMongolianRegex(regexData)){
+                element.sendKeys("Тест шүү");
+            } else if (isEnglishRegex(regexData)){
+                element.sendKeys("test shuu");
             }
         } else {
             element.sendKeys("111222333");

@@ -2,6 +2,7 @@ package testingmachine_backend.process.DTO;
 
 import lombok.Getter;
 import lombok.Setter;
+import testingmachine_backend.indicator.IndicatorCustomTab;
 
 import java.util.List;
 
@@ -22,10 +23,12 @@ public class ProcessMessageStatusDTO {
     private List<PopupStandardFieldsDTO> popupStandardFieldsDTO;
     private List<RequiredPathDTO> requiredPathDTO;
     private List<ComboMessageDTO> comboMessageDTO;
+    private List<IndicatorCustomTab> indicatorCustomTab;
 
     public ProcessMessageStatusDTO(String moduleName, String metaDataId, String metaDataCode, String metaDataName, String status, String messageText,
                                    String jsonId, List<ProcessLogDTO> processLogDTO, List<EmptyDataDTO> emptyDataDTO, List<PopupMessageDTO> popupMessageDTO,
-                                   List<PopupStandardFieldsDTO> popupStandardFieldsDTO, List<RequiredPathDTO> requiredPathDTO, List<ComboMessageDTO> comboMessageDTO) {
+                                   List<PopupStandardFieldsDTO> popupStandardFieldsDTO, List<RequiredPathDTO> requiredPathDTO, List<ComboMessageDTO> comboMessageDTO,
+                                   List<IndicatorCustomTab> indicatorCustomTab) {
         this.moduleName = moduleName;
         this.metaDataId = metaDataId;
         this.metaDataCode = metaDataCode;
@@ -39,5 +42,6 @@ public class ProcessMessageStatusDTO {
         this.popupStandardFieldsDTO = popupStandardFieldsDTO;
         this.requiredPathDTO = requiredPathDTO;
         this.comboMessageDTO = comboMessageDTO;
+        this.indicatorCustomTab = indicatorCustomTab;
     }
 }
