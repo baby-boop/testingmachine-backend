@@ -10,7 +10,7 @@ import testingmachine_backend.meta.Controller.ListConfig;
 
 public class ConfigForAll {
 
-    public static void loginForm(WebDriverWait wait, String username, String password) {
+    public static void loginForm(WebDriverWait wait, String username, String password, String isLoginCheckBox) {
 
         WebElement userNameField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("user_name")));
         userNameField.sendKeys(username);
@@ -18,8 +18,10 @@ public class ConfigForAll {
         WebElement passwordField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("pass_word")));
         passwordField.sendKeys(password);
 
-        WebElement checkBox = wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("isLdap")));
-        checkBox.click();
+        if (isLoginCheckBox != null && !isLoginCheckBox.isEmpty()) {
+            WebElement checkBox = wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("isLdap")));
+            checkBox.click();
+        }
 
         passwordField.sendKeys(Keys.ENTER);
     }

@@ -15,7 +15,7 @@ public class IndicatorMain {
     private static final Logger logger = Logger.getLogger(MainProcess.class.getName());
 
     public static void mainProcess(String jsonId, String theadId, String customerName, String createdDate, String moduleId,
-                                   String databaseName, String unitName, String systemUrl, String username, String password, String processId) {
+                                   String databaseName, String unitName, String systemUrl, String username, String password, String processId, String isLoginCheckBox) {
         Map<String, String> loggingPrefs = Map.of(
                 LogType.BROWSER, "ALL"
         );
@@ -27,7 +27,7 @@ public class IndicatorMain {
         try {
 
             IndicatorList tool = new IndicatorList(driver);
-            tool.mainTool(jsonId, theadId, customerName, createdDate, moduleId, databaseName, unitName, systemUrl, username, password, processId);
+            tool.mainTool(jsonId, theadId, customerName, createdDate, moduleId, databaseName, unitName, systemUrl, username, password, processId, isLoginCheckBox);
 
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Error mainIndicator: ", e);

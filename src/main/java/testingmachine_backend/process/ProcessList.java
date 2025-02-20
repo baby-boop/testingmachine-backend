@@ -28,7 +28,7 @@ public class ProcessList {
     }
 
     public void mainTool(String jsonId, String theadId, String customerName, String createdDate, String moduleId,
-                         String databaseName, String unitName, String systemUrl, String username, String password, String processId) {
+                         String databaseName, String unitName, String systemUrl, String username, String password, String processId, String isLoginCheckBox) {
         try {
 
             WebDriverWait wait = ConfigProcess.getWebDriverWait(driver);
@@ -45,13 +45,13 @@ public class ProcessList {
 
                 Thread.sleep(2000);
 
-                mainProcessWithModule(wait, jsonId, theadId, customerName, createdDate, moduleId, unitName, systemUrl, username, password);
+                mainProcessWithModule(wait, jsonId, theadId, customerName, createdDate, moduleId, unitName, systemUrl, username, password, isLoginCheckBox);
 
             } else {
                 if (!processId.isEmpty()) {
-                    mainProcessWithId(wait, jsonId, theadId, customerName, createdDate, moduleId, unitName, systemUrl, username, password, processId);
+                    mainProcessWithId(wait, jsonId, theadId, customerName, createdDate, moduleId, unitName, systemUrl, username, password, processId, isLoginCheckBox);
                 } else {
-                    mainProcessWithModule(wait, jsonId, theadId, customerName, createdDate, moduleId, unitName, systemUrl, username, password);
+                    mainProcessWithModule(wait, jsonId, theadId, customerName, createdDate, moduleId, unitName, systemUrl, username, password, isLoginCheckBox);
                 }
             }
         } catch (Exception e) {
@@ -60,9 +60,9 @@ public class ProcessList {
     }
 
     private void mainProcessWithId(WebDriverWait wait, String jsonId, String theadId, String customerName, String createdDate, String moduleId,
-                                   String unitName, String systemUrl, String username, String password, String processId) throws InterruptedException {
+                                   String unitName, String systemUrl, String username, String password, String processId, String isLoginCheckBox) throws InterruptedException {
 
-        ConfigForAll.loginForm(wait, username, password);
+        ConfigForAll.loginForm(wait, username, password, isLoginCheckBox);
 
         List<ProcessMetaData> processMetaDataList = ProcessCallDataviewWithId.getProcessMetaDataList(unitName, systemUrl, username, password, processId);
 
@@ -89,9 +89,9 @@ public class ProcessList {
     }
 
     private void mainProcessWithModule(WebDriverWait wait, String jsonId, String theadId, String customerName, String createdDate, String moduleId,
-                                       String unitName, String systemUrl, String username, String password) throws InterruptedException {
+                                       String unitName, String systemUrl, String username, String password, String isLoginCheckBox) throws InterruptedException {
 
-        ConfigForAll.loginForm(wait, username, password);
+        ConfigForAll.loginForm(wait, username, password, isLoginCheckBox);
 
         List<ProcessMetaData> processMetaDataList = ProcessCallDataview.getProcessMetaDataList(moduleId, unitName, systemUrl, username, password);
 

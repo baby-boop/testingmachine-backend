@@ -146,7 +146,7 @@ public class ElementsFunctionUtils {
         }
     }
 
-    public static void comboboxFunction(WebDriver driver, String dataSPath, String required, String id, String fileName, String jsonId) {
+    public static void comboboxFunction(WebDriver driver, String dataSPath, String required, String id, String fileName, String jsonId, String indicatorType) {
         DevTools devTools = ((ChromeDriver) driver).getDevTools();
         devTools.createSession();
         devTools.send(Network.enable(Optional.empty(), Optional.empty(), Optional.empty()));
@@ -164,41 +164,98 @@ public class ElementsFunctionUtils {
         });
 
         try {
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-            wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div[data-s-path='" + dataSPath + "']")));
-            WebElement comboBoxLocator = driver.findElement(By.cssSelector("div[data-s-path='" + dataSPath + "']"));
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
+
+            WebElement comboBoxLocator = null;
+
+            if (indicatorType.equals("sidebar")) {
+                By sidebarLocator = By.cssSelector("div[id='mv_checklist_id_" + id + "'] div[data-s-path='" + dataSPath + "']");
+                wait.until(ExpectedConditions.visibilityOfElementLocated(sidebarLocator));
+                comboBoxLocator = driver.findElement(sidebarLocator);
+            } else if (indicatorType.equals("indicator")) {
+                By sidebarLocator = By.cssSelector("div[id='dialog-valuemap-" + id + "'] div[data-s-path='" + dataSPath + "']");
+                wait.until(ExpectedConditions.visibilityOfElementLocated(sidebarLocator));
+                comboBoxLocator = driver.findElement(sidebarLocator);
+            }else {
+                By genericLocator = By.cssSelector("div[data-s-path='" + dataSPath + "']");
+                wait.until(ExpectedConditions.visibilityOfElementLocated(genericLocator));
+                comboBoxLocator = driver.findElement(genericLocator);
+            }
 
             if (comboBoxLocator != null) {
                 WebElement comboBoxElement = wait.until(ExpectedConditions.elementToBeClickable(comboBoxLocator));
                 comboBoxElement.click();
 
-                By comboBoxSelectLocator = By.cssSelector("select[data-path='" + dataSPath + "']");
-                wait.until(ExpectedConditions.elementToBeClickable(comboBoxSelectLocator));
-                if (responseBody.get().contains("errorMessage")) {
-                    String responseJson = responseBody.get();
-                    JsonObject jsonResponse = JsonParser.parseString(responseJson).getAsJsonObject();
-                    String errorMessage = jsonResponse.has("errorMessage") ? jsonResponse.get("errorMessage").getAsString() : null;
-                    if (errorMessage != null && !errorMessage.isEmpty()) {
-                        if (!isDuplicateNetwork(id, dataSPath, jsonId)) {
-                            System.out.println("Found combox errorMessage id: " + id + " dataPath: " + dataSPath );
-                            ComboMessageDTO comboMessageDTO = new ComboMessageDTO(fileName, id, dataSPath, jsonId, errorMessage);
-                            ComboMessageField.get().add(comboMessageDTO);
-                        } else {
-                            System.out.println("Duplicated data: " + "id: " + id + " dataPath: " + dataSPath + " responseBody: " + responseBody.get());
+                if(indicatorType.equals("sidebar")) {
+                    By comboBoxSelectLocator = By.cssSelector("div[id='mv_checklist_id_"+ id +"'] select[data-path='" + dataSPath + "']");
+                    wait.until(ExpectedConditions.elementToBeClickable(comboBoxSelectLocator));
+
+                    if (responseBody.get().contains("errorMessage")) {
+                        String responseJson = responseBody.get();
+                        JsonObject jsonResponse = JsonParser.parseString(responseJson).getAsJsonObject();
+                        String errorMessage = jsonResponse.has("errorMessage") ? jsonResponse.get("errorMessage").getAsString() : null;
+                        if (errorMessage != null && !errorMessage.isEmpty()) {
+                            if (!isDuplicateNetwork(id, dataSPath, jsonId)) {
+                                System.out.println("Found combox errorMessage id: " + id + " dataPath: " + dataSPath );
+                                ComboMessageDTO comboMessageDTO = new ComboMessageDTO(fileName, id, dataSPath, jsonId, errorMessage);
+                                ComboMessageField.get().add(comboMessageDTO);
+                            } else {
+                                System.out.println("Duplicated data: " + "id: " + id + " dataPath: " + dataSPath + " responseBody: " + responseBody.get());
+                            }
                         }
                     }
+
+                    selectSecondOption(driver, comboBoxSelectLocator, id, dataSPath, required, fileName, jsonId);
+
+                }else if(indicatorType.equals("indicator")) {
+                    By comboBoxSelectLocator = By.cssSelector("div[id='dialog-valuemap-"+ id +"'] select[data-path='" + dataSPath + "']");
+                    wait.until(ExpectedConditions.elementToBeClickable(comboBoxSelectLocator));
+
+                    if (responseBody.get().contains("errorMessage")) {
+                        String responseJson = responseBody.get();
+                        JsonObject jsonResponse = JsonParser.parseString(responseJson).getAsJsonObject();
+                        String errorMessage = jsonResponse.has("errorMessage") ? jsonResponse.get("errorMessage").getAsString() : null;
+                        if (errorMessage != null && !errorMessage.isEmpty()) {
+                            if (!isDuplicateNetwork(id, dataSPath, jsonId)) {
+                                System.out.println("Found combox errorMessage id: " + id + " dataPath: " + dataSPath );
+                                ComboMessageDTO comboMessageDTO = new ComboMessageDTO(fileName, id, dataSPath, jsonId, errorMessage);
+                                ComboMessageField.get().add(comboMessageDTO);
+                            } else {
+                                System.out.println("Duplicated data: " + "id: " + id + " dataPath: " + dataSPath + " responseBody: " + responseBody.get());
+                            }
+                        }
+                    }
+
+                    selectSecondOption(driver, comboBoxSelectLocator, id, dataSPath, required, fileName, jsonId);
                 }
-                selectSecondOption(driver, comboBoxSelectLocator, id, dataSPath, required, fileName, jsonId);
+                else{
+                    By comboBoxSelectLocator = By.cssSelector("select[data-path='" + dataSPath + "']");
+                    wait.until(ExpectedConditions.elementToBeClickable(comboBoxSelectLocator));
+
+                    if (responseBody.get().contains("errorMessage")) {
+                        String responseJson = responseBody.get();
+                        JsonObject jsonResponse = JsonParser.parseString(responseJson).getAsJsonObject();
+                        String errorMessage = jsonResponse.has("errorMessage") ? jsonResponse.get("errorMessage").getAsString() : null;
+                        if (errorMessage != null && !errorMessage.isEmpty()) {
+                            if (!isDuplicateNetwork(id, dataSPath, jsonId)) {
+                                System.out.println("Found combox errorMessage id: " + id + " dataPath: " + dataSPath );
+                                ComboMessageDTO comboMessageDTO = new ComboMessageDTO(fileName, id, dataSPath, jsonId, errorMessage);
+                                ComboMessageField.get().add(comboMessageDTO);
+                            } else {
+                                System.out.println("Duplicated data: " + "id: " + id + " dataPath: " + dataSPath + " responseBody: " + responseBody.get());
+                            }
+                        }
+                    }
+                    selectSecondOption(driver, comboBoxSelectLocator, id, dataSPath, required, fileName, jsonId);
+                }
 
             }
         } catch (Exception e) {
-//            System.err.println("Error interacting with comboBox: " + e.getMessage());
+//            System.err.println("Error with comboBox: " + e.getMessage());
         } finally {
             devTools.close();
         }
     }
-
-
 
     public static boolean isDuplicateNetwork(String id, String dataPath, String jsonId) {
         return ElementsFunctionUtils.ComboMessageField.get().stream()
@@ -248,20 +305,17 @@ public class ElementsFunctionUtils {
             List<WebElement> options = selector.findElements(By.tagName("option"));
             if (options.size() > 1) {
                 options.get(1).click();
-                options.clear();
-                selector.clear();
+
             } else {
 
                 if (required != null){
                     EmptyDataDTO emptyPath = new EmptyDataDTO(fileName, id, dataPath, "Combo", jsonId);
                     emptyPathField.get().add(emptyPath);
-                    selector.clear();
-                    options.clear();
                 }
                 selector.sendKeys(Keys.ENTER);
-                selector.clear();
-                options.clear();
             }
+
+            options.clear();
             selector.clear();
 //        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div[id='bp-window-" + id + "']")));
     }
@@ -290,8 +344,7 @@ public class ElementsFunctionUtils {
             }
             else if (elementClass.contains("dropdownInput") || elementClass.contains("radioInit")
                     || elementType.contains("checkbox") || elementClass.contains("booleanInit")
-                    || elementClass.contains("fileInit")
-//                        || elementClass.contains("combogridInit")
+                    || elementClass.contains("fileInit") || elementClass.contains("combogridInit")
                     || elementClass.contains("iconInit")) {
                 if(!element.getAttribute("style").contains("display: none;")){
                     if (!uniqueTabElements.containsKey(dataPath)) {
@@ -318,7 +371,7 @@ public class ElementsFunctionUtils {
         return attributes;
     }
 
-    public static void processTabElements(WebDriver driver, List<WebElement> elements, String id, String fileName, String jsonId) {
+    public static void processTabElements(WebDriver driver, List<WebElement> elements, String id, String fileName, String jsonId, String indicatorType) {
         if (elements != null) {
             for (WebElement element : elements) {
                 Map<String, String> attributes = getElementAttributes(element);
@@ -333,7 +386,8 @@ public class ElementsFunctionUtils {
                         attributes.get("required"),
                         id,
                         fileName,
-                        jsonId
+                        jsonId,
+                        indicatorType
                 );
             }
         }
@@ -381,11 +435,11 @@ public class ElementsFunctionUtils {
                 String logMessage = entry.getMessage();
                 if(logMessage.contains("Path:")){
                     String pathMessage = logMessage.substring(logMessage.indexOf("Path:"));
-
+                    String splitPath = pathMessage.replace("\"", "");
                     String formattedTimestamp = new Date(entry.getTimestamp()).toString();
-                    LOGGER.log(Level.INFO, formattedTimestamp + " Extracted Console Log: " + pathMessage + " " + id);
+                    LOGGER.log(Level.INFO, formattedTimestamp + " Extracted Console Log: " + splitPath + " " + id);
 
-                    RequiredPathDTO requiredPaths = new RequiredPathDTO(fileName, id, "required", pathMessage, jsonId);
+                    RequiredPathDTO requiredPaths = new RequiredPathDTO(fileName, id, "required", splitPath, jsonId);
                     RequiredPathField.get().add(requiredPaths);
                 }else if (logMessage.contains("bpResult:")){
                     String pathMessage = logMessage.substring(logMessage.indexOf("bpResult:"));
@@ -407,6 +461,7 @@ public class ElementsFunctionUtils {
     public static boolean isIgnorableError(String message) {
         return message.contains("Uncaught TypeError: Cannot read properties of null")
                 || message.contains("Uncaught TypeError: Cannot read properties of undefined")
+                || message.contains("Uncaught ReferenceError: showdeed_")
                 || message.contains("Failed to load resource: the server responded with a status of 404 (Not Found)")
                 || message.contains("Failed to load resource: the server responded with a status of 405 (Not Allowed)")
                 || message.contains("Failed to load resource: the server responded with a status of 500")

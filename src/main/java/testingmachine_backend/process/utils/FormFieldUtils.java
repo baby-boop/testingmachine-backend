@@ -11,11 +11,11 @@ public class FormFieldUtils {
 
     public static void handleElementAction(WebDriver driver, WebElement element, String classAttribute,
                                            String valueAttribute, String typeAttribute, String dataPath,
-                                           String regexData, String required, String id, String fileName, String jsonId) {
+                                           String regexData, String required, String id, String fileName, String jsonId, String indicatorType) {
         waitUtils(driver);
         consoleLogChecker(driver, id, fileName, jsonId);
         if (valueAttribute != null && valueAttribute.isEmpty()) {
-            handleElementSubAction(driver, element, classAttribute, dataPath, regexData, required, id, fileName, jsonId);}
+            handleElementSubAction(driver, element, classAttribute, dataPath, regexData, required, id, fileName, jsonId, indicatorType);}
         else if (isRadioField(classAttribute)) {
             if (!element.findElement(By.xpath("..")).getAttribute("class").contains("checked")) {
                 element.click();
@@ -29,20 +29,20 @@ public class FormFieldUtils {
 
     }
 
-    private static void handleElementSubAction(WebDriver driver, WebElement element, String classAttribute, String dataPath, String regexData, String required, String id, String fileName, String jsonId) {
+    private static void handleElementSubAction(WebDriver driver, WebElement element, String classAttribute, String dataPath, String regexData, String required, String id, String fileName, String jsonId, String indicatorType) {
         if (classAttribute != null && !classAttribute.isEmpty()) {
             if (isPopupField(classAttribute)) {
                 waitUtils(driver);
                 findElementWithPopup(driver, element, dataPath, required, id, fileName, jsonId);
             }  else {
-                handleFieldByType(element, classAttribute, regexData, driver, dataPath, required, id, fileName, jsonId);
+                handleFieldByType(element, classAttribute, regexData, driver, dataPath, required, id, fileName, jsonId, indicatorType);
             }
         }
 
     }
 
     private static void handleFieldByType(WebElement element, String classAttribute, String regexData,
-                                          WebDriver driver, String dataPath, String required, String id, String fileName, String jsonId) {
+                                          WebDriver driver, String dataPath, String required, String id, String fileName, String jsonId, String indicatorType) {
         if (isStringField(classAttribute)) {
             sendKeysBasedOnRegex(element, regexData);
         } else if (isLongField(classAttribute)) {
@@ -52,7 +52,7 @@ public class FormFieldUtils {
             element.sendKeys("C:\\pngForTest.png");
 
         } else if (isIntegerField(classAttribute)) {
-            element.sendKeys("123");
+            element.sendKeys("2025");
         } else if (isDescriptionField(classAttribute)) {
             element.sendKeys("Description test");
         } else if (isAutoDescriptionField(classAttribute)) {
@@ -75,11 +75,13 @@ public class FormFieldUtils {
         } else if (isExpressionEditorField(classAttribute)) {
             element.sendKeys("expressionEditorCheck");
         } else if (isPasswordField(classAttribute)) {
-            element.sendKeys("123");
+            element.sendKeys("2024");
         } else if (isTextEditorField(classAttribute)) {
             findTextEditorInput(driver, dataPath, id);
         } else if (isComboField(classAttribute)) {
-            comboboxFunction(driver, dataPath, required, id, fileName, jsonId);
+//            if(!dataPath.equals("C258.C3")){
+                comboboxFunction(driver, dataPath, required, id, fileName, jsonId, indicatorType);
+//            }
         }else if (isComboGridField(classAttribute)) {
             comboGridFunction(driver, element, dataPath, id , fileName);
         }else if (isIconField(classAttribute)) {
@@ -106,6 +108,9 @@ public class FormFieldUtils {
     }
     public static boolean isCompanyRegex(String regexData){
         return regexData.contains("^[0-9]{7}$");
+    }
+    public static boolean isLengthRegex(String regexData){
+        return regexData.contains("^[0-9]{4}$");
     }
     public static boolean isTerminalRegex(String regexData){
         return regexData.contains("^[_A-Za-z0-9-\\+]{8,8}$");
@@ -201,6 +206,8 @@ public class FormFieldUtils {
                 element.sendKeys("Тест шүү");
             } else if (isEnglishRegex(regexData)){
                 element.sendKeys("test shuu");
+            } else if (isLengthRegex(regexData)){
+                element.sendKeys("2024");
             }
         } else {
             element.sendKeys("111222333");

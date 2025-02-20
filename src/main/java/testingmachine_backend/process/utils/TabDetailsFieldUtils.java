@@ -28,7 +28,7 @@ public class TabDetailsFieldUtils {
                     String tabIdentifier = tabIdentifierOpt.get();
                     waitUtils(driver);
                     List<WebElement> elementsWithHeaderPaths = findElementsWithHeaderPath(driver, tabIdentifier);
-                    processTabElements(driver, elementsWithHeaderPaths, id, fileName, jsonId);
+                    processTabElements(driver, elementsWithHeaderPaths, id, fileName, jsonId,"");
 
                     List<WebElement> elementsWithDataSectionPath = findRowElementsWithSectionPath(driver, tabIdentifier);
                     if (elementsWithDataSectionPath != null) {
@@ -36,7 +36,7 @@ public class TabDetailsFieldUtils {
                             String sectionPath = elementTab.getAttribute("data-section-path");
                             waitUtils(driver);
                             List<WebElement> findTestElement = findTest(driver, tabIdentifier, sectionPath);
-                            processTabElements(driver, findTestElement, id, fileName, jsonId);
+                            processTabElements(driver, findTestElement, id, fileName, jsonId,"");
                             List<WebElement> allActionTabPath = findRowActionTabPathsButton(driver, sectionPath);
                             if (allActionTabPath != null) {
                                 List<WebElement> findTabDefaultRows = findRowActionTabDefaultRow(driver, sectionPath);
@@ -51,14 +51,14 @@ public class TabDetailsFieldUtils {
                                             clickFirstRow(driver, id, fileName, sectionPath, "", jsonId);
                                             waitUtils(driver);
                                             List<WebElement> tabElementPaths1 = findElementsWithTabDetailsPath(driver, sectionPath, tabIdentifier);
-                                            processTabElements(driver, tabElementPaths1, id, fileName, jsonId);
+                                            processTabElements(driver, tabElementPaths1, id, fileName, jsonId,"");
                                             break;
                                         } else if (onclick.contains("bpAddMainRow")) {
                                             waitUtils(driver);
                                             action.click();
                                             waitUtils(driver);
                                             List<WebElement> tabElementPaths = findElementsWithTabDetailsPath(driver, sectionPath, tabIdentifier);
-                                            processTabElements(driver, tabElementPaths, id, fileName, jsonId);
+                                            processTabElements(driver, tabElementPaths, id, fileName, jsonId,"");
 
 //                                            List<WebElement> rowsToRowShowForms = findRowsToRowShowForm(driver, sectionPath, tabIdentifier, id);
 //                                            if (rowsToRowShowForms != null) {
@@ -77,7 +77,7 @@ public class TabDetailsFieldUtils {
                                     }
                                 }else{
                                     List<WebElement> findTestElement1 = findTest(driver, tabIdentifier, sectionPath);
-                                    processTabElements(driver, findTestElement1, id, fileName, jsonId);
+                                    processTabElements(driver, findTestElement1, id, fileName, jsonId,"");
                                 }
                             }
                         }

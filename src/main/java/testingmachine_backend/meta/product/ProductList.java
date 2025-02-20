@@ -1,4 +1,4 @@
-package testingmachine_backend.indicator;
+package testingmachine_backend.meta.product;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -7,25 +7,30 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import testingmachine_backend.config.ConfigForAll;
+import testingmachine_backend.indicator.IndicatorPath;
+import testingmachine_backend.meta.Controller.ListConfig;
+import testingmachine_backend.meta.Controller.MetaCallDataview;
 import testingmachine_backend.meta.Controller.ProcessMetaData;
+import testingmachine_backend.meta.DTO.MetadataDTO;
+import testingmachine_backend.meta.Utils.IsErrorMessage;
+import testingmachine_backend.meta.Utils.WaitUtils;
 import testingmachine_backend.process.Config.ConfigProcess;
 import testingmachine_backend.process.Controller.ProcessCallDataview;
-import testingmachine_backend.process.Controller.ProcessCallDataviewWithId;
 import testingmachine_backend.process.DTO.ProcessDTO;
 import testingmachine_backend.process.Service.ProcessService;
 import testingmachine_backend.process.utils.ProcessPath;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import static testingmachine_backend.config.ConfigForAll.CALL_METAVERSE;
 import static testingmachine_backend.config.ConfigForAll.CALL_PROCESS;
 import static testingmachine_backend.process.Config.ConfigProcess.waitUtils;
 
-public class IndicatorList {
+public class ProductList {
 
     private final WebDriver driver;
 
-    public IndicatorList(WebDriver driver) {
+    public ProductList(WebDriver driver) {
         this.driver = driver;
     }
 
@@ -50,13 +55,14 @@ public class IndicatorList {
                 if (!processId.isEmpty()) {
                     mainProcessWithId(wait, jsonId, theadId, customerName, createdDate, moduleId, unitName, systemUrl, username, password, processId, isLoginCheckBox);
                 }
+
             } else {
                 if (!processId.isEmpty()) {
                     mainProcessWithId(wait, jsonId, theadId, customerName, createdDate, moduleId, unitName, systemUrl, username, password, processId, isLoginCheckBox);
                 }
             }
         } catch (Exception e) {
-//
+
         }
     }
 
@@ -65,40 +71,16 @@ public class IndicatorList {
 
         try {
 
-
             ConfigForAll.loginForm(wait, username, password, isLoginCheckBox);
 
-//        List<ProcessMetaData> processMetaDataList = ProcessCallDataviewWithId.getProcessMetaDataList(unitName, systemUrl, username, password, processId);
-            List<ProcessMetaData> processMetaDataList = List.of(new ProcessMetaData(processId, "testIndicator", "1", "indicator"));
-
-            int count = 0;
-
-            for (ProcessMetaData metaData : processMetaDataList) {
                 String url = "https://dev.veritech.mn/mdobject/dataview/16413658595761?pdfid=16783426616019&pdsid=17176678746843&mmid=164560279791910"; /* seek */
-//                String url = "https://dev.veritech.mn/mdobject/dataview/16413658595761?pdfid=170141762610410&pdsid=205660659&mmid=164560279791910";  /* mv */
-//                String url = "https://dev.veritech.mn/mdobject/dataview/16413658595761?pdfid=170141762610410&pdsid=204597849&mmid=164560279791910";  /* checkList test */
                 driver.get(url);
-
-                Thread.sleep(8000);
-
-                driver.findElement(By.xpath("//div[@class='main-container-1641543359224498']//li[@data-auto-number='5']/a")).click();
-
-                Thread.sleep(2000);
-//                driver.findElement(By.xpath("//div[@class='main-container-1641543359224498']//a[contains(@class, 'btn-success') and contains(text(), 'Маягт бичих')]")).click();
-                driver.findElement(By.xpath("//div[@class='main-container-1641543359224498']//a[contains(@class, 'btn-success') and contains(text(), 'Нэмэх')]")).click();
 
                 Thread.sleep(2000);
                 waitUtils(driver);
 
-                IndicatorPath.isProcessPersent(driver, metaData.getId(), metaData.getSystemName(), metaData.getCode(), metaData.getName(), "indicator", jsonId);
-                count++;
+                IndicatorPath.isProcessPersent(driver, processId, customerName, "", "", "product", jsonId);
 
-                ProcessDTO processDTO = new ProcessDTO(theadId, processMetaDataList.size(), count, customerName, createdDate, jsonId, moduleId, systemUrl);
-                ProcessService.getInstance().updateOrAddProcessResult(processDTO);
-
-                System.out.println("Process count: " + count + ", id: " + metaData.getId());
-            }
-            System.out.println("End date: " + ConfigProcess.DateUtils.getCurrentDateTime());
         }catch (Exception e) {
             e.printStackTrace();
         }

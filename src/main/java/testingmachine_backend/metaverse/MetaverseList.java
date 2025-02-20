@@ -29,7 +29,7 @@ public class MetaverseList {
     }
 
     public void mainList(String jsonId, String theadId, String customerName, String createdDate, String moduleId,
-                         String databaseName, String unitName, String systemUrl, String username, String password) {
+                         String databaseName, String unitName, String systemUrl, String username, String password, String isLoginCheckBox) {
         try {
             WebDriverWait wait = ListConfig.getWebDriverWait(driver);
 
@@ -44,7 +44,7 @@ public class MetaverseList {
                 Select dbSelect = new Select(selectDb);
                 dbSelect.selectByVisibleText(databaseName);
 
-                ConfigForAll.loginForm(wait, username, password);
+                ConfigForAll.loginForm(wait, username, password, isLoginCheckBox);
 
                 ListConfig.selectCompanyFunction(driver, wait, "Хишиг-Арвин Групп");
 
@@ -53,7 +53,7 @@ public class MetaverseList {
             }
             else {
 
-                ConfigForAll.loginForm(wait, username, password);
+                ConfigForAll.loginForm(wait, username, password, isLoginCheckBox);
 
                 workingWithMainList(driver, jsonId, theadId, customerName, createdDate, moduleId, unitName, systemUrl, username, password);
 

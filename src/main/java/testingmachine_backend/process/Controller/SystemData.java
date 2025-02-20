@@ -21,6 +21,7 @@ public class SystemData {
     private String generatedId;
     private String selectedModule;
     private String metaOrPatchId;
+    private String isCheckBox;
 
     public SystemData() {
         this.id = generateUniqueId();

@@ -28,7 +28,7 @@ public class ProcessWizardSection {
                 String wizardTabId = sectionPath.getAttribute("id");
                 waitUtils(driver);
                 List<WebElement> wizardFieldPath = findWizardFieldPath(driver, id, wizardTabId);
-                processTabElements(driver, wizardFieldPath, id, fileName, jsonId);
+                processTabElements(driver, wizardFieldPath, id, fileName, jsonId,"");
 
                 WebElement findNextButton = driver.findElement(By.cssSelector("div[id='bp-window-" + id + "'] li[aria-hidden='false'] a.btn.btn-primary"));
                 findNextButton.click();

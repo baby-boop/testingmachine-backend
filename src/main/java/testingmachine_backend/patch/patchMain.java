@@ -16,7 +16,7 @@ public class patchMain {
     private static final Logger logger = Logger.getLogger(MainProcess.class.getName());
 
     public static void mainProcess(String jsonId, String theadId, String customerName, String createdDate, String moduleId,
-                                   String databaseName, String unitName, String systemUrl, String username, String password, String patchId) {
+                                   String databaseName, String unitName, String systemUrl, String username, String password, String patchId, String isLoginCheckBox) {
         Map<String, String> loggingPrefs = Map.of(
                 LogType.BROWSER, "ALL"
         );
@@ -36,7 +36,7 @@ public class patchMain {
         try {
 
             patchList tool = new patchList(driver);
-            tool.mainTool(jsonId, theadId, customerName, createdDate, moduleId, databaseName, unitName, systemUrl, username, password, patchId);
+            tool.mainTool(jsonId, theadId, customerName, createdDate, moduleId, databaseName, unitName, systemUrl, username, password, patchId, isLoginCheckBox);
 
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Error RemoteWebDriver", e);

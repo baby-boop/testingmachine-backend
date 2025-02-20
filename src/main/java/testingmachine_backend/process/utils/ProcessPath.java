@@ -96,7 +96,7 @@ public class ProcessPath {
             ProcessWizardSection.KpiWizardFunction(driver, id, systemName, jsonId);
         } else {
             List<WebElement> elementsWithDataPath = findElementsWithSelector(driver);
-            processTabElements(driver, elementsWithDataPath, id, systemName, jsonId);
+            processTabElements(driver, elementsWithDataPath, id, systemName, jsonId,"");
             tabDetailItems(driver, id, systemName, jsonId);
             waitUtils(driver);
             detailActionButton(driver, id, systemName, jsonId);

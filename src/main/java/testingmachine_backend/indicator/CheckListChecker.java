@@ -14,4 +14,13 @@ public class CheckListChecker {
             return false;
         }
     }
+
+    public static boolean isBusinessProcess(WebDriver driver, String id) {
+        try {
+            WebElement isLayout = driver.findElement(By.cssSelector("div[id*='dialog-businessprocess-']"));
+            return isLayout != null;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }

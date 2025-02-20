@@ -33,7 +33,7 @@ public class patchList {
     }
 
     public void mainTool(String jsonId, String theadId, String customerName, String createdDate, String moduleId,
-                         String databaseName, String unitName, String systemUrl, String username, String password, String patchId){
+                         String databaseName, String unitName, String systemUrl, String username, String password, String patchId, String isLoginCheckBox){
         try{
 
             WebDriverWait wait = ConfigProcess.getWebDriverWait(driver);
@@ -50,9 +50,9 @@ public class patchList {
 
                 Thread.sleep(2000);
 
-                mainProcessWithModuleWithId(wait, jsonId, theadId, customerName, createdDate, moduleId, unitName, systemUrl, username, password, patchId);
+                mainProcessWithModuleWithId(wait, jsonId, theadId, customerName, createdDate, moduleId, unitName, systemUrl, username, password, patchId, isLoginCheckBox);
             } else {
-                mainProcessWithModuleWithId(wait, jsonId, theadId, customerName, createdDate, moduleId, unitName, systemUrl, username, password, patchId);
+                mainProcessWithModuleWithId(wait, jsonId, theadId, customerName, createdDate, moduleId, unitName, systemUrl, username, password, patchId, isLoginCheckBox);
             }
         } catch (Exception e) {
 //
@@ -60,9 +60,9 @@ public class patchList {
     }
 
     private void mainProcessWithModuleWithId(WebDriverWait wait, String jsonId, String theadId, String customerName, String createdDate, String moduleId,
-                                             String unitName, String systemUrl, String username, String password, String patchId) throws InterruptedException {
+                                             String unitName, String systemUrl, String username, String password, String patchId, String isLoginCheckBox) throws InterruptedException {
 
-        ConfigForAll.loginForm(wait, username, password);
+        ConfigForAll.loginForm(wait, username, password, isLoginCheckBox);
 
         List<PatchDTO> processMetaDataList = PatchCallService.getPatchMetaDataList(unitName, systemUrl, username, password, patchId);
 

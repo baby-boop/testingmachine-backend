@@ -30,19 +30,19 @@ public class IsIndicatorMessage {
 
     private static final int SHORT_WAIT_SECONDS = 10;
 
-    public static boolean isErrorMessagePresent(WebDriver driver, String parentId, String indicatorId, String customsideBarName, String sideBarName, String sideBarType, String jsonId) {
+    public static boolean isErrorMessagePresent(WebDriver driver, String parentId, String indicatorId, String customsideBarName, String sideBarName, String indicatorType, String jsonId) {
         try {
             WebElement messageContainer = waitForElement(driver, By.cssSelector(".brighttheme.ui-pnotify-container"), SHORT_WAIT_SECONDS);
             String messageTitle = messageContainer.findElement(By.cssSelector(".ui-pnotify-title")).getText().toLowerCase();
 
             if (messageTitle.contains("warning")) {
-                return processMessage(driver, "warning", parentId, indicatorId, customsideBarName, sideBarName, sideBarType, jsonId );
+                return processMessage(driver, "warning", parentId, indicatorId, customsideBarName, sideBarName, indicatorType, jsonId );
             } else if (messageTitle.contains("error")) {
-                return processMessage(driver, "error", parentId, indicatorId, customsideBarName, sideBarName, sideBarType, jsonId );
+                return processMessage(driver, "error", parentId, indicatorId, customsideBarName, sideBarName, indicatorType, jsonId );
             } else if (messageTitle.contains("success")) {
-                return processMessage(driver, "success", parentId, indicatorId, customsideBarName, sideBarName, sideBarType, jsonId );
+                return processMessage(driver, "success", parentId, indicatorId, customsideBarName, sideBarName, indicatorType, jsonId );
             }   else if (messageTitle.contains("info")) {
-                return processMessage(driver, "info", parentId, indicatorId, customsideBarName, sideBarName, sideBarType, jsonId );
+                return processMessage(driver, "info", parentId, indicatorId, customsideBarName, sideBarName, indicatorType, jsonId );
             }
             return false;
         } catch (Exception e) {
@@ -51,7 +51,7 @@ public class IsIndicatorMessage {
         }
     }
 
-    private static boolean processMessage(WebDriver driver, String type, String parentId, String indicatorId, String customsideBarName, String sideBarName, String sideBarType, String jsonId) {
+    private static boolean processMessage(WebDriver driver, String type, String parentId, String indicatorId, String customsideBarName, String sideBarName, String indicatorType, String jsonId) {
         try {
             WebElement messageContent = waitForElement(driver, By.cssSelector(".ui-pnotify-text"), 2);
             String messageText = messageContent.getText();
@@ -71,7 +71,7 @@ public class IsIndicatorMessage {
                     break;
             }
 
-            IndicatorCustomTab customTab = new IndicatorCustomTab(parentId, indicatorId, customsideBarName, sideBarName, sideBarType, type, messageText, jsonId,
+            IndicatorCustomTab customTab = new IndicatorCustomTab(parentId, indicatorId, customsideBarName, sideBarName, indicatorType, type, messageText, jsonId,
                     ElementsFunctionUtils.getProcessLogMessages()
                             .stream().filter(detail -> detail.getMetaDataId().equals(indicatorId)).collect(Collectors.toList()),
                     ElementsFunctionUtils.getUniqueEmptyDataPath()
@@ -83,7 +83,8 @@ public class IsIndicatorMessage {
                     ElementsFunctionUtils.getRequiredPathMessages()
                             .stream().filter(detail -> detail.getMetaDataId().equals(indicatorId)).collect(Collectors.toList()),
                     ElementsFunctionUtils.getComboMessages()
-                            .stream().filter(detail -> detail.getMetaDataId().equals(indicatorId)).collect(Collectors.toList()));
+                            .stream().filter(detail -> detail.getMetaDataId().equals(indicatorId)).collect(Collectors.toList())
+                            );
             indicatorCustomTab.get().add(customTab);
 
             return true;

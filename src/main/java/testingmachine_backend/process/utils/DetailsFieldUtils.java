@@ -24,7 +24,7 @@ public class DetailsFieldUtils {
                     String sectionPath = element.getAttribute("data-section-path");
                     waitUtils(driver);
                     List<WebElement> rowElements = findElementsWithDetailsPath(driver, sectionPath);
-                    processTabElements(driver, rowElements, id, fileName, jsonId);
+                    processTabElements(driver, rowElements, id, fileName, jsonId, "");
                     List<WebElement> allActionPath = findRowActionPathsButton(driver, sectionPath);
                     if (allActionPath != null) {
                         List<WebElement> findLayoutDefaultRows = findDefaultRow(driver, sectionPath);
@@ -40,7 +40,7 @@ public class DetailsFieldUtils {
                                     clickFirstRow(driver, id, fileName, sectionPath, "", jsonId);
                                     waitUtils(driver);
                                     List<WebElement> rowElements3 = findElementsWithDetailsPath(driver, sectionPath);
-                                    processTabElements(driver, rowElements3, id, fileName, jsonId);
+                                    processTabElements(driver, rowElements3, id, fileName, jsonId, "");
                                     break;
                                 } else if (onclick.contains("bpAddMainRow")) {
                                     waitUtils(driver);
@@ -48,14 +48,14 @@ public class DetailsFieldUtils {
                                     waitUtils(driver);
                                     Thread.sleep(1000);
                                     List<WebElement> rowElements1 = findElementsWithDetailsPath(driver, sectionPath);
-                                    processTabElements(driver, rowElements1, id, fileName, jsonId);
+                                    processTabElements(driver, rowElements1, id, fileName, jsonId, "");
                                     break;
                                 }
                             }
                         }
                     }else{
                         List<WebElement> rowElements2 = findElementsWithDetailsPath(driver, sectionPath);
-                        processTabElements(driver, rowElements2, id, fileName, jsonId);
+                        processTabElements(driver, rowElements2, id, fileName, jsonId, "");
                     }
                 }
             }
