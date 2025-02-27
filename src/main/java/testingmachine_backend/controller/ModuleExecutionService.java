@@ -2,7 +2,7 @@ package testingmachine_backend.controller;
 
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import testingmachine_backend.process.Controller.SystemData;
+import testingmachine_backend.projects.process.Controller.SystemData;
 
 import java.util.concurrent.CompletableFuture;
 

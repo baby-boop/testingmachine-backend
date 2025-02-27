@@ -6,16 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import testingmachine_backend.meta.DTO.ErrorMessageDTO;
-import testingmachine_backend.meta.Service.MetaMessageStatusService;
-import testingmachine_backend.process.Config.ConfigProcess;
-import testingmachine_backend.process.Controller.FileData;
-import testingmachine_backend.process.Controller.SystemData;
-import testingmachine_backend.process.Controller.SystemService;
-import testingmachine_backend.process.DTO.ProcessDTO;
-import testingmachine_backend.process.DTO.ProcessMessageStatusDTO;
-import testingmachine_backend.process.Service.ProcessMessageStatusService;
-import testingmachine_backend.schedule.JsonFileCleanerSchedule;
+import testingmachine_backend.projects.meta.DTO.ErrorMessageDTO;
+import testingmachine_backend.projects.meta.Service.MetaMessageStatusService;
+import testingmachine_backend.projects.process.Config.ConfigProcess;
+import testingmachine_backend.projects.process.Controller.FileData;
+import testingmachine_backend.projects.process.Controller.SystemData;
+import testingmachine_backend.projects.process.Controller.SystemService;
+import testingmachine_backend.projects.process.DTO.ProcessMessageStatusDTO;
+import testingmachine_backend.projects.process.Service.ProcessMessageStatusService;
 
 import java.io.File;
 import java.io.IOException;
@@ -134,7 +132,6 @@ public class JsonController {
 //        JsonFileCleanerSchedule.allClearData();
         SystemData savedData = service.addSystemData(data);
         updateStaticData(savedData);
-        System.out.println(getIsCheckBox());
         log.info("Created system data: ID = {}, databaseName = {}", savedData.getGeneratedId(), savedData.getDatabaseName());
 
         String jsonId = savedData.getGeneratedId();

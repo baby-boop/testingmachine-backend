@@ -1,14 +1,14 @@
 package testingmachine_backend.controller;
 
 import org.springframework.stereotype.Service;
-import testingmachine_backend.indicator.IndicatorMain;
-import testingmachine_backend.meta.product.ProductMain;
-import testingmachine_backend.metaverse.MetaverseMain;
-import testingmachine_backend.process.Controller.SystemData;
-import testingmachine_backend.meta.MetaList.MetaMain;
-import testingmachine_backend.metaWithProcess.MetaWithProcessMain;
-import testingmachine_backend.patch.patchMain;
-import testingmachine_backend.process.MainProcess;
+import testingmachine_backend.projects.indicator.IndicatorMain;
+import testingmachine_backend.projects.product.ProductMain;
+import testingmachine_backend.projects.metaverse.MetaverseMain;
+import testingmachine_backend.projects.process.Controller.SystemData;
+import testingmachine_backend.projects.meta.MetaList.MetaMain;
+import testingmachine_backend.projects.metaWithProcess.MetaWithProcessMain;
+import testingmachine_backend.projects.patch.patchMain;
+import testingmachine_backend.projects.process.MainProcess;
 
 @Service
 public class ModuleService {

@@ -1,16 +1,12 @@
 package testingmachine_backend.config;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import testingmachine_backend.controller.JsonController;
-import testingmachine_backend.meta.Controller.ListConfig;
 
 public class ConfigForAll {
 
-    public static void loginForm(WebDriverWait wait, String username, String password, String isLoginCheckBox) {
+    public static void loginForm(WebDriver driver, WebDriverWait wait, String username, String password, String isLoginCheckBox) {
 
         WebElement userNameField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("user_name")));
         userNameField.sendKeys(username);
@@ -22,6 +18,14 @@ public class ConfigForAll {
             WebElement checkBox = wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("isLdap")));
             checkBox.click();
         }
+
+//        WebElement captchaContainer = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div[contains(@class, 'fom-row')]")));
+//        if (captchaContainer.isDisplayed()) {
+//            JavascriptExecutor js = (JavascriptExecutor) driver;
+//            // Remove the entire CAPTCHA container div
+//            js.executeScript("arguments[0].remove();", captchaContainer);
+//            System.out.println("CAPTCHA removed successfully.");
+//        }
 
         passwordField.sendKeys(Keys.ENTER);
     }
