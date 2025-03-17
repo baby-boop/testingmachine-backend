@@ -85,7 +85,7 @@ public class MetaWithProcessList {
 //            ConfigForAll.loginFormTest(wait);
 
             List<MetadataDTO> metaWithProcessList = CallMetaWithProcess.getProcessMetaDataList();
-            System.out.println(metaWithProcessList.size());
+            int totalCount = metaWithProcessList.size();
 
             int count = 0;
             for (MetadataDTO metaData : metaWithProcessList) {
@@ -103,7 +103,7 @@ public class MetaWithProcessList {
                     firstRowFromMeta(driver, metaData.getId(), metaData.getModuleName());
                     waitUtils(driver);
                     Thread.sleep(5000);
-                    ProcessPath.isProcessPersent(driver, metaData.getId(), metaData.getModuleName(), metaData.getCode(), metaData.getName(), "meta", jsonId);
+                    ProcessPath.isProcessPersent(driver, metaData.getId(), metaData.getModuleName(), metaData.getCode(), metaData.getName(), "meta", jsonId, totalCount);
                 }
                 count++;
 

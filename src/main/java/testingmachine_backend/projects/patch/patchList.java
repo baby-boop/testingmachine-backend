@@ -64,6 +64,7 @@ public class patchList {
 
         int count = 0;
         int totalCount = processMetaDataList.size();
+        System.out.println("Total count: " + totalCount);
 
         for (PatchDTO metaData : processMetaDataList) {
             if("200101010000011".equals(metaData.getTypeId())){
@@ -74,7 +75,7 @@ public class patchList {
 
                 waitUtils(driver);
 
-                ProcessPath.isProcessPersent(driver, metaData.getId(), metaData.getPatchName(), metaData.getCode(), metaData.getName(), "patch", jsonId);
+                ProcessPath.isProcessPersent(driver, metaData.getId(), metaData.getPatchName(), metaData.getCode(), metaData.getName(), "patch", jsonId, totalCount);
                 count++;
             }else if ("200101010000016".equals(metaData.getTypeId())){
 

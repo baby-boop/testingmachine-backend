@@ -32,7 +32,7 @@ public class ProcessPath {
     @Getter
     private static int failedCount = 0;
 
-    public static void isProcessPersent(WebDriver driver, String id, String systemName, String code, String name, String TestProcessType, String jsonId) {
+    public static void isProcessPersent(WebDriver driver, String id, String systemName, String code, String name, String TestProcessType, String jsonId, int totalCount) {
         try {
             waitUtils(driver);
 
@@ -46,42 +46,42 @@ public class ProcessPath {
                 waitUtils(driver);
                 if(TestProcessType.contains("meta")){
                     saveButtonFromMetaFunction(driver);
-                    checkMessageInfo(driver, id, systemName, code, name, TestProcessType, jsonId);
+                    checkMessageInfo(driver, id, systemName, code, name, TestProcessType, jsonId , totalCount);
                 }else{
                     saveButtonFunction(driver);
-                    checkMessageInfo(driver, id, systemName, code, name, TestProcessType, jsonId);
+                    checkMessageInfo(driver, id, systemName, code, name, TestProcessType, jsonId, totalCount);
                 }
 
             }else{
                 failedCount++;
                 LOGGER.log(Level.SEVERE, "Process failed with expression error: " + id);
-                ProcessMessageStatusService.addProcessStatus(systemName, id, code, name, "failed", "", TestProcessType, jsonId);
+                ProcessMessageStatusService.addProcessStatus(systemName, id, code, name, "failed", "", TestProcessType, jsonId, totalCount);
             }
             waitUtils(driver);
 
         }catch (NoSuchElementException n) {
             failedCount++;
             LOGGER.log(Level.SEVERE, "NoSuchElementException: " + id + n);
-            ProcessMessageStatusService.addProcessStatus(systemName, id, code, name, "failed", "", TestProcessType, jsonId);
+            ProcessMessageStatusService.addProcessStatus(systemName, id, code, name, "failed", "", TestProcessType, jsonId, totalCount);
         } catch (TimeoutException t) {
             failedCount++;
             LOGGER.log(Level.SEVERE, "TimeoutException: " + id + t);
-            ProcessMessageStatusService.addProcessStatus(systemName, id, code, name, "failed", "", TestProcessType, jsonId);
+            ProcessMessageStatusService.addProcessStatus(systemName, id, code, name, "failed", "", TestProcessType, jsonId, totalCount);
         } catch (Exception e) {
             failedCount++;
             LOGGER.log(Level.SEVERE, "Exception: " + id + e);
-            ProcessMessageStatusService.addProcessStatus(systemName, id, code, name, "failed", "", TestProcessType, jsonId);
+            ProcessMessageStatusService.addProcessStatus(systemName, id, code, name, "failed", "", TestProcessType, jsonId, totalCount);
         }
     }
 
-    private static void checkMessageInfo(WebDriver driver, String id, String systemName, String code, String name, String TestProcessType, String jsonId) {
+    private static void checkMessageInfo(WebDriver driver, String id, String systemName, String code, String name, String TestProcessType, String jsonId, int totalCount) {
         waitUtils(driver);
         consoleLogRequiredPath(driver, id, systemName, jsonId);
-        if (!IsProcessMessage.isErrorMessagePresent(driver, id, code, name, systemName, TestProcessType, jsonId)) {
+        if (!IsProcessMessage.isErrorMessagePresent(driver, id, code, name, systemName, TestProcessType, jsonId, totalCount)) {
             waitUtils(driver);
             failedCount++;
             LOGGER.log(Level.SEVERE, "Process failed with alert: " + id);
-            ProcessMessageStatusService.addProcessStatus(systemName, id, code, name, "failed", "", TestProcessType, jsonId);
+            ProcessMessageStatusService.addProcessStatus(systemName, id, code, name, "failed", "", TestProcessType, jsonId, totalCount);
         }
     }
 

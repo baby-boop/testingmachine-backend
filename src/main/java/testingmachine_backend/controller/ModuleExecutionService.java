@@ -3,7 +3,6 @@ package testingmachine_backend.controller;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import testingmachine_backend.projects.meta.DTO.ErrorMessageDTO;
-import testingmachine_backend.projects.meta.Service.MetaMessageStatusService;
 import testingmachine_backend.projects.process.Controller.SystemData;
 import testingmachine_backend.projects.process.DTO.ProcessMessageStatusDTO;
 import testingmachine_backend.projects.process.Service.ProcessMessageStatusService;
@@ -32,7 +31,7 @@ public class ModuleExecutionService {
 
 
                 List<ProcessMessageStatusDTO> processStatuses = ProcessMessageStatusService.getProcessStatuses(systemData.getGeneratedId());
-                List<ErrorMessageDTO> metaStatuses = MetaMessageStatusService.getMetaStatuses(systemData.getGeneratedId());
+                List<ErrorMessageDTO> metaStatuses = ProcessMessageStatusService.getMetaStatuses(systemData.getGeneratedId());
 
                 boolean hasFailedOrError = processStatuses.stream()
                         .anyMatch(p -> p.getStatus().equalsIgnoreCase("failed") || p.getStatus().equalsIgnoreCase("error"))
@@ -66,12 +65,10 @@ public class ModuleExecutionService {
                     combinedResponse.put("message", "Тестийг амжилттай хүлээж авлаа");
                 }
 
-                ProcessMessageStatusService.saveToJson(systemData.getGeneratedId(), 9, systemData.getSelectedModule(), systemData.getCustomerName(), statusMessage, fullUrl);
-                MetaMessageStatusService.saveToJson(systemData.getGeneratedId(),  systemData.getSelectedModule(), systemData.getCustomerName(),statusMessage, fullUrl);
+                ProcessMessageStatusService.saveToJson(systemData.getGeneratedId(),  systemData.getSelectedModule(), systemData.getCustomerName(), statusMessage, fullUrl);
 
                 // Ашигласан өгөгдлийг цэвэрлэх
                 ProcessMessageStatusService.clearAllDTOField(systemData.getGeneratedId());
-                MetaMessageStatusService.clearMetaStatuses(systemData.getGeneratedId());
 
                 if(systemData.getSelectedModule().equals("patch")){
                     PatchAdditionResult.getProcessMetaDataList(systemData.getDatabaseName(), systemData.getSystemURL(),

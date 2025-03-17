@@ -67,6 +67,7 @@ public class ProcessList {
         List<ProcessMetaData> processMetaDataList = ProcessCallDataviewWithId.getProcessMetaDataList(unitName, systemUrl, username, password, processId);
 
         int count = 0;
+        int totalCount = processMetaDataList.size();
 
         for (ProcessMetaData metaData : processMetaDataList) {
             String url = systemUrl + CALL_PROCESS + metaData.getId();
@@ -76,7 +77,7 @@ public class ProcessList {
 
             waitUtils(driver);
 
-            ProcessPath.isProcessPersent(driver, metaData.getId(), metaData.getSystemName(), metaData.getCode(), metaData.getName(), "nodata", jsonId);
+            ProcessPath.isProcessPersent(driver, metaData.getId(), metaData.getSystemName(), metaData.getCode(), metaData.getName(), "nodata", jsonId, totalCount);
             count++;
 
             ProcessDTO processDTO = new ProcessDTO(theadId, processMetaDataList.size(), count, customerName, createdDate, jsonId, moduleId, systemUrl);
@@ -96,6 +97,7 @@ public class ProcessList {
         List<ProcessMetaData> processMetaDataList = ProcessCallDataview.getProcessMetaDataList(moduleId, unitName, systemUrl, username, password);
 
         int count = 0;
+        int totalCount = processMetaDataList.size();
         for (ProcessMetaData metaData : processMetaDataList) {
 
             String url = systemUrl + CALL_PROCESS + metaData.getId();
@@ -106,7 +108,7 @@ public class ProcessList {
 
             waitUtils(driver);
 
-            ProcessPath.isProcessPersent(driver, metaData.getId(), metaData.getSystemName(), metaData.getCode(), metaData.getName(), "process", jsonId);
+            ProcessPath.isProcessPersent(driver, metaData.getId(), metaData.getSystemName(), metaData.getCode(), metaData.getName(), "process", jsonId, totalCount);
             count++;
 
             ProcessDTO processDTO = new ProcessDTO(theadId, processMetaDataList.size(), count, customerName, createdDate, jsonId, moduleId, systemUrl);

@@ -64,7 +64,9 @@ public class ProductList {
                 Thread.sleep(2000);
                 waitUtils(driver);
 
-                ProductTest.findAndWorkingSiderTabsTest(driver, customerName, processId, "", "", "product", jsonId);
+                int totalCount = 1;
+
+                ProductTest.findAndWorkingSiderTabsTest(driver, customerName, processId, "", "", "product", jsonId, totalCount);
 
 
 

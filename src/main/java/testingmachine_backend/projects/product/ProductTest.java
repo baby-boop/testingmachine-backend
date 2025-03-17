@@ -28,8 +28,10 @@ public class ProductTest {
     static final Logger LOGGER = Logger.getLogger(ProductTest.class.getName());
 
     //<editor-fold defaultstate="collapsed" desc="Main function">
-    public static void findAndWorkingSiderTabsTest(WebDriver driver, String systemName, String id, String code, String name, String TestProcessType, String jsonId) {
+    public static void findAndWorkingSiderTabsTest(WebDriver driver, String systemName, String id, String code, String name, String TestProcessType, String jsonId, int totalCount) {
+
         try{
+
             /** header tab олох*/
             List<WebElement> headerTabs = findHeaderTabs(driver);
             if (!headerTabs.isEmpty()){
@@ -184,11 +186,11 @@ public class ProductTest {
                     waitUtils(driver);
 
                 }
-                ProcessMessageStatusService.addProcessStatus(systemName, id, code, name, "success", "Амжилттай ажилласан.", TestProcessType, jsonId);
+                ProcessMessageStatusService.addProcessStatus(systemName, id, code, name, "success", "Амжилттай ажилласан.", TestProcessType, jsonId, totalCount);
             }
         }catch (Exception e){
             LOGGER.log(Level.WARNING, "findAndWorkingSiderTabsTest {0}", id + e.getMessage());
-            ProcessMessageStatusService.addProcessStatus(systemName, id, code, name, "failed", "Алдаа гарсан.", TestProcessType, jsonId);
+            ProcessMessageStatusService.addProcessStatus(systemName, id, code, name, "failed", "Алдаа гарсан.", TestProcessType, jsonId, totalCount);
         }
     }
     //</editor-fold>

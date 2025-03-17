@@ -7,7 +7,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import testingmachine_backend.projects.meta.Service.MetaMessageStatusService;
+import testingmachine_backend.projects.process.Service.ProcessMessageStatusService;
 
 import java.time.Duration;
 
@@ -65,7 +65,7 @@ public class IsErrorMessage {
             if ("table".equals(tagName)) {
                 WebElement messageContent = shortWait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".ui-pnotify-text")));
                 String messageText = messageContent.getText();
-                MetaMessageStatusService.addMetaStatus(moduleName, id, code, name, "error", messageText, jsonId, type, totalCount, customerName);
+                ProcessMessageStatusService.addMetaStatus(moduleName, id, code, name, "error", messageText, jsonId, type, totalCount, customerName);
 
                 return messageContent.isDisplayed();
             } else if ("div".equals(tagName)) {
@@ -73,7 +73,7 @@ public class IsErrorMessage {
                 WebElement messageContent = messageContainer.findElement(By.cssSelector(".alert-danger"));
                 String messageText = messageContent.getText();
 
-                MetaMessageStatusService.addMetaStatus(moduleName, id, code, name, "error", messageText, jsonId, type, totalCount, customerName);
+                ProcessMessageStatusService.addMetaStatus(moduleName, id, code, name, "error", messageText, jsonId, type, totalCount, customerName);
 
                 return messageContent.isDisplayed();
             }
