@@ -46,6 +46,7 @@ public class ConfigForAll {
     public static final String CALL_PROCESS = "/mdprocess/renderByTestTool/";
     public static final String CALL_DATAVIEW = "/mdobject/dataview/";
     public static final String CALL_METAVERSE = "/mdform/indicatorList/";
+    public static final String CALL_METHOD = "/mdform/method/";
     public static final String CALL_INDICATOR = "/mdobject/meta/";
 
     public static String getLocalIpAddress() {

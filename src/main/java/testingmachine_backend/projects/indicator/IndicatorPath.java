@@ -33,32 +33,32 @@
 //    @Getter
 //    private static int failedCount = 0;
 //
-//    public static void isProcessPersent(WebDriver driver, String id, String systemName, String code, String name, String TestProcessType, String jsonId) {
+//    public static void isProcessPersent(WebDriver driver, String id, String systemName, String code, String name, String TestProcessType, String jsonId, int totalCount) {
 //        try {
 //            waitUtils(driver);
 //
 //            consoleLogChecker(driver, id, systemName, jsonId);
 //
-//            findMainProcessType(driver, systemName, id, code, name, TestProcessType, jsonId);
+//            findMainProcessType(driver, systemName, id, code, name, TestProcessType, jsonId, totalCount);
 //
 //            waitUtils(driver);
 //
 //        }catch (NoSuchElementException n) {
 //            failedCount++;
 //            LOGGER.log(Level.SEVERE, "NoSuchElementException: " + id + n);
-//            ProcessMessageStatusService.addProcessStatus(systemName, id, code, name, "failed", "", TestProcessType, jsonId);
+//            ProcessMessageStatusService.addProcessStatus(systemName, id, code, name, "failed", "", TestProcessType, jsonId, totalCount);
 //        } catch (TimeoutException t) {
 //            failedCount++;
 //            LOGGER.log(Level.SEVERE, "TimeoutException: " + id + t);
-//            ProcessMessageStatusService.addProcessStatus(systemName, id, code, name, "failed", "", TestProcessType, jsonId);
+//            ProcessMessageStatusService.addProcessStatus(systemName, id, code, name, "failed", "", TestProcessType, jsonId, totalCount);
 //        } catch (Exception e) {
 //            failedCount++;
 //            LOGGER.log(Level.SEVERE, "Exception: " + id + e);
-//            ProcessMessageStatusService.addProcessStatus(systemName, id, code, name, "failed", "", TestProcessType, jsonId);
+//            ProcessMessageStatusService.addProcessStatus(systemName, id, code, name, "failed", "", TestProcessType, jsonId, totalCount);
 //        }
 //    }
 //
-//    public static void findMainProcessType(WebDriver driver, String systemName, String id, String code, String name, String type,  String jsonId) {
+//    public static void findMainProcessType(WebDriver driver, String systemName, String id, String code, String name, String type,  String jsonId, int totalCount) {
 //        if(CheckListChecker.isCheckList(driver, id)){
 //            List<WebElement> sections = findSectionsGroupMain(driver, id);
 //            if(!sections.isEmpty()){
@@ -76,13 +76,13 @@
 //                MainSaveButton(driver, id);
 //                waitUtils(driver);
 //
-//                checkMessageInfo(driver, id, systemName, code, name, type, jsonId);
+//                checkMessageInfo(driver, id, systemName, code, name, type, jsonId, totalCount);
 //                findAndWorkingSiderTabs(driver, systemName, id, code, name, type, jsonId);
 //
 //            } else{
 //                failedCount++;
 //                LOGGER.log(Level.SEVERE, "Process failed with expression error: " + id);
-//                ProcessMessageStatusService.addProcessStatus(systemName, id, code, name, "failed", "", type, jsonId);
+//                ProcessMessageStatusService.addProcessStatus(systemName, id, code, name, "failed", "", type, jsonId, totalCount);
 //            }
 //        }else if(CheckListChecker.isBusinessProcess(driver, id)){
 //
@@ -102,25 +102,25 @@
 //                MainSaveButtonBp(driver, id);
 //                waitUtils(driver);
 //
-//                checkMessageInfo(driver, id, systemName, code, name, type, jsonId);
+//                checkMessageInfo(driver, id, systemName, code, name, type, jsonId, totalCount);
 //            }else{
 //                failedCount++;
 //                LOGGER.log(Level.SEVERE, "Process failed with expression error: " + id);
-//                ProcessMessageStatusService.addProcessStatus(systemName, id, code, name, "failed", "", type, jsonId);
+//                ProcessMessageStatusService.addProcessStatus(systemName, id, code, name, "failed", "", type, jsonId, totalCount);
 //                MainCloseButtonBp(driver, id);
 //            }
 //
 //        }
 //    }
 //
-//    private static void checkMessageInfo(WebDriver driver, String id, String systemName, String code, String name, String TestProcessType, String jsonId) {
+//    private static void checkMessageInfo(WebDriver driver, String id, String systemName, String code, String name, String TestProcessType, String jsonId, int totalCount) {
 //        waitUtils(driver);
 //        consoleLogRequiredPath(driver, id, systemName, jsonId);
-//        if (!IsProcessMessage.isErrorMessagePresent(driver, id, code, name, systemName, TestProcessType, jsonId)) {
+//        if (!IsProcessMessage.isErrorMessagePresent(driver, id, code, name, systemName, TestProcessType, jsonId, totalCount)) {
 //            waitUtils(driver);
 //            failedCount++;
 //            LOGGER.log(Level.SEVERE, "Process failed with alert: " + id);
-//            ProcessMessageStatusService.addProcessStatus(systemName, id, code, name, "failed", "", TestProcessType, jsonId);
+//            ProcessMessageStatusService.addProcessStatus(systemName, id, code, name, "failed", "", TestProcessType, jsonId, totalCount);
 //        }
 //    }
 //
@@ -189,7 +189,7 @@
 //                                                LOGGER.log(Level.SEVERE, "Process failed with alert: " + id + "  stepid: " + stepId);
 //                                            }
 //                                        }else {
-//                                            IndicatorCustomTab customTab = createIndicatorCustomTab(id, stepId, headerTabText, sideBarText, "METHOD", jsonId);
+//                                            IndicatorCustomTab customTab = createIndicatorCustomTab(driver, id, stepId, headerTabText, sideBarText, "METHOD", jsonId);
 //                                            IsIndicatorMessage.addIndicatorMessage(customTab);
 //                                        }
 //

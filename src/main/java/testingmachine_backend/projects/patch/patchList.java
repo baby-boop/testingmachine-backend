@@ -16,8 +16,7 @@ import testingmachine_backend.projects.process.utils.ProcessPath;
 
 import java.util.List;
 
-import static testingmachine_backend.config.ConfigForAll.CALL_DATAVIEW;
-import static testingmachine_backend.config.ConfigForAll.CALL_PROCESS;
+import static testingmachine_backend.config.ConfigForAll.*;
 import static testingmachine_backend.projects.process.Config.ConfigProcess.waitUtils;
 
 public class patchList {
@@ -90,6 +89,13 @@ public class patchList {
                 }
                 count++;
             }
+//            else if("2008".equals(metaData.getTypeId())){
+//                String methodUrl = systemUrl + CALL_METHOD + metaData.getId();
+//                driver.get(methodUrl);
+//                waitUtils(driver);
+//                IndicatorPath.isProcessPersent(driver, metaData.getId(), metaData.getPatchName(), metaData.getCode(), metaData.getName(), jsonId, "patch", totalCount);
+//                count++;
+//            }
 
             ProcessDTO processDTO = new ProcessDTO(theadId, processMetaDataList.size(), count, customerName, createdDate, jsonId, moduleId, systemUrl);
             ProcessService.getInstance().updateOrAddProcessResult(processDTO);
