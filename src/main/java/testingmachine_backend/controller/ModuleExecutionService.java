@@ -13,6 +13,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
+import static testingmachine_backend.config.ConfigForAll.getLocalIpAddress;
+
 @Service
 public class ModuleExecutionService {
 
@@ -38,7 +40,9 @@ public class ModuleExecutionService {
                         .anyMatch(m -> m.getStatus().equalsIgnoreCase("failed") || m.getStatus().equalsIgnoreCase("error"));
 
                 int statusMessage = hasFailedOrError ? 0 : 1;
-                String fullUrl = "http://172.169.88.222:3000/result/" + systemData.getGeneratedId();
+
+                String localIpAddress = getLocalIpAddress();
+                String fullUrl = "http://"+ localIpAddress +":3000/result/" + systemData.getGeneratedId();
 
                 Map<String, Object> combinedResponse = new HashMap<>();
 

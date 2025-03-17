@@ -1,9 +1,14 @@
 package testingmachine_backend.config;
 
+import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
+@Slf4j
 public class ConfigForAll {
 
     public static void loginForm(WebDriver driver, WebDriverWait wait, String username, String password, String isLoginCheckBox) {
@@ -42,4 +47,14 @@ public class ConfigForAll {
     public static final String CALL_DATAVIEW = "/mdobject/dataview/";
     public static final String CALL_METAVERSE = "/mdform/indicatorList/";
     public static final String CALL_INDICATOR = "/mdobject/meta/";
+
+    public static String getLocalIpAddress() {
+        try {
+            return InetAddress.getLocalHost().getHostAddress();
+        } catch (UnknownHostException e) {
+            log.error("Error retrieving local IP address", e);
+            return "127.0.0.1"; // Default fallback
+        }
+    }
+
 }

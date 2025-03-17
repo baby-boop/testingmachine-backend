@@ -10,8 +10,11 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.File;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.*;
 
+import static testingmachine_backend.config.ConfigForAll.getLocalIpAddress;
 import static testingmachine_backend.controller.JsonController.BASE_DIRECTORY;
 
 @Component
@@ -66,7 +69,8 @@ public class TaskScheduleAndModule {
 
     public static void setModuleWithProcessList(String moduleId, String moduleName) {
 //        String SERVICE_URL = "http://172.169.88.222:8282/system-data";
-        String SERVICE_URL = "http://192.168.192.57:8282/system-data";
+        String localIpAddress = getLocalIpAddress();
+        String SERVICE_URL = "http://"+ localIpAddress +":8282/system-data";
 
         String payload = """
             {
@@ -96,4 +100,6 @@ public class TaskScheduleAndModule {
             log.error("Error while calling service: ", e);
         }
     }
+
+
 }
