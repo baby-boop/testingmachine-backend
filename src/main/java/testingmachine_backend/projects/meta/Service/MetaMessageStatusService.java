@@ -8,6 +8,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class MetaMessageStatusService {
 
     private static final ConcurrentHashMap<String, Integer> errorCountMap = new ConcurrentHashMap<>();
+    private static final ConcurrentHashMap<String, Integer> totalCountMap = new ConcurrentHashMap<>();
     private static final ConcurrentHashMap<String, List<ErrorMessageDTO>> metaMessageStatusMap = new ConcurrentHashMap<>();
     /**
      * Алдааны статус нэмэх функц
@@ -16,6 +17,7 @@ public class MetaMessageStatusService {
         ErrorMessageDTO statusDTO = new ErrorMessageDTO(moduleName, id, code, name, type, messageText, jsonId);
 
         errorCountMap.put(jsonId, errorCountMap.getOrDefault(jsonId, 0) + ("error".equalsIgnoreCase(type) ? 1 : 0));
+        totalCountMap.put(jsonId, totalCountMap.getOrDefault(jsonId, 0));
 
         metaMessageStatusMap.computeIfAbsent(jsonId, k -> new ArrayList<>()).add(statusDTO);
 
@@ -25,7 +27,7 @@ public class MetaMessageStatusService {
     /**
      * JSON хадгалах функц (хуучин өгөгдлийг хадгалах байдлаар)
      */
-    public static void saveToJson(String jsonId, int totalCount, String type, String customerName) {
+    public static void saveToJson(String jsonId, String type, String customerName, int statusMessage, String fullUrl) {
         Map<String, Object> jsonOutput = readExistingJson(jsonId, type);
 
         // Шинэ мэдээлэл нэмэх
@@ -34,8 +36,10 @@ public class MetaMessageStatusService {
 
         jsonOutput.put("jsonId", jsonId);
         jsonOutput.put("customerName", customerName);
-        jsonOutput.put("totalCount", totalCount);
+        jsonOutput.put("totalCount", totalCountMap.getOrDefault(jsonId, 0));
         jsonOutput.put("errorCount", errorCountMap.getOrDefault(jsonId, 0));
+        jsonOutput.put("statusMessage", statusMessage);
+        jsonOutput.put("fullUrl", fullUrl);
         jsonOutput.put("metaDetails", existingDetails);
 
         // Файл руу хадгалах

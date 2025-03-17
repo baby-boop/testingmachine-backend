@@ -40,6 +40,7 @@ public class JsonController {
     private static final String PATCH_RESULT_PATH = BASE_DIRECTORY + "/patch/result";
     private static final String DIRECTORY_PERCENT_HEADER = BASE_DIRECTORY + "/percent/header";
     private static final String DIRECTORY_PERCENT_RESULT = BASE_DIRECTORY + "/percent/result";
+    private static final String DIRECTORY_DEFAULT = BASE_DIRECTORY + "/default";
 
     private static String moduleId;
     private static String customerName;
@@ -143,32 +144,10 @@ public class JsonController {
                     return null;
                 });
 
-        resultFuture.join();
+        Map<String, Object> resultResponse = new HashMap<>();
+        resultResponse.put("message", "Тестийг амжилттай хүлээж авлаа");
 
-        List<ProcessMessageStatusDTO> processStatuses = ProcessMessageStatusService.getProcessStatuses(jsonId);
-        List<ErrorMessageDTO> metaStatuses = MetaMessageStatusService.getMetaStatuses(jsonId);
-
-        Map<String, Object> combinedResponse = new HashMap<>();
-        combinedResponse.put("jsonId", jsonId);
-        if (!processStatuses.isEmpty() && metaStatuses.isEmpty()) {
-            combinedResponse.put("processDetails", processStatuses);
-        } else if (!metaStatuses.isEmpty() && processStatuses.isEmpty()) {
-            combinedResponse.put("metaDetails", metaStatuses);
-        } else if (!processStatuses.isEmpty() && !metaStatuses.isEmpty()) {
-            combinedResponse.put("processDetails", processStatuses);
-            combinedResponse.put("metaDetails", metaStatuses);
-        } else {
-            combinedResponse.put("message", "No status data available");
-        }
-
-        ProcessMessageStatusService.saveToJson(jsonId, 1, selectedModule, customerName);
-        MetaMessageStatusService.saveToJson(jsonId,1, selectedModule, customerName);
-
-        // Ашигласан өгөгдлийг цэвэрлэх
-        ProcessMessageStatusService.clearAllDTOField(jsonId);
-        MetaMessageStatusService.clearMetaStatuses(jsonId);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(combinedResponse);
+        return ResponseEntity.status(HttpStatus.CREATED).body(resultResponse);
     }
 
     private void updateStaticData(SystemData data) {
@@ -185,6 +164,42 @@ public class JsonController {
         metaOrPatchId = data.getMetaOrPatchId();
         isCheckBox = data.getIsCheckBox();
     }
+
+    @GetMapping("/result/{jsonId}")
+    public ResponseEntity<FileData> getResultDataByJsonId(@PathVariable String jsonId) {
+        List<String> searchPaths = List.of(
+                META_PROCESS_RESULT_PATH,
+                DIRECTORY_PERCENT_RESULT,
+                PROCESS_RESULT_PATH,
+                META_RESULT_PATH,
+                PATCH_RESULT_PATH
+        );
+
+        for (String path : searchPaths) {
+            File folder = new File(path);
+            File[] jsonFiles = folder.listFiles((dir, name) -> name.endsWith(".json"));
+
+            if (jsonFiles != null) {
+                for (File jsonFile : jsonFiles) {
+                    String id = jsonFile.getName();
+                    if (id.startsWith(jsonId)) {
+                        try {
+                            Object data = objectMapper.readValue(jsonFile, Object.class);
+                            if (id.endsWith("_result.json")) {
+                                id = id.substring(0, id.length() - "_result.json".length());
+                            }
+                            return ResponseEntity.ok(new FileData(id, data));
+                        } catch (IOException e) {
+                            e.printStackTrace(System.out);
+                            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+                        }
+                    }
+                }
+            }
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
 
     @GetMapping("/process-header")
     public ResponseEntity<List<Object>> getHeaderData() {

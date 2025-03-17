@@ -42,9 +42,7 @@ public class MetaLists {
                 Select dbSelect = new Select(selectDb);
                 dbSelect.selectByVisibleText(databaseName);
 
-                ConfigForAll.loginForm(driver, wait, username, password, isLoginCheckBox);
-
-//                ListConfig.selectCompanyFunction(driver, wait, "Хишиг-Арвин Групп");
+//                ListConfig.selectCompanyFunction(driver, wait, "Грийн Трейд ХХК");
 
                 workingWithMainList(driver, jsonId, theadId, customerName, createdDate, moduleId, unitName, systemUrl, username, password);
 
@@ -52,6 +50,8 @@ public class MetaLists {
             else {
 
                 ConfigForAll.loginForm(driver, wait, username, password, isLoginCheckBox);
+
+//                ListConfig.selectCompanyFunction(driver, wait, "Грийн Трейд ХХК");
 
                 workingWithMainList(driver, jsonId, theadId, customerName, createdDate, moduleId, unitName, systemUrl, username, password);
 

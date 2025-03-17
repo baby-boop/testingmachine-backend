@@ -17,6 +17,7 @@
 		<java.version>17</java.version>
 		<spring-boot.version>3.3.4</spring-boot.version>
 	</properties>
+
 	<dependencies>
 		<!-- Oracle JDBC -->
 		<dependency>

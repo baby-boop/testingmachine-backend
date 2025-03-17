@@ -9,6 +9,7 @@ public class WebDriverManager {
     private static final ThreadLocal<WebDriver> driverThreadLocal = ThreadLocal.withInitial(() -> {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--headless", "--disable-gpu");
+//        options.addArguments("--disable-gpu");
         return new ChromeDriver(options);
     });
 

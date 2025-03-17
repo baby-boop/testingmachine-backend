@@ -3,6 +3,8 @@ package testingmachine_backend.projects.process.utils;
 import org.openqa.selenium.*;
 import testingmachine_backend.projects.process.Config.ConfigProcess;
 
+import java.util.Objects;
+
 import static testingmachine_backend.projects.process.Config.ConfigProcess.waitUtils;
 import static testingmachine_backend.projects.process.utils.ElementsFunctionUtils.*;
 
@@ -28,11 +30,11 @@ public class FormFieldUtils {
                 element.click();
             }
         }
-
     }
 
     private static void handleElementSubAction(WebDriver driver, WebElement element, String classAttribute, String dataPath, String regexData, String required, String id, String fileName, String jsonId, String indicatorType) {
         if (classAttribute != null && !classAttribute.isEmpty()) {
+
             if (isPopupField(classAttribute)) {
                 waitUtils(driver);
                 findElementWithPopup(driver, element, dataPath, required, id, fileName, jsonId);
@@ -51,7 +53,8 @@ public class FormFieldUtils {
             element.sendKeys("11112222");
         } else if (isFileField(classAttribute)) {
 //            element.sendKeys("C:\\Users\\batde\\Downloads\\pngForTest.png");
-            element.sendKeys("C:\\pngForTest.png");
+//            element.sendKeys("C:\\pngForTest.png");
+//            element.sendKeys("src/main/java/testingmachine_backend/config/pngForTest.png");
 
         } else if (isIntegerField(classAttribute)) {
             element.sendKeys("2025");
@@ -174,8 +177,8 @@ public class FormFieldUtils {
         return classAttribute.contains("popupInit");
     }
     public static boolean isRadioField(String classAttribute){
-//        return classAttribute.contains("radioInit");
-        return classAttribute.contains("radio");
+        return classAttribute.contains("radioInit");
+//        return classAttribute.contains("radio");
     }
     public static boolean isCheckBox(String typeAttribute){
         return typeAttribute.contains("checkbox");

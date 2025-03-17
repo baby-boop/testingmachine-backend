@@ -37,14 +37,14 @@ public class TaskScheduleAndModule {
         if (folder.isDirectory()) {
             for (File file : Objects.requireNonNull(folder.listFiles((dir, name) -> name.endsWith(".json")))) {
                 try {
-                    List<TaskDTO> tasksList = mapper.readValue(file, new TypeReference<List<TaskDTO>>() {});
+                    List<TaskDTO> tasksList = mapper.readValue(file, new TypeReference<>() {
+                    });
 
                     for (TaskDTO task : tasksList) {
                         if (task.isDue()) {
                             System.out.println("Хугацаа нь болсон: " + task.getTaskName() + " - " + task.getModuleId());
                             task.setLastUpdatedDate(java.time.LocalDate.now());
                             setModuleWithProcessList(task.getModuleId(), task.getTaskName());
-
                         }
 //                        else {
 //                            System.out.println("Хугацаа нь болоогүй: " + task.getTaskName() + " - " + task.getModuleId());
@@ -96,5 +96,4 @@ public class TaskScheduleAndModule {
             log.error("Error while calling service: ", e);
         }
     }
-
 }

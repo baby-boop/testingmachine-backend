@@ -25,11 +25,12 @@ import static testingmachine_backend.projects.process.utils.ElementsFunctionUtil
 public class ProductTest {
 
     private static final int SHORT_WAIT_SECONDS = 2;
-
     static final Logger LOGGER = Logger.getLogger(ProductTest.class.getName());
 
+    //<editor-fold defaultstate="collapsed" desc="Main function">
     public static void findAndWorkingSiderTabsTest(WebDriver driver, String systemName, String id, String code, String name, String TestProcessType, String jsonId) {
         try{
+            /** header tab олох*/
             List<WebElement> headerTabs = findHeaderTabs(driver);
             if (!headerTabs.isEmpty()){
                 for (WebElement headerTab : headerTabs) {
@@ -42,17 +43,17 @@ public class ProductTest {
                     }
                     waitUtils(driver);
 
-                    if(headerTabText.equals("Бүртгэл")){
+//                    if(headerTabText.equals("Тайлан")){
 
                         headerTab.click();
                         waitUtils(driver);
 
-                        /* Бүх group олох */
+                        /** Бүх group олох */
                         List<WebElement> sideBarGroupElements = findSideBarByTabGroup(driver, tabId);
                         if(!sideBarGroupElements.isEmpty()) {
                             for (WebElement sideBarGroupElement : sideBarGroupElements) {
 
-                                /* Group нэр олох клик хийх */
+                                /** Group нэр олох клик хийх */
                                 WebElement menuName = findSubMenuName(sideBarGroupElement);
                                 if(menuName != null) {
                                     String elementClass = sideBarGroupElement.getAttribute("class");
@@ -65,8 +66,9 @@ public class ProductTest {
                                         System.out.println("Not clicked menuName: " + menuName.getText());
                                     }
                                 }
+                                assert menuName != null;
                                 String groupName = menuName.getText();
-                                /* group доторх sideBar олох */
+                                /** group доторх sideBar олох */
                                 List<WebElement> sideBarGroup = findSubMenuItems(sideBarGroupElement);
                                 if(!sideBarGroup.isEmpty()) {
                                     for (WebElement sideBarElement : sideBarGroup) {
@@ -127,7 +129,7 @@ public class ProductTest {
                                                     consoleLogChecker(driver, stepId, sideBarText, jsonId);
                                                     if (!isDuplicateLogEntry(sideBarText, stepId, jsonId)) {
                                                         waitUtils(driver);
-                                                        SideBarSaveButton(driver, metaDataId);
+//                                                        SideBarSaveButton(driver, metaDataId);
                                                         waitUtils(driver);
 
                                                         Thread.sleep(1000);
@@ -145,17 +147,22 @@ public class ProductTest {
                                                         IsIndicatorMessage.addIndicatorMessage(customTab);
                                                     }
                                                     waitUtils(driver);
-//
-
                                                 }
-                                                //finding metadata list
                                                 else if(metaTypeId == 200101010000016L && metaDataId == null){
 
 //                                                    List<WebElement> dataPathBySidebars = findDataPathBySidebar(driver, stepId);
 //                                                    processTabElements(driver, dataPathBySidebars, stepId, sideBarText, jsonId, "sidebar");
 //                                                    dataPathBySidebars.clear();
-                                                }else{
 
+                                                } else if(metaTypeId == 200101010000035L){
+
+                                                    List<WebElement> dataPathByStatement = findDataPathByStatement(driver, metaDataId);
+                                                    processTabElements(driver, dataPathByStatement, stepId, sideBarText, jsonId, "sidebar");
+                                                    dataPathByStatement.clear();
+
+                                                    waitUtils(driver);
+                                                    clickFilterBtnByStatement(driver, metaDataId);
+                                                    waitUtils(driver);
                                                 }
 
                                             }
@@ -171,7 +178,7 @@ public class ProductTest {
                                         waitUtils(driver);
                                     }
                                 }
-                            }
+//                            }
                         }
                     }
                     waitUtils(driver);
@@ -180,15 +187,20 @@ public class ProductTest {
                 ProcessMessageStatusService.addProcessStatus(systemName, id, code, name, "success", "Амжилттай ажилласан.", TestProcessType, jsonId);
             }
         }catch (Exception e){
-            LOGGER.log(Level.WARNING, "findAndWorkingSiderTabsTest {0}", e.getMessage());
+            LOGGER.log(Level.WARNING, "findAndWorkingSiderTabsTest {0}", id + e.getMessage());
+            ProcessMessageStatusService.addProcessStatus(systemName, id, code, name, "failed", "Алдаа гарсан.", TestProcessType, jsonId);
         }
     }
+    //</editor-fold>
 
+    //<editor-fold defaultstate="collapsed" desc="Лог шалгах">
     public static boolean isDuplicateLogEntry(String systemName, String id, String jsonId) {
         return ElementsFunctionUtils.ProcessLogFields.get().stream()
                 .anyMatch(log -> log.getModuleName().equals(systemName) && log.getMetaDataId().equals(id) && log.getJsonId().equals(jsonId));
     }
+    //</editor-fold>
 
+    //<editor-fold defaultstate="collapsed" desc="Алдааны мэдээлэл илгээх">
     private static IndicatorCustomTab createIndicatorCustomTab(String id, String stepId, String headerTabText, String groupName, String sideBarText, String indicatorType, String jsonId) {
         return new IndicatorCustomTab(
                 id, stepId, headerTabText, groupName, sideBarText, indicatorType, "failed", "Алдаа гарлаа", jsonId,
@@ -206,7 +218,9 @@ public class ProductTest {
                         .stream().filter(detail -> detail.getMetaDataId().equals(stepId)).collect(Collectors.toList())
         );
     }
+    //</editor-fold>
 
+    //<editor-fold defaultstate="collapsed" desc="Хадгалах товч">
     public static void SideBarSaveButton(WebDriver driver, String stepid) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(SHORT_WAIT_SECONDS));
         try {
@@ -219,7 +233,9 @@ public class ProductTest {
             LOGGER.log(Level.SEVERE, "Error in CustomTabSaveButton", e);
         }
     }
+    //</editor-fold>
 
+    //<editor-fold defaultstate="collapsed" desc=" Group доторх мену олох">
     public static List<WebElement> findSubMenuItems(WebElement sideBarGroupElement) {
         try {
             return sideBarGroupElement.findElements(By.cssSelector(".mv_checklist_02_sub"));
@@ -228,7 +244,9 @@ public class ProductTest {
             return List.of();
         }
     }
+    //</editor-fold>
 
+    //<editor-fold defaultstate="collapsed" desc="menu нэр олох">
     public static WebElement findSubMenuName(WebElement sideBarGroupElement) {
         try {
             return sideBarGroupElement.findElement(By.cssSelector(".mv_checklist_02_groupname"));
@@ -237,8 +255,9 @@ public class ProductTest {
             return null;
         }
     }
+    //</editor-fold>
 
-
+    //<editor-fold defaultstate="collapsed" desc="Sidebar group">
     public static List<WebElement> findSideBarByTabGroup(WebDriver driver, String tabId ) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(SHORT_WAIT_SECONDS));
         try {
@@ -256,8 +275,9 @@ public class ProductTest {
             return List.of();
         }
     }
+    //</editor-fold>
 
-
+    //<editor-fold defaultstate="collapsed" desc="Header Tab">
     public static List<WebElement> findHeaderTabs(WebDriver driver) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(SHORT_WAIT_SECONDS));
         try {
@@ -269,8 +289,9 @@ public class ProductTest {
             return List.of();
         }
     }
+    //</editor-fold>
 
-    /* Таб дотор ашигласан section олох */
+    //<editor-fold defaultstate="collapsed" desc="Таб дотор ашигласан section олох">
     public static List<WebElement> findSectionsGroupTab(WebDriver driver, String id) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(SHORT_WAIT_SECONDS));
         try {
@@ -283,8 +304,9 @@ public class ProductTest {
             return List.of();
         }
     }
+    //</editor-fold>
 
-    /* Бүх section дээр addRow ажлуулах */
+    //<editor-fold defaultstate="collapsed" desc="Бүх section дээр addRow ажлуулах">
     public static void clickAddRowButtons(List<WebElement> sections) {
         for (WebElement section : sections) {
             try {
@@ -307,9 +329,9 @@ public class ProductTest {
             }
         }
     }
+    //</editor-fold>
 
-
-    /* SideBar доторх датапат олох */
+    //<editor-fold defaultstate="collapsed" desc="SideBar доторх датапат олох">
     public static List<WebElement> findDataPathBySidebar(WebDriver driver, String stepId) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(SHORT_WAIT_SECONDS));
         try {
@@ -325,8 +347,9 @@ public class ProductTest {
             return List.of();
         }
     }
+    //</editor-fold>
 
-    /* Criteria-тэй checklist сонгосны дараагаар датапат олох */
+    //<editor-fold defaultstate="collapsed" desc="Criteria-тэй checklist сонгосны дараагаар датапат олох">
     public static List<WebElement> findDataPathByCriteria(WebDriver driver, String id) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(SHORT_WAIT_SECONDS));
         try {
@@ -344,6 +367,39 @@ public class ProductTest {
             return List.of();
         }
     }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="dataPath олох тайлан">
+    public static List<WebElement> findDataPathByStatement(WebDriver driver, String id) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(SHORT_WAIT_SECONDS));
+        try {
+
+            WebElement MainProcess = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div[id='dataview-statement-search-" + id +"']")));
+            List<WebElement> elements = MainProcess.findElements(By.cssSelector("[data-path]"));
+            Map<String, WebElement> uniqueDataPathElements = getUniqueTabElements(elements);
+
+            return new ArrayList<>(uniqueDataPathElements.values());
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Elements with selector not found");
+            return List.of();
+        }
+    }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="search btn">
+    public static void clickFilterBtnByStatement(WebDriver driver, String id) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(SHORT_WAIT_SECONDS));
+        try {
+            WebElement MainProcess = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div[id='dataview-statement-search-" + id +"']")));
+            WebElement MainBtn = MainProcess.findElement(By.cssSelector("button.dataview-statement-filter-btn"));
+            MainBtn.click();
+        }catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Error clickFilterBtnByStatement {0}", id);
+        }
+    }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="Criteria байхгүй бол datapath олох">
     public static List<WebElement> findDataPathByWithoutCriteria(WebDriver driver, String id) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(SHORT_WAIT_SECONDS));
         try {
@@ -358,8 +414,9 @@ public class ProductTest {
             return List.of();
         }
     }
+    //</editor-fold>
 
-
+    //<editor-fold defaultstate="collapsed" desc="Criteria байвал next дарна">
     public static boolean findBpSelectorFirstCriteria(WebDriver driver, String id, String name) {
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(SHORT_WAIT_SECONDS));
@@ -379,4 +436,5 @@ public class ProductTest {
             return false;
         }
     }
+    //</editor-fold>
 }

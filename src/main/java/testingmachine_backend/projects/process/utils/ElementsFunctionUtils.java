@@ -332,7 +332,9 @@ public class ElementsFunctionUtils {
             String elementClass = element.getAttribute("class");
             String elementType = element.getAttribute("type");
             String dataPath = element.getAttribute("data-path");
-
+            if ( elementClass.isEmpty() && elementType==null) {
+                continue;
+            }
             if(elementClass.contains("text_editorInit") ){
                 if (!uniqueTabElements.containsKey(dataPath)) {
                     uniqueTabElements.put(dataPath, element);

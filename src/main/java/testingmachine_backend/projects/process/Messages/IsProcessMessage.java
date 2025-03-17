@@ -29,7 +29,7 @@ public class IsProcessMessage {
             WebElement messageContainer = waitForElement(driver, By.cssSelector(".brighttheme.ui-pnotify-container"), SHORT_WAIT_SECONDS);
             String messageTitle = messageContainer.findElement(By.cssSelector(".ui-pnotify-title")).getText().toLowerCase();
 
-            if (messageTitle.contains("warning")) {
+            if (messageTitle.contains("warning") || messageTitle.contains("alert")) {
                 return processMessage(driver, "warning", id, code, name, systemName, TestProcessType, jsonId );
             } else if (messageTitle.contains("error")) {
                 return processMessage(driver, "error", id, code, name, systemName, TestProcessType, jsonId );

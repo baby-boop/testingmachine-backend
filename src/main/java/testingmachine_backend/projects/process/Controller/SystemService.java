@@ -28,6 +28,8 @@ public class SystemService {
             return BASE_DIRECTORY + "/metaverse/header";
         } else if ("indicator".equalsIgnoreCase(selectedModule)){
             return BASE_DIRECTORY + "/indicator/header";
+        }else if ("product".equalsIgnoreCase(selectedModule)){
+            return BASE_DIRECTORY + "/product/header";
         }
             else {
             return BASE_DIRECTORY + "/default";

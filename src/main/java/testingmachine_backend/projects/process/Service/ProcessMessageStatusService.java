@@ -59,7 +59,7 @@ public class ProcessMessageStatusService {
 
     }
 
-    public static void saveToJson(String jsonId, int totalCount, String type, String customerName) {
+    public static void saveToJson(String jsonId, int totalCount, String type, String customerName, int statusMessage, String fullUrl) {
         Map<String, Object> jsonOutput = readExistingJson(jsonId, type);
 
         // Шинэ мэдээлэл нэмэх
@@ -70,6 +70,8 @@ public class ProcessMessageStatusService {
         jsonOutput.put("customerName", customerName);
         jsonOutput.put("totalCount", totalCount);
         jsonOutput.put("errorCount", errorCountMap.getOrDefault(jsonId, 0));
+        jsonOutput.put("statusMessage", statusMessage);
+        jsonOutput.put("fullUrl", fullUrl);
         jsonOutput.put("processDetails", existingDetails);
 
         // Файл руу хадгалах

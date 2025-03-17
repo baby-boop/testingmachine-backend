@@ -35,6 +35,7 @@ public class ConfigForAll {
     private static final String URL = "/erp-services/RestWS/runJson";
     public static final String GOLOMT_URL = "/javarestapi";
     public static final String API_URL = PORT + URL;
+    public static final String PROCESS_URL = "https://dev.veritech.mn:8181/erp-services/RestWS/runJson";
     public static final String REST_URL = "/restapi";
     public static final String INDICATOR_URL = PORT + REST_URL;
     public static final String CALL_PROCESS = "/mdprocess/renderByTestTool/";

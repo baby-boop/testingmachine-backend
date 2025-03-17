@@ -25,7 +25,8 @@ public class TaskService {
 
     public List<TaskDTO> getTasks() throws IOException {
         if (jsonFile.exists() && jsonFile.length() > 0) {
-            return mapper.readValue(jsonFile, new TypeReference<List<TaskDTO>>() {});
+            return mapper.readValue(jsonFile, new TypeReference<>() {
+            });
         } else {
             return new ArrayList<>();
         }
@@ -48,5 +49,6 @@ public class TaskService {
 
         mapper.writeValue(jsonFile, tasks);
         return task;
+
     }
 }

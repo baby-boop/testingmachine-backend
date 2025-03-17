@@ -28,7 +28,7 @@ public class IsIndicatorMessage {
     @IndicatorTabField
     public static final ThreadLocal<List<IndicatorCustomTab>> indicatorCustomTab = ThreadLocal.withInitial(ArrayList::new);
 
-    private static final int SHORT_WAIT_SECONDS = 10;
+    private static final int SHORT_WAIT_SECONDS = 1;
 
     public static boolean isErrorMessagePresent(WebDriver driver, String parentId, String indicatorId, String customTabName, String groupName, String sideBarName, String indicatorType, String jsonId) {
         try {

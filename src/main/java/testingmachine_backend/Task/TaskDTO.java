@@ -24,7 +24,7 @@ public class TaskDTO {
         long amount = Long.parseLong(interval.replaceAll("\\D+", ""));
         String unit = interval.replaceAll("\\d+", "").trim().toLowerCase();
 
-        LocalDate nextExecutionDate = lastUpdatedDate;
+        LocalDate nextExecutionDate;
         switch (unit) {
             case "day":
             case "days":

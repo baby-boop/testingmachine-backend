@@ -19,6 +19,8 @@ public class JsonFileReaderMeta {
     private static final String DIRECTORY_PATH_PATCH = BASE_DIRECTORY + "/patch/result";
     private static final String DIRECTORY_PATH_METAVERSE = BASE_DIRECTORY + "/metaverse/result";
     private static final String DIRECTORY_PATH_INDICATOR = BASE_DIRECTORY + "/indicator/result";
+    private static final String DIRECTORY_PATH_PRODUCT= BASE_DIRECTORY + "/product/result";
+
 
     /**
      * JSON файл руу хадгалах функц
@@ -72,6 +74,7 @@ public class JsonFileReaderMeta {
             case "patch" -> DIRECTORY_PATH_PATCH;
             case "metaverse" -> DIRECTORY_PATH_METAVERSE;
             case "indicator" -> DIRECTORY_PATH_INDICATOR;
+            case "product" -> DIRECTORY_PATH_PRODUCT;
             default -> {
                 LOGGER.log(Level.WARNING, "Invalid type: {0}. Must be 'meta' or 'patch'.", type);
                 yield null;
