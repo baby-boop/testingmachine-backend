@@ -1,7 +1,7 @@
 package testingmachine_backend.projects.metaverse;
 
 import org.openqa.selenium.WebDriver;
-import testingmachine_backend.config.WebDriverManager;
+import static testingmachine_backend.config.WebDriverManager.*;
 
 public class MetaverseMain {
 
@@ -9,7 +9,7 @@ public class MetaverseMain {
                                    String databaseName, String unitName, String systemUrl, String username, String password, String isLoginCheckBox){
 
 
-        WebDriver driver = WebDriverManager.getDriver();
+        WebDriver driver = getDriverManager();
 
         try {
 
@@ -17,8 +17,11 @@ public class MetaverseMain {
 
             main.mainList(jsonId, theadId, customerName, createdDate, moduleId, databaseName, unitName, systemUrl, username, password, isLoginCheckBox);
 
-        }finally {
-            WebDriverManager.quitDriver();
+        }catch (Exception e){
+            quitDriverManager();
+        }
+        finally {
+            quitDriverManager();
             System.out.println("completed");
 
         }

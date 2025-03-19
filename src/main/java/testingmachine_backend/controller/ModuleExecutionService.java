@@ -1,5 +1,6 @@
 package testingmachine_backend.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import testingmachine_backend.projects.meta.DTO.ErrorMessageDTO;
@@ -14,6 +15,7 @@ import java.util.concurrent.CompletableFuture;
 
 import static testingmachine_backend.config.ConfigForAll.getLocalIpAddress;
 
+@Slf4j
 @Service
 public class ModuleExecutionService {
 
@@ -23,12 +25,12 @@ public class ModuleExecutionService {
         this.moduleService = moduleService;
     }
 
+
     @Async("asyncExecutor")  // Thread Pool ашиглана
     public CompletableFuture<String> executeModuleAsync(String module, SystemData systemData) {
         try {
             if (systemData != null) {
                 String result = moduleService.executeModule(module, systemData);
-
 
                 List<ProcessMessageStatusDTO> processStatuses = ProcessMessageStatusService.getProcessStatuses(systemData.getGeneratedId());
                 List<ErrorMessageDTO> metaStatuses = ProcessMessageStatusService.getMetaStatuses(systemData.getGeneratedId());
@@ -41,8 +43,8 @@ public class ModuleExecutionService {
                 int statusMessage = hasFailedOrError ? 0 : 1;
 
                 String localIpAddress = getLocalIpAddress();
-                String fullUrl = "http://"+ localIpAddress +":3000/result/" + systemData.getGeneratedId();
-
+//                String fullUrl = "http://"+ localIpAddress +":3001/result/" + systemData.getGeneratedId();
+                String fullUrl = "http://172.169.88.205:3001/result/" + systemData.getGeneratedId();
                 Map<String, Object> combinedResponse = new HashMap<>();
 
                 if (!processStatuses.isEmpty() && metaStatuses.isEmpty()) {

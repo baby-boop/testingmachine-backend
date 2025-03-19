@@ -1,7 +1,7 @@
 package testingmachine_backend.projects.meta.MetaList;
 
 import org.openqa.selenium.WebDriver;
-import testingmachine_backend.config.WebDriverManager;
+import static testingmachine_backend.config.WebDriverManager.*;
 
 public class MetaMain {
 
@@ -9,7 +9,7 @@ public class MetaMain {
                                    String databaseName, String unitName, String systemUrl, String username, String password, String isLoginCheckBox){
 
 
-        WebDriver driver = WebDriverManager.getDriver();
+        WebDriver driver = getDriverManager();
 
         try {
 
@@ -17,10 +17,11 @@ public class MetaMain {
 
             main.mainList(jsonId, theadId, customerName, createdDate, moduleId, databaseName, unitName, systemUrl, username, password, isLoginCheckBox);
 
-        }finally {
-            WebDriverManager.quitDriver();
-            System.out.println("completed");
-
+        }catch (Exception e) {
+            quitDriverManager();
+        }
+        finally {
+            quitDriverManager();
         }
     }
 }

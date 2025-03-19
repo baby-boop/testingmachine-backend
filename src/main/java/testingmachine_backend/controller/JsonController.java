@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import testingmachine_backend.config.ThreadDumpService;
 import testingmachine_backend.projects.process.Config.ConfigProcess;
 import testingmachine_backend.projects.process.Controller.FileData;
 import testingmachine_backend.projects.process.Controller.SystemData;
@@ -198,6 +199,13 @@ public class JsonController {
     @GetMapping("/process-header")
     public ResponseEntity<List<Object>> getHeaderData() {
         return ResponseEntity.ok(readJsonFilesFromFolder(PROCESS_HEADER_PATH));
+    }
+
+    /** Thread мэдээллийг харах
+     */
+    @GetMapping("/thread-status")
+    public Map<String, Object> checkThreadStatus() {
+        return ThreadDumpService.getActiveAndWaitingThreads();
     }
 
     @GetMapping("/process-result")

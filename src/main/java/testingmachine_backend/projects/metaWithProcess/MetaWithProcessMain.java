@@ -1,35 +1,25 @@
 package testingmachine_backend.projects.metaWithProcess;
 
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.logging.LogType;
 
-import java.util.Map;
+import static testingmachine_backend.config.WebDriverManager.*;
 
 public class MetaWithProcessMain {
 
 
     public static void mainProcess(String jsonId) {
 
-        Map<String, String> loggingPrefs = Map.of(
-                LogType.BROWSER, "ALL"
-        );
-
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("--headless");
-        options.addArguments("--disable-gpu");
-        options.setCapability("goog:loggingPrefs", loggingPrefs);
-
-        WebDriver driver = new ChromeDriver(options);
+        WebDriver driver = getDriverManager();
 
         try{
             MetaWithProcessList tool = new MetaWithProcessList(driver);
 
             tool.mainTool(jsonId);
-        }finally {
-//            driver.quit();
-            System.out.println("completed");
+        }catch(Exception e){
+            quitDriverManager();
+        }
+        finally {
+            quitDriverManager();
         }
     }
 }
