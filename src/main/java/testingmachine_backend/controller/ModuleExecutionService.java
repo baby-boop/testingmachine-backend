@@ -43,34 +43,37 @@ public class ModuleExecutionService {
                 int statusMessage = hasFailedOrError ? 0 : 1;
 
                 String localIpAddress = getLocalIpAddress();
-//                String fullUrl = "http://"+ localIpAddress +":3001/result/" + systemData.getGeneratedId();
-                String fullUrl = "http://172.169.88.205:3001/result/" + systemData.getGeneratedId();
-                Map<String, Object> combinedResponse = new HashMap<>();
+                String fullUrl = "http://"+ localIpAddress +":3001/result/" + systemData.getGeneratedId();
 
-                if (!processStatuses.isEmpty() && metaStatuses.isEmpty()) {
-                    combinedResponse.put("jsonId", systemData.getGeneratedId());
-                    combinedResponse.put("statusMessage", statusMessage);
-                    combinedResponse.put("fullUrl", fullUrl);
-                    combinedResponse.put("processDetails", processStatuses);
-                } else if (!metaStatuses.isEmpty() && processStatuses.isEmpty()) {
-                    combinedResponse.put("jsonId", systemData.getGeneratedId());
-                    combinedResponse.put("statusMessage", statusMessage);
-                    combinedResponse.put("fullUrl", fullUrl);
-                    combinedResponse.put("metaDetails", metaStatuses);
-                } else if (!processStatuses.isEmpty() && !metaStatuses.isEmpty()) {
-                    combinedResponse.put("jsonId", systemData.getGeneratedId());
-                    combinedResponse.put("statusMessage", statusMessage);
-                    combinedResponse.put("fullUrl", fullUrl);
-                    combinedResponse.put("processDetails", processStatuses);
-                    combinedResponse.put("metaDetails", metaStatuses);
-                } else {
-                    combinedResponse.put("message", "Тестийг амжилттай хүлээж авлаа");
+                if(!systemData.getSelectedModule().equals("process")){
+
+                    Map<String, Object> combinedResponse = new HashMap<>();
+
+                    if (!processStatuses.isEmpty() && metaStatuses.isEmpty()) {
+                        combinedResponse.put("jsonId", systemData.getGeneratedId());
+                        combinedResponse.put("statusMessage", statusMessage);
+                        combinedResponse.put("fullUrl", fullUrl);
+                        combinedResponse.put("processDetails", processStatuses);
+                    } else if (!metaStatuses.isEmpty() && processStatuses.isEmpty()) {
+                        combinedResponse.put("jsonId", systemData.getGeneratedId());
+                        combinedResponse.put("statusMessage", statusMessage);
+                        combinedResponse.put("fullUrl", fullUrl);
+                        combinedResponse.put("metaDetails", metaStatuses);
+                    } else if (!processStatuses.isEmpty() && !metaStatuses.isEmpty()) {
+                        combinedResponse.put("jsonId", systemData.getGeneratedId());
+                        combinedResponse.put("statusMessage", statusMessage);
+                        combinedResponse.put("fullUrl", fullUrl);
+                        combinedResponse.put("processDetails", processStatuses);
+                        combinedResponse.put("metaDetails", metaStatuses);
+                    } else {
+                        combinedResponse.put("message", "Тестийг амжилттай хүлээж авлаа");
+                    }
+
+                    ProcessMessageStatusService.saveToJson(systemData.getGeneratedId(),  systemData.getSelectedModule(), systemData.getCustomerName(), statusMessage, fullUrl);
+
+                    // Ашигласан өгөгдлийг цэвэрлэх
+                    ProcessMessageStatusService.clearAllDTOField(systemData.getGeneratedId());
                 }
-
-                ProcessMessageStatusService.saveToJson(systemData.getGeneratedId(),  systemData.getSelectedModule(), systemData.getCustomerName(), statusMessage, fullUrl);
-
-                // Ашигласан өгөгдлийг цэвэрлэх
-                ProcessMessageStatusService.clearAllDTOField(systemData.getGeneratedId());
 
                 if(systemData.getSelectedModule().equals("patch")){
                     PatchAdditionResult.getProcessMetaDataList(systemData.getDatabaseName(), systemData.getSystemURL(),

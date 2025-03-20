@@ -7,10 +7,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import testingmachine_backend.config.ThreadDumpService;
+import testingmachine_backend.projects.meta.DTO.ErrorMessageDTO;
 import testingmachine_backend.projects.process.Config.ConfigProcess;
 import testingmachine_backend.projects.process.Controller.FileData;
 import testingmachine_backend.projects.process.Controller.SystemData;
 import testingmachine_backend.projects.process.Controller.SystemService;
+import testingmachine_backend.projects.process.DTO.ProcessMessageStatusDTO;
+import testingmachine_backend.projects.process.Service.ProcessMessageStatusService;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -128,7 +132,7 @@ public class JsonController {
 //        JsonFileCleanerSchedule.allClearData();
         SystemData savedData = service.addSystemData(data);
         updateStaticData(savedData);
-        log.info("Created system data: ID = {}, databaseName = {}", savedData.getGeneratedId(), savedData.getDatabaseName());
+        log.info("Created system data: ID = {}, metaOrPatchId = {}", savedData.getGeneratedId(), savedData.getMetaOrPatchId());
 
         String jsonId = savedData.getGeneratedId();
 
@@ -139,10 +143,38 @@ public class JsonController {
                     return null;
                 });
 
-        Map<String, Object> resultResponse = new HashMap<>();
-        resultResponse.put("message", "Тестийг амжилттай хүлээж авлаа");
+        Map<String, Object> combinedResponse = new HashMap<>();
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(resultResponse);
+        if(savedData.getSelectedModule().equals("process")){
+            resultFuture.join();
+
+            List<ProcessMessageStatusDTO> processStatuses = ProcessMessageStatusService.getProcessStatuses(savedData.getGeneratedId());
+            List<ErrorMessageDTO> metaStatuses = ProcessMessageStatusService.getMetaStatuses(savedData.getGeneratedId());
+
+
+            if (!processStatuses.isEmpty() && metaStatuses.isEmpty()) {
+                combinedResponse.put("jsonId", savedData.getGeneratedId());
+                combinedResponse.put("processDetails", processStatuses);
+            } else if (!metaStatuses.isEmpty() && processStatuses.isEmpty()) {
+                combinedResponse.put("jsonId", savedData.getGeneratedId());
+                combinedResponse.put("metaDetails", metaStatuses);
+            } else if (!processStatuses.isEmpty() && !metaStatuses.isEmpty()) {
+                combinedResponse.put("jsonId", savedData.getGeneratedId());
+                combinedResponse.put("processDetails", processStatuses);
+                combinedResponse.put("metaDetails", metaStatuses);
+            } else {
+                combinedResponse.put("message", "Тестийг амжилттай хүлээж авлаа");
+            }
+
+            ProcessMessageStatusService.saveToJson(savedData.getGeneratedId(),  savedData.getSelectedModule(), savedData.getCustomerName(), 0, "");
+
+            // Ашигласан өгөгдлийг цэвэрлэх
+            ProcessMessageStatusService.clearAllDTOField(savedData.getGeneratedId());
+        }else {
+            combinedResponse.put("message", "Тестийг амжилттай хүлээж авлаа");
+        }
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(combinedResponse);
     }
 
     private void updateStaticData(SystemData data) {

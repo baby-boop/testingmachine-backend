@@ -2,6 +2,7 @@ package testingmachine_backend.projects.process.utils;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import net.lightbody.bmp.BrowserMobProxy;
 import org.openqa.selenium.*;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -147,6 +148,7 @@ public class ElementsFunctionUtils {
     }
 
     public static void comboboxFunction(WebDriver driver, String dataSPath, String required, String id, String fileName, String jsonId, String indicatorType) {
+
         DevTools devTools = ((ChromeDriver) driver).getDevTools();
         devTools.createSession();
         devTools.send(Network.enable(Optional.empty(), Optional.empty(), Optional.empty()));
@@ -166,7 +168,7 @@ public class ElementsFunctionUtils {
         try {
             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
 
-            WebElement comboBoxLocator = null;
+            WebElement comboBoxLocator;
 
             if (indicatorType.equals("sidebar")) {
                 By sidebarLocator = By.cssSelector("div[id='mv_checklist_id_" + id + "'] div[data-s-path='" + dataSPath + "']");
@@ -186,77 +188,53 @@ public class ElementsFunctionUtils {
                 WebElement comboBoxElement = wait.until(ExpectedConditions.elementToBeClickable(comboBoxLocator));
                 comboBoxElement.click();
 
+                By comboBoxSelectLocator;
+
                 if(indicatorType.equals("sidebar")) {
-                    By comboBoxSelectLocator = By.cssSelector("div[id='mv_checklist_id_"+ id +"'] select[data-path='" + dataSPath + "']");
+                    comboBoxSelectLocator = By.cssSelector("div[id='mv_checklist_id_"+ id +"'] select[data-path='" + dataSPath + "']");
                     wait.until(ExpectedConditions.elementToBeClickable(comboBoxSelectLocator));
-
-                    if (responseBody.get().contains("errorMessage")) {
-                        String responseJson = responseBody.get();
-                        JsonObject jsonResponse = JsonParser.parseString(responseJson).getAsJsonObject();
-                        String errorMessage = jsonResponse.has("errorMessage") ? jsonResponse.get("errorMessage").getAsString() : null;
-                        if (errorMessage != null && !errorMessage.isEmpty()) {
-                            if (!isDuplicateNetwork(id, dataSPath, jsonId)) {
-                                System.out.println("Found combox errorMessage id: " + id + " dataPath: " + dataSPath );
-                                ComboMessageDTO comboMessageDTO = new ComboMessageDTO(fileName, id, dataSPath, jsonId, errorMessage);
-                                ComboMessageField.get().add(comboMessageDTO);
-                            } else {
-                                System.out.println("Duplicated data: " + "id: " + id + " dataPath: " + dataSPath + " responseBody: " + responseBody.get());
-                            }
-                        }
-                    }
-
-                    selectSecondOption(driver, comboBoxSelectLocator, id, dataSPath, required, fileName, jsonId);
-
                 }else if(indicatorType.equals("indicator")) {
-                    By comboBoxSelectLocator = By.cssSelector("div[id='dialog-valuemap-"+ id +"'] select[data-path='" + dataSPath + "']");
-                    wait.until(ExpectedConditions.elementToBeClickable(comboBoxSelectLocator));
-
-                    if (responseBody.get().contains("errorMessage")) {
-                        String responseJson = responseBody.get();
-                        JsonObject jsonResponse = JsonParser.parseString(responseJson).getAsJsonObject();
-                        String errorMessage = jsonResponse.has("errorMessage") ? jsonResponse.get("errorMessage").getAsString() : null;
-                        if (errorMessage != null && !errorMessage.isEmpty()) {
-                            if (!isDuplicateNetwork(id, dataSPath, jsonId)) {
-                                System.out.println("Found combox errorMessage id: " + id + " dataPath: " + dataSPath );
-                                ComboMessageDTO comboMessageDTO = new ComboMessageDTO(fileName, id, dataSPath, jsonId, errorMessage);
-                                ComboMessageField.get().add(comboMessageDTO);
-                            } else {
-                                System.out.println("Duplicated data: " + "id: " + id + " dataPath: " + dataSPath + " responseBody: " + responseBody.get());
-                            }
-                        }
-                    }
-
-                    selectSecondOption(driver, comboBoxSelectLocator, id, dataSPath, required, fileName, jsonId);
+                    comboBoxSelectLocator = By.cssSelector("div[id='dialog-valuemap-"+ id +"'] select[data-path='" + dataSPath + "']");
                 }
                 else{
-                    By comboBoxSelectLocator = By.cssSelector("select[data-path='" + dataSPath + "']");
-                    wait.until(ExpectedConditions.elementToBeClickable(comboBoxSelectLocator));
+                    comboBoxSelectLocator = By.cssSelector("select[data-path='" + dataSPath + "']");
+                }
 
-                    if (responseBody.get().contains("errorMessage")) {
-                        String responseJson = responseBody.get();
-                        JsonObject jsonResponse = JsonParser.parseString(responseJson).getAsJsonObject();
-                        String errorMessage = jsonResponse.has("errorMessage") ? jsonResponse.get("errorMessage").getAsString() : null;
-                        if (errorMessage != null && !errorMessage.isEmpty()) {
-                            if (!isDuplicateNetwork(id, dataSPath, jsonId)) {
-                                System.out.println("Found combox errorMessage id: " + id + " dataPath: " + dataSPath );
-                                ComboMessageDTO comboMessageDTO = new ComboMessageDTO(fileName, id, dataSPath, jsonId, errorMessage);
-                                ComboMessageField.get().add(comboMessageDTO);
-                            } else {
-                                System.out.println("Duplicated data: " + "id: " + id + " dataPath: " + dataSPath + " responseBody: " + responseBody.get());
-                            }
+                wait.until(ExpectedConditions.elementToBeClickable(comboBoxSelectLocator));
+
+                if (responseBody.get().contains("errorMessage")) {
+                    JsonObject jsonResponse = JsonParser.parseString(responseBody.get()).getAsJsonObject();
+                    String errorMessage = jsonResponse.has("errorMessage") ? jsonResponse.get("errorMessage").getAsString() : null;
+                    if (errorMessage != null && !errorMessage.isEmpty()) {
+                        if (!isDuplicateNetwork(id, dataSPath, jsonId)) {
+                            System.out.println("Found combox errorMessage id: " + id + " dataPath: " + dataSPath );
+                            ComboMessageDTO comboMessageDTO = new ComboMessageDTO(fileName, id, dataSPath, jsonId, errorMessage);
+                            ComboMessageField.get().add(comboMessageDTO);
+                        } else {
+                            System.out.println("Duplicated data: " + "id: " + id + " dataPath: " + dataSPath + " responseBody: " + responseBody.get());
                         }
                     }
-                    selectSecondOption(driver, comboBoxSelectLocator, id, dataSPath, required, fileName, jsonId);
                 }
+
+                selectSecondOption(driver, comboBoxSelectLocator, id, dataSPath, required, fileName, jsonId);
 
             }
         } catch (Exception e) {
 //            System.err.println("Error with comboBox: " + e.getMessage());
         } finally {
-            devTools.close();
+
         }
     }
 
+    public static String getNetworkResponse(BrowserMobProxy proxy, String requestFilter) {
+        if (proxy == null) return "";
+
+        return proxy.getHar().getLog().getEntries().stream()
+                .filter(entry -> entry.getRequest().getUrl().contains(requestFilter))
+                .map(entry -> entry.getResponse().getContent().getText()) // Extract the response body
+                .findFirst()
+                .orElse("");
+    }
     public static boolean isDuplicateNetwork(String id, String dataPath, String jsonId) {
         return ElementsFunctionUtils.ComboMessageField.get().stream()
                 .anyMatch(log -> log.getMetaDataId().equals(id) && log.getDataPath().equals(dataPath) && log.getJsonId().equals(jsonId) );

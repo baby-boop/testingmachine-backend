@@ -5,8 +5,10 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
+import java.net.*;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.Enumeration;
 
 @Slf4j
 public class ConfigForAll {
@@ -49,13 +51,33 @@ public class ConfigForAll {
     public static final String CALL_METHOD = "/mdform/method/";
     public static final String CALL_INDICATOR = "/mdobject/meta/";
 
-    public static String getLocalIpAddress() {
-        try {
-            return InetAddress.getLocalHost().getHostAddress();
-        } catch (UnknownHostException e) {
-            log.error("Error retrieving local IP address", e);
-            return "127.0.0.1"; // Default fallback
-        }
+//    public static String getLocalIpAddress(){
+//        return "172.169.88.205";
+//    }
+
+    public static String getLocalIpAddress(){
+        return "192.168.192.57";
     }
+
+//    public static String getLocalIpAddress() {
+//        try {
+//            Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
+//            while (interfaces.hasMoreElements()) {
+//                NetworkInterface networkInterface = interfaces.nextElement();
+//                if (networkInterface.getDisplayName().toLowerCase().contains("wi-fi") || networkInterface.getName().startsWith("wlan")) {
+//                    Enumeration<InetAddress> addresses = networkInterface.getInetAddresses();
+//                    while (addresses.hasMoreElements()) {
+//                        InetAddress inetAddress = addresses.nextElement();
+//                        if (inetAddress instanceof Inet4Address && !inetAddress.isLoopbackAddress()) {
+//                            return inetAddress.getHostAddress();
+//                        }
+//                    }
+//                }
+//            }
+//        } catch (SocketException e) {
+//            e.printStackTrace();
+//        }
+//        return "172.169.88.205";
+//    }
 
 }
