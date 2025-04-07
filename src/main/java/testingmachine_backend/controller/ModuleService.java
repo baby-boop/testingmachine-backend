@@ -9,6 +9,7 @@ import testingmachine_backend.projects.meta.MetaList.MetaMain;
 import testingmachine_backend.projects.metaWithProcess.MetaWithProcessMain;
 import testingmachine_backend.projects.patch.patchMain;
 import testingmachine_backend.projects.process.MainProcess;
+import testingmachine_backend.projects.trail.TrialMain;
 
 @Service
 public class ModuleService {
@@ -62,6 +63,13 @@ public class ModuleService {
                         systemData.getCreatedDate(), systemData.getModuleId(), systemData.getDatabaseName(), systemData.getDatabaseUsername(),
                         systemData.getSystemURL(), systemData.getUsername(), systemData.getPassword(), systemData.getMetaOrPatchId(), systemData.getIsCheckBox());
                 result = "Тест хийж дууссан (product)";
+                break;
+            case "trial":
+                System.out.println("Тест эхлэж байна... trial");
+                TrialMain.mainProcess(systemData.getGeneratedId(), String.valueOf(Thread.currentThread().getId()), systemData.getCustomerName(),
+                        systemData.getCreatedDate(), systemData.getModuleId(), systemData.getDatabaseName(), systemData.getDatabaseUsername(),
+                        systemData.getSystemURL(), systemData.getUsername(), systemData.getPassword(), systemData.getMetaOrPatchId(), systemData.getIsCheckBox());
+                result = "Тест хийж дууссан (trial)";
                 break;
             default:
                 throw new IllegalArgumentException("Модуль олдсонгүй");

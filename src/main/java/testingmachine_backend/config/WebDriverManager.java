@@ -3,6 +3,8 @@ package testingmachine_backend.config;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
@@ -17,11 +19,13 @@ public class WebDriverManager {
     private static final ThreadLocal<WebDriver> driverThreadLocal = ThreadLocal.withInitial(() -> {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--disable-gpu",
-                "--headless",
+//                "--headless=new",
                 "--ignore-ssl-errors=yes",
                 "--ignore-certificate-errors",
-                "--disable-dev-shm-usage");
+                "--disable-dev-shm-usage",
+                "window-size=1280,720");
         options.setCapability("goog:loggingPrefs", Map.of(LogType.BROWSER, "ALL"));
+
         return new ChromeDriver(options);
     });
 

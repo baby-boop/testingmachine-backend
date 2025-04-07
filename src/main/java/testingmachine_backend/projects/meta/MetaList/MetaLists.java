@@ -18,6 +18,8 @@ import testingmachine_backend.projects.meta.Utils.WaitUtils;
 import testingmachine_backend.projects.process.DTO.ProcessDTO;
 import testingmachine_backend.projects.process.Service.ProcessService;
 
+import static testingmachine_backend.projects.process.Config.ConfigProcess.waitUtils;
+
 public class MetaLists {
 
     private final WebDriver driver;
@@ -42,42 +44,38 @@ public class MetaLists {
                 Select dbSelect = new Select(selectDb);
                 dbSelect.selectByVisibleText(databaseName);
 
-//                ListConfig.selectCompanyFunction(driver, wait, "Грийн Трейд ХХК");
-
-                workingWithMainList(driver, jsonId, theadId, customerName, createdDate, moduleId, unitName, systemUrl, username, password);
-
             }
-            else {
 
-                ConfigForAll.loginForm(driver, wait, username, password, isLoginCheckBox);
+            ConfigForAll.loginForm(driver, wait, username, password, isLoginCheckBox);
 
 //                ListConfig.selectCompanyFunction(driver, wait, "Грийн Трейд ХХК");
 
-                workingWithMainList(driver, jsonId, theadId, customerName, createdDate, moduleId, unitName, systemUrl, username, password);
+            workingWithMainList(driver, jsonId, theadId, customerName, createdDate, moduleId, unitName, systemUrl, username, password);
 
-            }
 
         } catch (Exception e) {
             System.err.println("Error: " + e.getMessage());
         }
     }
 
-    private static void workingWithMainList(WebDriver driver,  String jsonId, String theadId, String customerName, String createdDate, String moduleId,
+    private static void workingWithMainList(WebDriver driver, String jsonId, String theadId, String customerName, String createdDate, String moduleId,
                                             String unitName, String systemUrl, String username, String password) {
 
         List<MetadataDTO> metaDataList = MetaCallDataview.getProcessMetaDataList(moduleId, unitName, systemUrl, username, password);
         int count = 0;
         int errorCount = 0;
         int totalCount = metaDataList.size();
+        System.out.println("Total count is: " + totalCount);
 
         for (MetadataDTO metaData : metaDataList) {
 
-            String url = ListConfig.MainUrl + metaData.getId();
+            String url = systemUrl + ListConfig.MainUrl + metaData.getId();
 
             driver.get(url);
 
-            WaitUtils.retryWaitForLoadToDisappear(driver, metaData.getModuleName(), metaData.getId(), metaData.getCode(), metaData.getName(), jsonId, "meta", totalCount, customerName, 3);
-            WaitUtils.retryWaitForLoadingToDisappear(driver, metaData.getModuleName(), metaData.getId(), metaData.getCode(), metaData.getName(), jsonId, "meta",totalCount, customerName, 3);
+//            WaitUtils.retryWaitForLoadToDisappear(driver, metaData.getModuleName(), metaData.getId(), metaData.getCode(), metaData.getName(), jsonId, "meta", totalCount, customerName, 3);
+//            WaitUtils.retryWaitForLoadingToDisappear(driver, metaData.getModuleName(), metaData.getId(), metaData.getCode(), metaData.getName(), jsonId, "meta",totalCount, customerName, 3);
+            waitUtils(driver);
 
             if (IsErrorMessage.isErrorMessagePresent(driver, metaData.getId(), metaData.getModuleName(), metaData.getCode(), metaData.getName(), jsonId, "meta", totalCount, customerName)) {
                 errorCount++;

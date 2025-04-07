@@ -7,6 +7,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import testingmachine_backend.controller.JsonController;
 import testingmachine_backend.projects.process.utils.WaitElement;
+import testingmachine_backend.projects.product.WaitElementProduct;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -19,7 +20,7 @@ public class ConfigProcess {
     public static final String BaseUrl = JsonController.getSystemURL();
     public static final String LoginUrl = BaseUrl + "/login";
 
-    public static final int TIMEOUT = 10;
+    public static final int TIMEOUT = 20;
 
     public static WebDriverWait getWebDriverWait(WebDriver driver) {
         return new WebDriverWait(driver, Duration.ofSeconds(TIMEOUT));
@@ -32,6 +33,18 @@ public class ConfigProcess {
             WaitElement.retryWaitForBlockUIDisappear(driver, 3);
             WaitElement.retryWaitForLoadToDisappear(driver, 3);
             WaitElement.retryWaitForLoadingToDisappear(driver, 3);
+        } catch (Exception e) {
+//            System.out.println(e.getMessage());
+        }
+    }
+
+    public static void waitUtilsProduct (WebDriver driver) {
+        try{
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(TIMEOUT));
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.tagName("body")));
+            WaitElementProduct.retryWaitForBlockUIDisappear(driver, 3);
+            WaitElementProduct.retryWaitForLoadToDisappear(driver, 3);
+            WaitElementProduct.retryWaitForLoadingToDisappear(driver, 3);
         } catch (Exception e) {
 //            System.out.println(e.getMessage());
         }

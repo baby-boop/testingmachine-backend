@@ -1,11 +1,10 @@
 package testingmachine_backend.projects.indicator;
 
 import lombok.Getter;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import testingmachine_backend.controller.IndicatorCallMethod;
 import testingmachine_backend.projects.process.Messages.PopupMessage;
 import testingmachine_backend.projects.process.utils.ElementsFunctionUtils;
 
@@ -32,6 +31,7 @@ public class IsIndicatorMessage {
 
     public static boolean isErrorMessagePresent(WebDriver driver, String parentId, String indicatorId, String customTabName, String groupName, String sideBarName, String indicatorType, String jsonId) {
         try {
+
             WebElement messageContainer = waitForElement(driver, By.cssSelector(".brighttheme.ui-pnotify-container"), SHORT_WAIT_SECONDS);
             String messageTitle = messageContainer.findElement(By.cssSelector(".ui-pnotify-title")).getText().toLowerCase();
 
@@ -44,9 +44,9 @@ public class IsIndicatorMessage {
             }   else if (messageTitle.contains("info")) {
                 return processMessage(driver, "info", parentId, indicatorId, customTabName, groupName, sideBarName, indicatorType, jsonId );
             }
+
             return false;
         } catch (Exception e) {
-            System.out.println("No alert found for process: " + parentId);
             return false;
         }
     }
@@ -71,6 +71,8 @@ public class IsIndicatorMessage {
                     break;
             }
 
+            IndicatorCallMethod.getProcessMetaDataList("https://dev.veritech.mn/restapi", "batdelger", "123", parentId, indicatorId, customTabName, groupName, sideBarName, type, indicatorType, messageText, jsonId);
+
             IndicatorCustomTab customTab = new IndicatorCustomTab(parentId, indicatorId, customTabName, groupName, sideBarName, indicatorType, type, messageText, jsonId,
                     ElementsFunctionUtils.getProcessLogMessages()
                             .stream().filter(detail -> detail.getMetaDataId().equals(indicatorId)).collect(Collectors.toList()),
@@ -86,6 +88,8 @@ public class IsIndicatorMessage {
                             .stream().filter(detail -> detail.getMetaDataId().equals(indicatorId)).collect(Collectors.toList())
                             );
             indicatorCustomTab.get().add(customTab);
+
+            removeElement(driver, By.cssSelector(".ui-pnotify"));
 
             return true;
         } catch (Exception e) {
@@ -111,5 +115,14 @@ public class IsIndicatorMessage {
     private static WebElement waitForElement(WebDriver driver, By locator, int timeoutSeconds) {
         return new WebDriverWait(driver, Duration.ofSeconds(timeoutSeconds))
                 .until(ExpectedConditions.visibilityOfElementLocated(locator));
+    }
+
+    private static void removeElement(WebDriver driver, By selector) {
+        try {
+            WebElement element = driver.findElement(selector);
+            ((JavascriptExecutor) driver).executeScript("arguments[0].remove();", element);
+        } catch (NoSuchElementException ignored) {
+            // Already gone
+        }
     }
 }

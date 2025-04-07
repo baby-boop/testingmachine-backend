@@ -9,6 +9,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import testingmachine_backend.config.ConfigForAll;
 import testingmachine_backend.projects.process.Config.ConfigProcess;
 
+import static testingmachine_backend.config.ConfigForAll.CALL_PRODUCT;
 import static testingmachine_backend.projects.process.Config.ConfigProcess.waitUtils;
 
 public class ProductList {
@@ -36,16 +37,11 @@ public class ProductList {
                 dbSelect.selectByVisibleText(databaseName);
 
                 Thread.sleep(2000);
-
-                if (!processId.isEmpty()) {
-                    mainProcessWithId(wait, jsonId, theadId, customerName, createdDate, moduleId, unitName, systemUrl, username, password, processId, isLoginCheckBox);
-                }
-
-            } else {
-                if (!processId.isEmpty()) {
-                    mainProcessWithId(wait, jsonId, theadId, customerName, createdDate, moduleId, unitName, systemUrl, username, password, processId, isLoginCheckBox);
-                }
             }
+            if (!processId.isEmpty()) {
+                mainProcessWithId(wait, jsonId, theadId, customerName, createdDate, moduleId, unitName, systemUrl, username, password, processId, isLoginCheckBox);
+            }
+
         } catch (Exception e) {
 
         }
@@ -58,7 +54,7 @@ public class ProductList {
 
                 ConfigForAll.loginForm(driver, wait, username, password, isLoginCheckBox);
 
-                String url = "https://dev.veritech.mn/appmenu/mvmodule/" + processId; /* Гэрээ */
+                String url = systemUrl +  CALL_PRODUCT + processId; /* Санхүүгийн удирдлага */
                 driver.get(url);
 
                 Thread.sleep(2000);

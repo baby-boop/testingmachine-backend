@@ -59,7 +59,7 @@ public class ListConfig {
     * */
     public static final String BaseUrl = JsonController.getSystemURL();
     public static final String LoginUrl = BaseUrl + "/login";
-    public static final String MainUrl = BaseUrl + "/mdobject/dataview/";
+    public static final String MainUrl = "/mdobject/dataview/";
     public static final String USERNAME = "264b12848";
     public static final String PASSWORD = "Golomt@dev";
 

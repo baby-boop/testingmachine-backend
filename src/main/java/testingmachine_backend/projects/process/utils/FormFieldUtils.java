@@ -50,7 +50,7 @@ public class FormFieldUtils {
         if (isStringField(classAttribute)) {
             sendKeysBasedOnRegex(element, regexData);
         } else if (isLongField(classAttribute)) {
-            element.sendKeys("11112222");
+            element.sendKeys("12");
         } else if (isFileField(classAttribute)) {
 //            element.sendKeys("C:\\Users\\batde\\Downloads\\pngForTest.png");
 //            element.sendKeys("C:\\pngForTest.png");
@@ -72,7 +72,7 @@ public class FormFieldUtils {
         } else if (isDecimalField(classAttribute)) {
             element.sendKeys("22");
         } else if (isNumberField(classAttribute)) {
-            element.sendKeys("1122");
+            element.sendKeys("12");
         } else if (isDateField(classAttribute)) {
             element.sendKeys(ConfigProcess.DateUtils.getCurrentDate());
         } else if (isPayrollExpressionField(classAttribute)) {
@@ -216,7 +216,7 @@ public class FormFieldUtils {
                 element.sendKeys("2024");
             }
         } else {
-            element.sendKeys("111222333");
+            element.sendKeys("12");
         }
     }
 }

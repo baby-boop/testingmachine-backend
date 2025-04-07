@@ -21,7 +21,8 @@ public class PatchCallService {
 
     public static List<PatchDTO> getPatchMetaDataList(String unitName, String systemUrl, String username, String password, String patchId) {
 
-        String SERVICE_URL =  systemUrl + ":" + PORT + URL;
+        String replacedUrl = systemUrl.replaceAll(":(\\d+)", "");
+        String SERVICE_URL =  replacedUrl + ":" + PORT + URL;
 
         List<PatchDTO> patchList = new ArrayList<>();
 

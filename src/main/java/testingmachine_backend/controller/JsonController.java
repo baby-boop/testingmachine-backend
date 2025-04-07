@@ -145,7 +145,7 @@ public class JsonController {
 
         Map<String, Object> combinedResponse = new HashMap<>();
 
-        if(savedData.getSelectedModule().equals("process")){
+        if(savedData.getSelectedModule().equals("process") ) {
             resultFuture.join();
 
             List<ProcessMessageStatusDTO> processStatuses = ProcessMessageStatusService.getProcessStatuses(savedData.getGeneratedId());
@@ -162,8 +162,8 @@ public class JsonController {
                 combinedResponse.put("jsonId", savedData.getGeneratedId());
                 combinedResponse.put("processDetails", processStatuses);
                 combinedResponse.put("metaDetails", metaStatuses);
-            } else {
-                combinedResponse.put("message", "Тестийг амжилттай хүлээж авлаа");
+            } else if(processStatuses.isEmpty() && metaStatuses.isEmpty()) {
+                combinedResponse.put("message", "Үр дүн олдсонгүй");
             }
 
             ProcessMessageStatusService.saveToJson(savedData.getGeneratedId(),  savedData.getSelectedModule(), savedData.getCustomerName(), 0, "");

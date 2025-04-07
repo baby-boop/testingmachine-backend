@@ -1,4 +1,4 @@
-package testingmachine_backend.projects.process.utils;
+package testingmachine_backend.projects.product;
 
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -6,7 +6,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 
-public class WaitElement {
+public class WaitElementProduct {
 
     public static int TIMEOUT = 20;
 
@@ -26,46 +26,63 @@ public class WaitElement {
 
     private static void waitForBlockUIDisappear(WebDriver driver) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(TIMEOUT));
+        By selector = By.cssSelector("div.blockUI.blockMsg.blockPage");
         try {
-            WebElement blockUI = driver.findElement(By.cssSelector("div.blockUI.blockMsg.blockPage"));
+            WebElement blockUI = driver.findElement(selector);
             if (blockUI.isDisplayed()) {
-                wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("div.blockUI.blockMsg.blockPage")));
+                wait.until(ExpectedConditions.invisibilityOfElementLocated(selector));
             }
         } catch (NoSuchElementException e) {
-            // Block UI not found, proceed
+            // Not found, continue
         } catch (TimeoutException e) {
-            // Handle timeout case if needed
-            System.out.println("Timeout waiting for Block UI to disappear.");
+            System.out.println("Timeout waiting for Block UI. Removing manually.");
+            removeElement(driver, selector);
         }
     }
 
     private static void waitForLoadingToDisappear(WebDriver driver) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(TIMEOUT));
+        By selector = By.xpath("//div[contains(@class, 'datagrid-mask-msg') and text()='Түр хүлээнэ үү']");
         try {
-            WebElement loadingMessage = driver.findElement(By.xpath("//div[contains(@class, 'datagrid-mask-msg') and text()='Түр хүлээнэ үү']"));
+            WebElement loadingMessage = driver.findElement(selector);
             if (loadingMessage.isDisplayed()) {
-                wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("//div[contains(@class, 'datagrid-mask-msg') and text()='Түр хүлээнэ үү']")));
+                wait.until(ExpectedConditions.invisibilityOfElementLocated(selector));
             }
         } catch (NoSuchElementException e) {
-            // Loading message not found, proceed
+            // Not found
         } catch (TimeoutException e) {
-            //
+            System.out.println("Timeout waiting for loading message. Removing manually.");
+            removeElement(driver, selector);
         }
     }
 
-    private static void waitForLoadToDisappear(WebDriver driver) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(TIMEOUT));
+    private static void removeElement(WebDriver driver, By selector) {
         try {
-            WebElement loadingMessages = driver.findElement(By.cssSelector("div.loading-message.loading-message-boxed"));
-            if (loadingMessages.isDisplayed()) {
-                wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("div.loading-message.loading-message-boxed")));
-            }
-        } catch (NoSuchElementException e) {
-            // Loading message not found, proceed
-        } catch (TimeoutException e) {
-            //
+            WebElement element = driver.findElement(selector);
+            ((JavascriptExecutor) driver).executeScript("arguments[0].remove();", element);
+        } catch (NoSuchElementException ignored) {
+            // Already gone
         }
     }
+
+
+
+    private static void waitForLoadToDisappear(WebDriver driver) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(TIMEOUT));
+        By selector = By.cssSelector("div.loading-message.loading-message-boxed");
+        try {
+            WebElement loadingMessages = driver.findElement(selector);
+            if (loadingMessages.isDisplayed()) {
+                wait.until(ExpectedConditions.invisibilityOfElementLocated(selector));
+            }
+        } catch (NoSuchElementException e) {
+            // Not found
+        } catch (TimeoutException e) {
+            System.out.println("Timeout waiting for boxed loading. Removing manually.");
+            removeElement(driver, selector);
+        }
+    }
+
 
     private static void waitForSpinner(WebDriver driver) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(TIMEOUT));

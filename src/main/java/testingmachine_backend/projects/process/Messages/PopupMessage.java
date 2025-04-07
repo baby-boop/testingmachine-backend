@@ -1,6 +1,7 @@
 package testingmachine_backend.projects.process.Messages;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -18,13 +19,15 @@ public class PopupMessage {
     @testingmachine_backend.projects.process.Fields.PopupMessageField
     public static final ThreadLocal<List<PopupMessageDTO>> PopupMessageField = ThreadLocal.withInitial(ArrayList::new);
 
-    private static final int SHORT_WAIT_SECONDS = 1;
+    private static final int SHORT_WAIT_SECONDS = 2;
 
     public static boolean isErrorMessagePresent(WebDriver driver, String datapath, String id, String fileName, String jsonId) {
         try {
-            WebElement messageContainer = waitForElement(driver, By.cssSelector(".brighttheme.ui-pnotify-container"), SHORT_WAIT_SECONDS);
+            WebElement messageContainer = waitForElement(driver,
+                    By.cssSelector(".brighttheme.ui-pnotify-container"), SHORT_WAIT_SECONDS);
             String messageTitle = messageContainer.findElement(By.cssSelector(".ui-pnotify-title")).getText().toLowerCase();
 
+            System.out.println(messageTitle);
             if (messageTitle.contains("warning") || messageTitle.contains("alert")) {
                 return extractErrorMessage(driver, datapath, id, fileName, jsonId);
             }else if (messageTitle.contains("error")) {
@@ -47,7 +50,6 @@ public class PopupMessage {
             String messageText = messageContent.getText();
 
             PopupMessageDTO popupMessages = new PopupMessageDTO(fileName, id, datapath, messageText, jsonId);
-
             PopupMessageField.get().add(popupMessages);
 
             return messageContent.isDisplayed();
@@ -63,7 +65,12 @@ public class PopupMessage {
     }
 
     private static WebElement waitForElement(WebDriver driver, By locator, int timeoutSeconds) {
-        return new WebDriverWait(driver, Duration.ofSeconds(timeoutSeconds))
-                .until(ExpectedConditions.visibilityOfElementLocated(locator));
+        try {
+            return new WebDriverWait(driver, Duration.ofSeconds(timeoutSeconds))
+                    .until(ExpectedConditions.presenceOfElementLocated(locator));
+        } catch (TimeoutException e) {
+            return null;
+        }
     }
+
 }

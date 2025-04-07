@@ -22,7 +22,7 @@ public class IsProcessMessage {
     @Getter
     private static int successCount = 0;
 
-    private static final int SHORT_WAIT_SECONDS = 10;
+    private static final int SHORT_WAIT_SECONDS = 3;
 
     public static boolean isErrorMessagePresent(WebDriver driver, String id, String code, String name, String systemName, String TestProcessType, String jsonId, int totalCount) {
         try {

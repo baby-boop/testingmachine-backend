@@ -45,7 +45,7 @@ public class ModuleExecutionService {
                 String localIpAddress = getLocalIpAddress();
                 String fullUrl = "http://"+ localIpAddress +":3001/result/" + systemData.getGeneratedId();
 
-                if(!systemData.getSelectedModule().equals("process")){
+                if(!systemData.getSelectedModule().equals("process") ) {
 
                     Map<String, Object> combinedResponse = new HashMap<>();
 
@@ -85,6 +85,49 @@ public class ModuleExecutionService {
                 throw new RuntimeException("Өгөгдөл олдсонгүй");
             }
         } catch (Exception e) {
+
+            List<ProcessMessageStatusDTO> processStatuses = ProcessMessageStatusService.getProcessStatuses(systemData.getGeneratedId());
+            List<ErrorMessageDTO> metaStatuses = ProcessMessageStatusService.getMetaStatuses(systemData.getGeneratedId());
+
+            boolean hasFailedOrError = processStatuses.stream()
+                    .anyMatch(p -> p.getStatus().equalsIgnoreCase("failed") || p.getStatus().equalsIgnoreCase("error"))
+                    || metaStatuses.stream()
+                    .anyMatch(m -> m.getStatus().equalsIgnoreCase("failed") || m.getStatus().equalsIgnoreCase("error"));
+
+            int statusMessage = hasFailedOrError ? 0 : 1;
+
+            String localIpAddress = getLocalIpAddress();
+            String fullUrl = "http://"+ localIpAddress +":3001/result/" + systemData.getGeneratedId();
+
+            if(!systemData.getSelectedModule().equals("process") && !systemData.getSelectedModule().equals("product") && !systemData.getSelectedModule().equals("trial")) {
+
+                Map<String, Object> combinedResponse = new HashMap<>();
+
+                if (!processStatuses.isEmpty() && metaStatuses.isEmpty()) {
+                    combinedResponse.put("jsonId", systemData.getGeneratedId());
+                    combinedResponse.put("statusMessage", statusMessage);
+                    combinedResponse.put("fullUrl", fullUrl);
+                    combinedResponse.put("processDetails", processStatuses);
+                } else if (!metaStatuses.isEmpty() && processStatuses.isEmpty()) {
+                    combinedResponse.put("jsonId", systemData.getGeneratedId());
+                    combinedResponse.put("statusMessage", statusMessage);
+                    combinedResponse.put("fullUrl", fullUrl);
+                    combinedResponse.put("metaDetails", metaStatuses);
+                } else if (!processStatuses.isEmpty() && !metaStatuses.isEmpty()) {
+                    combinedResponse.put("jsonId", systemData.getGeneratedId());
+                    combinedResponse.put("statusMessage", statusMessage);
+                    combinedResponse.put("fullUrl", fullUrl);
+                    combinedResponse.put("processDetails", processStatuses);
+                    combinedResponse.put("metaDetails", metaStatuses);
+                } else {
+                    combinedResponse.put("message", "Тестийг амжилттай хүлээж авлаа");
+                }
+
+                ProcessMessageStatusService.saveToJson(systemData.getGeneratedId(),  systemData.getSelectedModule(), systemData.getCustomerName(), statusMessage, fullUrl);
+
+                // Ашигласан өгөгдлийг цэвэрлэх
+                ProcessMessageStatusService.clearAllDTOField(systemData.getGeneratedId());
+            }
             return CompletableFuture.failedFuture(new RuntimeException("Модуль ажиллуулахад алдаа гарлаа: " + e.getMessage(), e));
         }
     }

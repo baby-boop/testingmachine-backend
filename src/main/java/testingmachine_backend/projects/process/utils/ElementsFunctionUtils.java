@@ -93,7 +93,7 @@ public class ElementsFunctionUtils {
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
         element.click();
     }
-
+//lOG
     public static void clickFirstRow(WebDriver driver, String id, String fileName, String datapath, String required, String jsonId) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(SHORT_WAIT_SECONDS));
         try{
@@ -498,6 +498,7 @@ public class ElementsFunctionUtils {
                 if(required != null) {
                     EmptyDataDTO emptyPath = new EmptyDataDTO(fileName, id, datapath, "Popup", jsonId);
                     emptyPathField.get().add(emptyPath);
+                    System.out.println(emptyPath);
                     WebElement closeBtn = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[contains(@aria-describedby, 'dialog-dataview-selectable-')]//button[contains(@class, 'btn blue-hoki btn-sm')]")));
                     closeBtn.click();
                 }else{
@@ -526,7 +527,6 @@ public class ElementsFunctionUtils {
                 String titleValue = nameField.getAttribute("title");
                 if (titleValue == null && titleValue.isEmpty()) {
 
-                    System.out.println("Title is empty or null");
                     PopupStandardFieldsDTO popupStandardFields = new PopupStandardFieldsDTO(fileName, id, dataPath, "code", jsonId);
                     PopupStandartField.get().add(popupStandardFields);
 //                    JsonFileReader.saveToSingleJsonFile(popupStandardFields);

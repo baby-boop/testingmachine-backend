@@ -24,7 +24,9 @@ public class ProcessCallDataviewWithId {
 
         SslDisableClass.SslDisabler();
 
-        String SERVICE_URL =  systemUrl + API_URL;
+        String replacedUrl = systemUrl.replaceAll(":(\\d+)", "");
+
+        String SERVICE_URL =  replacedUrl + API_URL;
 
         List<ProcessMetaData> processList = new ArrayList<>();
 

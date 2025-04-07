@@ -38,9 +38,10 @@ public class ConfigForAll {
     }
 
 
-    private static final String PORT = ":8080";
+    private static final String PORT = ":8181";
     private static final String URL = "/erp-services/RestWS/runJson";
     public static final String GOLOMT_URL = "/javarestapi";
+    public static final String API_URL1 = ":8080" + URL;
     public static final String API_URL = PORT + URL;
     public static final String PROCESS_URL = "https://dev.veritech.mn:8181/erp-services/RestWS/runJson";
     public static final String REST_URL = "/restapi";
@@ -48,6 +49,7 @@ public class ConfigForAll {
     public static final String CALL_PROCESS = "/mdprocess/renderByTestTool/";
     public static final String CALL_DATAVIEW = "/mdobject/dataview/";
     public static final String CALL_METAVERSE = "/mdform/indicatorList/";
+    public static final String CALL_PRODUCT = "/appmenu/mvmodule/";
     public static final String CALL_METHOD = "/mdform/method/";
     public static final String CALL_INDICATOR = "/mdobject/meta/";
 
@@ -58,6 +60,10 @@ public class ConfigForAll {
     public static String getLocalIpAddress(){
         return "192.168.192.57";
     }
+
+//    public static String getLocalIpAddress(){
+//        return "192.168.1.8";
+//    }
 
 //    public static String getLocalIpAddress() {
 //        try {

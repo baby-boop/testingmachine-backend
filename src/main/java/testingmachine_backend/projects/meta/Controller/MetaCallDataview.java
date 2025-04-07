@@ -14,7 +14,7 @@ import testingmachine_backend.projects.meta.DTO.MetadataDTO;
 import java.util.ArrayList;
 import java.util.List;
 
-import static testingmachine_backend.config.ConfigForAll.API_URL;
+import static testingmachine_backend.config.ConfigForAll.API_URL1;
 
 @Slf4j
 public class MetaCallDataview {
@@ -25,7 +25,9 @@ public class MetaCallDataview {
 
         SslDisableClass.SslDisabler();
 
-        String SERVICE_URL =  systemUrl + API_URL;
+        String replacedUrl = systemUrl.replaceAll(":(\\d+)", "");
+
+        String SERVICE_URL =  replacedUrl + API_URL1;
 
         List<MetadataDTO> metaList = new ArrayList<>();
         String payload = """
@@ -40,6 +42,7 @@ public class MetaCallDataview {
                 }
             }
             """.formatted(username, password, unitName, DATAVIEW, moduleId);
+
         try {
             RestTemplate restTemplate = new RestTemplate();
 

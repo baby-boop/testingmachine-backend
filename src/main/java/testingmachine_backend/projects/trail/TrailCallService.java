@@ -1,4 +1,4 @@
-package testingmachine_backend.projects.metaverse;
+package testingmachine_backend.projects.trail;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -8,28 +8,25 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
-import testingmachine_backend.config.SslDisableClass;
-import testingmachine_backend.projects.meta.DTO.MetadataDTO;
+import testingmachine_backend.projects.patch.PatchDTO;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static testingmachine_backend.config.ConfigForAll.INDICATOR_URL;
-
 @Slf4j
-public class MetaverseCallIndicator {
+public class TrailCallService {
 
-    private static final String DATAVIEW = "pfFindModuleMetaLookupIdsDv";
+    private static final String PORT = "8080";
+    private static final String URL = "/erp-services/RestWS/runJson";
+    private static final String DATAVIEW = "pfFindPatchMetaIdsDv";
 
-    public static List<MetadataDTO> getProcessMetaDataList(String moduleId, String unitName, String systemUrl, String username, String password) {
-
-        SslDisableClass.SslDisabler();
+    public static List<PatchDTO> getPatchMetaDataList(String unitName, String systemUrl, String username, String password, String patchId) {
 
         String replacedUrl = systemUrl.replaceAll(":(\\d+)", "");
+        String SERVICE_URL =  replacedUrl + ":" + PORT + URL;
 
-        String SERVICE_URL =  replacedUrl + INDICATOR_URL;
+        List<PatchDTO> patchList = new ArrayList<>();
 
-        List<MetadataDTO> metaList = new ArrayList<>();
         String payload = """
             {
                 "username": "%s",
@@ -38,10 +35,11 @@ public class MetaverseCallIndicator {
                 "unitname": "%s",
                 "parameters": {
                     "systemmetagroupcode": "%s",
-                    "filtermoduleid": "%s"
+                    "patchId": "%s"
                 }
             }
-            """.formatted(username, password, unitName, DATAVIEW, moduleId);
+            """.formatted(username, password, unitName, DATAVIEW, patchId);
+
         try {
             RestTemplate restTemplate = new RestTemplate();
 
@@ -56,18 +54,17 @@ public class MetaverseCallIndicator {
             JsonNode rootNode = objectMapper.readTree(response.getBody());
 
             JsonNode resultNode = rootNode.path("response").path("result");
-
             if (resultNode.isObject()) {
                 resultNode.fields().forEachRemaining(entry -> {
                     JsonNode item = entry.getValue();
 
-                    String id = item.path("metadataid").asText("N/A");
-                    String moduleName = item.path("modulename").asText("N/A");
-                    String code = item.path("metadatacode").asText("N/A");
-                    String name = item.path("metadataname").asText("N/A");
+                    String id = item.path("metaid").asText("N/A");
+                    String code = item.path("metacode").asText("N/A");
+                    String name = item.path("metaname").asText("N/A");
+                    String typeId = item.path("typeid").asText("N/A");
+                    String patchName = item.path("patchname").asText("N/A");
 
-                    metaList.add(new MetadataDTO(id, moduleName, code, name, ""));
-
+                    patchList.add(new PatchDTO(id, code, name, typeId, patchId, patchName));
                 });
             } else {
                 log.warn("The 'result' node is missing or not an object.");
@@ -76,6 +73,7 @@ public class MetaverseCallIndicator {
         } catch (Exception e) {
             log.error("Error while calling service: ", e);
         }
-        return metaList;
+
+        return patchList;
     }
 }
